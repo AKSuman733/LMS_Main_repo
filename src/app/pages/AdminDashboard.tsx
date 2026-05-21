@@ -1,6 +1,8 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from 'recharts';
 import { ArrowUpRight, Award, BookOpen, Users, TrendingUp, ShieldCheck } from 'lucide-react';
+import MetricCards from '../../components/Dashboard/MetricCards';
+import QuickActions from '../../components/Dashboard/QuickActions';
 
 const enrollmentData = [
   { name: 'May 1', enrollments: 200 },
@@ -55,68 +57,11 @@ export function AdminDashboard() {
       </div>
 
       <div className="px-[40px] mt-8 space-y-8">
-        {/* KPI Row (4 cards, white bg, 12px radius, amber top border 3px) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Card 1 */}
-          <div className="bg-white rounded-[12px] border border-[#E2E1F0] border-t-[3px] border-t-[#F59E0B] p-5 shadow-sm transition-all hover:shadow-md">
-            <div className="flex justify-between items-start">
-              <span className="text-[13px] font-bold text-[#6B6B80] uppercase tracking-wide">Total Users</span>
-              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-500">
-                <Users size={16} />
-              </div>
-            </div>
-            <div className="text-[28px] font-extrabold text-[#1A1A2E] mt-3">1,340</div>
-            <div className="flex items-center gap-1 text-[12px] text-green-600 font-bold mt-2">
-              <span>▲</span>
-              <span>+12% this week</span>
-            </div>
-          </div>
+        {/* KPI Metric Cards Row */}
+        <MetricCards />
 
-          {/* Card 2 */}
-          <div className="bg-white rounded-[12px] border border-[#E2E1F0] border-t-[3px] border-t-[#F59E0B] p-5 shadow-sm transition-all hover:shadow-md">
-            <div className="flex justify-between items-start">
-              <span className="text-[13px] font-bold text-[#6B6B80] uppercase tracking-wide">Active Courses</span>
-              <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-500">
-                <BookOpen size={16} />
-              </div>
-            </div>
-            <div className="text-[28px] font-extrabold text-[#1A1A2E] mt-3">24</div>
-            <div className="flex items-center gap-1 text-[12px] text-green-600 font-bold mt-2">
-              <span>▲</span>
-              <span>+2 this month</span>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-white rounded-[12px] border border-[#E2E1F0] border-t-[3px] border-t-[#F59E0B] p-5 shadow-sm transition-all hover:shadow-md">
-            <div className="flex justify-between items-start">
-              <span className="text-[13px] font-bold text-[#6B6B80] uppercase tracking-wide">Total Enrollments</span>
-              <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center text-amber-500">
-                <TrendingUp size={16} />
-              </div>
-            </div>
-            <div className="text-[28px] font-extrabold text-[#1A1A2E] mt-3">8,420</div>
-            <div className="flex items-center gap-1 text-[12px] text-green-600 font-bold mt-2">
-              <span>▲</span>
-              <span>+340 this week</span>
-            </div>
-          </div>
-
-          {/* Card 4 */}
-          <div className="bg-white rounded-[12px] border border-[#E2E1F0] border-t-[3px] border-t-[#F59E0B] p-5 shadow-sm transition-all hover:shadow-md">
-            <div className="flex justify-between items-start">
-              <span className="text-[13px] font-bold text-[#6B6B80] uppercase tracking-wide">Completion Rate</span>
-              <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-500">
-                <ShieldCheck size={16} />
-              </div>
-            </div>
-            <div className="text-[28px] font-extrabold text-[#1A1A2E] mt-3">78%</div>
-            <div className="flex items-center gap-1 text-[12px] text-green-600 font-bold mt-2">
-              <span>▲</span>
-              <span>+3% this month</span>
-            </div>
-          </div>
-        </div>
+        {/* Quick Actions Row */}
+        <QuickActions />
 
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-6">
