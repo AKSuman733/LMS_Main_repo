@@ -1,2 +1,3 @@
-Its the main repo of LMS-project.
--Interns push yours code to "Frontend" branch
+Its the main repo of LMS-project. Do Not push code here.
+
+-Please push your code to "your-name" branch
