@@ -1,0 +1,6 @@
+{
+  "name": "UpToSkills",
+  "description": "A futuristic AI-powered online learning platform with a premium dark UI and interactive dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
