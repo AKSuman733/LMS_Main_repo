@@ -1,0 +1,340 @@
+.auth-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.auth-background-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  filter: blur(8px) brightness(0.4);
+  pointer-events: none;
+}
+
+.auth-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  z-index: 2;
+  background: transparent;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 30px;
+  background: var(--surface-color) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+}
+
+[data-theme='light'] .auth-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.back-btn {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: var(--transition);
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--surface-color-light);
+  border: 1px solid var(--border-color);
+}
+
+.back-btn:hover {
+  color: var(--text-primary);
+  background: var(--border-color);
+  transform: translateX(-4px);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.auth-header h2 {
+  font-size: 1.75rem;
+  margin-bottom: 6px;
+}
+
+.auth-header p {
+  color: var(--text-secondary);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-row a {
+  font-size: 0.85rem;
+  color: var(--primary-color);
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  background: var(--surface-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+  font-size: 0.95rem;
+}
+
+.input-with-icon input::placeholder {
+  color: var(--text-secondary);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--transition);
+  z-index: 10;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: var(--primary-color);
+  background: rgba(139, 92, 246, 0.1);
+}
+
+/* Admin Dashboard Stats */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.admin-page .stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  transition: var(--transition);
+}
+
+.admin-page .stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-page .stat-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.admin-page .stat-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.input-with-icon input:focus {
+  border-color: var(--primary-color);
+  background: var(--surface-color);
+}
+
+.auth-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.auth-divider {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.auth-divider::before, .auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.auth-divider span {
+  padding: 0 10px;
+}
+
+.social-auth {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.auth-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.auth-footer a {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.auth-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Validation Styles */
+.input-with-icon input.input-error {
+  border-color: #EF4444;
+}
+.input-with-icon input.input-success {
+  border-color: #10B981;
+}
+
+.validation-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+}
+.validation-icon.error { color: #EF4444; }
+.validation-icon.success { color: #10B981; }
+
+/* In password field, adjust right padding to make room for both eye and validation icon */
+.input-with-icon.password-field input {
+  padding-right: 70px;
+}
+.input-with-icon.password-field .validation-icon {
+  right: 40px;
+}
+
+.field-error-text {
+  color: #EF4444;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.required-asterisk {
+  color: #EF4444;
+  margin-left: 4px;
+}
+
+/* Password Meter */
+.password-meter-container {
+  margin-top: 8px;
+}
+.password-meter-bars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.password-meter-bar {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background-color: var(--border-color);
+  transition: background-color 0.3s ease;
+}
+.password-meter-bar.active.weak { background-color: #EF4444; }
+.password-meter-bar.active.fair { background-color: #F59E0B; }
+.password-meter-bar.active.good { background-color: #10B981; }
+.password-meter-bar.active.strong { background-color: #059669; }
+
+.password-requirements {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+.password-requirements li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.password-requirements li.met {
+  color: #10B981;
+}
+.password-requirements li svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Loading Spinner */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

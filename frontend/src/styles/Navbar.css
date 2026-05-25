@@ -1,0 +1,138 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: var(--bg-color);
+  opacity: 0.98;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.logo-icon {
+  background: var(--primary-gradient);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 1.2rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-search {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 40px;
+  position: relative;
+}
+
+.nav-search input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  background: var(--surface-color-light);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  color: var(--text-primary);
+  outline: none;
+  transition: var(--transition);
+}
+
+.nav-search input:focus {
+  border-color: var(--primary-color);
+  background: var(--surface-color);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.theme-toggle {
+  background: var(--surface-color-light);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.theme-toggle:hover {
+  background: var(--border-color);
+  transform: rotate(15deg);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-color-light);
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn:hover {
+  color: var(--error-color);
+}
+
+.nav-auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
