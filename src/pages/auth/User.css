@@ -1,0 +1,100 @@
+
+body {
+    margin: 0;
+    font-family: Arial;
+    background-color: #f5f5f5;
+}
+
+.main {
+    height: 1000vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container1 {
+    width: 200px;
+    height: 400;
+    padding: 70px;
+    margin-top: 50px;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 15px lightgray;
+    border: 1px solid #ccc;
+}
+
+h2, h5 {
+    text-align: center;
+}
+
+nav {
+    text-align: center;
+    margin: 10px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0;
+    gap: 0px;
+}
+
+label {
+    width: 100px;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    min-width: 0;
+}
+
+button {
+    display: block;
+    margin: 15px auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.google {
+    background-color: white;
+    border: 1px solid gray;
+}
+
+.login-btn {
+    background-color: rgb(0, 34, 255);
+    color: white;
+}
+
+.forgot {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.forgot a {
+    font-size: 12px;
+    color: blue;
+    text-decoration: none;
+}
+
+.forgot a:hover {
+    text-decoration: underline;
+}
+
+.sample {
+    width: 160px;
+    height: 60px;
+    padding: 20px;
+    margin: 50px auto;
+    border: 1px solid #a21b1b;
+    border-radius: 12px;
+    background-color: #1e293b;
+    color: white;
+}
+
+

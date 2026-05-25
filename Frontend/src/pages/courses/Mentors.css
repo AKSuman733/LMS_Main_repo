@@ -1,0 +1,25 @@
+.add-mentor-box {
+  display: flex;
+  padding-left: 200px;
+  padding-right: 200px;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.add-mentor-box input {
+  padding: 10px;
+  width: 220px;
+  border-radius: 8px;
+  border: 1px solid gray;
+}
+
+.add-mentor-box button {
+  padding: 10px 20px;
+  border: none;
+  background-color: black;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}

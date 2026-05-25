@@ -1,0 +1,63 @@
+.student-section {
+  padding: 20px;
+  background-color: honeydew;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.student-section h2 {
+  margin-bottom: 20px;
+  color: #0f172a;
+  background-color: rgb(21, 140, 113);
+}
+
+/* STUDENT LIST */
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* STUDENT CARD */
+.student-card {
+  width: 89%;
+  min-height: 100px;
+  padding:3px 30px;
+  border-radius: 12px;
+  background-color: rgb(193, 199, 206);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.student-card:hover {
+  transform: translateY(-3px);
+}
+
+/* NAME */
+.student-card h3 {
+  margin-bottom: 12px;
+  text-align: left;
+  color: #0f172a;
+}
+
+/* DETAILS */
+.student-card p {
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 15px;
+}
+
+/* ENROLLED LABEL */
+.enrolled {
+  display: inline-block;
+  text-align: center;
+  margin-top: 10px;
+  padding: 6px 14px;
+  background-color: green;
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+  
+}
