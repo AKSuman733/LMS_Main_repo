@@ -1,11 +1,14 @@
 import { createRoot } from "react-dom/client";
 import App from "./app/App.tsx";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ToastProvider } from "./components/Toast/ToastProvider";
 import "./styles/index.css";
 import "./designTokens.css";
 
 createRoot(document.getElementById("root")!).render(
   <AuthProvider>
-    <App />
+    <ToastProvider>
+      <App />
+    </ToastProvider>
   </AuthProvider>
 );
