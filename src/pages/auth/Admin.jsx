@@ -1,90 +1,237 @@
-import "./Admin.css";
+import "./User.css";
+
+import {
+  colors,
+  spacing,
+  shadows
+} from "../../styles/designtokens";
+
 import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+
+import EmailField from "../../components/FormInput/EmailField";
+import PasswordField from "../../components/FormInput/PasswordField";
+import SubmitButton from "../../components/FormInput/SubmitButton";
+
+import {
+  validateEmail,
+  validatePassword,
+} from "../../utils/validation";
 
 function Admin() {
 
   const navigate = useNavigate();
 
   // STATES
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+  const [emailError, setEmailError] =
+    useState("");
+
+  const [passwordError, setPasswordError] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(false);
+
+  // EMAIL VALIDATION
+  const handleEmailChange = (e) => {
+
+    const value = e.target.value;
+
+    setEmail(value);
+
+    setEmailError(
+      validateEmail(value)
+    );
+
+  };
+
+  // PASSWORD VALIDATION
+  const handlePasswordChange = (e) => {
+
+    const value = e.target.value;
+
+    setPassword(value);
+
+    setPasswordError(
+      validatePassword(value)
+    );
+
+  };
 
   // LOGIN FUNCTION
   const handleLogin = () => {
 
-    // ADMIN CREDENTIALS
-    const adminEmail = "admin@gmail.com";
-    const adminPassword = "12345";
+    // EMPTY FIELD CHECK
+    if (
+      !email ||
+      !password
+    ) {
 
-    if (email === adminEmail && password === adminPassword) {
+      toast.error(
+        "Please fill all fields"
+      );
 
-      alert("Admin Login Successful");
-
-      navigate("/adashboard");
-
-    } else {
-
-      alert("Invalid Admin Email or Password");
+      return;
 
     }
+
+    // VALIDATION CHECK
+    if (
+      emailError ||
+      passwordError
+    ) {
+
+      toast.error(
+        "Please fix form errors"
+      );
+
+      return;
+
+    }
+
+    // START LOADING
+    setLoading(true);
+
+    // ADMIN CREDENTIALS
+    const adminEmail =
+      "admin@gmail.com";
+
+    const adminPassword =
+      "A12345";
+
+    // FAKE API CALL
+    setTimeout(() => {
+
+      setLoading(false);
+
+      if (
+        email === adminEmail &&
+        password === adminPassword
+      ) {
+
+        toast.success(
+          "Admin Login Successful"
+        );
+
+        navigate("/adashboard");
+
+      } else {
+
+        toast.error(
+          "Invalid Email or Password"
+        );
+
+      }
+
+    }, 2000);
+
   };
 
   return (
-    <div className="main">
 
-      <div className="container1">
+    <div
+      className="main"
+      style={{
+        paddingLeft: 100,
+      }}
+    >
 
-        <h2>Admin Login Page</h2>
+      <div
+        className="container1"
+        style={{
+          backgroundColor:
+            colors.gray400,
 
-        <h5>Sign in with Google</h5>
+          boxShadow:
+            shadows.md,
 
-        <button className="google">
+          padding:
+            spacing.sm,
+
+          borderRadius: 20,
+
+          paddingTop: 250,
+        }}
+      >
+
+        <h2>
+          Admin Login Page
+        </h2>
+
+        <h5>
+          Sign in with Google
+        </h5>
+
+        <button
+          className="google"
+          style={{
+            backgroundColor:
+              colors.white,
+          }}
+        >
           Continue with Google
         </button>
 
         <nav>OR</nav>
-          <div className="sample">
-          Sample Email to be used:
-          Email:"admin@gmail.com"
-          Password:"12345"
-        </div>
 
-        {/* EMAIL */}
-        <div className="form-group">
+        <div
+          className="sample"
+          style={{
+            backgroundColor:
+              colors.gray400,
 
-          <label>Email</label>
-
-          <input
-            type="text"
-            placeholder="Enter admin email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-        </div>
-
-        {/* PASSWORD */}
-        <div className="form-group">
-
-          <label>Password</label>
-
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-        </div>
-
-        {/* LOGIN BUTTON */}
-        <button
-          className="login-btn"
-          onClick={handleLogin}
+            paddingTop: 10,
+            paddingLeft: 50,
+            paddingBottom: 30,
+          }}
         >
-          Login
-        </button>
+
+          Sample Email to be used:
+
+          <br />
+
+          Email: admin@gmail.com
+
+          <br />
+
+          Password: A12345
+
+        </div>
+
+        <EmailField
+          value={email}
+          onChange={
+            handleEmailChange
+          }
+          error={emailError}
+          isValid={
+            email &&
+            !emailError
+          }
+        />
+
+        <PasswordField
+          value={password}
+          onChange={
+            handlePasswordChange
+          }
+          error={passwordError}
+        />
+
+        <SubmitButton
+          loading={loading}
+          text="Login"
+          onClick={handleLogin}
+        />
 
       </div>
 

@@ -95,7 +95,7 @@
   width: 220px;
   padding: 5px;
   border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+ /* box-shadow: 0 3px 10px rgba(0,0,0,0.1);*/
   text-align: center;
 }
 
@@ -108,4 +108,63 @@
 .card p {
   font-size: 18px;
   color: #555;
+}
+
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* BASE BUTTON */
+.action-btn {
+  height: 45px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+/* ACTIVE PRESS EFFECT */
+.action-btn:active {
+  transform: scale(0.98);
+}
+
+/* =========================
+   PRIMARY BUTTON (ORANGE)
+========================= */
+
+.action-btn.primary {
+  background: orange;
+  color: white;
+  border: none;
+}
+
+.action-btn.primary:hover {
+  background: #ff8c00;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* =========================
+   SECONDARY BUTTON (TEAL OUTLINE)
+========================= */
+
+.action-btn.secondary {
+  background: transparent;
+  border: 2px solid teal;
+  color: teal;
+}
+
+.action-btn.secondary:hover {
+  background: rgba(0,128,128,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }

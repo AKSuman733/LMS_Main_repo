@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+
 import "./Coursedetails.css";
 
 import mentor1 from "../../assets/mentor1.jpg";
@@ -15,113 +16,540 @@ function Coursedetails() {
 
   const location = useLocation();
 
-  const courseName = location.state?.courseName;
-  const coursePrice = location.state?.coursePrice;
+  const courseName =
+    location.state?.courseName ||
+    "Python Programming";
 
-  const [enrolled, setEnrolled] = useState(false);
-  const [selectedMentor, setSelectedMentor] = useState(null);
+  // COURSE DATA
+  const courseContent = {
 
-  const mentors = [
-    { id: 1, name: "Ram Charan", image: mentor1 },
-    { id: 2, name: "Virat Kohli", image: mentor2 },
-    { id: 3, name: "Elon Musk", image: mentor3 },
-    { id: 4, name: "Oggy", image: mentor4 },
-    { id: 5, name: "Upendra Dwivedi", image: mentor5 },
-    { id: 6, name: "Narendra Modi", image: mentor6 },
-    { id: 7, name: "PV Sindhu", image: mentor7 },
-    { id: 8, name: "Bruce Lee", image: mentor8 },
-  ];
+    "Python Programming": {
+      price: "Free",
+      description:
+        "Learn Python programming from basics.",
+      topics: [
+        "Introduction",
+        "Variables",
+        "Loops",
+        "Functions",
+        "Projects",
+      ],
+      video:
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("myCourses")) || [];
-    const exists = saved.find((c) => c.name === courseName);
+    "Data Science using Python": {
+      price: "₹499",
+      description:
+        "Learn Data Science with Python.",
+      topics: [
+        "NumPy",
+        "Pandas",
+        "Visualization",
+        "ML Basics",
+        "Projects",
+      ],
+      video:
+        "https://www.w3schools.com/html/movie.mp4",
+    },
 
-    if (exists) {
-      setEnrolled(true);
-      setSelectedMentor(exists.mentor || null);
-    }
-  }, [courseName]);
+    "Java": {
+      price: "₹299",
+      description:
+        "Learn Java and OOP concepts.",
+      topics: [
+        "Java Basics",
+        "Methods",
+        "Collections",
+        "OOP",
+        "Projects",
+      ],
+      video:
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
 
-  const handleEnroll = () => {
-    if (!courseName) return;
+    "MERN Stack": {
+      price: "₹999",
+      description:
+        "Become a MERN Full Stack Developer.",
+      topics: [
+        "HTML",
+        "CSS",
+        "React",
+        "Node",
+        "MongoDB",
+      ],
+      video:
+        "https://www.w3schools.com/html/movie.mp4",
+    },
 
-    const saved = JSON.parse(localStorage.getItem("myCourses")) || [];
+    "Web Development": {
+      price: "Free",
+      description:
+        "Learn frontend and backend.",
+      topics: [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "Deployment",
+      ],
+      video:
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
 
-    const alreadyExists = saved.find((c) => c.name === courseName);
-    if (alreadyExists) {
-      setEnrolled(true);
-      return;
-    }
+    "Artificial Intelligence": {
+      price: "₹799",
+      description:
+        "Learn Artificial Intelligence.",
+      topics: [
+        "AI Basics",
+        "NLP",
+        "Neural Networks",
+        "Vision",
+        "Projects",
+      ],
+      video:
+        "https://www.w3schools.com/html/movie.mp4",
+    },
 
-    const newCourse = {
-      name: courseName,
-      price: coursePrice,
-      mentor: selectedMentor,
-    };
+    "Machine Learning": {
+      price: "₹899",
+      description:
+        "Learn Machine Learning models.",
+      topics: [
+        "Regression",
+        "Classification",
+        "Training",
+        "Evaluation",
+        "Projects",
+      ],
+      video:
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
 
-    localStorage.setItem(
-      "myCourses",
-      JSON.stringify([...saved, newCourse])
-    );
+    "Deep Learning": {
+      price: "₹999",
+      description:
+        "Learn Deep Learning concepts.",
+      topics: [
+        "ANN",
+        "CNN",
+        "RNN",
+        "TensorFlow",
+        "Projects",
+      ],
+      video:
+        "https://www.w3schools.com/html/movie.mp4",
+    },
 
-    setEnrolled(true);
+    "Data Visualization": {
+      price: "Free",
+      description:
+        "Learn dashboards and charts.",
+      topics: [
+        "Matplotlib",
+        "Seaborn",
+        "Power BI",
+        "Tableau",
+        "Dashboards",
+      ],
+      video:
+        "https://www.w3schools.com/html/mov_bbb.mp4",
+    },
+
+    "Devops": {
+      price: "₹599",
+      description:
+        "Learn DevOps tools.",
+      topics: [
+        "Linux",
+        "Docker",
+        "Kubernetes",
+        "CI/CD",
+        "AWS",
+      ],
+      video:
+        "https://www.w3schools.com/html/movie.mp4",
+    },
+
   };
 
-  const handleSelectMentor = (mentor) => {
-    setSelectedMentor(mentor.name);
+  const currentCourse =
+    courseContent[courseName];
+
+  // STATES
+  const [enrolled, setEnrolled] =
+    useState(false);
+
+  const [selectedMentor, setSelectedMentor] =
+    useState("");
+
+  const [completedTopics, setCompletedTopics] =
+    useState([]);
+
+  const [progress, setProgress] =
+    useState(0);
+
+  // MENTORS
+  const mentors = [
+    {
+      id: 1,
+      name: "Ram Charan",
+      image: mentor1,
+    },
+    {
+      id: 2,
+      name: "Virat Kohli",
+      image: mentor2,
+    },
+    {
+      id: 3,
+      name: "Elon Musk",
+      image: mentor3,
+    },
+    {
+      id: 4,
+      name: "Oggy",
+      image: mentor4,
+    },
+    {
+      id: 5,
+      name: "Upendra Dwivedi",
+      image: mentor5,
+    },
+    {
+      id: 6,
+      name: "Narendra Modi",
+      image: mentor6,
+    },
+    {
+      id: 7,
+      name: "PV Sindhu",
+      image: mentor7,
+    },
+    {
+      id: 8,
+      name: "Bruce Lee",
+      image: mentor8,
+    },
+  ];
+
+  // LOAD SAVED DATA
+  useEffect(() => {
+
+    const savedCourses =
+      JSON.parse(
+        localStorage.getItem("myCourses")
+      ) || [];
+
+    const existingCourse =
+      savedCourses.find(
+        (course) =>
+          course.name === courseName
+      );
+
+    if (existingCourse) {
+
+      setEnrolled(true);
+
+    }
+
+    const savedData =
+      JSON.parse(
+        localStorage.getItem(courseName)
+      );
+
+    if (savedData) {
+
+      setSelectedMentor(
+        savedData.mentor || ""
+      );
+
+      setCompletedTopics(
+        savedData.completedTopics || []
+      );
+
+    }
+
+  }, [courseName]);
+
+  // UPDATE PROGRESS
+  useEffect(() => {
+
+    const totalTopics =
+      currentCourse.topics.length;
+
+    const completed =
+      completedTopics.length;
+
+    const progressValue =
+      Math.floor(
+        (completed / totalTopics) * 100
+      );
+
+    setProgress(progressValue);
+
+    localStorage.setItem(
+      courseName,
+      JSON.stringify({
+        mentor: selectedMentor,
+        completedTopics,
+      })
+    );
+
+  }, [
+    completedTopics,
+    selectedMentor,
+    courseName,
+    currentCourse.topics.length,
+  ]);
+
+  // ENROLL
+  const handleEnroll = () => {
+
+    setEnrolled(true);
+
+    const savedCourses =
+      JSON.parse(
+        localStorage.getItem("myCourses")
+      ) || [];
+
+    const alreadyExists =
+      savedCourses.find(
+        (course) =>
+          course.name === courseName
+      );
+
+    if (!alreadyExists) {
+
+      const newCourse = {
+        name: courseName,
+        price: currentCourse.price,
+        topics: currentCourse.topics,
+        video: currentCourse.video,
+      };
+
+      localStorage.setItem(
+        "myCourses",
+        JSON.stringify([
+          ...savedCourses,
+          newCourse,
+        ])
+      );
+
+    }
+
+  };
+
+  // SELECT MENTOR
+  const handleSelectMentor = (
+    mentorName
+  ) => {
+
+    setSelectedMentor(mentorName);
+
+  };
+
+  // CHECKBOX
+  const handleCheckbox = (topic) => {
+
+    if (
+      completedTopics.includes(topic)
+    ) {
+
+      setCompletedTopics(
+        completedTopics.filter(
+          (item) => item !== topic
+        )
+      );
+
+    } else {
+
+      setCompletedTopics([
+        ...completedTopics,
+        topic,
+      ]);
+
+    }
+
   };
 
   return (
+
     <div className="course-page">
 
-      <button
-        className={enrolled ? "enrolled-btn" : "enroll-btn"}
-        onClick={handleEnroll}
-      >
-        {enrolled ? "Enrolled" : "Enroll Now"}
-      </button>
+      {/* COURSE BOX */}
+      <div className="course-box">
 
-      {enrolled && (
-        <div className="enrolled-course">
-          <h2>Enrolled Course</h2>
-          <p>{courseName}</p>
-          <p>Mentor: {selectedMentor || "Not Selected"}</p>
-        </div>
-      )}
+        <h1>{courseName}</h1>
 
+        <h3>{currentCourse.price}</h3>
+
+        <p>
+          {currentCourse.description}
+        </p>
+
+        <button
+          className={
+            enrolled
+              ? "enrolled-btn"
+              : "enroll-btn"
+          }
+          onClick={handleEnroll}
+        >
+          {enrolled
+            ? "Enrolled"
+            : "Enroll Now"}
+        </button>
+
+      </div>
+
+      {/* AFTER ENROLL */}
       {enrolled && (
+
         <>
-          <h2>Select Your Mentor</h2>
+            {/* VIDEO */}
+          <div className="video-section">
+
+            <h2>
+              Course Video
+            </h2>
+
+            <video
+              controls
+              className="course-video"
+            >
+
+              <source
+                src={currentCourse.video}
+                type="video/mp4"
+              />
+
+            </video>
+
+          </div>
+
+           {/* PROGRESS */}
+          <div className="progress-section">
+
+            <h2>
+              Course Progress
+            </h2>
+
+            <div className="progress-bar">
+
+              <div
+                className="progress-fill"
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+
+            </div>
+
+            <h3>
+              {progress}% Completed
+            </h3>
+
+          </div>
+
+          {/* COURSE CONTENT */}
+          <div className="enrolled-course">
+
+            <h2>
+              Course Content
+            </h2>
+
+            {currentCourse.topics.map(
+              (topic, index) => (
+
+                <div
+                  key={index}
+                  className="concept-item"
+                >
+
+                  <input
+                    type="checkbox"
+                    checked={completedTopics.includes(
+                      topic
+                    )}
+                    onChange={() =>
+                      handleCheckbox(topic)
+                    }
+                  />
+
+                  <label>
+                    {topic}
+                  </label>
+
+                </div>
+              )
+            )}
+
+          </div>
+
+          {/* MENTORS */}
+          <h2 className="mentor-title">
+            Select Your Mentor
+          </h2>
 
           <div className="mentor-container">
 
             {mentors.map((mentor) => (
+
               <div
                 key={mentor.id}
-                className={`mentor-card ${
-                  selectedMentor === mentor.name ? "active" : ""
-                }`}
+                className={
+                  selectedMentor === mentor.name
+                    ? "mentor-card active"
+                    : "mentor-card"
+                }
               >
 
-                <img src={mentor.image} alt={mentor.name} />
+                <img
+                  src={mentor.image}
+                  alt={mentor.name}
+                />
+
                 <h3>{mentor.name}</h3>
 
-                <button onClick={() => handleSelectMentor(mentor)}>
-                  {selectedMentor === mentor.name ? "Selected" : "Select"}
+                <button
+                  onClick={() =>
+                    handleSelectMentor(
+                      mentor.name
+                    )
+                  }
+                >
+                  {selectedMentor === mentor.name
+                    ? "Selected"
+                    : "Select"}
                 </button>
 
               </div>
             ))}
 
           </div>
-        </>
-      )}
 
-      {selectedMentor && (
-        <div className="selected-box">
-          <h2>Selected Mentor</h2>
-          <p>{selectedMentor}</p>
-        </div>
+          {/* SELECTED MENTOR */}
+          {selectedMentor && (
+
+            <div className="selected-mentor-box">
+
+              <h2>
+                Selected Mentor
+              </h2>
+
+              <p>
+                {selectedMentor}
+              </p>
+
+            </div>
+
+          )}
+
+
+        </>
       )}
 
     </div>
@@ -129,4 +557,3 @@ function Coursedetails() {
 }
 
 export default Coursedetails;
-

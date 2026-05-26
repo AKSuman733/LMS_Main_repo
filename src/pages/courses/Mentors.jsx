@@ -1,5 +1,10 @@
 import { useState } from "react";
 import "./Mentors.css";
+import {
+  colors,
+  spacing,
+  typography
+} from "../../styles/designtokens"; 
 
 import mentor1 from "../../assets/mentor1.jpg";
 import mentor2 from "../../assets/mentor2.jpg";
@@ -88,7 +93,9 @@ function Mentors() {
 
     <div className="mentor-page">
 
-      <h1>All Mentors</h1>
+      <h1 style={{
+        paddingLeft:450,
+      }}>All Mentors</h1>
 
       {/* Add Mentor Section */}
       <div className="add-mentor-box">

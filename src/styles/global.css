@@ -1,0 +1,17 @@
+/*body {
+  margin: 0;
+  font-family: Arial;
+  background-color: #f5f5f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+  */
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

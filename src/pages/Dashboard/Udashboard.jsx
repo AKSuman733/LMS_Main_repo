@@ -20,8 +20,8 @@ function Udashboard() {
           alt="uptoskills"
         />
 
-        <span onClick={() => navigate("/admin")}>
-          Admin
+        <span onClick={() => navigate("/user")}>
+          Logout
         </span>
 
       </div>

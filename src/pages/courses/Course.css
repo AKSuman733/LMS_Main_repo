@@ -40,7 +40,7 @@
 /* COURSE CARD */
 .container {
     width: 220px;
-    height: 250px;  
+    height: 250px;   /* REDUCED HEIGHT */
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -52,7 +52,7 @@
 /* IMAGE */
 .container img {
     width: 100%;
-    height: 100px;   
+    height: 100px;   /* SMALLER IMAGE */
     object-fit: cover;
     border-radius: 8px;
 }

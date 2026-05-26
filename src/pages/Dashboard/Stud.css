@@ -7,8 +7,6 @@
 
 .student-section h2 {
   margin-bottom: 20px;
-  color: #0f172a;
-  background-color: rgb(21, 140, 113);
 }
 
 /* STUDENT LIST */
@@ -54,7 +52,6 @@
   text-align: center;
   margin-top: 10px;
   padding: 6px 14px;
-  background-color: green;
   color: white;
   border-radius: 20px;
   font-size: 13px;

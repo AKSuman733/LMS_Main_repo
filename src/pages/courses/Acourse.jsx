@@ -1,5 +1,11 @@
 import { useState } from "react";
 import "./Acourse.css";
+import {
+  colors,
+  spacing,
+  typography,
+  shadows,
+} from "../../styles/designtokens";
 
 import pythonImg from "../../assets/python.jpg";
 import dataScienceImg from "../../assets/datascience.jpg";
@@ -11,6 +17,7 @@ import machinelearningImg from "../../assets/machinelearning.jpg";
 import deeplearningImg from "../../assets/deeplearning.jpg";
 import datavisualizationImg from "../../assets/datavisualization.jpg";
 import devopsImg from "../../assets/devops.jpg";
+
 
 function Acourse() {
 
@@ -83,7 +90,9 @@ function Acourse() {
   };
 
   return (
-    <div className="page">
+    <div className="page" style={{
+      backgroundColor:colors.gray200,
+    }}>
 
       <h2>Courses</h2>
 
@@ -114,7 +123,9 @@ function Acourse() {
       <div className="course-container">
 
         {courses.map((course) => (
-          <div className="containercourse" key={course.id}>
+          <div className="containercourse" key={course.id}  
+          style={{backgroundColor:colors.white}}
+          >
 
             <img src={course.image} alt={course.title} />
             <h4>{course.title}</h4>

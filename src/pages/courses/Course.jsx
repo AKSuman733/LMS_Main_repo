@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Course.css";
+import {
+  colors,
+  spacing,
+  typography
+} from "../../styles/designtokens"; 
 
 import pythonImg from "../../assets/python.jpg";
 import dataScienceImg from "../../assets/datascience.jpg";
@@ -37,7 +42,13 @@ function Course() {
   );
 
   return (
-    <div className="page">
+    <div className="page"
+      style={{
+          backgroundColor: colors.gray200,
+          minHeight: "100vh",
+          padding: spacing.lg,
+        }}
+        >
 
       <button className="top-btn">
         Courses
@@ -46,7 +57,12 @@ function Course() {
       {/* SEARCH */}
       <div className="search-box">
 
-        <label>Search </label>
+        <label   style={{
+          paddingLeft:300,
+        
+        }}
+        >
+          Search </label>
 
         <input
           type="text"

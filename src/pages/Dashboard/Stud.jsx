@@ -1,3 +1,4 @@
+import { colors } from "../../styles/designtokens";
 import "./Stud.css";
 
 function Stud() {
@@ -50,7 +51,12 @@ function Stud() {
   return (
     <div className="student-section">
 
-      <h2>Student Details</h2>
+      <h2
+      style={{
+        background:colors.primary,
+      }}
+      >
+        Student Details</h2>
 
       <div className="student-list">
 
@@ -58,6 +64,7 @@ function Stud() {
           <div
             className="student-card"
             key={student.id}
+            style={{background:colors.gray200}}
           >
 
             <h3>{student.name}</h3>
@@ -65,7 +72,10 @@ function Stud() {
               <strong>Course:</strong> {student.course}<br></br>
               <strong>Email:</strong> {student.email}
             </p>
-            <label className="enrolled">Enrolled</label>
+            <label className="enrolled"
+            style={{
+              background:colors.success,
+            }}>Enrolled</label>
 
           </div>
         ))}
