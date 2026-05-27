@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import { Clock, BarChart } from 'lucide-react';
-import { MOCK_COURSES } from '../../utils/mockData';
+import { getLocalCourses } from '../../utils/mockData';
 
 const CourseCatalog = () => {
   const [courses, setCourses] = useState([]);
@@ -10,7 +10,7 @@ const CourseCatalog = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      setCourses(MOCK_COURSES);
+      setCourses(getLocalCourses());
       setLoading(false);
     }, 400);
   }, []);

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Clock, BarChart, UserCircle, CheckCircle } from 'lucide-react';
-import { MOCK_COURSES, saveLocalEnrollment, HERO_AVATARS } from '../../utils/mockData';
+import { getLocalCourses, saveLocalEnrollment, HERO_AVATARS } from '../../utils/mockData';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -15,7 +15,7 @@ const CourseDetails = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      const found = MOCK_COURSES.find(c => c.id === parseInt(id));
+      const found = getLocalCourses().find(c => c.id === parseInt(id));
       setCourse(found);
       setLoading(false);
     }, 400);

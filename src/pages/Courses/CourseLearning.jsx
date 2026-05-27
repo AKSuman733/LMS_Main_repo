@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, Circle, ArrowLeft, Trophy, Play } from 'lucide-react';
-import { getLocalEnrollments, MOCK_COURSES, markLessonCompleteLocal, HERO_AVATARS } from '../../utils/mockData';
+import { getLocalEnrollments, getLocalCourses, markLessonCompleteLocal, HERO_AVATARS } from '../../utils/mockData';
 
 const CourseLearning = () => {
   const { enrollmentId } = useParams();
@@ -26,7 +26,12 @@ const CourseLearning = () => {
       
       setEnrollment(currentEnrollment);
 
-      const foundCourse = MOCK_COURSES.find(c => c.id === currentEnrollment.course_id);
+      const foundCourse = getLocalCourses().find(c => c.id === currentEnrollment.course_id);
+      if (!foundCourse) {
+        navigate('/student/enrolled');
+        return;
+      }
+
       setCourse(foundCourse);
       setLessons(foundCourse.lessons);
       
