@@ -1,19 +1,19 @@
+/* ===================================================== */
+/* IMPORTS */
+/* ===================================================== */
+
 import {
   Users,
-  Search,
   UserPlus,
-  Mail,
   Shield,
-  Trash2,
-  Pencil,
   Activity,
   GraduationCap,
   Crown,
   Sparkles,
   X,
-  CheckCircle2,
-  AlertTriangle,
   Loader2,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -23,7 +23,30 @@ import {
   useState,
 } from "react";
 
+import DataTable from
+"../../components/ui/DataTable";
+
+import TableSkeleton from
+"../../components/ui/TableSkeleton";
+
+import EmptyState from
+"../../components/ui/EmptyState";
+
+import ErrorState from
+"../../components/ui/ErrorState";
+
+import Toast from
+"../../components/ui/Toast";
+
+import ConfirmModal from
+"../../components/ui/ConfirmModal";
+
+/* ===================================================== */
+/* DEFAULT USERS */
+/* ===================================================== */
+
 const defaultUsers = [
+
   {
     id: 1,
     name: "Shalini Verma",
@@ -61,6 +84,10 @@ const defaultUsers = [
   },
 ];
 
+/* ===================================================== */
+/* STYLES */
+/* ===================================================== */
+
 const glass =
   `
     rounded-2xl
@@ -70,34 +97,6 @@ const glass =
     bg-[var(--color-card)]
 
     backdrop-blur-xl
-  `;
-
-const actionButton =
-  `
-    flex h-10 w-10
-    items-center justify-center
-
-    rounded-xl
-
-    transition-all
-    duration-300
-
-    hover:scale-[1.04]
-  `;
-
-const tableHead =
-  `
-    p-4
-
-    text-left
-
-    text-xs
-    font-medium
-
-    uppercase
-    tracking-wider
-
-    text-slate-400
   `;
 
 const inputStyle =
@@ -134,6 +133,7 @@ function StatCard({ item }) {
   return (
 
     <motion.div
+
       whileHover={{
         y: -4,
       }}
@@ -212,47 +212,44 @@ function StatCard({ item }) {
 }
 
 /* ===================================================== */
-/* MANAGE USERS */
+/* MAIN COMPONENT */
 /* ===================================================== */
 
 function ManageUsers() {
 
-  /* USERS */
+  /* ===================================================== */
+  /* STATES */
+  /* ===================================================== */
 
   const [users, setUsers] =
     useState([]);
 
-  /* SEARCH */
+  const [pageLoading, setPageLoading] =
+    useState(true);
 
-  const [search, setSearch] =
-    useState("");
-
-  /* MODAL */
+  const [pageError, setPageError] =
+    useState(false);
 
   const [showModal, setShowModal] =
     useState(false);
 
-  /* EDIT */
-
   const [editingUser, setEditingUser] =
     useState(null);
-
-  /* LOADING */
 
   const [loading, setLoading] =
     useState(false);
 
-  /* TOAST */
-
   const [toast, setToast] =
     useState(null);
-
-  /* ERRORS */
 
   const [errors, setErrors] =
     useState({});
 
-  /* FORM */
+  const [deleteModal, setDeleteModal] =
+    useState(false);
+
+  const [selectedUser, setSelectedUser] =
+    useState(null);
 
   const [formData, setFormData] =
     useState({
@@ -266,36 +263,62 @@ function ManageUsers() {
       status: "Active",
 
       enrolled: 0,
-    });
-
-  /* ===================================================== */
-  /* LOAD */
+    });  /* ===================================================== */
+  /* LOAD USERS */
   /* ===================================================== */
 
   useEffect(() => {
 
-    const savedUsers =
-      JSON.parse(
-        localStorage.getItem(
-          "manageUsers"
-        )
-      ) || defaultUsers;
+    setTimeout(() => {
 
-    setUsers(savedUsers);
+      try {
+
+        const savedUsers =
+          localStorage.getItem(
+            "manageUsers"
+          );
+
+        if (savedUsers) {
+
+          setUsers(
+            JSON.parse(savedUsers)
+          );
+
+        } else {
+
+          setUsers(defaultUsers);
+        }
+
+        setPageLoading(false);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setPageError(true);
+
+        setPageLoading(false);
+      }
+
+    }, 1200);
 
   }, []);
 
   /* ===================================================== */
-  /* SAVE */
+  /* SAVE USERS */
   /* ===================================================== */
 
   useEffect(() => {
 
-    localStorage.setItem(
-      "manageUsers",
+    if (users.length > 0) {
 
-      JSON.stringify(users)
-    );
+      localStorage.setItem(
+
+        "manageUsers",
+
+        JSON.stringify(users)
+      );
+    }
 
   }, [users]);
 
@@ -451,7 +474,7 @@ function ManageUsers() {
     };
 
   /* ===================================================== */
-  /* DELETE */
+  /* DELETE USER */
   /* ===================================================== */
 
   const handleDeleteUser =
@@ -466,12 +489,11 @@ function ManageUsers() {
       setUsers(updated);
 
       showToast(
-        "User deleted"
+        "User deleted successfully",
+        "warning"
       );
-    };
-
-  /* ===================================================== */
-  /* EDIT */
+    };  /* ===================================================== */
+  /* EDIT USER */
   /* ===================================================== */
 
   const handleEditUser =
@@ -501,7 +523,7 @@ function ManageUsers() {
     };
 
   /* ===================================================== */
-  /* UPDATE */
+  /* UPDATE USER */
   /* ===================================================== */
 
   const handleUpdateUser =
@@ -566,20 +588,6 @@ function ManageUsers() {
     };
 
   /* ===================================================== */
-  /* FILTER */
-  /* ===================================================== */
-
-  const filteredUsers =
-    users.filter((user) =>
-
-      `${user.name} ${user.email}`
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
-    );
-
-  /* ===================================================== */
   /* STATS */
   /* ===================================================== */
 
@@ -593,16 +601,16 @@ function ManageUsers() {
       icon: Users,
 
       bg:
-        "bg-[var(--color-secondary)]/10",
+        "bg-cyan-500/10",
 
       text:
-        "text-[var(--color-secondary)]",
+        "text-cyan-400",
 
       border:
-        "border-[var(--color-secondary)]",
+        "border-cyan-500",
 
       lightBg:
-        "bg-[var(--color-secondary)]/5",
+        "bg-cyan-500/5",
     },
 
     {
@@ -656,6 +664,317 @@ function ManageUsers() {
     },
   ];
 
+  /* ===================================================== */
+  /* TABLE COLUMNS */
+  /* ===================================================== */
+
+  const columns = [
+
+    {
+      key: "name",
+      label: "User",
+    },
+
+    {
+      key: "email",
+      label: "Email",
+    },
+
+    {
+      key: "role",
+      label: "Role",
+    },
+
+    {
+      key: "enrolled",
+      label: "Courses",
+    },
+
+    {
+      key: "status",
+      label: "Status",
+    },
+
+    {
+      key: "actions",
+      label: "Actions",
+    },
+  ];  /* ===================================================== */
+  /* TABLE DATA */
+  /* ===================================================== */
+
+  const tableData =
+    users.map((user) => ({
+
+      ...user,
+
+      name: (
+
+        <div
+          className="
+            flex items-center
+            gap-3
+          "
+        >
+
+          {/* AVATAR */}
+
+          <div
+            className="
+              flex h-11 w-11
+              items-center
+              justify-center
+
+              rounded-xl
+
+              bg-gradient-to-r
+
+              from-cyan-500
+              to-pink-500
+
+              text-sm
+              font-bold
+
+              text-white
+            "
+          >
+
+            {user.name
+              ?.charAt(0)
+              ?.toUpperCase()}
+
+          </div>
+
+          {/* INFO */}
+
+          <div>
+
+            <p
+              className="
+                text-sm
+                font-semibold
+
+                text-white
+              "
+            >
+
+              {user.name}
+
+            </p>
+
+            <p
+              className="
+                text-xs
+
+                text-slate-400
+              "
+            >
+
+              Platform User
+
+            </p>
+
+          </div>
+
+        </div>
+      ),
+
+      role: (
+
+        <span
+          className={`
+            inline-flex
+            items-center
+            gap-2
+
+            rounded-full
+
+            px-3 py-1.5
+
+            text-xs
+            font-medium
+
+            ${
+              user.role === "Admin"
+
+                ? `
+                  border border-purple-500/20
+                  bg-purple-500/10
+                  text-purple-400
+                `
+
+                : user.role ===
+                  "Instructor"
+
+                ? `
+                  border border-pink-500/20
+                  bg-pink-500/10
+                  text-pink-400
+                `
+
+                : `
+                  border border-cyan-500/20
+                  bg-cyan-500/10
+                  text-cyan-400
+                `
+            }
+          `}
+        >
+
+          {user.role ===
+          "Admin" ? (
+
+            <Crown size={14} />
+
+          ) : (
+
+            <Shield size={14} />
+          )}
+
+          {user.role}
+
+        </span>
+      ),
+
+      enrolled: (
+
+        <span
+          className="
+            rounded-full
+
+            border border-orange-500/20
+
+            bg-orange-500/10
+
+            px-3 py-1.5
+
+            text-xs
+            font-semibold
+
+            text-orange-400
+          "
+        >
+
+          {user.enrolled} Courses
+
+        </span>
+      ),
+
+      status: (
+
+        <span
+          className={`
+            rounded-full
+
+            px-3 py-1.5
+
+            text-xs
+            font-medium
+
+            ${
+              user.status ===
+              "Active"
+
+                ? `
+                  border border-green-500/20
+                  bg-green-500/10
+                  text-green-400
+                `
+
+                : `
+                  border border-yellow-500/20
+                  bg-yellow-500/10
+                  text-yellow-400
+                `
+            }
+          `}
+        >
+
+          {user.status}
+
+        </span>
+      ),
+
+      actions: (
+
+        <div
+          className="
+            flex items-center
+            gap-2
+          "
+        >
+
+          {/* EDIT */}
+
+          <button
+
+            onClick={() =>
+              handleEditUser(user)
+            }
+
+            className="
+              rounded-xl
+
+              border border-cyan-500/20
+
+              bg-cyan-500/10
+
+              p-2
+
+              text-cyan-400
+
+              transition-all
+              duration-300
+
+              hover:scale-[1.05]
+            "
+          >
+
+            <Pencil size={16} />
+
+          </button>
+
+          {/* DELETE */}
+
+          <button
+
+            onClick={() => {
+
+              setSelectedUser(user);
+
+              setDeleteModal(true);
+            }}
+
+            className="
+              rounded-xl
+
+              border border-red-500/20
+
+              bg-red-500/10
+
+              p-2
+
+              text-red-400
+
+              transition-all
+              duration-300
+
+              hover:scale-[1.05]
+            "
+          >
+
+            <Trash2 size={16} />
+
+          </button>
+
+        </div>
+      ),
+    }));
+
+  /* ===================================================== */
+  /* COMPONENT */
+  /* ===================================================== */
+
   return (
 
     <div
@@ -664,9 +983,7 @@ function ManageUsers() {
 
         bg-[var(--color-background)]
 
-        px-5 py-6
-
-        lg:px-8
+        p-6
       "
     >
 
@@ -676,47 +993,12 @@ function ManageUsers() {
 
       {toast && (
 
-        <div
-          className={`
-            fixed right-6 top-6 z-50
+        <Toast
 
-            flex items-center gap-3
+          message={toast.message}
 
-            rounded-xl
-
-            px-5 py-3
-
-            text-sm font-medium text-white
-
-            shadow-lg
-
-            ${
-              toast.type === "success"
-
-                ? "bg-green-500"
-
-                : "bg-red-500"
-            }
-          `}
-        >
-
-          {toast.type ===
-          "success" ? (
-
-            <CheckCircle2
-              size={18}
-            />
-
-          ) : (
-
-            <AlertTriangle
-              size={18}
-            />
-          )}
-
-          {toast.message}
-
-        </div>
+          type={toast.type}
+        />
       )}
 
       {/* ===================================================== */}
@@ -728,100 +1010,70 @@ function ManageUsers() {
           mb-8
 
           flex flex-col
-          justify-between
-
           gap-5
 
-          xl:flex-row
-          xl:items-center
+          lg:flex-row
+          lg:items-center
+          lg:justify-between
         "
       >
 
         <div>
 
-          {/* BADGE */}
-
           <div
-            className="
+            className={`
+              ${glass}
+
               mb-4
 
               inline-flex
               items-center
               gap-2
 
-              rounded-full
-
-              border border-[var(--color-border)]
-
-              bg-[var(--color-card)]
-
               px-4 py-2
-            "
+            `}
           >
 
             <Sparkles
-              size={15}
+              size={14}
 
               className="
-                text-[var(--color-secondary)]
+                text-cyan-400
               "
             />
 
             <span
               className="
-                text-sm
+                text-xs
                 font-medium
 
-                text-[var(--color-secondary)]
+                text-cyan-400
               "
             >
-              User Administration
+
+              User Management
+
             </span>
 
           </div>
 
-          {/* TITLE */}
-
           <h1
             className="
-              mb-3
-
               text-4xl
               font-black
 
-              tracking-tight
-
-              md:text-5xl
+              text-white
             "
           >
 
-            <span className="text-white">
-              Manage
-            </span>
-
-            <span
-              className="
-                bg-gradient-to-r
-
-                from-[var(--color-primary)]
-                via-pink-500
-                to-[var(--color-secondary)]
-
-                bg-clip-text
-
-                text-transparent
-              "
-            >
-              {" "}
-              Users
-            </span>
+            Manage Users
 
           </h1>
 
-          {/* DESCRIPTION */}
-
           <p
             className="
+              mt-3
+
               max-w-2xl
 
               text-sm
@@ -831,17 +1083,17 @@ function ManageUsers() {
             "
           >
 
-            Control platform learners,
-            instructors, and admins
-            from your AI dashboard.
+            Add, edit, manage,
+            and monitor platform users.
 
           </p>
 
         </div>
 
-        {/* BUTTON */}
+        {/* ADD USER */}
 
         <button
+
           onClick={() =>
             setShowModal(true)
           }
@@ -850,32 +1102,31 @@ function ManageUsers() {
             flex items-center
             gap-2
 
-            rounded-xl
+            rounded-2xl
 
             bg-gradient-to-r
 
-            from-[var(--color-primary)]
-            to-pink-500
+            from-orange-500
+            via-pink-500
+            to-cyan-500
 
-            px-6 py-3
+            px-6 py-3.5
 
             text-sm
             font-semibold
 
             text-white
 
-            shadow-[var(--shadow-orange)]
-
             transition-all
             duration-300
 
-            hover:scale-[1.03]
-
-            active:scale-[0.98]
+            hover:scale-[1.02]
           "
         >
 
-          <UserPlus size={18} />
+          <UserPlus
+            size={18}
+          />
 
           Add User
 
@@ -891,521 +1142,159 @@ function ManageUsers() {
         className="
           mb-8
 
-          grid gap-4
+          grid gap-5
 
-          md:grid-cols-3
+          md:grid-cols-2
+          xl:grid-cols-3
         "
       >
 
-        {stats.map((item) => (
+        {stats.map(
+          (item) => (
 
-          <StatCard
-            key={item.title}
-            item={item}
-          />
-        ))}
+            <StatCard
+              key={item.title}
+
+              item={item}
+            />
+          )
+        )}
 
       </div>
 
       {/* ===================================================== */}
-      {/* TABLE */}
+      {/* DATATABLE */}
       {/* ===================================================== */}
 
-      <div
-        className={`
-          ${glass}
+      {pageLoading ? (
 
-          overflow-hidden
-        `}
-      >
+        <TableSkeleton />
 
-        {/* TOP */}
+      ) : pageError ? (
 
-        <div
-          className="
-            flex flex-col
-            justify-between
+        <ErrorState
 
-            gap-5
+          title="Unable to Load Users"
 
-            border-b border-[var(--color-border)]
+          message="We encountered an error while loading users."
 
-            p-5
+          onRetry={() =>
+            window.location.reload()
+          }
+        />
 
-            lg:flex-row
-            lg:items-center
-          "
-        >
+      ) : users.length === 0 ? (
 
-          <div>
+        <EmptyState
 
-            <h3
-              className="
-                mb-1
+          icon="👥"
 
-                text-2xl
-                font-bold
+          title="No Users Yet"
 
-                text-white
-              "
-            >
-              User Directory
-            </h3>
+          message="Start building your platform by adding your first user."
 
-            <p
-              className="
-                text-sm
+          buttonText="Add User"
 
-                text-slate-400
-              "
-            >
-              Manage all users
-            </p>
+          onClick={() =>
+            setShowModal(true)
+          }
+        />
 
-          </div>
+      ) : (
 
-          {/* SEARCH */}
+        <DataTable
 
-          <div
-            className="
-              flex items-center
-              gap-3
+  columns={columns}
 
-              rounded-xl
+  data={tableData}
+  rawData={users}
 
-              border border-[var(--color-border)]
+  onDeleteSelected={(selectedIds) => {
 
-              bg-[var(--color-card)]
+    const updatedUsers =
+      users.filter(
 
-              px-4 py-3
+        (user) =>
 
-              lg:w-[340px]
-            "
-          >
+          !selectedIds.includes(
+            user.id
+          )
+      );
 
-            <Search
-              size={18}
+    setUsers(
+      updatedUsers
+    );
 
-              className="
-                text-slate-400
-              "
-            />
+    showToast(
+      "Selected users deleted",
+      "warning"
+    );
+  }}
 
-            <input
-              type="text"
+  onArchiveSelected={(selectedIds) => {
 
-              placeholder="Search users..."
+    const updatedUsers =
+      users.map((user) =>
 
-              value={search}
+        selectedIds.includes(
+          user.id
+        )
 
-              onChange={(e) =>
-                setSearch(
-                  e.target.value
-                )
-              }
+          ? {
+              ...user,
+              status:
+                "Archived",
+            }
 
-              className="
-                w-full
+          : user
+      );
 
-                bg-transparent
+    setUsers(
+      updatedUsers
+    );
 
-                text-sm
-                text-white
-
-                outline-none
-
-                placeholder:text-slate-500
-              "
-            />
-
-          </div>
-
-        </div>
-
-        {/* TABLE */}
-
-        <div className="overflow-x-auto">
-
-          <table className="w-full">
-
-            <thead>
-
-              <tr
-                className="
-                  border-b border-[var(--color-border)]
-                "
-              >
-
-                {[
-                  "User",
-                  "Email",
-                  "Role",
-                  "Courses",
-                  "Status",
-                  "Actions",
-                ].map((head) => (
-
-                  <th
-                    key={head}
-
-                    className={
-                      tableHead
-                    }
-                  >
-                    {head}
-                  </th>
-                ))}
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {filteredUsers.map(
-                (user) => {
-
-                  const isAdmin =
-                    user.role ===
-                    "Admin";
-
-                  const isInstructor =
-                    user.role ===
-                    "Instructor";
-
-                  return (
-
-                    <tr
-                      key={user.id}
-
-                      className="
-                        border-b border-white/5
-
-                        transition-all
-                        duration-300
-
-                        hover:bg-[var(--color-card)]
-                      "
-                    >
-
-                      {/* USER */}
-
-                      <td className="p-4">
-
-                        <div
-                          className="
-                            flex items-center
-                            gap-3
-                          "
-                        >
-
-                          <div
-                            className="
-                              flex h-10 w-10
-                              items-center
-                              justify-center
-
-                              rounded-xl
-
-                              bg-gradient-to-r
-
-                              from-[var(--color-primary)]
-                              to-pink-500
-
-                              text-sm
-                              font-bold
-
-                              text-white
-                            "
-                          >
-
-                            {user.name.charAt(
-                              0
-                            )}
-
-                          </div>
-
-                          <div>
-
-                            <h4
-                              className="
-                                text-sm
-                                font-semibold
-
-                                text-white
-                              "
-                            >
-                              {user.name}
-                            </h4>
-
-                            <p
-                              className="
-                                text-xs
-
-                                text-slate-500
-                              "
-                            >
-                              User ID #
-                              {user.id}
-                            </p>
-
-                          </div>
-
-                        </div>
-
-                      </td>
-
-                      {/* EMAIL */}
-
-                      <td className="p-4">
-
-                        <div
-                          className="
-                            flex items-center
-                            gap-2
-
-                            text-sm
-
-                            text-slate-300
-                          "
-                        >
-
-                          <Mail size={16} />
-
-                          {user.email}
-
-                        </div>
-
-                      </td>
-
-                      {/* ROLE */}
-
-                      <td className="p-4">
-
-                        <div
-                          className={`
-                            inline-flex
-                            items-center
-                            gap-2
-
-                            rounded-full
-
-                            px-3 py-1.5
-
-                            text-xs
-                            font-medium
-
-                            ${
-                              isAdmin
-
-                                ? `
-                                  border border-purple-500/20
-                                  bg-purple-500/10
-                                  text-purple-400
-                                `
-
-                                : isInstructor
-
-                                ? `
-                                  border border-pink-500/20
-                                  bg-pink-500/10
-                                  text-pink-400
-                                `
-
-                                : `
-                                  border border-blue-500/20
-                                  bg-blue-500/10
-                                  text-[var(--color-secondary)]
-                                `
-                            }
-                          `}
-                        >
-
-                          {isAdmin ? (
-
-                            <Crown
-                              size={14}
-                            />
-
-                          ) : (
-
-                            <Shield
-                              size={14}
-                            />
-                          )}
-
-                          {user.role}
-
-                        </div>
-
-                      </td>
-
-                      {/* COURSES */}
-
-                      <td
-                        className="
-                          p-4
-
-                          text-sm
-                          font-medium
-
-                          text-[var(--color-secondary)]
-                        "
-                      >
-
-                        {user.enrolled}
-
-                      </td>
-
-                      {/* STATUS */}
-
-                      <td className="p-4">
-
-                        <span
-                          className={`
-                            rounded-full
-
-                            px-3 py-1.5
-
-                            text-xs
-                            font-medium
-
-                            ${
-                              user.status ===
-                              "Active"
-
-                                ? `
-                                  border border-green-500/20
-                                  bg-green-500/10
-                                  text-green-400
-                                `
-
-                                : `
-                                  border border-yellow-500/20
-                                  bg-yellow-500/10
-                                  text-yellow-400
-                                `
-                            }
-                          `}
-                        >
-
-                          {user.status}
-
-                        </span>
-
-                      </td>
-
-                      {/* ACTIONS */}
-
-                      <td className="p-4">
-
-                        <div
-                          className="
-                            flex items-center
-                            gap-3
-                          "
-                        >
-
-                          {/* EDIT */}
-
-                          <button
-                            onClick={() =>
-                              handleEditUser(
-                                user
-                              )
-                            }
-
-                            className={`
-                              ${actionButton}
-
-                              border border-blue-500/20
-
-                              bg-blue-500/10
-                            `}
-                          >
-
-                            <Pencil
-                              size={16}
-
-                              className="
-                                text-blue-400
-                              "
-                            />
-
-                          </button>
-
-                          {/* DELETE */}
-
-                          <button
-                            onClick={() =>
-                              handleDeleteUser(
-                                user.id
-                              )
-                            }
-
-                            className={`
-                              ${actionButton}
-
-                              border border-red-500/20
-
-                              bg-red-500/10
-                            `}
-                          >
-
-                            <Trash2
-                              size={16}
-
-                              className="
-                                text-red-400
-                              "
-                            />
-
-                          </button>
-
-                        </div>
-
-                      </td>
-
-                    </tr>
-                  );
-                }
-              )}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-      {/* ===================================================== */}
-      {/* MODAL */}
+    showToast(
+      "Users archived successfully"
+    );
+  }}
+/>
+      )}      {/* ===================================================== */}
+      {/* USER MODAL */}
       {/* ===================================================== */}
 
       {showModal && (
 
         <div
           className="
-            fixed inset-0 z-50
+            fixed inset-0
+            z-50
 
             flex items-center
             justify-center
 
-            bg-black/70
+            bg-black/60
 
             p-4
-
-            backdrop-blur-sm
           "
         >
 
-          <div
+          <motion.div
+
+            initial={{
+              opacity: 0,
+              scale: 0.9,
+            }}
+
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+
             className={`
               ${glass}
 
               w-full
-              max-w-lg
+              max-w-2xl
 
               p-6
             `}
@@ -1422,31 +1311,67 @@ function ManageUsers() {
               "
             >
 
-              <h2
-                className="
-                  text-2xl
-                  font-bold
+              <div>
 
-                  text-white
+                <h2
+                  className="
+                    text-2xl
+                    font-black
+
+                    text-white
+                  "
+                >
+
+                  {editingUser
+
+                    ? "Edit User"
+
+                    : "Add New User"}
+
+                </h2>
+
+                <p
+                  className="
+                    mt-2
+
+                    text-sm
+
+                    text-slate-400
+                  "
+                >
+
+                  Manage user details
+                  and permissions.
+
+                </p>
+
+              </div>
+
+              {/* CLOSE */}
+
+              <button
+
+                onClick={
+                  resetForm
+                }
+
+                className="
+                  rounded-xl
+
+                  p-2
+
+                  text-slate-400
+
+                  transition-all
+                  duration-300
+
+                  hover:bg-white/10
+                  hover:text-white
                 "
               >
 
-                {editingUser
-
-                  ? "Edit User"
-
-                  : "Add User"}
-
-              </h2>
-
-              <button
-                onClick={resetForm}
-              >
-
                 <X
-                  className="
-                    text-slate-400
-                  "
+                  size={18}
                 />
 
               </button>
@@ -1455,25 +1380,49 @@ function ManageUsers() {
 
             {/* FORM */}
 
-            <div className="space-y-4">
+            <div
+              className="
+                grid gap-5
+
+                md:grid-cols-2
+              "
+            >
 
               {/* NAME */}
 
               <div>
 
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Full Name
+
+                </label>
+
                 <input
                   type="text"
 
-                  placeholder="Full Name *"
-
-                  value={formData.name}
+                  value={
+                    formData.name
+                  }
 
                   onChange={(e) =>
                     setFormData({
+
                       ...formData,
 
                       name:
-                        e.target.value,
+                        e.target
+                          .value,
                     })
                   }
 
@@ -1485,11 +1434,7 @@ function ManageUsers() {
 
                         ? "border-red-500"
 
-                        : formData.name
-
-                        ? "border-green-500"
-
-                        : "border-[var(--color-border)]"
+                        : "border-white/10"
                     }
                   `}
                 />
@@ -1505,7 +1450,9 @@ function ManageUsers() {
                       text-red-400
                     "
                   >
+
                     {errors.name}
+
                   </p>
                 )}
 
@@ -1515,19 +1462,37 @@ function ManageUsers() {
 
               <div>
 
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Email Address
+
+                </label>
+
                 <input
                   type="email"
 
-                  placeholder="Email *"
-
-                  value={formData.email}
+                  value={
+                    formData.email
+                  }
 
                   onChange={(e) =>
                     setFormData({
+
                       ...formData,
 
                       email:
-                        e.target.value,
+                        e.target
+                          .value,
                     })
                   }
 
@@ -1539,12 +1504,7 @@ function ManageUsers() {
 
                         ? "border-red-500"
 
-                        : formData.email &&
-                          !errors.email
-
-                        ? "border-green-500"
-
-                        : "border-[var(--color-border)]"
+                        : "border-white/10"
                     }
                   `}
                 />
@@ -1560,7 +1520,9 @@ function ManageUsers() {
                       text-red-400
                     "
                   >
+
                     {errors.email}
+
                   </p>
                 )}
 
@@ -1568,82 +1530,148 @@ function ManageUsers() {
 
               {/* ROLE */}
 
-              <select
-                value={formData.role}
+              <div>
 
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
+                <label
+                  className="
+                    mb-2
+                    block
 
-                    role:
-                      e.target.value,
-                  })
-                }
+                    text-sm
+                    font-medium
 
-                className={`
-                  ${inputStyle}
+                    text-slate-300
+                  "
+                >
 
-                  border-[var(--color-border)]
+                  User Role
 
-                  bg-[#111827]
-                `}
-              >
+                </label>
 
-                <option>
-                  Student
-                </option>
+                <select
 
-                <option>
-                  Instructor
-                </option>
+                  value={
+                    formData.role
+                  }
 
-                <option>
-                  Admin
-                </option>
+                  onChange={(e) =>
+                    setFormData({
 
-              </select>
+                      ...formData,
+
+                      role:
+                        e.target
+                          .value,
+                    })
+                  }
+
+                  className={`
+                    ${inputStyle}
+
+                    border-white/10
+                  `}
+                >
+
+                  <option value="Student">
+                    Student
+                  </option>
+
+                  <option value="Instructor">
+                    Instructor
+                  </option>
+
+                  <option value="Admin">
+                    Admin
+                  </option>
+
+                </select>
+
+              </div>
 
               {/* STATUS */}
 
-              <select
-                value={formData.status}
+              <div>
 
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
+                <label
+                  className="
+                    mb-2
+                    block
 
-                    status:
-                      e.target.value,
-                  })
-                }
+                    text-sm
+                    font-medium
 
-                className={`
-                  ${inputStyle}
+                    text-slate-300
+                  "
+                >
 
-                  border-[var(--color-border)]
+                  Status
 
-                  bg-[#111827]
-                `}
-              >
+                </label>
 
-                <option>
-                  Active
-                </option>
+                <select
 
-                <option>
-                  Pending
-                </option>
+                  value={
+                    formData.status
+                  }
 
-              </select>
+                  onChange={(e) =>
+                    setFormData({
+
+                      ...formData,
+
+                      status:
+                        e.target
+                          .value,
+                    })
+                  }
+
+                  className={`
+                    ${inputStyle}
+
+                    border-white/10
+                  `}
+                >
+
+                  <option value="Active">
+                    Active
+                  </option>
+
+                  <option value="Pending">
+                    Pending
+                  </option>
+
+                </select>
+
+              </div>
 
               {/* ENROLLED */}
 
-              <div>
+              <div
+                className="
+                  md:col-span-2
+                "
+              >
+
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Enrolled Courses
+
+                </label>
 
                 <input
                   type="number"
 
-                  placeholder="Enrolled Courses"
+                  min="0"
 
                   value={
                     formData.enrolled
@@ -1651,10 +1679,12 @@ function ManageUsers() {
 
                   onChange={(e) =>
                     setFormData({
+
                       ...formData,
 
                       enrolled:
-                        e.target.value,
+                        e.target
+                          .value,
                     })
                   }
 
@@ -1666,44 +1696,66 @@ function ManageUsers() {
 
                         ? "border-red-500"
 
-                        : "border-[var(--color-border)]"
+                        : "border-white/10"
                     }
                   `}
                 />
 
-                <p
-                  className="
-                    mt-2
-
-                    text-xs
-
-                    text-slate-500
-                  "
-                >
-                  Minimum 0 courses
-                </p>
-
-                {errors.enrolled && (
-
-                  <p
-                    className="
-                      mt-1
-
-                      text-xs
-
-                      text-red-400
-                    "
-                  >
-                    {errors.enrolled}
-                  </p>
-                )}
-
               </div>
 
-              {/* BUTTON */}
+            </div>
+
+            {/* ACTIONS */}
+
+            <div
+              className="
+                mt-8
+
+                flex flex-col
+                gap-3
+
+                sm:flex-row
+                sm:justify-end
+              "
+            >
 
               <button
+
                 onClick={
+                  resetForm
+                }
+
+                className="
+                  rounded-xl
+
+                  border border-white/10
+
+                  px-5 py-3
+
+                  text-sm
+                  font-medium
+
+                  text-slate-300
+
+                  transition-all
+                  duration-300
+
+                  hover:bg-white/10
+                "
+              >
+
+                Cancel
+
+              </button>
+
+              {/* SAVE */}
+
+              <button
+
+                disabled={loading}
+
+                onClick={
+
                   editingUser
 
                     ? handleUpdateUser
@@ -1711,13 +1763,8 @@ function ManageUsers() {
                     : handleAddUser
                 }
 
-                disabled={loading}
-
                 className="
-                  mt-2
-
-                  flex w-full
-                  items-center
+                  flex items-center
                   justify-center
                   gap-2
 
@@ -1725,10 +1772,11 @@ function ManageUsers() {
 
                   bg-gradient-to-r
 
-                  from-[var(--color-primary)]
-                  to-pink-500
+                  from-orange-500
+                  via-pink-500
+                  to-cyan-500
 
-                  py-3
+                  px-6 py-3
 
                   text-sm
                   font-semibold
@@ -1738,9 +1786,7 @@ function ManageUsers() {
                   transition-all
                   duration-300
 
-                  hover:brightness-110
-
-                  active:scale-[0.98]
+                  hover:scale-[1.02]
                 "
               >
 
@@ -1748,7 +1794,7 @@ function ManageUsers() {
 
                   <>
                     <Loader2
-                      size={18}
+                      size={16}
 
                       className="
                         animate-spin
@@ -1761,15 +1807,11 @@ function ManageUsers() {
                 ) : (
 
                   <>
-                    <UserPlus
-                      size={18}
-                    />
-
                     {editingUser
 
                       ? "Update User"
 
-                      : "Add User"}
+                      : "Create User"}
                   </>
                 )}
 
@@ -1777,10 +1819,41 @@ function ManageUsers() {
 
             </div>
 
-          </div>
+          </motion.div>
 
         </div>
       )}
+
+      {/* ===================================================== */}
+      {/* DELETE MODAL */}
+      {/* ===================================================== */}
+
+      <ConfirmModal
+
+        open={deleteModal}
+
+        title="Delete User"
+
+        message="
+          Are you sure you want
+          to delete this user?
+        "
+
+        confirmText="Delete"
+
+        onCancel={() =>
+          setDeleteModal(false)
+        }
+
+        onConfirm={() => {
+
+          handleDeleteUser(
+            selectedUser.id
+          );
+
+          setDeleteModal(false);
+        }}
+      />
 
     </div>
   );
