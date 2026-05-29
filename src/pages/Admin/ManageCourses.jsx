@@ -1,16 +1,17 @@
+/* ====================================================== */
+/* IMPORTS */
+/* ====================================================== */
+
 import {
   Plus,
-  Search,
-  Pencil,
-  Trash2,
   Users,
   IndianRupee,
   Sparkles,
   BookOpen,
   X,
-  CheckCircle2,
-  AlertTriangle,
   Loader2,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -21,6 +22,28 @@ import {
 } from "react";
 
 import allMentorsData from "../../data/allMentors";
+
+import DataTable from
+"../../components/ui/DataTable";
+
+import TableSkeleton from
+"../../components/ui/TableSkeleton";
+
+import EmptyState from
+"../../components/ui/EmptyState";
+
+import ErrorState from
+"../../components/ui/ErrorState";
+
+import Toast from
+"../../components/ui/Toast";
+
+import ConfirmModal from
+"../../components/ui/ConfirmModal";
+
+/* ====================================================== */
+/* STYLES */
+/* ====================================================== */
 
 const glass =
   `
@@ -56,20 +79,9 @@ const inputStyle =
     placeholder:text-slate-500
   `;
 
-const tableHead =
-  `
-    p-4
-
-    text-left
-
-    text-xs
-    font-medium
-
-    uppercase
-    tracking-wider
-
-    text-slate-400
-  `;
+/* ====================================================== */
+/* MAIN COMPONENT */
+/* ====================================================== */
 
 function ManageCourses() {
 
@@ -80,8 +92,11 @@ function ManageCourses() {
   const [courses, setCourses] =
     useState([]);
 
-  const [search, setSearch] =
-    useState("");
+  const [pageLoading, setPageLoading] =
+    useState(true);
+
+  const [pageError, setPageError] =
+    useState(false);
 
   const [showModal, setShowModal] =
     useState(false);
@@ -93,6 +108,12 @@ function ManageCourses() {
     useState(false);
 
   const [toast, setToast] =
+    useState(null);
+
+  const [deleteModal, setDeleteModal] =
+    useState(false);
+
+  const [selectedCourse, setSelectedCourse] =
     useState(null);
 
   const [errors, setErrors] =
@@ -113,37 +134,86 @@ function ManageCourses() {
     });
 
   /* ====================================================== */
-  /* LOAD */
+  /* LOAD COURSES */
   /* ====================================================== */
 
   useEffect(() => {
 
-    const saved =
-      JSON.parse(
-        localStorage.getItem(
-          "manageCourses"
-        )
-      ) || allMentorsData;
+    setTimeout(() => {
 
-    setCourses(saved);
+      try {
+
+        const savedCourses =
+          localStorage.getItem(
+            "manageCourses"
+          );
+
+        if (savedCourses) {
+
+          setCourses(
+            JSON.parse(savedCourses)
+          );
+
+        } else {
+
+          setCourses(
+            allMentorsData
+          );
+        }
+
+        setPageLoading(false);
+
+      } catch (error) {
+
+        console.error(error);
+
+        setPageError(true);
+
+        setPageLoading(false);
+      }
+
+    }, 1200);
 
   }, []);
 
   /* ====================================================== */
-  /* SAVE */
+  /* SAVE COURSES */
   /* ====================================================== */
 
   useEffect(() => {
 
-    localStorage.setItem(
-      "manageCourses",
+    if (courses.length > 0) {
 
-      JSON.stringify(courses)
-    );
+      localStorage.setItem(
+
+        "manageCourses",
+
+        JSON.stringify(courses)
+      );
+    }
 
   }, [courses]);
 
   /* ====================================================== */
+  /* TOAST */
+  /* ====================================================== */
+
+  const showToast = (
+    message,
+    type = "success"
+  ) => {
+
+    setToast({
+      message,
+      type,
+    });
+
+    setTimeout(() => {
+
+      setToast(null);
+
+    }, 3000);
+  };  /* ====================================================== */
   /* VALIDATION */
   /* ====================================================== */
 
@@ -151,11 +221,15 @@ function ManageCourses() {
 
     let newErrors = {};
 
+    /* MENTOR */
+
     if (!formData.mentor.trim()) {
 
       newErrors.mentor =
         "Mentor name is required";
     }
+
+    /* COURSE */
 
     if (!formData.course.trim()) {
 
@@ -163,11 +237,15 @@ function ManageCourses() {
         "Course name is required";
     }
 
+    /* CATEGORY */
+
     if (!formData.category.trim()) {
 
       newErrors.category =
         "Category is required";
     }
+
+    /* PRICE */
 
     if (!formData.price.trim()) {
 
@@ -176,18 +254,34 @@ function ManageCourses() {
 
     } else {
 
-      const number =
-        parseInt(
-          formData.price.replace(
-            /\D/g,
-            ""
-          )
+      const cleanPrice =
+        formData.price.trim();
+
+      const validPrice =
+        /^₹?\d+$/.test(
+          cleanPrice
         );
 
-      if (number < 499) {
+      if (!validPrice) {
 
         newErrors.price =
-          "Minimum ₹499";
+          "Only numbers allowed";
+
+      } else {
+
+        const number =
+          parseInt(
+            cleanPrice.replace(
+              "₹",
+              ""
+            )
+          );
+
+        if (number < 499) {
+
+          newErrors.price =
+            "Minimum ₹499";
+        }
       }
     }
 
@@ -200,7 +294,7 @@ function ManageCourses() {
   };
 
   /* ====================================================== */
-  /* RESET */
+  /* RESET FORM */
   /* ====================================================== */
 
   const resetForm = () => {
@@ -223,27 +317,6 @@ function ManageCourses() {
     setErrors({});
 
     setShowModal(false);
-  };
-
-  /* ====================================================== */
-  /* TOAST */
-  /* ====================================================== */
-
-  const showToast = (
-    message,
-    type = "success"
-  ) => {
-
-    setToast({
-      message,
-      type,
-    });
-
-    setTimeout(() => {
-
-      setToast(null);
-
-    }, 3000);
   };
 
   /* ====================================================== */
@@ -281,7 +354,11 @@ function ManageCourses() {
             formData.category,
 
           price:
-            formData.price,
+            formData.price.startsWith("₹")
+
+              ? formData.price
+
+              : `₹${formData.price}`,
 
           status:
             formData.status,
@@ -309,7 +386,37 @@ function ManageCourses() {
     };
 
   /* ====================================================== */
-  /* UPDATE */
+  /* EDIT COURSE */
+  /* ====================================================== */
+
+  const handleEdit =
+    (course) => {
+
+      setEditingCourse(course);
+
+      setFormData({
+
+        mentor:
+          course.mentor,
+
+        course:
+          course.course,
+
+        category:
+          course.category,
+
+        price:
+          course.price,
+
+        status:
+          course.status,
+      });
+
+      setShowModal(true);
+    };
+
+  /* ====================================================== */
+  /* UPDATE COURSE */
   /* ====================================================== */
 
   const handleUpdateCourse =
@@ -349,7 +456,11 @@ function ManageCourses() {
                     formData.category,
 
                   price:
-                    formData.price,
+                    formData.price.startsWith("₹")
+
+                      ? formData.price
+
+                      : `₹${formData.price}`,
 
                   status:
                     formData.status,
@@ -372,69 +483,26 @@ function ManageCourses() {
     };
 
   /* ====================================================== */
-  /* DELETE */
+  /* DELETE COURSE */
   /* ====================================================== */
 
-  const handleDelete = (id) => {
+  const handleDelete =
+    (id) => {
 
-    const updated =
-      courses.filter(
-        (course) =>
-          course.id !== id
+      const updated =
+        courses.filter(
+          (course) =>
+            course.id !== id
+        );
+
+      setCourses(updated);
+
+      showToast(
+        "Course deleted successfully",
+        "warning"
       );
-
-    setCourses(updated);
-
-    showToast(
-      "Course deleted"
-    );
-  };
-
-  /* ====================================================== */
-  /* EDIT */
-  /* ====================================================== */
-
-  const handleEdit = (course) => {
-
-    setEditingCourse(course);
-
-    setFormData({
-
-      mentor:
-        course.mentor,
-
-      course:
-        course.course,
-
-      category:
-        course.category,
-
-      price:
-        course.price,
-
-      status:
-        course.status,
-    });
-
-    setShowModal(true);
-  };
-
-  /* ====================================================== */
-  /* SEARCH */
-  /* ====================================================== */
-
-  const filteredCourses =
-    courses.filter((course) =>
-
-      `${course.mentor} ${course.course}`
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
-    );
-
-  /* ====================================================== */
-  /* OVERVIEW */
+    };  /* ====================================================== */
+  /* OVERVIEW CARDS */
   /* ====================================================== */
 
   const overviewCards = [
@@ -447,16 +515,16 @@ function ManageCourses() {
       icon: BookOpen,
 
       border:
-        "border-[var(--color-secondary)]",
+        "border-cyan-500",
 
       iconBg:
-        "bg-[var(--color-secondary)]/10",
+        "bg-cyan-500/10",
 
       iconColor:
-        "text-[var(--color-secondary)]",
+        "text-cyan-400",
 
       lightBg:
-        "bg-[var(--color-secondary)]/5",
+        "bg-cyan-500/5",
     },
 
     {
@@ -500,6 +568,318 @@ function ManageCourses() {
     },
   ];
 
+  /* ====================================================== */
+  /* TABLE COLUMNS */
+  /* ====================================================== */
+
+  const columns = [
+
+    {
+      key: "mentor",
+      label: "Mentor",
+    },
+
+    {
+      key: "course",
+      label: "Course",
+    },
+
+    {
+      key: "category",
+      label: "Category",
+    },
+
+    {
+      key: "price",
+      label: "Price",
+    },
+
+    {
+      key: "students",
+      label: "Students",
+    },
+
+    {
+      key: "status",
+      label: "Status",
+    },
+
+    {
+      key: "actions",
+      label: "Actions",
+    },
+  ];
+
+  /* ====================================================== */
+  /* TABLE DATA */
+  /* ====================================================== */
+
+  const tableData =
+    courses.map((course) => ({
+
+      ...course,
+
+      mentor: (
+
+        <div
+          className="
+            flex items-center
+            gap-3
+          "
+        >
+
+          {/* IMAGE */}
+
+          <img
+            src={course.image}
+
+            alt={course.mentor}
+
+            className="
+              h-11 w-11
+
+              rounded-xl
+
+              object-cover
+
+              ring-2
+              ring-white/10
+            "
+          />
+
+          {/* INFO */}
+
+          <div>
+
+            <p
+              className="
+                text-sm
+                font-semibold
+
+                text-white
+              "
+            >
+
+              {course.mentor}
+
+            </p>
+
+            <p
+              className="
+                text-xs
+
+                text-slate-400
+              "
+            >
+
+              Celebrity Mentor
+
+            </p>
+
+          </div>
+
+        </div>
+      ),
+
+      course: (
+
+        <div>
+
+          <p
+            className="
+              text-sm
+              font-semibold
+
+              text-white
+            "
+          >
+
+            {course.course}
+
+          </p>
+
+        </div>
+      ),
+
+      category: (
+
+        <span
+          className="
+            rounded-full
+
+            border border-cyan-500/20
+
+            bg-cyan-500/10
+
+            px-3 py-1.5
+
+            text-xs
+            font-medium
+
+            text-cyan-400
+          "
+        >
+
+          {course.category}
+
+        </span>
+      ),
+
+      price: (
+
+        <span
+          className="
+            font-semibold
+
+            text-green-400
+          "
+        >
+
+          {course.price}
+
+        </span>
+      ),
+
+      students: (
+
+        <span
+          className="
+            rounded-full
+
+            border border-orange-500/20
+
+            bg-orange-500/10
+
+            px-3 py-1.5
+
+            text-xs
+            font-semibold
+
+            text-orange-400
+          "
+        >
+
+          {course.students}
+          {" "}Students
+
+        </span>
+      ),
+
+      status: (
+
+        <span
+          className={`
+            rounded-full
+
+            px-3 py-1.5
+
+            text-xs
+            font-medium
+
+            ${
+              course.status ===
+              "Published"
+
+                ? `
+                  border border-green-500/20
+                  bg-green-500/10
+                  text-green-400
+                `
+
+                : `
+                  border border-yellow-500/20
+                  bg-yellow-500/10
+                  text-yellow-400
+                `
+            }
+          `}
+        >
+
+          {course.status}
+
+        </span>
+      ),
+
+      actions: (
+
+        <div
+          className="
+            flex items-center
+            gap-2
+          "
+        >
+
+          {/* EDIT */}
+
+          <button
+
+            onClick={() =>
+              handleEdit(course)
+            }
+
+            className="
+              rounded-xl
+
+              border border-cyan-500/20
+
+              bg-cyan-500/10
+
+              p-2
+
+              text-cyan-400
+
+              transition-all
+              duration-300
+
+              hover:scale-[1.05]
+            "
+          >
+
+            <Pencil size={16} />
+
+          </button>
+
+          {/* DELETE */}
+
+          <button
+
+            onClick={() => {
+
+              setSelectedCourse(
+                course
+              );
+
+              setDeleteModal(true);
+            }}
+
+            className="
+              rounded-xl
+
+              border border-red-500/20
+
+              bg-red-500/10
+
+              p-2
+
+              text-red-400
+
+              transition-all
+              duration-300
+
+              hover:scale-[1.05]
+            "
+          >
+
+            <Trash2 size={16} />
+
+          </button>
+
+        </div>
+      ),
+    }));  /* ====================================================== */
+  /* COMPONENT */
+  /* ====================================================== */
+
   return (
 
     <div
@@ -520,47 +900,12 @@ function ManageCourses() {
 
       {toast && (
 
-        <div
-          className={`
-            fixed right-6 top-6 z-50
+        <Toast
 
-            flex items-center gap-3
+          message={toast.message}
 
-            rounded-xl
-
-            px-5 py-3
-
-            text-sm font-medium text-white
-
-            shadow-lg
-
-            ${
-              toast.type === "success"
-
-                ? "bg-green-500"
-
-                : "bg-red-500"
-            }
-          `}
-        >
-
-          {toast.type ===
-          "success" ? (
-
-            <CheckCircle2
-              size={18}
-            />
-
-          ) : (
-
-            <AlertTriangle
-              size={18}
-            />
-          )}
-
-          {toast.message}
-
-        </div>
+          type={toast.type}
+        />
       )}
 
       {/* ====================================================== */}
@@ -607,7 +952,7 @@ function ManageCourses() {
               size={15}
 
               className="
-                text-[var(--color-secondary)]
+                text-cyan-400
               "
             />
 
@@ -616,10 +961,12 @@ function ManageCourses() {
                 text-sm
                 font-medium
 
-                text-[var(--color-secondary)]
+                text-cyan-400
               "
             >
+
               UpToSkills Course Control
+
             </span>
 
           </div>
@@ -647,9 +994,9 @@ function ManageCourses() {
               className="
                 bg-gradient-to-r
 
-                from-[var(--color-primary)]
+                from-cyan-400
                 via-pink-500
-                to-[var(--color-secondary)]
+                to-orange-500
 
                 bg-clip-text
 
@@ -673,9 +1020,10 @@ function ManageCourses() {
             "
           >
 
-            Add, edit, and organize
-            celebrity mentor courses
-            from your AI admin dashboard.
+            Add, edit, organize,
+            and monitor all celebrity
+            mentor courses from your
+            admin dashboard.
 
           </p>
 
@@ -684,6 +1032,7 @@ function ManageCourses() {
         {/* BUTTON */}
 
         <button
+
           onClick={() =>
             setShowModal(true)
           }
@@ -692,28 +1041,25 @@ function ManageCourses() {
             flex items-center
             gap-2
 
-            rounded-xl
+            rounded-2xl
 
             bg-gradient-to-r
 
-            from-[var(--color-primary)]
-            to-pink-500
+            from-orange-500
+            via-pink-500
+            to-cyan-500
 
-            px-6 py-3
+            px-6 py-3.5
 
             text-sm
             font-semibold
 
             text-white
 
-            shadow-[var(--shadow-orange)]
-
             transition-all
             duration-300
 
-            hover:scale-[1.03]
-
-            active:scale-[0.98]
+            hover:scale-[1.02]
           "
         >
 
@@ -733,9 +1079,10 @@ function ManageCourses() {
         className="
           mb-8
 
-          grid gap-4
+          grid gap-5
 
-          md:grid-cols-3
+          md:grid-cols-2
+          xl:grid-cols-3
         "
       >
 
@@ -748,6 +1095,7 @@ function ManageCourses() {
             return (
 
               <motion.div
+
                 key={item.title}
 
                 whileHover={{
@@ -785,7 +1133,9 @@ function ManageCourses() {
                         text-slate-400
                       "
                     >
+
                       {item.title}
+
                     </p>
 
                     <h2
@@ -796,7 +1146,9 @@ function ManageCourses() {
                         text-white
                       "
                     >
+
                       {item.value}
+
                     </h2>
 
                   </div>
@@ -833,366 +1185,110 @@ function ManageCourses() {
       </div>
 
       {/* ====================================================== */}
-      {/* TABLE */}
+      {/* DATATABLE */}
       {/* ====================================================== */}
 
-      <div
-        className={`
-          ${glass}
+      {pageLoading ? (
 
-          overflow-hidden
-        `}
-      >
+        <TableSkeleton />
 
-        {/* TOP */}
+      ) : pageError ? (
 
-        <div
-          className="
-            flex flex-col
-            justify-between
+        <ErrorState
 
-            gap-5
+          title="Unable to Load Courses"
 
-            border-b border-[var(--color-border)]
-
-            p-5
-
-            lg:flex-row
-            lg:items-center
+          message="
+            Something went wrong while
+            loading courses.
           "
-        >
 
-          <div>
+          onRetry={() =>
+            window.location.reload()
+          }
+        />
 
-            <h3
-              className="
-                mb-1
+      ) : courses.length === 0 ? (
 
-                text-2xl
-                font-bold
+        <EmptyState
 
-                text-white
-              "
-            >
-              Course Library
-            </h3>
+          icon="📚"
 
-            <p
-              className="
-                text-sm
+          title="No Courses Yet"
 
-                text-slate-400
-              "
-            >
-              Manage mentor programs
-            </p>
+          message="
+            Create your first celebrity
+            mentor course to get started.
+          "
 
-          </div>
+          buttonText="Create Course"
 
-          {/* SEARCH */}
+          onClick={() =>
+            setShowModal(true)
+          }
+        />
 
-          <div
-            className="
-              flex items-center
-              gap-3
+      ) : (
 
-              rounded-xl
+        <DataTable
 
-              border border-[var(--color-border)]
+  columns={columns}
 
-              bg-[var(--color-card)]
+  data={tableData}
 
-              px-4 py-3
+  rawData={courses}
 
-              lg:w-[340px]
-            "
-          >
+  onDeleteSelected={(selectedIds) => {
 
-            <Search
-              size={18}
+    const updatedCourses =
+      courses.filter(
 
-              className="
-                text-slate-400
-              "
-            />
+        (course) =>
 
-            <input
-              type="text"
+          !selectedIds.includes(
+            course.id
+          )
+      );
 
-              placeholder="Search courses..."
+    setCourses(
+      updatedCourses
+    );
 
-              value={search}
+    showToast(
+      "Selected courses deleted",
+      "warning"
+    );
+  }}
 
-              onChange={(e) =>
-                setSearch(
-                  e.target.value
-                )
-              }
+  onArchiveSelected={(selectedIds) => {
 
-              className="
-                w-full
+    const updatedCourses =
+      courses.map((course) =>
 
-                bg-transparent
+        selectedIds.includes(
+          course.id
+        )
 
-                text-sm
-                text-white
+          ? {
+              ...course,
+              status:
+                "Archived",
+            }
 
-                outline-none
+          : course
+      );
 
-                placeholder:text-slate-500
-              "
-            />
+    setCourses(
+      updatedCourses
+    );
 
-          </div>
-
-        </div>
-
-        {/* TABLE */}
-
-        <div className="overflow-x-auto">
-
-          <table className="w-full">
-
-            <thead>
-
-              <tr
-                className="
-                  border-b border-[var(--color-border)]
-                "
-              >
-
-                {[
-                  "Mentor",
-                  "Course",
-                  "Category",
-                  "Price",
-                  "Status",
-                  "Actions",
-                ].map((head) => (
-
-                  <th
-                    key={head}
-
-                    className={
-                      tableHead
-                    }
-                  >
-                    {head}
-                  </th>
-                ))}
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              {filteredCourses.map(
-                (course) => (
-
-                  <tr
-                    key={course.id}
-
-                    className="
-                      border-b border-white/5
-
-                      transition-all
-                      duration-300
-
-                      hover:bg-[var(--color-card)]
-                    "
-                  >
-
-                    <td
-                      className="
-                        p-4
-
-                        text-sm
-                        font-semibold
-
-                        text-white
-                      "
-                    >
-                      {course.mentor}
-                    </td>
-
-                    <td
-                      className="
-                        p-4
-
-                        text-sm
-
-                        text-slate-300
-                      "
-                    >
-                      {course.course}
-                    </td>
-
-                    <td
-                      className="
-                        p-4
-
-                        text-sm
-
-                        text-[var(--color-secondary)]
-                      "
-                    >
-                      {course.category}
-                    </td>
-
-                    <td
-                      className="
-                        p-4
-
-                        text-sm
-
-                        text-green-400
-                      "
-                    >
-                      {course.price}
-                    </td>
-
-                    {/* STATUS */}
-
-                    <td className="p-4">
-
-                      <span
-                        className={`
-                          rounded-full
-
-                          px-3 py-1.5
-
-                          text-xs
-                          font-medium
-
-                          ${
-                            course.status ===
-                            "Published"
-
-                              ? `
-                                border border-green-500/20
-                                bg-green-500/10
-                                text-green-400
-                              `
-
-                              : `
-                                border border-yellow-500/20
-                                bg-yellow-500/10
-                                text-yellow-400
-                              `
-                          }
-                        `}
-                      >
-
-                        {course.status}
-
-                      </span>
-
-                    </td>
-
-                    {/* ACTIONS */}
-
-                    <td className="p-4">
-
-                      <div
-                        className="
-                          flex items-center
-                          gap-3
-                        "
-                      >
-
-                        {/* EDIT */}
-
-                        <button
-                          onClick={() =>
-                            handleEdit(
-                              course
-                            )
-                          }
-
-                          className="
-                            flex h-10 w-10
-                            items-center
-                            justify-center
-
-                            rounded-xl
-
-                            border border-blue-500/20
-
-                            bg-blue-500/10
-
-                            transition-all
-                            duration-300
-
-                            hover:scale-[1.04]
-                          "
-                        >
-
-                          <Pencil
-                            size={16}
-
-                            className="
-                              text-blue-400
-                            "
-                          />
-
-                        </button>
-
-                        {/* DELETE */}
-
-                        <button
-                          onClick={() =>
-                            handleDelete(
-                              course.id
-                            )
-                          }
-
-                          className="
-                            flex h-10 w-10
-                            items-center
-                            justify-center
-
-                            rounded-xl
-
-                            border border-red-500/20
-
-                            bg-red-500/10
-
-                            transition-all
-                            duration-300
-
-                            hover:scale-[1.04]
-                          "
-                        >
-
-                          <Trash2
-                            size={16}
-
-                            className="
-                              text-red-400
-                            "
-                          />
-
-                        </button>
-
-                      </div>
-
-                    </td>
-
-                  </tr>
-                )
-              )}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-      {/* ====================================================== */}
-      {/* MODAL */}
+    showToast(
+      "Courses archived successfully"
+    );
+  }}
+/>
+      )}      {/* ====================================================== */}
+      {/* COURSE MODAL */}
       {/* ====================================================== */}
 
       {showModal && (
@@ -1212,7 +1308,18 @@ function ManageCourses() {
           "
         >
 
-          <div
+          <motion.div
+
+            initial={{
+              opacity: 0,
+              scale: 0.9,
+            }}
+
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+
             className={`
               ${glass}
 
@@ -1234,25 +1341,58 @@ function ManageCourses() {
               "
             >
 
-              <h2
-                className="
-                  text-2xl
-                  font-bold
+              <div>
 
-                  text-white
-                "
-              >
+                <h2
+                  className="
+                    text-2xl
+                    font-bold
 
-                {editingCourse
+                    text-white
+                  "
+                >
 
-                  ? "Edit Course"
+                  {editingCourse
 
-                  : "Add Course"}
+                    ? "Edit Course"
 
-              </h2>
+                    : "Add Course"}
+
+                </h2>
+
+                <p
+                  className="
+                    mt-2
+
+                    text-sm
+
+                    text-slate-400
+                  "
+                >
+
+                  Manage course details
+                  and mentor information.
+
+                </p>
+
+              </div>
+
+              {/* CLOSE */}
 
               <button
+
                 onClick={resetForm}
+
+                className="
+                  rounded-xl
+
+                  p-2
+
+                  transition-all
+                  duration-300
+
+                  hover:bg-white/10
+                "
               >
 
                 <X
@@ -1273,10 +1413,26 @@ function ManageCourses() {
 
               <div>
 
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Mentor Name
+
+                </label>
+
                 <input
                   type="text"
 
-                  placeholder="Mentor Name *"
+                  placeholder="Enter mentor name"
 
                   value={formData.mentor}
 
@@ -1317,7 +1473,9 @@ function ManageCourses() {
                       text-red-400
                     "
                   >
+
                     {errors.mentor}
+
                   </p>
                 )}
 
@@ -1327,10 +1485,26 @@ function ManageCourses() {
 
               <div>
 
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Course Name
+
+                </label>
+
                 <input
                   type="text"
 
-                  placeholder="Course Name *"
+                  placeholder="Enter course name"
 
                   value={formData.course}
 
@@ -1371,7 +1545,9 @@ function ManageCourses() {
                       text-red-400
                     "
                   >
+
                     {errors.course}
+
                   </p>
                 )}
 
@@ -1381,10 +1557,26 @@ function ManageCourses() {
 
               <div>
 
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Category
+
+                </label>
+
                 <input
                   type="text"
 
-                  placeholder="Category *"
+                  placeholder="AI / Design / Marketing"
 
                   value={formData.category}
 
@@ -1425,7 +1617,9 @@ function ManageCourses() {
                       text-red-400
                     "
                   >
+
                     {errors.category}
+
                   </p>
                 )}
 
@@ -1435,10 +1629,26 @@ function ManageCourses() {
 
               <div>
 
+                <label
+                  className="
+                    mb-2
+                    block
+
+                    text-sm
+                    font-medium
+
+                    text-slate-300
+                  "
+                >
+
+                  Course Price
+
+                </label>
+
                 <input
                   type="text"
 
-                  placeholder="Price *"
+                  placeholder="₹799"
 
                   value={formData.price}
 
@@ -1468,30 +1678,20 @@ function ManageCourses() {
                   `}
                 />
 
-                <p
-                  className="
-                    mt-2
-
-                    text-xs
-
-                    text-slate-500
-                  "
-                >
-                  Minimum ₹499
-                </p>
-
                 {errors.price && (
 
                   <p
                     className="
-                      mt-1
+                      mt-2
 
                       text-xs
 
                       text-red-400
                     "
                   >
+
                     {errors.price}
+
                   </p>
                 )}
 
@@ -1499,36 +1699,56 @@ function ManageCourses() {
 
               {/* STATUS */}
 
-              <select
-                value={formData.status}
+              <div>
 
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
+                <label
+                  className="
+                    mb-2
+                    block
 
-                    status:
-                      e.target.value,
-                  })
-                }
+                    text-sm
+                    font-medium
 
-                className={`
-                  ${inputStyle}
+                    text-slate-300
+                  "
+                >
 
-                  border-[var(--color-border)]
+                  Status
 
-                  bg-[#111827]
-                `}
-              >
+                </label>
 
-                <option>
-                  Published
-                </option>
+                <select
+                  value={formData.status}
 
-                <option>
-                  Draft
-                </option>
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
 
-              </select>
+                      status:
+                        e.target.value,
+                    })
+                  }
+
+                  className={`
+                    ${inputStyle}
+
+                    border-[var(--color-border)]
+
+                    bg-[#111827]
+                  `}
+                >
+
+                  <option>
+                    Published
+                  </option>
+
+                  <option>
+                    Draft
+                  </option>
+
+                </select>
+
+              </div>
 
               {/* BUTTON */}
 
@@ -1555,8 +1775,9 @@ function ManageCourses() {
 
                   bg-gradient-to-r
 
-                  from-[var(--color-primary)]
-                  to-pink-500
+                  from-orange-500
+                  via-pink-500
+                  to-cyan-500
 
                   py-3
 
@@ -1605,10 +1826,41 @@ function ManageCourses() {
 
             </div>
 
-          </div>
+          </motion.div>
 
         </div>
       )}
+
+      {/* ====================================================== */}
+      {/* DELETE MODAL */}
+      {/* ====================================================== */}
+
+      <ConfirmModal
+
+        open={deleteModal}
+
+        title="Delete Course"
+
+        message="
+          Are you sure you want
+          to delete this course?
+        "
+
+        confirmText="Delete"
+
+        onCancel={() =>
+          setDeleteModal(false)
+        }
+
+        onConfirm={() => {
+
+          handleDelete(
+            selectedCourse.id
+          );
+
+          setDeleteModal(false);
+        }}
+      />
 
     </div>
   );
