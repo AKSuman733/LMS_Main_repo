@@ -246,13 +246,6 @@ const AdminStudents = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Student Directory</h2>
-        <button 
-          onClick={() => addToast({ type: 'success', message: 'Invitation link generated and copied to clipboard!' })}
-          className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          <Users size={18} />
-          <span>Invite User</span>
-        </button>
       </div>
 
       <DataTable 
@@ -266,15 +259,7 @@ const AdminStudents = () => {
         emptyState={{
           icon: <Users className="w-12 h-12" />,
           title: "No Users Yet",
-          message: "Invite users to get started.",
-          action: (
-            <button 
-              onClick={() => addToast({ type: 'success', message: 'Invitation link generated and copied to clipboard!' })}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-            >
-              + Invite User
-            </button>
-          )
+          message: "No students have registered yet."
         }}
         errorState={{
           title: "Unable to Load Users",
