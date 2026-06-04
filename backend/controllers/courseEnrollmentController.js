@@ -1,106 +1,81 @@
-import CourseEnrollment from "../models/CourseEnrollment.js";
 import Course from "../models/Course.js";
-import Certificate from "../models/Certificate.js";
+import CourseEnrollment from "../models/CourseEnrollment.js";
+import Student from "../models/Student.js";
 
-const getTodayDate = () => {
-  return new Date().toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-};
+const buildLearningData = (course) => {
+  const learningTopics = [];
+  const learningSubTopics = [];
 
-const generateCertificateNumber = () => {
-  return `UPTO-CERT-${Date.now()}`;
-};
+  if (Array.isArray(course.curriculum)) {
+    course.curriculum.forEach((topic) => {
+      const topicId = String(topic._id);
 
-const getTopicKey = (topicId, subTopicId = "") => {
-  return subTopicId ? `${topicId}:${subTopicId}` : `${topicId}`;
-};
+      learningTopics.push({
+        topicId,
+        title: topic.title,
+        isCompleted: false,
+        completedAt: null,
+      });
 
-const getCourseTotalItems = (course) => {
-  if (!course || !Array.isArray(course.curriculum)) return 0;
+      if (Array.isArray(topic.subTopics)) {
+        topic.subTopics.forEach((subTopic) => {
+          learningSubTopics.push({
+            topicId,
+            subTopicId: String(subTopic._id),
+            title: subTopic.title,
+            isCompleted: false,
+            completedAt: null,
+          });
+        });
+      }
+    });
+  }
 
-  let total = 0;
-
-  course.curriculum.forEach((topic) => {
-    if (topic.subTopics && topic.subTopics.length > 0) {
-      total += topic.subTopics.length;
-    } else {
-      total += 1;
-    }
-  });
-
-  return total;
+  return {
+    learningTopics,
+    learningSubTopics,
+  };
 };
 
 const calculateProgress = (enrollment) => {
-  const course = enrollment.courseId;
-  const totalItems = getCourseTotalItems(course);
+  const totalTopics = enrollment.learningTopics.length;
+  const totalSubTopics = enrollment.learningSubTopics.length;
+  const totalItems = totalTopics + totalSubTopics;
 
   if (totalItems === 0) {
     return 0;
   }
 
-  const completedCount = enrollment.completedTopics.length;
-  const progress = Math.round((completedCount / totalItems) * 100);
+  const completedTopics = enrollment.learningTopics.filter(
+    (topic) => topic.isCompleted
+  ).length;
 
-  return Math.min(progress, 100);
+  const completedSubTopics = enrollment.learningSubTopics.filter(
+    (subTopic) => subTopic.isCompleted
+  ).length;
+
+  return Math.round(((completedTopics + completedSubTopics) / totalItems) * 100);
 };
 
-const updateEnrollmentStatusByProgress = (enrollment) => {
-  if (enrollment.progress >= 100) {
-    enrollment.progress = 100;
-    enrollment.status = "Completed";
-    enrollment.certificateEligible = true;
-    return;
-  }
+const updateStudentLearningSummary = async (enrollment) => {
+  const student = await Student.findOne({ email: enrollment.email });
 
-  if (enrollment.progress > 0) {
-    enrollment.status = "Ongoing";
-    enrollment.certificateEligible = false;
-    return;
-  }
+  if (!student) return;
 
-  enrollment.status = "Enrolled";
-  enrollment.certificateEligible = false;
-};
+  student.courseId = enrollment.courseId;
+  student.courseName = enrollment.courseTitle;
+  student.progress = enrollment.progress;
+  student.totalSpent = Number(student.totalSpent || 0) + Number(enrollment.amountPaid || 0);
+  student.certificateEarned = enrollment.certificateIssued || false;
 
-const createCertificateIfEligible = async (enrollment) => {
-  const existingCertificate = await Certificate.findOne({
-    email: enrollment.email,
-    title: enrollment.courseTitle,
-    certificateType: "Course",
-  });
-
-  if (existingCertificate) {
-    return existingCertificate;
-  }
-
-  const certificate = await Certificate.create({
-    certificateNumber: generateCertificateNumber(),
-    studentName: enrollment.studentName,
-    email: enrollment.email,
-    certificateType: "Course",
-    title: enrollment.courseTitle,
-    issuedDate: getTodayDate(),
-    validTill: "Lifetime",
-    status: "Valid",
-    score: "100%",
-    description: `Successfully completed the course ${enrollment.courseTitle}.`,
-  });
-
-  enrollment.certificateNumber = certificate.certificateNumber;
-  enrollment.certificateEligible = true;
-  await enrollment.save();
-
-  return certificate;
+  await student.save();
 };
 
 export const getCourseEnrollments = async (req, res) => {
   try {
     const enrollments = await CourseEnrollment.find()
       .populate("courseId")
+      .populate("mentorId")
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -117,15 +92,40 @@ export const getCourseEnrollments = async (req, res) => {
   }
 };
 
+export const getCourseEnrollmentById = async (req, res) => {
+  try {
+    const enrollment = await CourseEnrollment.findById(req.params.id)
+      .populate("courseId")
+      .populate("mentorId");
+
+    if (!enrollment) {
+      return res.status(404).json({
+        success: false,
+        message: "Enrollment not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: enrollment,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch enrollment",
+      error: error.message,
+    });
+  }
+};
+
 export const getEnrollmentsByStudentEmail = async (req, res) => {
   try {
-    const email = req.params.email;
+    const email = req.params.email?.toLowerCase()?.trim();
 
     const enrollments = await CourseEnrollment.find({ email })
       .populate("courseId")
-      .sort({
-        createdAt: -1,
-      });
+      .populate("mentorId")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -143,14 +143,26 @@ export const getEnrollmentsByStudentEmail = async (req, res) => {
 
 export const createCourseEnrollment = async (req, res) => {
   try {
-    const { courseId, studentName, email, phone } = req.body;
+    const {
+      studentName,
+      email,
+      phone,
+      courseId,
+      mentorId,
+      mentorName,
+      mentorRole,
+      paymentStatus,
+      amountPaid,
+    } = req.body || {};
 
-    if (!courseId || !studentName || !email) {
+    if (!studentName || !email || !courseId) {
       return res.status(400).json({
         success: false,
-        message: "courseId, studentName and email are required",
+        message: "Student name, email and courseId are required",
       });
     }
+
+    const normalizedEmail = email.toLowerCase().trim();
 
     const course = await Course.findById(courseId);
 
@@ -162,63 +174,68 @@ export const createCourseEnrollment = async (req, res) => {
     }
 
     const alreadyEnrolled = await CourseEnrollment.findOne({
+      email: normalizedEmail,
       courseId,
-      email,
     });
 
     if (alreadyEnrolled) {
-      return res.status(400).json({
-        success: false,
-        message: "You are already enrolled in this course",
+      return res.status(200).json({
+        success: true,
+        message: "Already enrolled in this course",
+        data: alreadyEnrolled,
       });
     }
 
+    const learningData = buildLearningData(course);
+
     const enrollment = await CourseEnrollment.create({
+      studentName,
+      email: normalizedEmail,
+      phone: phone || "",
       courseId,
       courseTitle: course.title,
-      studentName,
-      email,
-      phone: phone || "",
-      completedTopics: [],
+      courseCategory: course.category || "",
+      courseLevel: course.level || "",
+      courseDuration: course.duration || "",
+      mentorId: mentorId || course.mentorId || null,
+      mentorName: mentorName || course.mentorName || "",
+      mentorRole: mentorRole || "",
+      paymentStatus: paymentStatus || (course.isFree ? "Free" : "Paid"),
+      amountPaid: Number(amountPaid || 0),
+      learningTopics: learningData.learningTopics,
+      learningSubTopics: learningData.learningSubTopics,
       progress: 0,
-      status: "Enrolled",
-      certificateEligible: false,
-      certificateNumber: "",
-      enrolledDate: getTodayDate(),
+      enrollmentStatus: "Active",
     });
 
-    const populatedEnrollment = await CourseEnrollment.findById(
-      enrollment._id
-    ).populate("courseId");
+    await updateStudentLearningSummary(enrollment);
 
     res.status(201).json({
       success: true,
-      message: "Course enrollment successful",
-      data: populatedEnrollment,
+      message: "Course enrolled successfully",
+      data: enrollment,
     });
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(200).json({
+        success: true,
+        message: "Already enrolled in this course",
+      });
+    }
+
     res.status(400).json({
       success: false,
-      message: "Failed to enroll in course",
+      message: "Failed to enroll course",
       error: error.message,
     });
   }
 };
 
-export const toggleCourseTopicCompletion = async (req, res) => {
+export const updateLearningProgress = async (req, res) => {
   try {
-    const { topicId, subTopicId = "" } = req.body;
+    const { type, topicId, subTopicId, isCompleted } = req.body || {};
 
-    if (!topicId) {
-      return res.status(400).json({
-        success: false,
-        message: "topicId is required",
-      });
-    }
-
-    const enrollment = await CourseEnrollment.findById(req.params.id).populate(
-      "courseId"
-    );
+    const enrollment = await CourseEnrollment.findById(req.params.id);
 
     if (!enrollment) {
       return res.status(404).json({
@@ -227,126 +244,70 @@ export const toggleCourseTopicCompletion = async (req, res) => {
       });
     }
 
-    const course = enrollment.courseId;
+    if (type === "topic") {
+      enrollment.learningTopics = enrollment.learningTopics.map((topic) => {
+        if (topic.topicId === topicId) {
+          return {
+            ...topic.toObject?.() || topic,
+            isCompleted: Boolean(isCompleted),
+            completedAt: isCompleted ? new Date() : null,
+          };
+        }
 
-    if (!course) {
-      return res.status(404).json({
-        success: false,
-        message: "Course data not found",
+        return topic;
       });
     }
 
-    const topic = course.curriculum.find(
-      (item) => String(item._id) === String(topicId)
-    );
+    if (type === "subTopic") {
+      enrollment.learningSubTopics = enrollment.learningSubTopics.map((subTopic) => {
+        if (
+          subTopic.topicId === topicId &&
+          subTopic.subTopicId === subTopicId
+        ) {
+          return {
+            ...subTopic.toObject?.() || subTopic,
+            isCompleted: Boolean(isCompleted),
+            completedAt: isCompleted ? new Date() : null,
+          };
+        }
 
-    if (!topic) {
-      return res.status(404).json({
-        success: false,
-        message: "Topic not found",
-      });
-    }
-
-    let title = topic.title;
-
-    if (subTopicId) {
-      const subTopic = topic.subTopics.find(
-        (item) => String(item._id) === String(subTopicId)
-      );
-
-      if (!subTopic) {
-        return res.status(404).json({
-          success: false,
-          message: "Subtopic not found",
-        });
-      }
-
-      title = `${topic.title} - ${subTopic.title}`;
-    }
-
-    const topicKey = getTopicKey(topicId, subTopicId);
-
-    const alreadyCompleted = enrollment.completedTopics.some(
-      (item) => item.topicKey === topicKey
-    );
-
-    if (alreadyCompleted) {
-      enrollment.completedTopics = enrollment.completedTopics.filter(
-        (item) => item.topicKey !== topicKey
-      );
-    } else {
-      enrollment.completedTopics.push({
-        topicKey,
-        topicId,
-        subTopicId,
-        title,
-        completedAt: new Date(),
+        return subTopic;
       });
     }
 
     enrollment.progress = calculateProgress(enrollment);
-    updateEnrollmentStatusByProgress(enrollment);
+
+    if (enrollment.progress >= 100) {
+      enrollment.enrollmentStatus = "Completed";
+      enrollment.certificateEligible = true;
+      enrollment.completedAt = enrollment.completedAt || new Date();
+    } else {
+      enrollment.enrollmentStatus = "Active";
+      enrollment.certificateEligible = false;
+      enrollment.completedAt = null;
+    }
 
     await enrollment.save();
 
-    let generatedCertificate = null;
-
-    if (enrollment.progress >= 100) {
-      generatedCertificate = await createCertificateIfEligible(enrollment);
-    }
-
-    const updatedEnrollment = await CourseEnrollment.findById(
-      enrollment._id
-    ).populate("courseId");
-
     res.status(200).json({
       success: true,
-      message:
-        updatedEnrollment.progress >= 100
-          ? "Course completed and certificate generated successfully"
-          : "Topic progress updated successfully",
-      data: updatedEnrollment,
-      certificate: generatedCertificate,
+      message: "Progress updated successfully",
+      data: enrollment,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: "Failed to update topic completion",
+      message: "Failed to update progress",
       error: error.message,
     });
   }
 };
 
-export const updateCourseEnrollment = async (req, res) => {
+export const updateQuizStatus = async (req, res) => {
   try {
-    const payload = { ...req.body };
+    const { status, score, totalMarks } = req.body || {};
 
-    if (payload.progress !== undefined) {
-      const progress = Number(payload.progress);
-
-      if (progress >= 100) {
-        payload.progress = 100;
-        payload.status = "Completed";
-        payload.certificateEligible = true;
-      } else if (progress > 0) {
-        payload.progress = progress;
-        payload.status = "Ongoing";
-        payload.certificateEligible = false;
-      } else {
-        payload.progress = 0;
-        payload.status = "Enrolled";
-        payload.certificateEligible = false;
-      }
-    }
-
-    let enrollment = await CourseEnrollment.findByIdAndUpdate(
-      req.params.id,
-      payload,
-      {
-        new: true,
-        runValidators: true,
-      }
-    ).populate("courseId");
+    const enrollment = await CourseEnrollment.findById(req.params.id);
 
     if (!enrollment) {
       return res.status(404).json({
@@ -355,29 +316,73 @@ export const updateCourseEnrollment = async (req, res) => {
       });
     }
 
-    let generatedCertificate = null;
+    enrollment.quiz.status = status || enrollment.quiz.status;
+    enrollment.quiz.score = Number(score || enrollment.quiz.score || 0);
+    enrollment.quiz.totalMarks = Number(totalMarks || enrollment.quiz.totalMarks || 0);
 
-    if (Number(enrollment.progress) >= 100) {
-      generatedCertificate = await createCertificateIfEligible(enrollment);
-
-      enrollment = await CourseEnrollment.findById(enrollment._id).populate(
-        "courseId"
-      );
+    if (status === "In Progress") {
+      enrollment.quiz.attemptedAt = new Date();
     }
+
+    if (status === "Completed") {
+      enrollment.quiz.completedAt = new Date();
+    }
+
+    await enrollment.save();
 
     res.status(200).json({
       success: true,
-      message:
-        Number(enrollment.progress) >= 100
-          ? "Enrollment completed and certificate generated successfully"
-          : "Enrollment updated successfully",
+      message: "Quiz updated successfully",
       data: enrollment,
-      certificate: generatedCertificate,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      message: "Failed to update enrollment",
+      message: "Failed to update quiz",
+      error: error.message,
+    });
+  }
+};
+
+export const updateAssignmentStatus = async (req, res) => {
+  try {
+    const { status, title, submissionUrl, feedback, marks } = req.body || {};
+
+    const enrollment = await CourseEnrollment.findById(req.params.id);
+
+    if (!enrollment) {
+      return res.status(404).json({
+        success: false,
+        message: "Enrollment not found",
+      });
+    }
+
+    enrollment.assignment.status = status || enrollment.assignment.status;
+    enrollment.assignment.title = title || enrollment.assignment.title;
+    enrollment.assignment.submissionUrl =
+      submissionUrl || enrollment.assignment.submissionUrl;
+    enrollment.assignment.feedback = feedback || enrollment.assignment.feedback;
+    enrollment.assignment.marks = Number(marks || enrollment.assignment.marks || 0);
+
+    if (status === "Submitted") {
+      enrollment.assignment.submittedAt = new Date();
+    }
+
+    if (status === "Reviewed") {
+      enrollment.assignment.reviewedAt = new Date();
+    }
+
+    await enrollment.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Assignment updated successfully",
+      data: enrollment,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Failed to update assignment",
       error: error.message,
     });
   }

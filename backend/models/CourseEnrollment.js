@@ -1,12 +1,35 @@
 import mongoose from "mongoose";
 
-const completedTopicSchema = new mongoose.Schema(
+const learningTopicSchema = new mongoose.Schema(
   {
-    topicKey: {
+    topicId: {
       type: String,
       required: true,
     },
 
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    completedAt: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const learningSubTopicSchema = new mongoose.Schema(
+  {
     topicId: {
       type: String,
       required: true,
@@ -14,17 +37,105 @@ const completedTopicSchema = new mongoose.Schema(
 
     subTopicId: {
       type: String,
-      default: "",
+      required: true,
+    },
+
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    completedAt: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const quizSchema = new mongoose.Schema(
+  {
+    status: {
+      type: String,
+      enum: ["Not Started", "In Progress", "Completed"],
+      default: "Not Started",
+    },
+
+    score: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    totalMarks: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    attemptedAt: {
+      type: Date,
+      default: null,
+    },
+
+    completedAt: {
+      type: Date,
+      default: null,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const assignmentSchema = new mongoose.Schema(
+  {
+    status: {
+      type: String,
+      enum: ["Not Submitted", "Submitted", "Reviewed"],
+      default: "Not Submitted",
     },
 
     title: {
       type: String,
       default: "",
+      trim: true,
     },
 
-    completedAt: {
+    submissionUrl: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    feedback: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    marks: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    submittedAt: {
       type: Date,
-      default: Date.now,
+      default: null,
+    },
+
+    reviewedAt: {
+      type: Date,
+      default: null,
     },
   },
   {
@@ -34,6 +145,25 @@ const completedTopicSchema = new mongoose.Schema(
 
 const courseEnrollmentSchema = new mongoose.Schema(
   {
+    studentName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
+
+    phone: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
@@ -46,26 +176,58 @@ const courseEnrollmentSchema = new mongoose.Schema(
       trim: true,
     },
 
-    studentName: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    phone: {
+    courseCategory: {
       type: String,
       default: "",
+      trim: true,
     },
 
-    completedTopics: {
-      type: [completedTopicSchema],
-      default: [],
+    courseLevel: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    courseDuration: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    mentorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Mentor",
+      default: null,
+    },
+
+    mentorName: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    mentorRole: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    paymentStatus: {
+      type: String,
+      enum: ["Free", "Pending", "Paid", "Failed"],
+      default: "Free",
+    },
+
+    amountPaid: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    enrollmentStatus: {
+      type: String,
+      enum: ["Active", "Completed", "Cancelled"],
+      default: "Active",
     },
 
     progress: {
@@ -75,10 +237,24 @@ const courseEnrollmentSchema = new mongoose.Schema(
       max: 100,
     },
 
-    status: {
-      type: String,
-      enum: ["Enrolled", "Ongoing", "Completed"],
-      default: "Enrolled",
+    learningTopics: {
+      type: [learningTopicSchema],
+      default: [],
+    },
+
+    learningSubTopics: {
+      type: [learningSubTopicSchema],
+      default: [],
+    },
+
+    quiz: {
+      type: quizSchema,
+      default: () => ({}),
+    },
+
+    assignment: {
+      type: assignmentSchema,
+      default: () => ({}),
     },
 
     certificateEligible: {
@@ -86,20 +262,33 @@ const courseEnrollmentSchema = new mongoose.Schema(
       default: false,
     },
 
-    certificateNumber: {
-      type: String,
-      default: "",
+    certificateIssued: {
+      type: Boolean,
+      default: false,
     },
 
-    enrolledDate: {
-      type: String,
-      default: "",
+    certificateId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Certificate",
+      default: null,
+    },
+
+    enrolledAt: {
+      type: Date,
+      default: Date.now,
+    },
+
+    completedAt: {
+      type: Date,
+      default: null,
     },
   },
   {
     timestamps: true,
   }
 );
+
+courseEnrollmentSchema.index({ email: 1, courseId: 1 }, { unique: true });
 
 const CourseEnrollment = mongoose.model(
   "CourseEnrollment",

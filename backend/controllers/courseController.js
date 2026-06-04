@@ -44,6 +44,26 @@ export const getCourseById = async (req, res) => {
   }
 };
 
+const normalizeStringArray = (items = []) => {
+  if (!Array.isArray(items)) return [];
+
+  return items
+    .map((item) => String(item || "").trim())
+    .filter(Boolean);
+};
+
+const normalizeResources = (resources = []) => {
+  if (!Array.isArray(resources)) return [];
+
+  return resources
+    .filter((item) => item && (item.title || item.url))
+    .map((item) => ({
+      title: item.title || "",
+      type: item.type || "Link",
+      url: item.url || "",
+    }));
+};
+
 const normalizeCurriculum = (curriculum = []) => {
   if (!Array.isArray(curriculum)) {
     return [];
@@ -54,8 +74,11 @@ const normalizeCurriculum = (curriculum = []) => {
     .map((topic, topicIndex) => ({
       title: topic.title || "",
       description: topic.description || "",
+      content: topic.content || "",
       duration: topic.duration || "",
       videoUrl: topic.videoUrl || "",
+      resourceUrl: topic.resourceUrl || "",
+      xp: Number(topic.xp || 20),
       order: Number(topic.order || topicIndex + 1),
       subTopics: Array.isArray(topic.subTopics)
         ? topic.subTopics
@@ -63,32 +86,111 @@ const normalizeCurriculum = (curriculum = []) => {
             .map((subTopic, subTopicIndex) => ({
               title: subTopic.title || "",
               description: subTopic.description || "",
+              content: subTopic.content || "",
               duration: subTopic.duration || "",
               videoUrl: subTopic.videoUrl || "",
+              resourceUrl: subTopic.resourceUrl || "",
+              xp: Number(subTopic.xp || 10),
               order: Number(subTopic.order || subTopicIndex + 1),
             }))
         : [],
     }));
 };
 
+const normalizeQuizQuestions = (questions = []) => {
+  if (!Array.isArray(questions)) return [];
+
+  return questions
+    .filter((item) => item && item.question)
+    .map((item) => ({
+      question: item.question || "",
+      options: Array.isArray(item.options)
+        ? item.options.map((option) => String(option || ""))
+        : ["", "", "", ""],
+      correctAnswer: item.correctAnswer || "",
+      marks: Number(item.marks || 1),
+    }));
+};
+
+const normalizeAssignment = (assignment = {}) => {
+  return {
+    title: assignment.title || "",
+    question: assignment.question || "",
+    instructions: assignment.instructions || "",
+    allowedFileTypes: Array.isArray(assignment.allowedFileTypes)
+      ? assignment.allowedFileTypes
+      : ["PDF", "DOC", "ZIP", "Image", "Link"],
+    maxMarks: Number(assignment.maxMarks || 100),
+  };
+};
+
+const normalizeCertificateRules = (rules = {}) => {
+  return {
+    passingPercentage: Number(rules.passingPercentage || 70),
+    minimumProgress: Number(rules.minimumProgress || 100),
+    quizRequired:
+      rules.quizRequired === undefined
+        ? true
+        : rules.quizRequired === true || rules.quizRequired === "true",
+    assignmentRequired:
+      rules.assignmentRequired === undefined
+        ? true
+        : rules.assignmentRequired === true ||
+          rules.assignmentRequired === "true",
+  };
+};
+
+const countLessons = (curriculum = []) => {
+  return curriculum.reduce((total, topic) => {
+    if (topic.subTopics && topic.subTopics.length > 0) {
+      return total + topic.subTopics.length;
+    }
+
+    return total + 1;
+  }, 0);
+};
+
+const buildCoursePayload = (body) => {
+  const isFree = body.isFree === true || body.isFree === "true";
+  const curriculum = normalizeCurriculum(body.curriculum);
+
+  return {
+    title: body.title,
+    shortDescription: body.shortDescription || "",
+    description: body.description,
+    category: body.category,
+    tags: normalizeStringArray(body.tags),
+    language: body.language || "English",
+    level: body.level || "Beginner",
+    duration: body.duration || "",
+    totalLessons: countLessons(curriculum),
+    isFree,
+    price: isFree ? "0" : body.price || "0",
+    discountPrice: body.discountPrice || "",
+    mentorId: body.mentorId || null,
+    mentorName: body.mentorName || "",
+    learningOutcomes: normalizeStringArray(body.learningOutcomes),
+    requirements: normalizeStringArray(body.requirements),
+    resources: normalizeResources(body.resources),
+    certificateIncluded:
+      body.certificateIncluded === undefined
+        ? true
+        : body.certificateIncluded === true ||
+          body.certificateIncluded === "true",
+    certificateRules: normalizeCertificateRules(body.certificateRules),
+    status: body.status || "Active",
+    videoUrl: body.videoUrl || "",
+    thumbnailUrl: body.thumbnailUrl || "",
+    bannerUrl: body.bannerUrl || "",
+    curriculum,
+    quizQuestions: normalizeQuizQuestions(body.quizQuestions),
+    assignment: normalizeAssignment(body.assignment),
+  };
+};
+
 export const createCourse = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      category,
-      level,
-      duration,
-      isFree,
-      price,
-      mentorId,
-      mentorName,
-      certificateIncluded,
-      status,
-      videoUrl,
-      thumbnailUrl,
-      curriculum,
-    } = req.body;
+    const { title, description, category } = req.body;
 
     if (!title || !description || !category) {
       return res.status(400).json({
@@ -97,25 +199,9 @@ export const createCourse = async (req, res) => {
       });
     }
 
-    const course = await Course.create({
-      title,
-      description,
-      category,
-      level: level || "Beginner",
-      duration: duration || "",
-      isFree: isFree === true || isFree === "true",
-      price: isFree === true || isFree === "true" ? "0" : price || "0",
-      mentorId: mentorId || null,
-      mentorName: mentorName || "",
-      certificateIncluded:
-        certificateIncluded === undefined
-          ? true
-          : certificateIncluded === true || certificateIncluded === "true",
-      status: status || "Active",
-      videoUrl: videoUrl || "",
-      thumbnailUrl: thumbnailUrl || "",
-      curriculum: normalizeCurriculum(curriculum),
-    });
+    const payload = buildCoursePayload(req.body);
+
+    const course = await Course.create(payload);
 
     res.status(201).json({
       success: true,
@@ -133,28 +219,10 @@ export const createCourse = async (req, res) => {
 
 export const updateCourse = async (req, res) => {
   try {
-    const payload = { ...req.body };
-
-    if (payload.isFree !== undefined) {
-      payload.isFree = payload.isFree === true || payload.isFree === "true";
-
-      if (payload.isFree) {
-        payload.price = "0";
-      }
-    }
-
-    if (payload.certificateIncluded !== undefined) {
-      payload.certificateIncluded =
-        payload.certificateIncluded === true ||
-        payload.certificateIncluded === "true";
-    }
+    const payload = buildCoursePayload(req.body);
 
     if (payload.mentorId === "") {
       payload.mentorId = null;
-    }
-
-    if (payload.curriculum !== undefined) {
-      payload.curriculum = normalizeCurriculum(payload.curriculum);
     }
 
     const course = await Course.findByIdAndUpdate(req.params.id, payload, {

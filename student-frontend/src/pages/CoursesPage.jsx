@@ -35,6 +35,7 @@ import {
 import uptoskillsLogo from "../assets/logo/UptoSkills.webp";
 
 import { getCourses } from "../services/courseApi";
+import { getMentors } from "../services/mentorApi";
 import {
   createCourseEnrollment,
   getEnrollmentsByStudentEmail,
@@ -99,6 +100,30 @@ const fallbackCourses = [
   },
 ];
 
+const fallbackMentors = [
+  {
+    _id: "demo-mentor-1",
+    name: "Rahul Sharma",
+    expertise: "Web Development Mentor",
+    experience: "5+ Years",
+    rating: 4.8,
+  },
+  {
+    _id: "demo-mentor-2",
+    name: "Priya Mehta",
+    expertise: "AI & ML Mentor",
+    experience: "6+ Years",
+    rating: 4.9,
+  },
+  {
+    _id: "demo-mentor-3",
+    name: "Amit Verma",
+    expertise: "Career Mentor",
+    experience: "7+ Years",
+    rating: 4.7,
+  },
+];
+
 const companies = [
   "TCS",
   "Infosys",
@@ -140,6 +165,7 @@ export default function CoursesPage() {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   const [courses, setCourses] = useState([]);
+  const [mentors, setMentors] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
 
   const [searchText, setSearchText] = useState("");
@@ -153,6 +179,9 @@ export default function CoursesPage() {
   const [messageType, setMessageType] = useState("success");
   const [wishlisted, setWishlisted] = useState([]);
   const [enrollingCourseId, setEnrollingCourseId] = useState("");
+
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedMentor, setSelectedMentor] = useState(null);
 
   const isLoggedIn = Boolean(localStorage.getItem("studentToken"));
   const userData = JSON.parse(localStorage.getItem("studentUser") || "{}");
@@ -217,6 +246,15 @@ export default function CoursesPage() {
     }
   };
 
+  const fetchMentors = async () => {
+    try {
+      const data = await getMentors();
+      setMentors(data && data.length > 0 ? data : fallbackMentors);
+    } catch {
+      setMentors(fallbackMentors);
+    }
+  };
+
   const fetchEnrollments = async () => {
     const latestUser = JSON.parse(localStorage.getItem("studentUser") || "{}");
 
@@ -235,6 +273,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     fetchCourses();
+    fetchMentors();
     fetchEnrollments();
 
     const timer = setInterval(() => {
@@ -315,8 +354,21 @@ export default function CoursesPage() {
     sortBy,
   ]);
 
+  const getCourseEnrollment = (courseId) => {
+    return enrollments.find((item) => {
+      const enrolledCourseId =
+        item.courseId?._id ||
+        item.courseId ||
+        item.course?._id ||
+        item.course ||
+        "";
+
+      return String(enrolledCourseId) === String(courseId);
+    });
+  };
+
   const isCourseEnrolled = (courseId) => {
-    return enrollments.some((item) => String(item.courseId) === String(courseId));
+    return Boolean(getCourseEnrollment(courseId));
   };
 
   const handleEnroll = async (course) => {
@@ -338,27 +390,46 @@ export default function CoursesPage() {
       return;
     }
 
-    if (isCourseEnrolled(course._id)) {
-      setMessageType("success");
-      setMessage(`You are already enrolled in ${course.title}.`);
+    const existingEnrollment = getCourseEnrollment(course._id);
+
+    if (existingEnrollment?._id || existingEnrollment?.id) {
+      navigate(`/learn/${existingEnrollment._id || existingEnrollment.id}`);
       return;
     }
 
-    if (isPaidCourse(course)) {
-      navigate(`/payment/${course._id}`, {
+    setMessage("");
+    setSelectedCourse(course);
+    setSelectedMentor(null);
+  };
+
+  const handleConfirmEnrollment = async () => {
+    const latestUser = JSON.parse(localStorage.getItem("studentUser") || "{}");
+
+    if (!selectedCourse) return;
+
+    if (!selectedMentor) {
+      setMessageType("error");
+      setMessage("Please select a mentor first.");
+      return;
+    }
+
+    if (isPaidCourse(selectedCourse)) {
+      navigate(`/payment/${selectedCourse._id}`, {
         state: {
           course: {
-            id: course._id,
-            title: course.title,
-            description: course.description,
-            category: course.category,
-            level: course.level,
-            duration: course.duration,
-            mentor: course.mentor,
-            price: course.price,
-            rating: course.rating,
-            certificateIncluded: course.certificateIncluded,
+            id: selectedCourse._id,
+            _id: selectedCourse._id,
+            title: selectedCourse.title,
+            description: selectedCourse.description,
+            category: selectedCourse.category,
+            level: selectedCourse.level,
+            duration: selectedCourse.duration,
+            mentor: selectedCourse.mentor,
+            price: selectedCourse.price,
+            rating: selectedCourse.rating,
+            certificateIncluded: selectedCourse.certificateIncluded,
           },
+          selectedMentor,
         },
       });
       return;
@@ -367,19 +438,31 @@ export default function CoursesPage() {
     try {
       setMessage("");
       setMessageType("success");
-      setEnrollingCourseId(course._id);
+      setEnrollingCourseId(selectedCourse._id);
 
-      await createCourseEnrollment({
-        courseId: course._id,
+      const enrollmentResponse = await createCourseEnrollment({
+        courseId: selectedCourse._id,
         studentName: latestUser.name || "Student",
         email: latestUser.email,
         phone: latestUser.phone || "",
+        mentorId: selectedMentor._id || selectedMentor.id,
+        mentorName: selectedMentor.name || selectedMentor.mentorName || "",
+        mentorRole: selectedMentor.expertise || selectedMentor.role || "",
         paymentStatus: "Free",
         amountPaid: 0,
       });
 
-      setMessage(`${course.title} enrolled successfully.`);
+      const enrollment = enrollmentResponse?.data || enrollmentResponse;
+
+      setMessage(`${selectedCourse.title} enrolled successfully.`);
+      setSelectedCourse(null);
+      setSelectedMentor(null);
+
       await fetchEnrollments();
+
+      if (enrollment?._id || enrollment?.id) {
+        navigate(`/learn/${enrollment._id || enrollment.id}`);
+      }
     } catch (error) {
       setMessageType("error");
       setMessage(error.message || "Enrollment failed.");
@@ -499,12 +582,12 @@ export default function CoursesPage() {
               </button>
 
               {isLoggedIn ? (
-                <div
-                  className="relative"
-                  onMouseEnter={() => setProfileMenuOpen(true)}
-                  onMouseLeave={() => setProfileMenuOpen(false)}
-                >
-                  <button className="rounded-full border border-white/10 bg-white/5 p-3 text-white transition hover:bg-white/10">
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setProfileMenuOpen((prev) => !prev)}
+                    className="rounded-full border border-white/10 bg-white/5 p-3 text-white transition hover:bg-white/10"
+                  >
                     <User size={18} />
                   </button>
 
@@ -521,7 +604,10 @@ export default function CoursesPage() {
 
                       <div className="p-3">
                         <button
-                          onClick={() => navigate("/dashboard")}
+                          onClick={() => {
+                            setProfileMenuOpen(false);
+                            navigate("/dashboard");
+                          }}
                           className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left font-bold text-slate-300 transition hover:bg-white/10 hover:text-cyan-300"
                         >
                           <LayoutDashboard size={18} />
@@ -812,7 +898,8 @@ export default function CoursesPage() {
                 {filteredCourses.map((course) => {
                   const Icon = course.icon;
                   const isWishlisted = wishlisted.includes(course.id);
-                  const enrolled = isCourseEnrolled(course._id);
+                  const enrollment = getCourseEnrollment(course._id);
+                  const enrolled = Boolean(enrollment);
                   const loadingThisCourse = enrollingCourseId === course._id;
 
                   return (
@@ -876,6 +963,26 @@ export default function CoursesPage() {
                           </span>
                         </div>
 
+                        {enrolled && (
+                          <div className="mt-5">
+                            <div className="flex items-center justify-between text-xs font-bold">
+                              <span className={mutedText}>Progress</span>
+                              <span className="text-cyan-400">
+                                {Number(enrollment?.progress || 0)}%
+                              </span>
+                            </div>
+
+                            <div className="mt-2 h-3 overflow-hidden rounded-full bg-slate-800">
+                              <div
+                                className="h-full rounded-full bg-cyan-400"
+                                style={{
+                                  width: `${Number(enrollment?.progress || 0)}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
+
                         <div className="mt-7 flex gap-3">
                           <button
                             onClick={() => alert(`${course.title}\n\n${course.description}`)}
@@ -885,18 +992,36 @@ export default function CoursesPage() {
                           </button>
 
                           <button
-                            onClick={() => handleEnroll(course)}
-                            disabled={enrolled || loadingThisCourse}
+                            onClick={() => {
+                              if (enrolled) {
+                                const enrollmentId =
+                                  enrollment?._id || enrollment?.id;
+
+                                if (!enrollmentId) {
+                                  setMessageType("error");
+                                  setMessage(
+                                    "Enrollment found but enrollment ID missing."
+                                  );
+                                  return;
+                                }
+
+                                navigate(`/learn/${enrollmentId}`);
+                                return;
+                              }
+
+                              handleEnroll(course);
+                            }}
+                            disabled={loadingThisCourse}
                             className={`flex-1 rounded-full px-4 py-3 text-sm font-black transition ${
                               enrolled
-                                ? "cursor-not-allowed bg-emerald-400/20 text-emerald-300"
+                                ? "bg-emerald-400/20 text-emerald-300 hover:bg-emerald-400 hover:text-slate-950"
                                 : "bg-cyan-400 text-slate-950 hover:bg-cyan-300"
                             }`}
                           >
                             {loadingThisCourse
                               ? "Enrolling..."
                               : enrolled
-                              ? "Enrolled"
+                              ? "Continue Learning"
                               : "Enroll Now"}
                           </button>
                         </div>
@@ -1021,6 +1146,22 @@ export default function CoursesPage() {
       >
         <CheckCircle2 />
       </button>
+
+      {selectedCourse && (
+        <MentorSelectionModal
+          course={selectedCourse}
+          mentors={mentors}
+          selectedMentor={selectedMentor}
+          setSelectedMentor={setSelectedMentor}
+          onClose={() => {
+            setSelectedCourse(null);
+            setSelectedMentor(null);
+          }}
+          onConfirm={handleConfirmEnrollment}
+          loading={enrollingCourseId === selectedCourse._id}
+          isPaid={isPaidCourse(selectedCourse)}
+        />
+      )}
     </div>
   );
 }
@@ -1049,5 +1190,111 @@ function FilterSelect({ label, value, onChange, options }) {
         />
       </div>
     </label>
+  );
+}
+
+function MentorSelectionModal({
+  course,
+  mentors,
+  selectedMentor,
+  setSelectedMentor,
+  onClose,
+  onConfirm,
+  loading,
+  isPaid,
+}) {
+  return (
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-slate-950/80 px-6 backdrop-blur-xl">
+      <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-[2.5rem] border border-white/10 bg-slate-900 p-6 text-white shadow-2xl">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-black">Select Mentor</h2>
+            <p className="mt-2 text-slate-400">
+              Choose mentor for{" "}
+              <span className="font-black text-cyan-300">{course.title}</span>
+            </p>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="rounded-2xl border border-white/10 bg-white/5 p-3 text-slate-300 hover:text-white"
+          >
+            <X />
+          </button>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {(mentors && mentors.length > 0 ? mentors : fallbackMentors).map(
+            (mentor) => {
+              const mentorId = mentor._id || mentor.id;
+              const selectedId = selectedMentor?._id || selectedMentor?.id;
+              const isSelected = String(selectedId) === String(mentorId);
+
+              return (
+                <button
+                  key={mentorId}
+                  onClick={() => setSelectedMentor(mentor)}
+                  className={`rounded-[2rem] border p-5 text-left transition hover:-translate-y-1 ${
+                    isSelected
+                      ? "border-cyan-400 bg-cyan-400/10"
+                      : "border-white/10 bg-slate-950/70 hover:border-cyan-400/40"
+                  }`}
+                >
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-500">
+                    <User size={30} />
+                  </div>
+
+                  <h3 className="mt-5 text-xl font-black">
+                    {mentor.name || mentor.mentorName || "Mentor"}
+                  </h3>
+
+                  <p className="mt-2 text-sm text-slate-400">
+                    {mentor.expertise || mentor.role || "Course Mentor"}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <span className="rounded-full bg-white/5 px-3 py-1 text-xs font-bold text-slate-300">
+                      {mentor.experience || "3+ Years"}
+                    </span>
+
+                    <span className="rounded-full bg-orange-400/10 px-3 py-1 text-xs font-bold text-orange-300">
+                      ⭐ {mentor.rating || 4.8}
+                    </span>
+                  </div>
+
+                  {isSelected && (
+                    <div className="mt-4 flex items-center gap-2 text-sm font-black text-cyan-300">
+                      <CheckCircle2 size={18} />
+                      Selected
+                    </div>
+                  )}
+                </button>
+              );
+            }
+          )}
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-end gap-4">
+          <button
+            onClick={onClose}
+            className="rounded-2xl border border-white/10 px-6 py-4 font-black text-slate-300"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={onConfirm}
+            disabled={loading}
+            className="rounded-2xl bg-orange-500 px-6 py-4 font-black text-white disabled:opacity-60"
+          >
+            {loading
+              ? "Processing..."
+              : isPaid
+              ? "Continue to Payment"
+              : "Confirm Enrollment"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

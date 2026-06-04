@@ -1,9 +1,12 @@
 import express from "express";
 import {
   getCourseEnrollments,
+  getCourseEnrollmentById,
   getEnrollmentsByStudentEmail,
   createCourseEnrollment,
-  updateCourseEnrollment,
+  updateLearningProgress,
+  updateQuizStatus,
+  updateAssignmentStatus,
   deleteCourseEnrollment,
 } from "../controllers/courseEnrollmentController.js";
 
@@ -11,11 +14,15 @@ const router = express.Router();
 
 router.route("/").get(getCourseEnrollments).post(createCourseEnrollment);
 
-router.route("/student/:email").get(getEnrollmentsByStudentEmail);
+router.get("/student/:email", getEnrollmentsByStudentEmail);
 
 router
   .route("/:id")
-  .put(updateCourseEnrollment)
+  .get(getCourseEnrollmentById)
   .delete(deleteCourseEnrollment);
+
+router.put("/:id/progress", updateLearningProgress);
+router.put("/:id/quiz", updateQuizStatus);
+router.put("/:id/assignment", updateAssignmentStatus);
 
 export default router;

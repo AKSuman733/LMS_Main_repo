@@ -13,6 +13,7 @@ import StudentEnrolledCourses from "../pages/Dashboard/StudentEnrolledCourses";
 import ProfilePage from "../pages/Dashboard/ProfilePage";
 
 import PaymentPage from "../pages/PaymentPage";
+import CourseLearningPage from "../pages/Courses/CourseLearningPage";
 
 function ProtectedRoute({ children }) {
   const isStudentLoggedIn = localStorage.getItem("studentToken");
@@ -78,6 +79,15 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <PaymentPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/learn/:enrollmentId"
+        element={
+          <ProtectedRoute>
+            <CourseLearningPage />
           </ProtectedRoute>
         }
       />

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AlertCircle,
   BookOpen,
@@ -15,9 +16,12 @@ import {
 import {
   getEnrollmentsByStudentEmail,
   toggleCourseTopicCompletion,
+  toggleCourseSubTopicCompletion,
 } from "../../services/courseEnrollmentApi";
 
 export default function StudentEnrolledCourses() {
+  const navigate = useNavigate();
+
   const user = JSON.parse(localStorage.getItem("studentUser") || "{}");
 
   const studentEmail = user.email || "";
@@ -65,22 +69,25 @@ export default function StudentEnrolledCourses() {
 
   const filteredEnrollments = useMemo(() => {
     return enrollments.filter((item) => {
-      const text = `${item.courseTitle || ""} ${item.status || ""} ${
+      const status = item.status || item.enrollmentStatus || "Ongoing";
+
+      const text = `${item.courseTitle || ""} ${status} ${
         item.email || ""
       }`.toLowerCase();
 
       const matchesSearch = text.includes(search.toLowerCase());
 
       const matchesStatus =
-        statusFilter === "All" || item.status === statusFilter;
+        statusFilter === "All" || status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
   }, [enrollments, search, statusFilter]);
 
-  const completedCount = enrollments.filter(
-    (item) => item.status === "Completed"
-  ).length;
+  const completedCount = enrollments.filter((item) => {
+    const status = item.status || item.enrollmentStatus;
+    return status === "Completed" || Number(item.progress || 0) >= 100;
+  }).length;
 
   const certificateEligibleCount = enrollments.filter(
     (item) => item.certificateEligible
@@ -91,6 +98,22 @@ export default function StudentEnrolledCourses() {
   };
 
   const isTopicCompleted = (enrollment, topicId, subTopicId = "") => {
+    if (subTopicId) {
+      const subTopic = (enrollment.learningSubTopics || []).find(
+        (item) =>
+          String(item.topicId) === String(topicId) &&
+          String(item.subTopicId) === String(subTopicId)
+      );
+
+      if (subTopic) return Boolean(subTopic.isCompleted);
+    }
+
+    const topic = (enrollment.learningTopics || []).find(
+      (item) => String(item.topicId) === String(topicId)
+    );
+
+    if (topic) return Boolean(topic.isCompleted);
+
     const topicKey = getTopicKey(topicId, subTopicId);
 
     return (enrollment.completedTopics || []).some(
@@ -106,13 +129,28 @@ export default function StudentEnrolledCourses() {
       setSuccess("");
       setUpdatingTopicKey(`${enrollment._id}-${topicKey}`);
 
-      const updatedEnrollment = await toggleCourseTopicCompletion(
-        enrollment._id,
-        {
+      const currentlyCompleted = isTopicCompleted(
+        enrollment,
+        topicId,
+        subTopicId
+      );
+
+      let updatedEnrollment;
+
+      if (subTopicId) {
+        updatedEnrollment = await toggleCourseSubTopicCompletion(
+          enrollment._id,
           topicId,
           subTopicId,
-        }
-      );
+          !currentlyCompleted
+        );
+      } else {
+        updatedEnrollment = await toggleCourseTopicCompletion(
+          enrollment._id,
+          topicId,
+          !currentlyCompleted
+        );
+      }
 
       setEnrollments((prev) =>
         prev.map((item) =>
@@ -122,7 +160,7 @@ export default function StudentEnrolledCourses() {
 
       if (updatedEnrollment.progress >= 100) {
         setSuccess(
-          "Course completed successfully. Certificate has been generated automatically."
+          "Course completed successfully. Certificate eligibility unlocked."
         );
       } else {
         setSuccess(`Progress updated to ${updatedEnrollment.progress}%.`);
@@ -135,53 +173,14 @@ export default function StudentEnrolledCourses() {
   };
 
   const handleContinueLearning = (enrollment) => {
-    const courseDetails = enrollment.courseId || {};
-    const curriculum = courseDetails.curriculum || [];
+    const enrollmentId = enrollment?._id || enrollment?.id;
 
-    const firstUncompletedTopic = curriculum.find((topic) => {
-      if (topic.subTopics && topic.subTopics.length > 0) {
-        return topic.subTopics.some(
-          (subTopic) =>
-            !isTopicCompleted(enrollment, String(topic._id), String(subTopic._id))
-        );
-      }
-
-      return !isTopicCompleted(enrollment, String(topic._id));
-    });
-
-    if (!firstUncompletedTopic) {
-      alert("All topics are completed. Check your certificate section.");
+    if (!enrollmentId) {
+      setError("Enrollment ID missing. Please refresh and try again.");
       return;
     }
 
-    if (
-      firstUncompletedTopic.subTopics &&
-      firstUncompletedTopic.subTopics.length > 0
-    ) {
-      const firstSubTopic = firstUncompletedTopic.subTopics.find(
-        (subTopic) =>
-          !isTopicCompleted(
-            enrollment,
-            String(firstUncompletedTopic._id),
-            String(subTopic._id)
-          )
-      );
-
-      if (firstSubTopic?.videoUrl) {
-        window.open(firstSubTopic.videoUrl, "_blank");
-        return;
-      }
-
-      alert(`Continue from: ${firstUncompletedTopic.title} → ${firstSubTopic?.title}`);
-      return;
-    }
-
-    if (firstUncompletedTopic.videoUrl) {
-      window.open(firstUncompletedTopic.videoUrl, "_blank");
-      return;
-    }
-
-    alert(`Continue from: ${firstUncompletedTopic.title}`);
+    navigate(`/learn/${enrollmentId}`);
   };
 
   if (!studentEmail) {
@@ -202,8 +201,8 @@ export default function StudentEnrolledCourses() {
             <h1 className="mt-2 text-4xl font-black">My Enrolled Courses</h1>
 
             <p className="mt-2 text-slate-400">
-              Complete topics and subtopics using checkboxes. Progress will be
-              calculated automatically.
+              Continue your learning, complete topics, quiz, assignments and
+              track your progress automatically.
             </p>
 
             <div className="mt-3 text-sm text-slate-300">
@@ -259,7 +258,7 @@ export default function StudentEnrolledCourses() {
             className="rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none"
           >
             <option className="bg-slate-950">All</option>
-            <option className="bg-slate-950">Enrolled</option>
+            <option className="bg-slate-950">Active</option>
             <option className="bg-slate-950">Ongoing</option>
             <option className="bg-slate-950">Completed</option>
           </select>
@@ -294,14 +293,14 @@ export default function StudentEnrolledCourses() {
           <h2 className="mt-4 text-2xl font-black">No enrolled courses yet</h2>
 
           <p className="mt-2 text-slate-400">
-            Go to landing page courses section and enroll in a course.
+            Go to courses page and enroll in a course.
           </p>
         </div>
       ) : (
         <section className="grid gap-6 xl:grid-cols-2">
           {filteredEnrollments.map((enrollment) => (
             <EnrollmentCard
-              key={enrollment._id}
+              key={enrollment._id || enrollment.id}
               enrollment={enrollment}
               expandedCourseId={expandedCourseId}
               setExpandedCourseId={setExpandedCourseId}
@@ -335,8 +334,24 @@ function EnrollmentCard({
     setExpandedCourseId(isExpanded ? "" : enrollment._id);
   };
 
-  const totalItems = getTotalCourseItems(curriculum);
-  const completedItems = enrollment.completedTopics?.length || 0;
+  const totalItems =
+    getTotalCourseItems(curriculum) ||
+    Number(enrollment.learningTopics?.length || 0) +
+      Number(enrollment.learningSubTopics?.length || 0);
+
+  const completedItems =
+    enrollment.completedTopics?.length ||
+    Number(
+      (enrollment.learningTopics || []).filter((item) => item.isCompleted)
+        .length
+    ) +
+      Number(
+        (enrollment.learningSubTopics || []).filter(
+          (item) => item.isCompleted
+        ).length
+      );
+
+  const status = enrollment.status || enrollment.enrollmentStatus || "Active";
 
   return (
     <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80 text-white transition hover:border-cyan-400/40">
@@ -348,35 +363,46 @@ function EnrollmentCard({
 
           <span
             className={`rounded-full px-3 py-1 text-xs font-bold ${
-              enrollment.status === "Completed"
+              status === "Completed"
                 ? "bg-emerald-400/20 text-emerald-100"
-                : enrollment.status === "Ongoing"
+                : status === "Ongoing"
                 ? "bg-orange-400/20 text-orange-100"
                 : "bg-white/20 text-white"
             }`}
           >
-            {enrollment.status}
+            {status}
           </span>
         </div>
 
-        <h2 className="mt-6 text-2xl font-black">{enrollment.courseTitle}</h2>
+        <h2 className="mt-6 text-2xl font-black">
+          {enrollment.courseTitle || courseDetails.title || "Untitled Course"}
+        </h2>
 
         <p className="mt-2 text-sm font-semibold text-white/80">
-          Enrolled on {enrollment.enrolledDate || "N/A"}
+          Mentor: {enrollment.mentorName || "UptoSkills Mentor"}
         </p>
       </div>
 
       <div className="p-6">
         <div className="grid gap-3 md:grid-cols-3">
-          <Info label="Category" value={courseDetails.category || "N/A"} />
-          <Info label="Level" value={courseDetails.level || "N/A"} />
-          <Info label="Duration" value={courseDetails.duration || "N/A"} />
+          <Info
+            label="Category"
+            value={enrollment.courseCategory || courseDetails.category || "N/A"}
+          />
+          <Info
+            label="Level"
+            value={enrollment.courseLevel || courseDetails.level || "N/A"}
+          />
+          <Info
+            label="Duration"
+            value={enrollment.courseDuration || courseDetails.duration || "N/A"}
+          />
         </div>
 
         <div className="mt-5">
           <div className="flex justify-between text-sm">
             <span className="text-slate-400">
-              Progress ({completedItems}/{totalItems} items)
+              Progress ({completedItems}/{totalItems || 0} items)
             </span>
 
             <span className="font-bold text-cyan-300">
@@ -397,10 +423,10 @@ function EnrollmentCard({
             <Trophy size={22} />
 
             <div>
-              <p className="font-bold">Certificate Generated</p>
+              <p className="font-bold">Certificate Eligible</p>
 
               <p className="text-xs text-emerald-200">
-                {enrollment.certificateNumber || "Check My Certificates"}
+                Check certificate section
               </p>
             </div>
           </div>
@@ -430,7 +456,8 @@ function EnrollmentCard({
 
             {curriculum.length === 0 ? (
               <div className="mt-5 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 text-orange-300">
-                Admin has not added topics for this course yet.
+                Admin has not added topics for this course yet. Use Continue
+                Learning to open the course player.
               </div>
             ) : (
               <div className="mt-5 space-y-4">
@@ -575,7 +602,9 @@ function TopicBlock({
 
                         {subTopic.videoUrl && (
                           <button
-                            onClick={() => window.open(subTopic.videoUrl, "_blank")}
+                            onClick={() =>
+                              window.open(subTopic.videoUrl, "_blank")
+                            }
                             className="mt-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-slate-300 transition hover:border-cyan-400 hover:text-cyan-300"
                           >
                             Watch Subtopic Video
