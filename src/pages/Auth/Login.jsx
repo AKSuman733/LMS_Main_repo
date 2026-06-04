@@ -71,12 +71,14 @@ const Login = ({ forcedRole }) => {
         </button>
       </form>
 
-      <div className="mt-6 text-center text-sm">
-        <span className="text-gray-600 dark:text-gray-400">Don't have an account? </span>
-        <Link to={`/register/${role}`} className="font-medium text-blue-600 hover:text-blue-500">
-          Register here
-        </Link>
-      </div>
+      {role !== 'admin' && (
+        <div className="mt-6 text-center text-sm">
+          <span className="text-gray-600 dark:text-gray-400">Don't have an account? </span>
+          <Link to={`/register/${role}`} className="font-medium text-blue-600 hover:text-blue-500">
+            Register here
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

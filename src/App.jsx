@@ -29,6 +29,7 @@ import AdminStudents from './pages/Admin/AdminStudents';
 import AdminEnrollments from './pages/Admin/AdminEnrollments';
 import AdminCompletedCourses from './pages/Admin/AdminCompletedCourses';
 import AdminSettings from './pages/Admin/AdminSettings';
+import AdminHeroes from './pages/Admin/AdminHeroes';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading } = useAuth();
@@ -51,7 +52,7 @@ function App() {
 
   if (mode === 'student') {
     return (
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
           <Route element={<AuthLayout />}>
@@ -81,7 +82,7 @@ function App() {
 
   if (mode === 'admin') {
     return (
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         <Routes>
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
           <Route element={<AuthLayout />}>
@@ -101,6 +102,7 @@ function App() {
             <Route path="enrollments" element={<AdminEnrollments />} />
             <Route path="completed" element={<AdminCompletedCourses />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="heroes" element={<AdminHeroes />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
@@ -110,7 +112,7 @@ function App() {
 
   // Default Full Application for simple 'npm run dev'
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<MainLayout><Home /></MainLayout>} />
@@ -149,6 +151,7 @@ function App() {
           <Route path="enrollments" element={<AdminEnrollments />} />
           <Route path="completed" element={<AdminCompletedCourses />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="heroes" element={<AdminHeroes />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/" />} />

@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useTheme } from '../../store/ThemeContext';
 import { useAuth } from '../../store/AuthContext';
 import { Sun, Moon, User, Lock, Bell, Save, X } from 'lucide-react';
+import { useToast } from '../../components/ToastProvider';
 
 const Settings = () => {
   const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
+  const { addToast } = useToast();
 
-  const [formData, setFormData] = useState({
+  const initialState = {
     name: user?.name || '',
     email: user?.email || '',
     currentPassword: '',
@@ -15,7 +17,14 @@ const Settings = () => {
     confirmPassword: '',
     emailNotifications: true,
     systemAlerts: true,
-  });
+    courseNotifications: true,
+    heroRecommendations: true,
+    learningReminders: true,
+    certificateVisibility: true,
+    dashboardLayoutCompact: false,
+  };
+
+  const [formData, setFormData] = useState(initialState);
 
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
@@ -40,6 +49,7 @@ const Settings = () => {
 
     // Simulate save
     setSaved(true);
+    addToast({ type: 'success', message: 'Settings saved successfully.' });
     setTimeout(() => setSaved(false), 3000);
   };
 
@@ -172,6 +182,61 @@ const Settings = () => {
               </label>
             </div>
 
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Course Notifications</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Alert me when new lessons are added.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="courseNotifications" checked={formData.courseNotifications} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Hero Recommendations</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Suggest new Celebrity Heroes for my courses.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="heroRecommendations" checked={formData.heroRecommendations} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Learning Reminders</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Remind me to study if I miss a day.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="learningReminders" checked={formData.learningReminders} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Public Certificates</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Allow others to view my earned certificates.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="certificateVisibility" checked={formData.certificateVisibility} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Compact Dashboard Layout</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Use a denser view for dashboard cards.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="dashboardLayoutCompact" checked={formData.dashboardLayoutCompact} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+            
             <hr className="border-gray-200 dark:border-gray-700 my-4" />
 
             <div className="flex items-center justify-between">
@@ -197,6 +262,11 @@ const Settings = () => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
+            onClick={() => {
+              setFormData(initialState);
+              addToast({ type: 'info', message: 'Changes discarded.' });
+              setError('');
+            }}
             className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors flex items-center"
           >
             <X size={16} className="mr-2" />

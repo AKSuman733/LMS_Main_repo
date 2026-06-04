@@ -2,32 +2,148 @@ import maheshImg from '../assets/mahesh.jpg';
 import alluArjunImg from '../assets/allu_arjun.jpg';
 import prabhasImg from '../assets/prabhas.jpg';
 import ramCharanImg from '../assets/ram_charan.jpg';
+import pawanKalyanImg from '../assets/pawan_kalyan.jpg';
+import naniImg from '../assets/nani.png';
+import vijayDeverakondaImg from '../assets/vijay_deverakonda.jpg';
+import raviTejaImg from '../assets/ravi_teja.png';
+import jrNtrImg from '../assets/jr_ntr.jpg';
 
 export const MOCK_METRICS = {
-  totalStudents: 3,
-  totalCourses: 8,
-  totalEnrollments: 6,
-  completedCourses: 3
+  totalStudents: 142,
+  totalCourses: 12,
+  totalEnrollments: 256,
+  completedCourses: 89,
+  activeHeroes: 4,
+  revenue: 15400,
+  pendingTasks: 4,
+  trends: {
+    students: '+12%',
+    enrollments: '+8%',
+    revenue: '+15%'
+  }
 };
 
 export const HERO_AVATARS = [
   {
+    id: "mahesh-babu",
     name: "Mass Hero Style (Mahesh Babu)",
-    image: maheshImg
+    title: "Action Star",
+    bio: "Superstar known for intense action and dialogue delivery.",
+    image: maheshImg,
+    tags: ["Action", "Mass", "Telugu"],
+    status: "Active"
   },
   {
+    id: "allu-arjun",
     name: "Stylish Star Style (Allu Arjun)",
-    image: alluArjunImg
+    title: "Dance & Style Icon",
+    bio: "Known for his incredible dancing skills and unique style.",
+    image: alluArjunImg,
+    tags: ["Style", "Dance", "Pan-India"],
+    status: "Active"
   },
   {
+    id: "prabhas",
     name: "Classic Rebel Style (Prabhas)",
-    image: prabhasImg
+    title: "Pan-India Rebel",
+    bio: "The Baahubali star with a massive global following.",
+    image: prabhasImg,
+    tags: ["Rebel", "Action", "Pan-India"],
+    status: "Active"
   },
   {
+    id: "ram-charan",
     name: "Young Energetic Style (Ram Charan)",
-    image: ramCharanImg
+    title: "Mega Power Star",
+    bio: "Energetic performer known for intense roles.",
+    image: ramCharanImg,
+    tags: ["Energetic", "Action", "Global"],
+    status: "Active"
+  },
+  {
+    id: "pawan-kalyan",
+    name: "Power Star Style (Pawan Kalyan)",
+    title: "Power Star",
+    bio: "Iconic actor with a massive cult following.",
+    image: pawanKalyanImg,
+    tags: ["Power", "Action", "Telugu"],
+    status: "Active"
+  },
+  {
+    id: "nani",
+    name: "Natural Star Style (Nani)",
+    title: "Natural Star",
+    bio: "Known for his natural acting and relatable characters.",
+    image: naniImg,
+    tags: ["Natural", "Drama", "Telugu"],
+    status: "Active"
+  },
+  {
+    id: "vijay-deverakonda",
+    name: "Rowdy Boy Style (Vijay Deverakonda)",
+    title: "Youth Icon",
+    bio: "Trendsetting actor with a raw and intense persona.",
+    image: vijayDeverakondaImg,
+    tags: ["Intense", "Youth", "Pan-India"],
+    status: "Active"
+  },
+  {
+    id: "ravi-teja",
+    name: "Mass Maharaja Style (Ravi Teja)",
+    title: "Mass Maharaja",
+    bio: "Energetic star known for his comedic timing and action.",
+    image: raviTejaImg,
+    tags: ["Comedy", "Action", "Mass"],
+    status: "Active"
+  },
+  {
+    id: "jr-ntr",
+    name: "Young Tiger Style (Jr. NTR)",
+    title: "Young Tiger",
+    bio: "Powerhouse performer known for acting, dancing, and dialogue delivery.",
+    image: jrNtrImg,
+    tags: ["Versatile", "Dance", "Global"],
+    status: "Active"
   }
 ];
+
+const LOCAL_HEROES_KEY = 'mock_heroes_v2';
+
+export const getLocalHeroes = () => {
+  try {
+    const stored = localStorage.getItem(LOCAL_HEROES_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (e) {
+    console.error("Failed to parse heroes", e);
+  }
+  return HERO_AVATARS;
+};
+
+export const saveLocalHero = (heroData) => {
+  const heroes = getLocalHeroes();
+  const newHero = {
+    id: "hero_" + Date.now(),
+    created_at: new Date().toISOString(),
+    ...heroData
+  };
+  localStorage.setItem(LOCAL_HEROES_KEY, JSON.stringify([newHero, ...heroes]));
+  return newHero;
+};
+
+export const updateLocalHero = (updatedHero) => {
+  const heroes = getLocalHeroes();
+  const updated = heroes.map(h => h.id === updatedHero.id ? { ...h, ...updatedHero } : h);
+  localStorage.setItem(LOCAL_HEROES_KEY, JSON.stringify(updated));
+  return updatedHero;
+};
+
+export const deleteLocalHero = (id) => {
+  const heroes = getLocalHeroes();
+  const filtered = heroes.filter(h => h.id !== id);
+  localStorage.setItem(LOCAL_HEROES_KEY, JSON.stringify(filtered));
+};
 
 export const MOCK_COURSES = [
   {
@@ -124,7 +240,7 @@ export const MOCK_COURSES = [
   }
 ];
 
-const LOCAL_COURSES_KEY = 'mock_courses';
+const LOCAL_COURSES_KEY = 'mock_courses_v2';
 
 const parseStoredCourses = () => {
   try {
@@ -146,9 +262,11 @@ export const getLocalCourses = () => {
 
 export const saveLocalCourse = (course) => {
   const localCourses = parseStoredCourses();
+  const allHeroes = getLocalHeroes();
+  const randomHero = allHeroes[Math.floor(Math.random() * allHeroes.length)];
   const newCourse = {
-    id: Date.now(),
-    image: HERO_AVATARS[0].image,
+    id: Date.now() + Math.random().toString(36).substring(2),
+    image: randomHero.image,
     lessons: [
       {
         id: Date.now() + 1,
@@ -161,6 +279,20 @@ export const saveLocalCourse = (course) => {
 
   localStorage.setItem(LOCAL_COURSES_KEY, JSON.stringify([newCourse, ...localCourses]));
   return newCourse;
+};
+
+export const updateLocalCourse = (updatedCourse) => {
+  const localCourses = parseStoredCourses();
+  const updatedCourses = localCourses.map(c => 
+    c.id === updatedCourse.id ? { ...c, ...updatedCourse } : c
+  );
+  localStorage.setItem(LOCAL_COURSES_KEY, JSON.stringify(updatedCourses));
+};
+
+export const deleteLocalCourse = (id) => {
+  const localCourses = parseStoredCourses();
+  const filtered = localCourses.filter(c => c.id !== id);
+  localStorage.setItem(LOCAL_COURSES_KEY, JSON.stringify(filtered));
 };
 
 export const MOCK_STUDENTS = [
@@ -223,13 +355,20 @@ export const MOCK_ADMIN_COMPLETED_COURSES = [
 
 // Helper for local storage simulation
 export const getLocalEnrollments = () => {
-  const stored = localStorage.getItem('mock_enrollments');
+  const stored = localStorage.getItem('mock_enrollments_v2');
   return stored ? JSON.parse(stored) : [];
 };
 
-export const saveLocalEnrollment = (courseId, style) => {
+export const saveLocalEnrollment = (courseId, styleOrHeroId) => {
   const enrollments = getLocalEnrollments();
   const course = getLocalCourses().find(c => c.id === parseInt(courseId));
+  
+  const allHeroes = getLocalHeroes();
+  // Support both old style (name based) and new style (ID based)
+  let selectedHero = allHeroes.find(h => h.id === styleOrHeroId || h.name === styleOrHeroId);
+  if (!selectedHero) {
+    selectedHero = allHeroes[0]; // fallback
+  }
   
   if (!enrollments.find(e => e.course_id === parseInt(courseId))) {
     enrollments.push({
@@ -240,15 +379,33 @@ export const saveLocalEnrollment = (courseId, style) => {
       category: course.category,
       level: course.level,
       duration: course.duration,
-      image: course.image,
-      instructor_style: style,
+      image: selectedHero ? selectedHero.image : course.image,
+      instructor_style: selectedHero ? selectedHero.name : 'Default',
+      activeHeroId: selectedHero ? selectedHero.id : null,
       progress_percentage: 0,
       completed: false,
       completed_lessons: [],
       enrolled_at: new Date().toISOString()
     });
-    localStorage.setItem('mock_enrollments', JSON.stringify(enrollments));
+    localStorage.setItem('mock_enrollments_v2', JSON.stringify(enrollments));
   }
+};
+
+export const changeEnrollmentHero = (enrollmentId, heroId) => {
+  const enrollments = getLocalEnrollments();
+  const idx = enrollments.findIndex(e => e.id === parseInt(enrollmentId));
+  if (idx > -1) {
+    const allHeroes = getLocalHeroes();
+    const hero = allHeroes.find(h => h.id === heroId);
+    if (hero) {
+      enrollments[idx].activeHeroId = hero.id;
+      enrollments[idx].instructor_style = hero.name;
+      enrollments[idx].image = hero.image;
+      localStorage.setItem('mock_enrollments_v2', JSON.stringify(enrollments));
+      return enrollments[idx];
+    }
+  }
+  return null;
 };
 
 export const markLessonCompleteLocal = (enrollmentId, lessonId, courseId) => {
@@ -272,8 +429,108 @@ export const markLessonCompleteLocal = (enrollmentId, lessonId, courseId) => {
       enrollment.issued_at = new Date().toISOString();
     }
     
-    localStorage.setItem('mock_enrollments', JSON.stringify(enrollments));
+    localStorage.setItem('mock_enrollments_v2', JSON.stringify(enrollments));
     return enrollment;
   }
   return null;
 };
+
+export const restartCourseLocal = (enrollmentId) => {
+  const enrollments = getLocalEnrollments();
+  const idx = enrollments.findIndex(e => e.id === parseInt(enrollmentId));
+  
+  if (idx > -1) {
+    enrollments[idx].completed_lessons = [];
+    enrollments[idx].progress_percentage = 0;
+    enrollments[idx].completed = false;
+    delete enrollments[idx].certificate_code;
+    delete enrollments[idx].issued_at;
+    
+    localStorage.setItem('mock_enrollments_v2', JSON.stringify(enrollments));
+    return enrollments[idx];
+  }
+  return null;
+};
+
+export const MOCK_ACTIVITY_FEED = [
+  { id: 1, type: 'enrollment', text: 'John Student enrolled in Web Development', time: '10 minutes ago' },
+  { id: 2, type: 'hero', text: 'New Celebrity Hero "Thalapathy" added', time: '1 hour ago' },
+  { id: 3, type: 'course', text: 'Course "React Native" was published', time: '3 hours ago' },
+  { id: 4, type: 'update', text: 'Alice Smith changed instructor to Allu Arjun', time: '5 hours ago' },
+  { id: 5, type: 'admin', text: 'Admin updated global theme settings', time: '1 day ago' },
+];
+
+export const MOCK_PENDING_TASKS = [
+  { id: 1, text: 'Review new course "Advanced Python"', priority: 'High', status: 'Pending' },
+  { id: 2, text: 'Approve Celebrity Profile for "NTR Jr"', priority: 'Medium', status: 'Pending' },
+  { id: 3, text: 'Verify 5 course completion reports', priority: 'High', status: 'Action Required' },
+  { id: 4, text: 'Check inactive student accounts', priority: 'Low', status: 'Pending' },
+];
+
+export const MOCK_TOP_COURSES = [
+  { id: 1, title: 'Web Development Bootcamp', progress: 85, students: 120 },
+  { id: 2, title: 'Python for Data Science', progress: 70, students: 95 },
+  { id: 3, title: 'Data Structures & Algorithms', progress: 55, students: 80 },
+];
+
+export const MOCK_TOP_HEROES = [
+  { id: 1, name: 'Stylish Star Style (Allu Arjun)', count: 150, image: alluArjunImg },
+  { id: 2, name: 'Power Star Style (Pawan Kalyan)', count: 120, image: pawanKalyanImg },
+  { id: 3, name: 'Rowdy Boy Style (Vijay Deverakonda)', count: 90, image: vijayDeverakondaImg },
+];
+
+export const MOCK_STUDENT_GROWTH = [
+  { month: 'Jan', count: 40 },
+  { month: 'Feb', count: 65 },
+  { month: 'Mar', count: 90 },
+  { month: 'Apr', count: 110 },
+  { month: 'May', count: 125 },
+  { month: 'Jun', count: 142 },
+];
+
+export const getCourseStatusAndAction = (course) => {
+  const progress = course.progress_percentage || 0;
+  const isCompleted = course.completed || progress === 100;
+  
+  if (isCompleted) {
+    return {
+      statusBadge: 'Completed',
+      badgeColor: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400',
+      actionLabel: course.certificate_code ? 'View Certificate' : 'Review Course',
+      actionLink: course.certificate_code ? `/student/certificate/${course.id}` : `/student/learn/${course.id}`,
+      actionColor: 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700',
+      actionVariant: 'outline'
+    };
+  } else if (progress > 0) {
+    return {
+      statusBadge: 'In Progress',
+      badgeColor: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400',
+      actionLabel: 'Continue',
+      actionLink: `/student/learn/${course.id}`,
+      actionColor: 'bg-blue-600 text-white hover:bg-blue-700',
+      actionVariant: 'primary'
+    };
+  } else {
+    return {
+      statusBadge: 'Not Started',
+      badgeColor: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+      actionLabel: 'Start Course',
+      actionLink: `/student/learn/${course.id}`,
+      actionColor: 'bg-blue-600 text-white hover:bg-blue-700',
+      actionVariant: 'primary'
+    };
+  }
+};
+
+export const MOCK_STUDENT_METRICS = {
+  learningStreak: 12,
+  learningHours: 48,
+  achievementsCount: 5,
+};
+
+export const MOCK_ACHIEVEMENTS = [
+  { id: 1, title: 'Fast Learner', description: 'Completed a course in under 3 days.', icon: 'Zap', color: 'text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  { id: 2, title: 'Dedicated Student', description: 'Maintained a 10-day learning streak.', icon: 'Flame', color: 'text-orange-500 bg-orange-100 dark:bg-orange-900/30 dark:text-orange-400' },
+  { id: 3, title: 'Hero Follower', description: 'Tried 3 different Celebrity Instructors.', icon: 'Star', color: 'text-purple-500 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-400' },
+];
+

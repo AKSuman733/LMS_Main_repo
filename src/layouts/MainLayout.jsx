@@ -12,7 +12,7 @@ const MainLayout = ({ children }) => {
       <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
         <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">Uptoskills AI Learning</h1>
         <nav className="space-x-4">
-          <Link to={loginPath} className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Log In / Register</Link>
+          <Link to={loginPath} className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Log In</Link>
         </nav>
       </header>
       

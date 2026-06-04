@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
 import { Clock, BarChart, UserCircle, CheckCircle } from 'lucide-react';
-import { getLocalCourses, saveLocalEnrollment, HERO_AVATARS } from '../../utils/mockData';
+import { getLocalCourses, saveLocalEnrollment, getLocalHeroes } from '../../utils/mockData';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -13,10 +13,16 @@ const CourseDetails = () => {
   const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState('');
 
+  const [heroes, setHeroes] = useState([]);
+
   useEffect(() => {
     setTimeout(() => {
       const found = getLocalCourses().find(c => c.id === parseInt(id));
       setCourse(found);
+      
+      const activeHeroes = getLocalHeroes().filter(h => h.status === 'Active');
+      setHeroes(activeHeroes);
+      
       setLoading(false);
     }, 400);
   }, [id]);
@@ -66,23 +72,27 @@ const CourseDetails = () => {
             <p className="text-sm text-gray-500 mb-4">Choose how you want the instructor to present the material.</p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {HERO_AVATARS.map(avatar => (
+              {heroes.map(avatar => (
                 <button
-                  key={avatar.name}
-                  onClick={() => setSelectedStyle(avatar.name)}
+                  key={avatar.id}
+                  onClick={() => setSelectedStyle(avatar.id)}
                   className={`p-4 rounded-lg border-2 text-left transition-all flex flex-col items-center sm:items-start sm:flex-row gap-4 ${
-                    selectedStyle === avatar.name 
+                    selectedStyle === avatar.id 
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-2 ring-blue-500 ring-opacity-50' 
                       : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 text-gray-700 dark:text-gray-300'
                   }`}
                 >
-                  <img src={avatar.image} alt={avatar.name} className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-gray-800 shadow-md" />
+                  {avatar.image ? (
+                    <img src={avatar.image} alt={avatar.name} className="w-16 h-16 rounded-full object-cover border-2 border-white dark:border-gray-800 shadow-md shrink-0" />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center shrink-0 text-xs text-gray-500">N/A</div>
+                  )}
                   <div className="flex flex-col flex-1 justify-center w-full">
                     <div className="flex justify-between items-center w-full">
-                      <span className="font-bold">{avatar.name.split(' (')[0]}</span>
-                      {selectedStyle === avatar.name && <CheckCircle size={20} className="text-blue-500 shrink-0" />}
+                      <span className="font-bold line-clamp-1">{avatar.name}</span>
+                      {selectedStyle === avatar.id && <CheckCircle size={20} className="text-blue-500 shrink-0" />}
                     </div>
-                    <span className="text-xs opacity-75">{avatar.name.match(/\((.*?)\)/)[1]}</span>
+                    <span className="text-xs opacity-75 line-clamp-1">{avatar.title}</span>
                   </div>
                 </button>
               ))}

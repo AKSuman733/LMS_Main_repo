@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, Circle, ArrowLeft, Trophy, Play } from 'lucide-react';
-import { getLocalEnrollments, getLocalCourses, markLessonCompleteLocal, HERO_AVATARS } from '../../utils/mockData';
+import { CheckCircle, Circle, ArrowLeft, Trophy, Play, UserCog } from 'lucide-react';
+import { getLocalEnrollments, getLocalCourses, markLessonCompleteLocal, getLocalHeroes, changeEnrollmentHero, restartCourseLocal } from '../../utils/mockData';
+import HeroSelectionModal from '../../components/HeroSelectionModal';
 
 const CourseLearning = () => {
   const { enrollmentId } = useParams();
@@ -13,8 +14,14 @@ const CourseLearning = () => {
   const [lessons, setLessons] = useState([]);
   const [activeLesson, setActiveLesson] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isHeroModalOpen, setIsHeroModalOpen] = useState(false);
+  const [activeHero, setActiveHero] = useState(null);
 
   useEffect(() => {
+    loadCourseData();
+  }, [enrollmentId, navigate]);
+
+  const loadCourseData = () => {
     setTimeout(() => {
       const enrollments = getLocalEnrollments();
       const currentEnrollment = enrollments.find(e => e.id === parseInt(enrollmentId));
@@ -35,13 +42,24 @@ const CourseLearning = () => {
       setCourse(foundCourse);
       setLessons(foundCourse.lessons);
       
-      if (foundCourse.lessons.length > 0) {
+      if (foundCourse.lessons.length > 0 && !activeLesson) {
         setActiveLesson(foundCourse.lessons[0]);
       }
+
+      // Load active hero
+      const heroes = getLocalHeroes();
+      let hero = null;
+      if (currentEnrollment.activeHeroId) {
+        hero = heroes.find(h => h.id === currentEnrollment.activeHeroId);
+      } else {
+        // Fallback for old enrollments
+        hero = heroes.find(h => h.name === currentEnrollment.instructor_style);
+      }
+      setActiveHero(hero || heroes[0]);
       
       setLoading(false);
     }, 300);
-  }, [enrollmentId, navigate]);
+  };
 
   const markComplete = () => {
     if (!activeLesson) return;
@@ -58,11 +76,29 @@ const CourseLearning = () => {
     }
   };
 
+  const handleHeroChange = (newHeroId) => {
+    const updated = changeEnrollmentHero(enrollmentId, newHeroId);
+    if (updated) {
+      setEnrollment(updated);
+      const heroes = getLocalHeroes();
+      setActiveHero(heroes.find(h => h.id === newHeroId));
+    }
+  };
+
+  const handleRestart = () => {
+    const updated = restartCourseLocal(enrollmentId);
+    if (updated) {
+      setEnrollment(updated);
+      if (lessons.length > 0) {
+        setActiveLesson(lessons[0]);
+      }
+    }
+  };
+
   if (loading) return <div>Loading course content...</div>;
 
   const currentPercentage = enrollment?.progress_percentage || 0;
   const isCompleted = enrollment?.completed;
-  const avatar = HERO_AVATARS.find(a => a.name === enrollment?.instructor_style);
 
   return (
     <div className="flex flex-col md:flex-row gap-6 h-[calc(100vh-8rem)]">
@@ -122,16 +158,24 @@ const CourseLearning = () => {
       {/* Main Content Area */}
       <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden flex flex-col">
         {isCompleted && (
-          <div className="bg-green-100 dark:bg-green-900/30 p-4 border-b border-green-200 dark:border-green-800 flex justify-between items-center">
-            <div className="flex items-center text-green-800 dark:text-green-300 font-medium">
-              <Trophy size={20} className="mr-2" /> You have completed this course!
+          <div className="bg-green-100 dark:bg-green-900/30 p-4 border-b border-green-200 dark:border-green-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div className="flex items-center text-green-800 dark:text-green-300 font-medium text-center sm:text-left">
+              <Trophy size={20} className="mr-2 shrink-0" /> You have completed this course!
             </div>
-            <button
-              onClick={() => navigate(`/student/certificate/${enrollmentId}`)}
-              className="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition"
-            >
-              View Certificate
-            </button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button
+                onClick={handleRestart}
+                className="flex-1 sm:flex-none px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 text-sm rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition whitespace-nowrap"
+              >
+                Restart Course
+              </button>
+              <button
+                onClick={() => navigate(`/student/certificate/${enrollmentId}`)}
+                className="flex-1 sm:flex-none px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition whitespace-nowrap"
+              >
+                View Certificate
+              </button>
+            </div>
           </div>
         )}
         
@@ -140,13 +184,26 @@ const CourseLearning = () => {
             <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{activeLesson.title}</h1>
               
-              {avatar && (
-                <div className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-full border border-gray-100 dark:border-gray-600 shadow-sm w-fit">
-                  <img src={avatar.image} alt="Instructor" className="w-10 h-10 rounded-full object-cover border border-white" />
-                  <div className="text-sm">
-                    <p className="text-gray-500 dark:text-gray-400 text-xs">Instructor</p>
-                    <p className="font-semibold text-gray-800 dark:text-gray-200">{avatar.name.match(/\((.*?)\)/)?.[1] || avatar.name}</p>
+              {activeHero && (
+                <div className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-700 px-4 py-2 rounded-full border border-gray-100 dark:border-gray-600 shadow-sm w-fit group">
+                  <div className="relative">
+                    {activeHero.image ? (
+                      <img src={activeHero.image} alt="Instructor" className="w-10 h-10 rounded-full object-cover border border-white" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-xs">N/A</div>
+                    )}
                   </div>
+                  <div className="text-sm pr-2">
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">Instructor</p>
+                    <p className="font-semibold text-gray-800 dark:text-gray-200 line-clamp-1 max-w-[150px]">{activeHero.name}</p>
+                  </div>
+                  <button 
+                    onClick={() => setIsHeroModalOpen(true)}
+                    className="ml-2 p-1.5 bg-white dark:bg-gray-800 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-600 border dark:border-gray-600 shadow-sm transition-colors"
+                    title="Change Hero"
+                  >
+                    <UserCog size={16} />
+                  </button>
                 </div>
               )}
             </div>
@@ -156,8 +213,8 @@ const CourseLearning = () => {
               <div className="w-full aspect-video bg-gradient-to-br from-gray-900 to-black rounded-xl mb-8 flex flex-col items-center justify-center relative group cursor-pointer overflow-hidden shadow-2xl border border-gray-800">
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors z-10"></div>
                 
-                {avatar && (
-                  <img src={avatar.image} alt="Video Background" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay filter blur-sm" />
+                {activeHero && activeHero.image && (
+                  <img src={activeHero.image} alt="Video Background" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay filter blur-sm" />
                 )}
 
                 <div className="w-20 h-20 bg-blue-600/90 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(37,99,235,0.5)] z-20">
@@ -206,6 +263,13 @@ const CourseLearning = () => {
           <div className="p-8 text-center text-gray-500">Select a lesson to begin.</div>
         )}
       </div>
+
+      <HeroSelectionModal
+        isOpen={isHeroModalOpen}
+        onClose={() => setIsHeroModalOpen(false)}
+        currentHeroId={activeHero?.id}
+        onSelectHero={handleHeroChange}
+      />
     </div>
   );
 };

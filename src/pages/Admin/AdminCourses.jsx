@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-
-import { Plus, Edit2, Trash2, X } from 'lucide-react';
-import { getLocalCourses, saveLocalCourse } from '../../utils/mockData';
+import { Plus, BookOpen } from 'lucide-react';
+import { getLocalCourses, saveLocalCourse, updateLocalCourse, deleteLocalCourse } from '../../utils/mockData';
+import DataTable from '../../components/DataTable';
+import Modal from '../../components/Modal';
+import { useToast } from '../../components/ToastProvider';
 
 const emptyForm = {
   title: '',
@@ -14,25 +16,29 @@ const emptyForm = {
 const AdminCourses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorState, setErrorState] = useState(false);
+  const [viewMode, setViewMode] = useState('active');
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [error, setError] = useState('');
+  const [formError, setFormError] = useState('');
+  
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState(null);
+
+  const { addToast } = useToast();
 
   const fetchCourses = () => {
     setTimeout(() => {
-      setCourses(getLocalCourses());
+      setCourses(getLocalCourses().map(c => ({ ...c, status: c.status || 'active' })));
       setLoading(false);
-    }, 400);
+      setErrorState(false);
+    }, 1000);
   };
 
   useEffect(() => {
     fetchCourses();
   }, []);
-
-  const handleDelete = (id) => {
-    if (!window.confirm('Are you sure you want to delete this course?')) return;
-    setCourses(prev => prev.filter(c => c.id !== id));
-  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -43,32 +49,229 @@ const AdminCourses = () => {
     event.preventDefault();
 
     if (!form.title.trim() || !form.category.trim() || !form.duration.trim()) {
-      setError('Please fill title, category, and duration.');
+      setFormError('Please fill title, category, and duration.');
       return;
     }
 
-    const newCourse = saveLocalCourse({
-      ...form,
-      title: form.title.trim(),
-      description: form.description.trim(),
-      category: form.category.trim(),
-      duration: form.duration.trim()
-    });
+    if (form.id) {
+      const updated = { ...form, title: form.title.trim(), description: form.description.trim(), category: form.category.trim(), duration: form.duration.trim() };
+      setCourses(prev => prev.map(c => c.id === form.id ? { ...c, ...updated } : c));
+      updateLocalCourse(updated);
+      addToast({ type: 'success', message: 'Course updated successfully!' });
+    } else {
+      const newCourse = saveLocalCourse({
+        ...form,
+        title: form.title.trim(),
+        description: form.description.trim(),
+        category: form.category.trim(),
+        duration: form.duration.trim()
+      });
+      setCourses(prev => [{ ...newCourse, status: 'active' }, ...prev]);
+      addToast({ type: 'success', message: 'Course created successfully!' });
+    }
 
-    setCourses(prev => [newCourse, ...prev]);
     setForm(emptyForm);
-    setError('');
+    setFormError('');
     setIsModalOpen(false);
   };
 
-  if (loading) return <div>Loading...</div>;
+  const handleDeleteConfirm = () => {
+    if (courseToDelete) {
+      if (viewMode === 'deleted') {
+        // Permanently delete
+        setCourses(prev => prev.filter(c => c.id !== courseToDelete.id));
+        deleteLocalCourse(courseToDelete.id);
+        addToast({ type: 'success', message: 'Course permanently deleted!' });
+      } else {
+        // Move to deleted
+        setCourses(prev => prev.map(c => c.id === courseToDelete.id ? { ...c, status: 'deleted' } : c));
+        updateLocalCourse({ id: courseToDelete.id, status: 'deleted' });
+        addToast({ type: 'success', message: 'Course moved to trash!' });
+      }
+    }
+    setDeleteModalOpen(false);
+    setCourseToDelete(null);
+  };
+
+  const columns = [
+    { 
+      key: 'title', 
+      label: 'Course', 
+      sortable: true,
+      filterable: false,
+      render: (row, highlight) => (
+        <div className="font-medium text-gray-900 dark:text-white">
+          {highlight(row.title)}
+        </div>
+      )
+    },
+    { 
+      key: 'category', 
+      label: 'Category',
+      sortable: true,
+      filterable: true,
+      render: (row, highlight) => (
+        <span className="text-gray-500 dark:text-gray-300">{highlight(row.category)}</span>
+      )
+    },
+    { 
+      key: 'level', 
+      label: 'Level',
+      sortable: true,
+      filterable: true,
+      render: (row) => (
+        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+          {row.level}
+        </span>
+      )
+    },
+    {
+      key: 'duration',
+      label: 'Duration',
+      sortable: true,
+      filterable: false,
+      render: (row, highlight) => (
+        <span className="text-gray-500 dark:text-gray-300">{highlight(row.duration)}</span>
+      )
+    }
+  ];
+
+  const rowActions = [
+    {
+      label: 'View',
+      onClick: (row) => addToast({ type: 'info', message: `Viewing ${row.title}` })
+    },
+    ...(viewMode === 'active' ? [{
+      label: 'Edit',
+      onClick: (row) => {
+        setForm(row);
+        setIsModalOpen(true);
+      }
+    }] : []),
+    ...(viewMode === 'active' ? [{
+      label: 'Archive',
+      onClick: (row) => {
+        setCourses(prev => prev.map(c => c.id === row.id ? { ...c, status: 'archived' } : c));
+        updateLocalCourse({ id: row.id, status: 'archived' });
+        addToast({ type: 'success', message: `${row.title} archived.` });
+      }
+    }] : []),
+    ...(viewMode !== 'active' ? [{
+      label: 'Restore',
+      onClick: (row) => {
+        setCourses(prev => prev.map(c => c.id === row.id ? { ...c, status: 'active' } : c));
+        updateLocalCourse({ id: row.id, status: 'active' });
+        addToast({ type: 'success', message: `${row.title} restored.` });
+      }
+    }] : []),
+    {
+      label: viewMode === 'deleted' ? 'Delete Permanently' : 'Delete',
+      destructive: true,
+      onClick: (row) => {
+        setCourseToDelete(row);
+        setDeleteModalOpen(true);
+      }
+    }
+  ];
+
+  const bulkActions = [
+    ...(viewMode === 'active' ? [{
+      label: 'Archive Selected',
+      onClick: (selectedIds) => {
+        setCourses(prev => prev.map(c => {
+          if (selectedIds.includes(c.id)) {
+            updateLocalCourse({ id: c.id, status: 'archived' });
+            return { ...c, status: 'archived' };
+          }
+          return c;
+        }));
+        addToast({ type: 'success', message: `${selectedIds.length} courses archived.` });
+      }
+    }] : []),
+    ...(viewMode !== 'active' ? [{
+      label: 'Restore Selected',
+      onClick: (selectedIds) => {
+        setCourses(prev => prev.map(c => {
+          if (selectedIds.includes(c.id)) {
+            updateLocalCourse({ id: c.id, status: 'active' });
+            return { ...c, status: 'active' };
+          }
+          return c;
+        }));
+        addToast({ type: 'success', message: `${selectedIds.length} courses restored.` });
+      }
+    }] : []),
+    {
+      label: 'Export CSV',
+      onClick: (selectedIds) => {
+        const selectedCourses = courses.filter(c => selectedIds.includes(c.id));
+        const headers = ['ID', 'Title', 'Category', 'Level', 'Duration', 'Status'];
+        const csvContent = [
+          headers.join(','),
+          ...selectedCourses.map(c => [c.id, `"${c.title}"`, `"${c.category}"`, c.level, `"${c.duration}"`, c.status].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `courses_export_${new Date().getTime()}.csv`;
+        link.click();
+        addToast({ type: 'success', message: `Exported ${selectedIds.length} courses to CSV.` });
+      },
+      keepSelection: true
+    },
+    {
+      label: viewMode === 'deleted' ? 'Delete Permanently' : 'Delete Selected',
+      destructive: true,
+      onClick: (selectedIds) => {
+        if (viewMode === 'deleted') {
+          setCourses(prev => prev.filter(c => !selectedIds.includes(c.id)));
+          selectedIds.forEach(id => deleteLocalCourse(id));
+          addToast({ type: 'success', message: `${selectedIds.length} courses permanently deleted.` });
+        } else {
+          setCourses(prev => prev.map(c => {
+            if (selectedIds.includes(c.id)) {
+              updateLocalCourse({ id: c.id, status: 'deleted' });
+              return { ...c, status: 'deleted' };
+            }
+            return c;
+          }));
+          addToast({ type: 'success', message: `${selectedIds.length} courses moved to trash.` });
+        }
+      }
+    }
+  ];
+
+  const displayedCourses = courses.filter(c => c.status === viewMode);
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Course Management</h2>
+        <div className="flex space-x-2">
+          <button 
+            onClick={() => setViewMode('active')}
+            className={`px-4 py-2 rounded-lg font-medium transition ${viewMode === 'active' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'}`}
+          >
+            Active
+          </button>
+          <button 
+            onClick={() => setViewMode('archived')}
+            className={`px-4 py-2 rounded-lg font-medium transition ${viewMode === 'archived' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'}`}
+          >
+            Archived
+          </button>
+          <button 
+            onClick={() => setViewMode('deleted')}
+            className={`px-4 py-2 rounded-lg font-medium transition ${viewMode === 'deleted' ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'}`}
+          >
+            Deleted
+          </button>
+        </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            setForm(emptyForm);
+            setIsModalOpen(true);
+          }}
           className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
         >
           <Plus size={18} />
@@ -76,148 +279,144 @@ const AdminCourses = () => {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full whitespace-nowrap">
-            <thead className="bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Course</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Level</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Duration</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {courses.map(course => (
-                <tr key={course.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900 dark:text-white">{course.title}</div>
-                  </td>
-                  <td className="px-6 py-4 text-gray-500 dark:text-gray-300">{course.category}</td>
-                  <td className="px-6 py-4 text-gray-500 dark:text-gray-300">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                      {course.level}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-gray-500 dark:text-gray-300">{course.duration}</td>
-                  <td className="px-6 py-4 text-right text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4">
-                      <Edit2 size={18} />
-                    </button>
-                    <button onClick={() => handleDelete(course.id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
-                      <Trash2 size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <DataTable 
+        columns={columns}
+        data={displayedCourses}
+        isLoading={loading}
+        isError={errorState}
+        globalSearchFields={['title', 'category', 'duration']}
+        onRowAction={rowActions}
+        bulkActions={bulkActions}
+        emptyState={{
+          icon: <BookOpen className="w-12 h-12" />,
+          title: "No Courses Yet",
+          message: "Ready to create your first course?",
+          action: (
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              + Create Course
+            </button>
+          )
+        }}
+        errorState={{
+          title: "Unable to Load Courses",
+          action: (
+            <button onClick={() => window.location.reload()} className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 transition">
+              Retry
+            </button>
+          )
+        }}
+      />
 
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800">
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Add Course</h3>
-              <button
-                onClick={() => {
-                  setIsModalOpen(false);
-                  setError('');
-                }}
-                className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                <X size={20} />
-              </button>
+      {/* Form Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setFormError('');
+        }}
+        title={form.id ? "Edit Course" : "Add Course"}
+        type="default"
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+            <input
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+              placeholder="React Basics"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              rows="3"
+              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+              placeholder="Short course description"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+              <input
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                placeholder="Frontend"
+              />
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
-                <input
-                  name="title"
-                  value={form.title}
-                  onChange={handleChange}
-                  className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                  placeholder="React Basics"
-                />
-              </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Level</label>
+              <select
+                name="level"
+                value={form.level}
+                onChange={handleChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+              >
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                <textarea
-                  name="description"
-                  value={form.description}
-                  onChange={handleChange}
-                  rows="3"
-                  className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                  placeholder="Short course description"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-                  <input
-                    name="category"
-                    value={form.category}
-                    onChange={handleChange}
-                    className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                    placeholder="Frontend"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Level</label>
-                  <select
-                    name="level"
-                    value={form.level}
-                    onChange={handleChange}
-                    className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                  >
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Duration</label>
-                  <input
-                    name="duration"
-                    value={form.duration}
-                    onChange={handleChange}
-                    className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                    placeholder="10 hours"
-                  />
-                </div>
-              </div>
-
-              {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
-
-              <div className="flex justify-end space-x-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsModalOpen(false);
-                    setError('');
-                  }}
-                  className="rounded border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-                >
-                  Save Course
-                </button>
-              </div>
-            </form>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Duration</label>
+              <input
+                name="duration"
+                value={form.duration}
+                onChange={handleChange}
+                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                placeholder="10 hours"
+              />
+            </div>
           </div>
-        </div>
-      )}
+
+          {formError && <p className="text-sm text-red-600 dark:text-red-400">{formError}</p>}
+
+          <div className="flex justify-end space-x-3 pt-4">
+            <button
+              type="button"
+              onClick={() => {
+                setIsModalOpen(false);
+                setFormError('');
+              }}
+              className="rounded border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              Save Course
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <Modal 
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="Are you sure?"
+        type="confirm"
+        isDestructive={true}
+        confirmText="Delete"
+        onConfirm={handleDeleteConfirm}
+      >
+        <p>This will move the course <strong>{courseToDelete?.title}</strong> to the deleted tab. You can permanently delete it from there.</p>
+      </Modal>
     </div>
   );
 };

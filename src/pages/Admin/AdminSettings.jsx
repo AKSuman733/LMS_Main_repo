@@ -2,20 +2,26 @@ import { useState } from 'react';
 import { useAuth } from '../../store/AuthContext';
 import { useTheme } from '../../store/ThemeContext';
 import { Save, X, User, Lock, Bell, Moon, Sun } from 'lucide-react';
+import { useToast } from '../../components/ToastProvider';
 
 const AdminSettings = () => {
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { addToast } = useToast();
 
-  const [formData, setFormData] = useState({
+  const initialState = {
     name: user?.name || 'Administrator',
     email: user?.email || 'admin@uptoskills.ai',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
     emailNotifications: true,
-    systemAlerts: true
-  });
+    systemAlerts: true,
+    defaultHeroVisibility: true,
+    courseDisplayGrid: true
+  };
+
+  const [formData, setFormData] = useState(initialState);
 
   const [saved, setSaved] = useState(false);
 
@@ -29,8 +35,13 @@ const AdminSettings = () => {
 
   const handleSave = (e) => {
     e.preventDefault();
+    if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
+      addToast({ type: 'error', message: 'New password and confirm password do not match.' });
+      return;
+    }
     // Simulate save
     setSaved(true);
+    addToast({ type: 'success', message: 'Settings saved successfully.' });
     setTimeout(() => setSaved(false), 3000);
   };
 
@@ -143,6 +154,28 @@ const AdminSettings = () => {
               </label>
             </div>
             
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Default Hero Visibility</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Show Celebrity Heroes on courses by default.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="defaultHeroVisibility" checked={formData.defaultHeroVisibility} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Course Display Style</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Toggle between Grid and List view for Course Catalog.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="courseDisplayGrid" checked={formData.courseDisplayGrid} onChange={handleChange} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+            
             <hr className="border-gray-200 dark:border-gray-700 my-4" />
             
             <div className="flex items-center justify-between">
@@ -168,6 +201,10 @@ const AdminSettings = () => {
         <div className="flex justify-end space-x-4">
           <button
             type="button"
+            onClick={() => {
+              setFormData(initialState);
+              addToast({ type: 'info', message: 'Changes discarded.' });
+            }}
             className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors flex items-center"
           >
             <X size={16} className="mr-2" />

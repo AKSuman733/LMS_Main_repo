@@ -1,20 +1,157 @@
 import { useState, useEffect } from 'react';
 import { MOCK_STUDENTS } from '../../utils/mockData';
-import { Eye, ArrowLeft, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, AlertCircle, Users } from 'lucide-react';
+import DataTable from '../../components/DataTable';
+import Modal from '../../components/Modal';
+import { useToast } from '../../components/ToastProvider';
 
 const AdminStudents = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [studentToDelete, setStudentToDelete] = useState(null);
+
+  const { addToast } = useToast();
 
   useEffect(() => {
+    // Simulate network delay
     setTimeout(() => {
       setStudents(MOCK_STUDENTS);
       setLoading(false);
-    }, 400);
+      // Simulate error randomly or set to false
+      setError(false); 
+    }, 1000);
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  const handleDeleteConfirm = () => {
+    if (studentToDelete) {
+      setStudents(prev => prev.filter(s => s.id !== studentToDelete.id));
+      addToast({ type: 'success', message: 'Student deleted successfully!' });
+    }
+    setDeleteModalOpen(false);
+    setStudentToDelete(null);
+  };
+
+  const columns = [
+    { 
+      key: 'name', 
+      label: 'Student', 
+      sortable: true,
+      filterable: false,
+      render: (row, highlight) => (
+        <div>
+          <div className="font-medium text-gray-900 dark:text-white">{highlight(row.name)}</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">{highlight(row.email)}</div>
+        </div>
+      )
+    },
+    { 
+      key: 'enrolled_count', 
+      label: 'Enrolled Courses',
+      sortable: true,
+      filterable: true,
+      render: (row) => (
+        <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+          {row.enrolled_count}
+        </span>
+      )
+    },
+    { 
+      key: 'completed_count', 
+      label: 'Completed Courses',
+      sortable: true,
+      filterable: true,
+      render: (row) => (
+        <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+          {row.completed_count}
+        </span>
+      )
+    },
+    {
+      key: 'status',
+      label: 'Status',
+      sortable: true,
+      filterable: true,
+      render: (row) => (
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+          row.status === 'Active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+        }`}>
+          {row.status || 'Active'}
+        </span>
+      )
+    }
+  ];
+
+  const rowActions = [
+    {
+      label: 'View Details',
+      onClick: (row) => setSelectedStudent(row)
+    },
+    {
+      label: 'Edit',
+      onClick: (row) => addToast({ type: 'info', message: `Editing ${row.name}` })
+    },
+    {
+      label: 'Toggle Status',
+      onClick: (row) => {
+        setStudents(prev => prev.map(s => s.id === row.id ? { ...s, status: s.status === 'Active' ? 'Suspended' : 'Active' } : s));
+        addToast({ type: 'success', message: `${row.name} status updated.` });
+      }
+    },
+    {
+      label: 'Archive',
+      onClick: (row) => {
+        addToast({ type: 'success', message: `${row.name} archived.` });
+      }
+    },
+    {
+      label: 'Delete',
+      destructive: true,
+      onClick: (row) => {
+        setStudentToDelete(row);
+        setDeleteModalOpen(true);
+      }
+    }
+  ];
+
+  const bulkActions = [
+    {
+      label: 'Archive Selected',
+      onClick: (selectedIds) => {
+        addToast({ type: 'success', message: `${selectedIds.length} students archived.` });
+      }
+    },
+    {
+      label: 'Export CSV',
+      onClick: (selectedIds) => {
+        const selectedStudents = students.filter(s => selectedIds.includes(s.id));
+        const headers = ['ID', 'Name', 'Email', 'Enrolled', 'Completed', 'Status'];
+        const csvContent = [
+          headers.join(','),
+          ...selectedStudents.map(s => [s.id, `"${s.name}"`, `"${s.email}"`, s.enrolled_count, s.completed_count, s.status].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `students_export_${new Date().getTime()}.csv`;
+        link.click();
+        addToast({ type: 'success', message: `Exported ${selectedIds.length} students to CSV.` });
+      },
+      keepSelection: true
+    },
+    {
+      label: 'Delete Selected',
+      destructive: true,
+      onClick: (selectedIds) => {
+        setStudents(prev => prev.filter(s => !selectedIds.includes(s.id)));
+        addToast({ type: 'success', message: `${selectedIds.length} students deleted.` });
+      }
+    }
+  ];
 
   if (selectedStudent) {
     return (
@@ -38,7 +175,7 @@ const AdminStudents = () => {
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Last Active</h3>
-            <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">{new Date(selectedStudent.last_active).toLocaleDateString()}</p>
+            <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">{selectedStudent.last_active ? new Date(selectedStudent.last_active).toLocaleDateString() : 'N/A'}</p>
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow">
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Account Status</h3>
@@ -46,7 +183,7 @@ const AdminStudents = () => {
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                 selectedStudent.status === 'Active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
               }`}>
-                {selectedStudent.status}
+                {selectedStudent.status || 'Active'}
               </span>
             </p>
           </div>
@@ -107,51 +244,59 @@ const AdminStudents = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Student Progress</h2>
-
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full whitespace-nowrap">
-            <thead className="bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Enrolled Courses</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Completed Courses</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {students.map(student => (
-                <tr key={student.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900 dark:text-white">{student.name}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{student.email}</div>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                      {student.enrolled_count}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                      {student.completed_count}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button 
-                      onClick={() => setSelectedStudent(student)}
-                      className="inline-flex items-center space-x-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium text-sm transition-colors"
-                    >
-                      <Eye size={16} />
-                      <span>View Details</span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Student Directory</h2>
+        <button 
+          onClick={() => addToast({ type: 'success', message: 'Invitation link generated and copied to clipboard!' })}
+          className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          <Users size={18} />
+          <span>Invite User</span>
+        </button>
       </div>
+
+      <DataTable 
+        columns={columns}
+        data={students}
+        isLoading={loading}
+        isError={error}
+        globalSearchFields={['name', 'email']}
+        onRowAction={rowActions}
+        bulkActions={bulkActions}
+        emptyState={{
+          icon: <Users className="w-12 h-12" />,
+          title: "No Users Yet",
+          message: "Invite users to get started.",
+          action: (
+            <button 
+              onClick={() => addToast({ type: 'success', message: 'Invitation link generated and copied to clipboard!' })}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            >
+              + Invite User
+            </button>
+          )
+        }}
+        errorState={{
+          title: "Unable to Load Users",
+          action: (
+            <button onClick={() => window.location.reload()} className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 transition">
+              Retry
+            </button>
+          )
+        }}
+      />
+
+      <Modal 
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="Are you sure?"
+        type="confirm"
+        isDestructive={true}
+        confirmText="Delete"
+        onConfirm={handleDeleteConfirm}
+      >
+        <p>This will permanently delete the student <strong>{studentToDelete?.name}</strong> and remove all their data. This action cannot be undone.</p>
+      </Modal>
     </div>
   );
 };
