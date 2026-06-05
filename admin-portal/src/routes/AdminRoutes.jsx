@@ -3,11 +3,12 @@ import PrivateRoute from "../components/PrivateRoute";
 import AdminLayout from "../components/AdminLayout";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard";
 import AdminStudents from "../pages/Dashboard/AdminStudents";
+import AdminQueries from "../pages/Dashboard/AdminQueries";
 import AdminCourses from "../pages/Dashboard/AdminCourses";
 import AdminInstructors from "../pages/Dashboard/AdminInstructors";
 import AdminEnrollments from "../pages/Dashboard/AdminEnrollments";
 import AdminProfile from "../pages/Dashboard/AdminProfile";
-import AdminReports from "../pages/Dashboard/AdminReports";
+import AdminReports from "../pages/Dashboard/AdminReports"; 
 import AdminReviews from "../pages/Dashboard/AdminReviews";
 import AdminSettings from "../pages/Dashboard/AdminSettings";
 import AdminTasks from "../pages/Dashboard/AdminTasks";
@@ -19,7 +20,7 @@ const AdminRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/register" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route 
         path="/*" 
@@ -29,6 +30,7 @@ const AdminRoutes = () => {
                 <Routes>
                   <Route path="/" element={<AdminDashboard />} />
                   <Route path="/students" element={<AdminStudents />} />
+                  <Route path="/queries" element={<AdminQueries />} />
                   <Route path="/courses" element={<AdminCourses />} />
                   <Route path="/instructors" element={<AdminInstructors />} />
                   <Route path="/enrollments" element={<AdminEnrollments />} />

@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash, Edit2, Search, X, Award, FileText, Sparkles, Upload, User } from "lucide-react";
 import "../../styles/AdminInstructors.css";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 const AdminInstructors = () => {
     const [instructors, setInstructors] = useState([]);
@@ -11,6 +12,10 @@ const AdminInstructors = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentInstructor, setCurrentInstructor] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
+    const [errorData, setErrorData] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [instructorToDelete, setInstructorToDelete] = useState(null);
     
     const [formData, setFormData] = useState({
         name: "",
@@ -25,17 +30,22 @@ const AdminInstructors = () => {
     }, []);
 
     const fetchInstructors = async () => {
+        setLoadingData(true);
+        setErrorData(false);
         try {
             const res = await axios.get("http://localhost:5000/api/instructors");
             setInstructors(res.data);
         } catch (err) {
             console.error("Error fetching instructors:", err);
+            setErrorData(true);
             toast.error("Failed to load instructors.");
+        } finally {
+            setLoadingData(false);
         }
     };
 
     const normalizeUrl = (url) => {
-        if (!url) return "https://images.unsplash.com/photo-1534528741775-53994a69daeb";
+        if (!url) return "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168";
         if (url.startsWith("http")) return url;
         const cleanPath = url.startsWith("/") ? url.slice(1) : url;
         return `http://localhost:5000/${cleanPath}`;
@@ -136,16 +146,23 @@ const AdminInstructors = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this instructor? Any student currently linked to this celebrity will fall back to default settings.")) return;
-        
+    const handleDelete = (id) => {
+        setInstructorToDelete(id);
+        setIsConfirmOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        setIsConfirmOpen(false);
+        if (!instructorToDelete) return;
         try {
-            await axios.delete(`http://localhost:5000/api/instructors/${id}`);
+            await axios.delete(`http://localhost:5000/api/instructors/${instructorToDelete}`);
             toast.success("Instructor removed successfully.");
             fetchInstructors();
         } catch (err) {
             console.error("Error deleting instructor:", err);
             toast.error("Failed to delete instructor.");
+        } finally {
+            setInstructorToDelete(null);
         }
     };
 
@@ -171,58 +188,90 @@ const AdminInstructors = () => {
                     <Search size={18} color="#64748b" />
                     <input
                         type="text"
-                        placeholder="Search instructors by name or specialty..."
+                        placeholder="Search instructors by name or speciality..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
             </div>
 
-            <div className="instructors-grid">
-                <AnimatePresence>
-                    {filteredInstructors.map((inst, index) => (
-                        <motion.div
-                            key={inst.id}
-                            className="instructor-card-premium"
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -30 }}
-                            transition={{ duration: 0.3, delay: index * 0.05 }}
-                        >
-                            <div className="card-image-wrapper">
-                                <img
-                                    src={normalizeUrl(inst.image)}
-                                    alt={inst.name}
-                                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200"; }}
-                                />
-                                <div className="card-actions-overlay">
-                                    <button className="overlay-btn edit" onClick={() => handleOpenModal(inst)} title="Edit Details">
-                                        <Edit2 size={16} />
-                                    </button>
-                                    <button className="overlay-btn delete" onClick={() => handleDelete(inst.id)} title="Delete Instructor">
-                                        <Trash size={16} />
-                                    </button>
+            {errorData ? (
+                <div className="premium-error-state">
+                    <div className="error-icon-box">⚠️</div>
+                    <h3>Unable to Load Instructors</h3>
+                    <p>We encountered an error while connecting to the instructor registry. Please try again.</p>
+                    <div className="error-actions">
+                        <button className="error-retry-btn" onClick={fetchInstructors}>Retry</button>
+                        <a href="mailto:support@uptoskills.com" className="error-support-link">Contact Support</a>
+                    </div>
+                </div>
+            ) : instructors.length === 0 && !loadingData ? (
+                <div className="premium-empty-state">
+                    <div className="empty-icon">🎖️</div>
+                    <h3>No Celebrity Instructors</h3>
+                    <p>Ready to sign up your first star faculty? Add global industry experts to lead the student courses.</p>
+                    <button className="empty-action-btn" onClick={() => handleOpenModal()}>
+                        + Add Instructor
+                    </button>
+                </div>
+            ) : (
+                <div className="instructors-grid">
+                    {loadingData ? (
+                        Array.from({ length: 3 }).map((_, index) => (
+                            <div key={`inst-skel-${index}`} className="instructor-card-premium skeleton-pulse admin-instructors-skeleton-card">
+                                <div className="card-image-wrapper admin-instructors-skeleton-image-wrapper">
                                 </div>
-                                <div className="instructor-card-badge">
-                                    <Award size={12} /> Star Faculty
+                                <div className="card-info admin-instructors-skeleton-card-info">
+                                    <div className="skeleton-bar skeleton-pulse admin-instructors-skeleton-bar-60"></div>
+                                    <div className="skeleton-bar skeleton-pulse admin-instructors-skeleton-bar-90"></div>
+                                    <div className="skeleton-bar skeleton-pulse admin-instructors-skeleton-bar-80"></div>
                                 </div>
                             </div>
-                            
-                            <div className="card-info">
-                                <h3 className="inst-name">{inst.name}</h3>
-                                <p className="inst-bio">{inst.bio || "No professional biography added yet."}</p>
-                            </div>
-                        </motion.div>
-                    ))}
-                    {filteredInstructors.length === 0 && (
+                        ))
+                    ) : (
+                        <AnimatePresence>
+                            {filteredInstructors.map((inst, index) => (
+                                <motion.div
+                                    key={inst.id}
+                                    className="instructor-card-premium"
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -30 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                >
+                                    <div className="card-image-wrapper">
+                                        <img
+                                            src={normalizeUrl(inst.image)}
+                                            alt={inst.name}
+                                            onError={(e) => { e.target.src = "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168?w=200"; }}
+                                        />
+                                        <div className="card-actions-overlay">
+                                            <button className="overlay-btn edit" onClick={() => handleOpenModal(inst)} title="Edit Details">
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button className="overlay-btn delete" onClick={() => handleDelete(inst.id)} title="Delete Instructor">
+                                                <Trash size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="card-info">
+                                        <h3 className="inst-name">{inst.name}</h3>
+                                        <p className="inst-bio">{inst.bio || "No professional biography added yet."}</p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    )}
+                    {!loadingData && filteredInstructors.length === 0 && (
                         <div className="empty-state-wrapper">
                             <Sparkles size={48} className="empty-icon" />
                             <h3>No Instructors Found</h3>
                             <p>Try searching for a different celebrity or click "Add Instructor" to create one.</p>
                         </div>
                     )}
-                </AnimatePresence>
-            </div>
+                </div>
+            )}
 
             <AnimatePresence>
                 {isModalOpen && (
@@ -231,15 +280,17 @@ const AdminInstructors = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        onClick={closeModal}
                     >
                         <motion.div
                             className="admin-modal-card-scrollable instructor-modal-card"
                             initial={{ scale: 0.9, y: 20 }}
                             animate={{ scale: 1, y: 0 }}
                             exit={{ scale: 0.9, y: 20 }}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <div className="modal-header-sticky">
-                                <h2>{currentInstructor ? "Edit Instructor" : "Add Celebrity Faculty"}</h2>
+                                <h2>{currentInstructor ? "Edit Instructor" : "Add Celebrity"}</h2>
                                 <button className="close-modal-btn" onClick={closeModal}><X size={20} /></button>
                             </div>
 
@@ -256,7 +307,7 @@ const AdminInstructors = () => {
                                             placeholder="e.g. Sam Altman, Taylor Swift"
                                         />
                                     </div>
-                                    <div className="form-group" style={{ marginTop: "20px" }}>
+                                    <div className="form-group admin-instructors-form-group-margin">
                                         <label>Biography <span className="required-asterisk">*</span></label>
                                         <textarea
                                             rows="4"
@@ -296,8 +347,7 @@ const AdminInstructors = () => {
                                 </div>
 
                                 <div className="modal-footer-sticky">
-                                    <button type="button" className="modal-discard-btn" onClick={closeModal}>Cancel</button>
-                                    <button type="submit" className="modal-submit-btn" disabled={loading || !!fileError}>
+                                    <button type="submit" className="modal-submit-btn admin-instructors-width-full" disabled={loading || !!fileError}>
                                         {loading ? <><span className="spinner-inline"></span> Processing...</> : (currentInstructor ? "Save Changes" : "Create Instructor")}
                                     </button>
                                 </div>
@@ -306,6 +356,13 @@ const AdminInstructors = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+            <ConfirmationModal
+                isOpen={isConfirmOpen}
+                title="Delete Instructor"
+                message="Are you sure you want to delete this instructor? Any student currently linked to this celebrity will fall back to default settings."
+                onConfirm={confirmDelete}
+                onCancel={() => setIsConfirmOpen(false)}
+            />
         </div>
     );
 };

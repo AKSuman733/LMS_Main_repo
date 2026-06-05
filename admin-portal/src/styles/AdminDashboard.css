@@ -384,3 +384,163 @@
     grid-template-columns: 1fr;
   }
 }
+
+.admin-dashboard-user-initials {
+  background: rgba(56, 189, 248, 0.1) !important;
+  color: var(--color-info) !important;
+}
+
+.admin-dashboard-trending-faculty-card {
+  margin-top: 30px !important;
+  padding: 20px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.admin-dashboard-trending-title {
+  font-size: 0.9rem !important;
+  margin-bottom: 15px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.admin-dashboard-trending-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+}
+
+.admin-dashboard-empty-stats {
+  font-size: 0.8rem !important;
+  color: #64748b !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+.admin-dashboard-inst-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.admin-dashboard-inst-avatar {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.flex-1 {
+  flex: 1 !important;
+}
+
+.admin-dashboard-inst-info-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  font-size: 0.82rem !important;
+  margin-bottom: 4px !important;
+}
+
+.admin-dashboard-inst-name {
+  font-weight: 700 !important;
+  color: white !important;
+}
+
+.admin-dashboard-inst-pct {
+  color: var(--color-primary) !important;
+  font-weight: 800 !important;
+}
+
+.admin-dashboard-inst-count-label {
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.admin-dashboard-inst-progress-bg {
+  height: 6px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 3px !important;
+  overflow: hidden !important;
+}
+
+.admin-dashboard-inst-progress-fill {
+  height: 100% !important;
+  background: linear-gradient(to right, var(--color-primary), var(--color-success)) !important;
+  border-radius: 3px !important;
+}
+
+.admin-dashboard-performance-card {
+  margin-top: 20px !important;
+  padding: 20px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.admin-dashboard-performance-title {
+  font-size: 0.9rem !important;
+  margin-bottom: 15px !important;
+}
+
+.admin-dashboard-performance-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 15px !important;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 20px !important;
+    margin-bottom: 24px;
+  }
+
+  .header-content-v h2 {
+    font-size: 1.6rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card-premium {
+    padding: 20px;
+  }
+
+  .quick-actions-section {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .dashboard-data-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .recent-activity,
+  .course-performance,
+  .recent-reviews-box,
+  .admin-dashboard-trending-faculty-card,
+  .admin-dashboard-performance-card {
+    padding: 20px !important;
+  }
+
+  .admin-dashboard-performance-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .perf-item-premium {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    justify-items: center;
+  }
+
+  .perf-stats-v {
+    justify-content: center;
+  }
+}

@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../store/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Shield, Mail, Lock, User, Check, X as XIcon } from "lucide-react";
+import { Check, X } from "lucide-react";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import Logo from "../../components/Logo/Logo";
 import "../../styles/Auth.css";
 
 const Register = () => {
-    const [formData, setFormData] = useState({ fullName: "", email: "", password: "", role: "admin" });
-    const navigate = useNavigate();
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isEmailTouched = formData.email.length > 0;
+    const isEmailTouched = email.length > 0;
 
     const getPasswordStrength = (pass) => {
         let strength = 0;
@@ -22,13 +27,13 @@ const Register = () => {
         return strength;
     };
 
-    const passStrength = getPasswordStrength(formData.password);
-    const passTouched = formData.password.length > 0;
+    const passStrength = getPasswordStrength(password);
+    const passTouched = password.length > 0;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!isValidEmail(formData.email)) {
+        if (!isValidEmail(email)) {
             toast.error("Please enter a valid email address.");
             return;
         }
@@ -40,9 +45,16 @@ const Register = () => {
 
         setIsLoading(true);
         try {
-            await axios.post("http://localhost:5000/api/auth/register", formData);
-            toast.success("Admin account created successfully! Please login.");
-            navigate("/login");
+            await axios.post("http://localhost:5000/api/auth/register", {
+                username: email,
+                email,
+                password,
+                role: "admin",
+                fullName
+            });
+            toast.success("Admin account created successfully! Logging in.");
+            login({ email, role: "admin", fullName, approved: true });
+            navigate("/");
         } catch (err) {
             toast.error("Registration failed. Email might already be in use.");
         } finally {
@@ -50,75 +62,107 @@ const Register = () => {
         }
     };
 
+    const handleOAuthSignup = (provider) => {
+        const providerLower = provider.toLowerCase();
+        window.location.href = `http://localhost:5000/api/auth/${providerLower}?portal=admin`;
+    };
+
     return (
-        <div className="admin-auth-root">
+        <div className="auth-container">
             <motion.div
-                className="auth-card"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4 }}
+                className="auth-box"
+                initial={{ opacity: 0, scale: 0.9, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
             >
-                <div className="auth-brand">
-                    <Shield size={40} className="brand-icon" />
-                    <h2>Create Admin Account</h2>
-                    <p>Register a new system administrator</p>
+                <div className="auth-logo-center">
+                    <Logo size="large" />
                 </div>
+                <h2 className="auth-title">Register Admin</h2>
+                <p className="auth-subtitle">Create a new system administrator account</p>
 
                 <form onSubmit={handleSubmit}>
-                    <div className="input-group">
-                        <User size={18} className="input-icon" />
+                    <div className="form-group">
+                        <label>Full Name <span className="required-asterisk">*</span></label>
                         <input
                             type="text"
                             placeholder="Full Name"
-                            value={formData.fullName}
-                            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
                             required
                         />
                     </div>
-                    <div className="input-group">
-                        <Mail size={18} className="input-icon" />
+                    <div className="form-group">
+                        <label>Admin Email <span className="required-asterisk">*</span></label>
                         <input
                             type="email"
-                            className={isEmailTouched ? (isValidEmail(formData.email) ? "input-valid" : "input-invalid") : ""}
-                            placeholder="Admin Email"
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className={isEmailTouched ? (isValidEmail(email) ? "input-valid" : "input-invalid") : ""}
+                            placeholder="admin@uptoskills.ai"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
-                    {isEmailTouched && !isValidEmail(formData.email) && <span className="inline-error" style={{ marginBottom: '15px', marginTop: '-10px' }}>Please enter a valid email format.</span>}
-                    <div className="input-group" style={{ marginBottom: passTouched ? '10px' : '20px' }}>
-                        <Lock size={18} className="input-icon" />
+                    {isEmailTouched && !isValidEmail(email) && <span className="inline-error register-inline-error">Please enter a valid email format.</span>}
+                    <div className="form-group">
+                        <label>Master Password <span className="required-asterisk">*</span></label>
                         <input
                             type="password"
-                            placeholder="Master Password"
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
                     {passTouched && (
-                        <div className="password-meter-container" style={{ marginBottom: '20px', textAlign: 'left' }}>
+                        <div className="password-meter-container register-password-meter">
                             <div className="strength-bar-bg">
                                 <div className={`strength-bar-fill ${passStrength === 1 ? 'strength-weak' : passStrength === 2 ? 'strength-medium' : passStrength === 3 ? 'strength-strong' : ''}`}></div>
                             </div>
                             <ul className="password-requirements">
-                                <li className={formData.password.length >= 8 ? 'req-met' : 'req-unmet'}>
-                                    {formData.password.length >= 8 ? <Check size={12} /> : <XIcon size={12} />} At least 8 characters
+                                <li className={password.length >= 8 ? 'req-met' : 'req-unmet'}>
+                                    {password.length >= 8 ? <Check size={12} /> : <X size={12} />} At least 8 characters
                                 </li>
-                                <li className={/\d/.test(formData.password) ? 'req-met' : 'req-unmet'}>
-                                    {/\d/.test(formData.password) ? <Check size={12} /> : <XIcon size={12} />} Contains a number
+                                <li className={/\d/.test(password) ? 'req-met' : 'req-unmet'}>
+                                    {/\d/.test(password) ? <Check size={12} /> : <X size={12} />} Contains a number
                                 </li>
-                                <li className={/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? 'req-met' : 'req-unmet'}>
-                                    {/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? <Check size={12} /> : <XIcon size={12} />} Contains a special character
+                                <li className={/[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'req-met' : 'req-unmet'}>
+                                    {/[!@#$%^&*(),.?":{}|<>]/.test(password) ? <Check size={12} /> : <X size={12} />} Contains a special character
                                 </li>
                             </ul>
                         </div>
                     )}
-                    <button type="submit" className="auth-submit-btn" disabled={isLoading}>
+                    <button type="submit" className="auth-btn" disabled={isLoading}>
                         {isLoading ? <><span className="spinner-inline"></span> Registering...</> : "Register Administrator"}
                     </button>
                 </form>
+
+                <div className="oauth-divider">Or register with</div>
+
+                <div className="oauth-grid">
+                    <button 
+                        type="button" 
+                        className="oauth-btn-premium"
+                        onClick={() => handleOAuthSignup("Google")}
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        Google
+                    </button>
+                    <button 
+                        type="button" 
+                        className="oauth-btn-premium"
+                        onClick={() => handleOAuthSignup("GitHub")}
+                    >
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.479C19.138 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                        GitHub
+                    </button>
+                </div>
+
                 <div className="auth-footer">
                     <p>Already have an account? <Link to="/login">Login here</Link></p>
                 </div>

@@ -298,3 +298,35 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.admin-instructors-skeleton-card {
+  pointer-events: none;
+}
+.admin-instructors-skeleton-image-wrapper {
+  height: 220px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.admin-instructors-skeleton-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+.admin-instructors-skeleton-bar-60 {
+  width: 60%;
+  height: 18px;
+}
+.admin-instructors-skeleton-bar-90 {
+  width: 90%;
+  height: 14px;
+}
+.admin-instructors-skeleton-bar-80 {
+  width: 80%;
+  height: 14px;
+}
+.admin-instructors-form-group-margin {
+  margin-top: 20px;
+}
+.admin-instructors-width-full {
+  width: 100%;
+}

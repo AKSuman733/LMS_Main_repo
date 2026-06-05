@@ -494,3 +494,322 @@
   flex-direction: column;
   gap: 12px;
 }
+
+.admin-table-course-info {
+  color: #e2e8f0;
+}
+
+.admin-course-t-title {
+  color: #e2e8f0;
+  margin: 0;
+  font-weight: 700;
+}
+
+.admin-course-t-sub {
+  color: #94a3b8;
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.admin-course-rating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-course-enrollment-count {
+  color: #cbd5e1;
+  font-weight: 700;
+}
+
+.admin-table-tabs-container {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 4px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-table-tab-btn {
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.admin-table-tab-btn.active {
+  color: white;
+}
+
+.admin-table-tab-btn.inactive {
+  color: #94a3b8;
+}
+
+.admin-table-tab-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-primary);
+  border-radius: 12px;
+  z-index: -1;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.admin-inline-error-info {
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.admin-current-img-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.admin-view-modal-card {
+  max-width: 700px !important;
+  max-height: 85vh !important;
+}
+
+.admin-details-modal-header {
+  padding: 25px 35px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.admin-details-modal-title {
+  font-size: 1.5rem !important;
+  margin: 0 !important;
+}
+
+.admin-details-modal-body {
+  padding: 35px !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 25px !important;
+}
+
+.admin-details-row {
+  display: flex !important;
+  gap: 20px !important;
+  align-items: start !important;
+}
+
+.admin-details-thumb-container {
+  width: 120px !important;
+  height: 80px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.admin-details-thumb-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.admin-details-info-wrap {
+  flex-grow: 1 !important;
+}
+
+.admin-details-info-title {
+  margin: 0 0 8px !important;
+  font-size: 1.3rem !important;
+  color: white !important;
+}
+
+.admin-details-badges-wrap {
+  display: flex !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.admin-details-level-badge {
+  font-size: 0.8rem !important;
+  color: #FF6B35 !important;
+  background: rgba(255, 107, 53, 0.1) !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+  font-weight: 700 !important;
+}
+
+.admin-details-rating-badge {
+  font-size: 0.8rem !important;
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+  font-weight: 700 !important;
+}
+
+.admin-details-text-p {
+  margin: 0 !important;
+  color: #cbd5e1 !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+}
+
+.admin-details-text-p.desc {
+  line-height: 1.6 !important;
+}
+
+.admin-details-two-col {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 20px !important;
+}
+
+.admin-details-list {
+  margin: 0 !important;
+  padding-left: 20px !important;
+  color: #cbd5e1 !important;
+  font-size: 0.9rem !important;
+}
+
+.admin-details-list-item {
+  margin-bottom: 5px !important;
+}
+
+.admin-details-none-text {
+  margin: 0 !important;
+  color: #64748b !important;
+}
+
+.admin-details-curriculum-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: 5px !important;
+  max-height: 150px !important;
+  overflow-y: auto !important;
+}
+
+.admin-details-curriculum-item {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.admin-details-curriculum-item-title {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+
+.admin-details-curriculum-item-duration {
+  font-size: 0.8rem !important;
+  color: #94a3b8 !important;
+}
+
+.admin-details-modal-footer {
+  padding: 20px 35px !important;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    margin-bottom: 24px;
+  }
+
+  .add-course-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .table-search {
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  .form-grid-2, 
+  .form-grid-3, 
+  .admin-modal-form-grid, 
+  .admin-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 16px !important;
+  }
+
+  .admin-modal-card-scrollable {
+    max-height: 95vh;
+    border-radius: 20px;
+  }
+
+  .modal-header-sticky, 
+  .modal-footer-sticky {
+    padding: 16px 20px !important;
+  }
+
+  .modal-header-sticky h2 {
+    font-size: 1.3rem;
+  }
+
+  .curriculum-edit-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .modal-discard-btn, 
+  .modal-submit-btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px;
+    justify-content: center;
+  }
+
+  .modal-footer-sticky {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .admin-details-header-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px !important;
+  }
+
+  .admin-details-thumb-container {
+    width: 100% !important;
+    height: 150px !important;
+  }
+}

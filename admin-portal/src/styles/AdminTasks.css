@@ -1,0 +1,215 @@
+.admin-tasks-status-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.admin-tasks-status-badge-flex {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.admin-tasks-submission-time {
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+.admin-tasks-status-badge-progress {
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--color-info);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.admin-tasks-status-badge-pending {
+    background: rgba(249, 115, 22, 0.1);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.admin-tasks-btn-create {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.admin-tasks-skel-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+}
+.admin-tasks-skel-title {
+    height: 16px;
+}
+.admin-tasks-skel-desc {
+    height: 12px;
+}
+.admin-tasks-skel-assignee-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.admin-tasks-skel-avatar {
+    border-radius: 50%;
+}
+.admin-tasks-skel-height-14 {
+    height: 14px;
+}
+.admin-tasks-skel-status {
+    height: 24px;
+    border-radius: 12px;
+}
+.admin-tasks-skel-actions {
+    display: flex;
+    gap: 8px;
+}
+.admin-tasks-skel-action-btn {
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+}
+.admin-tasks-empty-row {
+    text-align: center;
+    padding: 40px;
+    color: #64748b;
+}
+.admin-tasks-details-cell {
+    padding: 8px 0;
+}
+.admin-tasks-item-title {
+    margin: 0 0 4px;
+    font-weight: 700;
+    color: white;
+}
+.admin-tasks-item-desc {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.admin-tasks-item-submission {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+.admin-tasks-item-submission-label {
+    color: var(--color-success);
+    font-weight: 600;
+}
+.admin-tasks-item-submission-link {
+    color: var(--color-info);
+    text-decoration: none;
+}
+.admin-tasks-assignee-name {
+    display: block;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+}
+.admin-tasks-unassigned {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+.admin-tasks-due-date {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+.admin-tasks-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+.admin-tasks-modal-card {
+    background: var(--color-surface);
+    width: 100%;
+    max-width: 500px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+.admin-tasks-modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.admin-tasks-modal-title {
+    margin: 0;
+    color: white;
+    font-size: 1.2rem;
+}
+.admin-tasks-modal-form {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.admin-tasks-modal-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+.admin-tasks-modal-input {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
+}
+.admin-tasks-modal-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
+    resize: vertical;
+}
+.admin-tasks-modal-grid-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.admin-tasks-modal-option {
+    background: var(--color-surface);
+}
+.admin-tasks-modal-submit-container {
+    margin-top: 10px;
+}
+.admin-tasks-modal-btn-submit {
+    width: 100%;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .admin-tasks-modal-grid-row {
+    grid-template-columns: 1fr;
+  }
+}

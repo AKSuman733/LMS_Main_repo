@@ -1,0 +1,136 @@
+.resources-page-root {
+    padding: 100px 20px;
+    min-height: 100vh;
+    background: var(--color-background);
+    color: white;
+}
+
+.resources-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.resources-back-link {
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    margin-bottom: 40px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.resources-back-link:hover {
+    opacity: 0.8;
+}
+
+.resources-header {
+    margin-bottom: 60px;
+}
+
+.resources-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.resources-title-highlight {
+    background: linear-gradient(to right, var(--color-primary), var(--color-success));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.resources-subtitle {
+    color: #94a3b8;
+    font-size: 1.25rem;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+.resources-card {
+    background: var(--color-surface);
+    padding: 40px;
+    border-radius: 32px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.resources-section-title-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.resources-icon-wrapper {
+    background: rgba(249, 115, 22, 0.1);
+    padding: 15px;
+    border-radius: 16px;
+}
+
+.resources-section-heading {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.resources-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.resources-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.03);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.resources-row:hover {
+    background: rgba(255,255,255,0.04);
+    transform: translateY(-2px);
+}
+
+.resources-item-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.resources-item-icon {
+    font-size: 1.2rem;
+}
+
+.resources-item-name {
+    margin: 0;
+    font-weight: 600;
+}
+
+.resources-item-meta {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.resources-download-btn {
+    background: var(--color-primary);
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
+}
+
+.resources-download-btn:hover {
+    opacity: 0.9;
+}

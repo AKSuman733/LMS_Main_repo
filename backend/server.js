@@ -6,16 +6,18 @@ const { Pool } = require("pg");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const fs = require("fs");
+const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use("/assets", express.static(path.join(__dirname, "../public/assets")));
-app.use("/uploads", express.static(path.join(__dirname, "../public/assets/uploads")));
+app.use("/assets", express.static(path.join(__dirname, "../student-portal/public/assets")));
+app.use("/uploads", express.static(path.join(__dirname, "../student-portal/public/assets/uploads")));
 
-const uploadDir = path.join(__dirname, "../public/assets/uploads");
+const uploadDir = path.join(__dirname, "../student-portal/public/assets/uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -62,57 +64,6 @@ const initDb = async () => {
             )
         `);
 
-        const instructorCountRes = await pool.query("SELECT COUNT(*) FROM instructors");
-        if (parseInt(instructorCountRes.rows[0].count) === 0) {
-            console.log("Seeding default celebrity instructors...");
-            const defaultInstructors = [
-                {
-                    name: "Sam Altman",
-                    bio: "CEO of OpenAI & Tech Visionary. Leading the charge on artificial general intelligence and the future of human-AI collaboration.",
-                    image: "assets/instructors/sam-altman.jpg"
-                },
-                {
-                    name: "Taylor Swift",
-                    bio: "Global Pop Sensation & Songwriter. Multiple Grammy winner teaching you narrative storytelling, creative flow, and building a global community.",
-                    image: "assets/instructors/taylor-swift.jpg"
-                },
-                {
-                    name: "Virat Kohli",
-                    bio: "Indian Cricket Legend & Athletic Icon. Renowned for elite discipline, high-performance coaching, and supreme mental toughness under pressure.",
-                    image: "assets/instructors/virat-kohli.jpg"
-                },
-                {
-                    name: "Arijit Singh",
-                    bio: "Voice of a Generation & Music Director. Teaching vocal excellence, soulful storytelling through music, and the architecture of chart-topping hits.",
-                    image: "assets/instructors/arijit-singh.jpg"
-                },
-                {
-                    name: "Elon Musk",
-                    bio: "CEO of Tesla & SpaceX. Futurist teaching multi-planetary engineering, clean energy architectures, and hyper-scale manufacturing workflows.",
-                    image: "assets/instructors/elon-musk.avif"
-                },
-                {
-                    name: "Cristiano Ronaldo",
-                    bio: "Global Football Icon & Elite Athlete. Teaching hyper-focused performance, physical conditioning architectures, and a champion's daily winning mindset.",
-                    image: "assets/instructors/cristiano-ronaldo.jpg"
-                },
-                {
-                    name: "Shah Rukh Khan",
-                    bio: "King of Bollywood & Charismatic Actor. Teaching public speaking, presence mastery, theatrical expression, and global brand building.",
-                    image: "assets/instructors/shah-rukh-khan.jpg"
-                },
-                {
-                    name: "Dwayne Johnson",
-                    bio: "The Rock - Hollywood Icon & Action Superstar. Teaching fitness design, entrepreneurial scaling, and maximum athletic charisma.",
-                    image: "assets/instructors/dwayne-johnson.jpg"
-                }
-            ];
-
-            for (const inst of defaultInstructors) {
-                await pool.query("INSERT INTO instructors (name, bio, image) VALUES ($1, $2, $3)", [inst.name, inst.bio, inst.image]);
-            }
-        }
-
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
@@ -126,6 +77,7 @@ const initDb = async () => {
         `);
         await pool.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS approved BOOLEAN DEFAULT FALSE");
         await pool.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS selected_instructor_id INTEGER REFERENCES instructors(id) ON DELETE SET NULL");
+        await pool.query("ALTER TABLE users ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS enrollments (
@@ -165,7 +117,8 @@ const initDb = async () => {
                 curriculum JSONB DEFAULT '[]'
             )
         `);
-
+        await pool.query("ALTER TABLE enrollments ADD COLUMN IF NOT EXISTS archived BOOLEAN DEFAULT FALSE");
+        await pool.query("ALTER TABLE courses ADD COLUMN IF NOT EXISTS archived BOOLEAN DEFAULT FALSE");
         await pool.query(`
             CREATE TABLE IF NOT EXISTS reviews (
                 id SERIAL PRIMARY KEY,
@@ -190,6 +143,30 @@ const initDb = async () => {
             )
         `);
         await pool.query("ALTER TABLE tasks ADD COLUMN IF NOT EXISTS submission_link TEXT");
+        await pool.query("ALTER TABLE tasks ADD COLUMN IF NOT EXISTS submitted_at TIMESTAMP");
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS queries (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                subject TEXT NOT NULL,
+                message TEXT NOT NULL,
+                reply TEXT DEFAULT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                replied_at TIMESTAMP DEFAULT NULL
+            )
+        `);
+
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS otps (
+                email TEXT PRIMARY KEY,
+                otp TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `);
+
         console.log("Database tables verified.");
     } catch (err) {
         console.error("DB Init Error:", err.message);
@@ -199,7 +176,7 @@ const initDb = async () => {
 initDb();
 
 app.get("/api/courses", async (req, res) => {
-    const { search, topic, level } = req.query;
+    const { search, topic, level, includeArchived } = req.query;
     let query = `
         SELECT c.*, 
         COALESCE(r.avg_rating, 0) as rating, 
@@ -221,6 +198,9 @@ app.get("/api/courses", async (req, res) => {
         WHERE 1=1`;
     let params = [];
     let idx = 1;
+    if (includeArchived !== "true") {
+        query += ` AND c.archived = FALSE`;
+    }
     if (search) { query += ` AND (c.title ILIKE $${idx} OR c.instructor_name ILIKE $${idx})`; params.push(`%${search}%`); idx++; }
     if (topic) { query += ` AND c.topic = ANY($${idx})`; params.push(Array.isArray(topic) ? topic : [topic]); idx++; }
     if (level) { query += ` AND c.level = ANY($${idx})`; params.push(Array.isArray(level) ? level : [level]); idx++; }
@@ -370,7 +350,7 @@ app.get("/api/enrollments/:userId", async (req, res) => {
             SELECT e.*, c.title as course_title, c.image as course_image, c.instructor_name, c.duration, c.curriculum 
             FROM enrollments e 
             JOIN courses c ON e.course_id = c.id 
-            WHERE e.user_id = $1`, [req.params.userId]);
+            WHERE e.user_id = $1 AND e.archived = FALSE`, [req.params.userId]);
         res.json(result.rows);
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
@@ -407,9 +387,9 @@ app.get("/api/enrollment/:id", async (req, res) => {
             JOIN courses c ON e.course_id = c.id 
             JOIN users u ON e.user_id = u.id
             LEFT JOIN instructors i ON u.selected_instructor_id = i.id
-            WHERE e.id = $1`, [req.params.id]);
+            WHERE e.id = $1 AND e.archived = FALSE`, [req.params.id]);
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: "Enrollment not found" });
+            return res.status(404).json({ error: "Enrollment not found or archived" });
         }
         res.json(result.rows[0]);
     } catch (err) { res.status(500).json({ error: err.message }); }
@@ -418,7 +398,7 @@ app.get("/api/enrollment/:id", async (req, res) => {
 app.get("/api/enrollments/:userId/:courseId", async (req, res) => {
     try {
         const result = await pool.query(
-            "SELECT * FROM enrollments WHERE user_id = $1 AND course_id = $2",
+            "SELECT * FROM enrollments WHERE user_id = $1 AND course_id = $2 AND archived = FALSE",
             [req.params.userId, req.params.courseId]
         );
         res.json(result.rows[0]);
@@ -589,6 +569,121 @@ app.get("/api/admin/stats", async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.get("/api/admin/reports", async (req, res) => {
+    try {
+        const enrollmentsRes = await pool.query("SELECT id, enrolled_at FROM enrollments");
+        const enrollments = enrollmentsRes.rows;
+
+        const studentsRes = await pool.query("SELECT id, created_at FROM users WHERE role = 'student'");
+        const students = studentsRes.rows;
+
+        const now = new Date();
+
+        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+        const enrollsThisWeek = enrollments.filter(e => new Date(e.enrolled_at) >= sevenDaysAgo).length;
+        const enrollsLastWeek = enrollments.filter(e => {
+            const d = new Date(e.enrolled_at);
+            return d >= fourteenDaysAgo && d < sevenDaysAgo;
+        }).length;
+
+        let enrollmentGrowth = 0;
+        if (enrollsLastWeek > 0) {
+            enrollmentGrowth = Math.round(((enrollsThisWeek - enrollsLastWeek) / enrollsLastWeek) * 100);
+        } else if (enrollsThisWeek > 0) {
+            enrollmentGrowth = 100;
+        }
+
+        const studentsThisWeek = students.filter(s => new Date(s.created_at || 0) >= sevenDaysAgo).length;
+        const studentsLastWeek = students.filter(s => {
+            const d = new Date(s.created_at || 0);
+            return d >= fourteenDaysAgo && d < sevenDaysAgo;
+        }).length;
+
+        let studentGrowth = 0;
+        if (studentsLastWeek > 0) {
+            studentGrowth = Math.round(((studentsThisWeek - studentsLastWeek) / studentsLastWeek) * 100);
+        } else if (studentsThisWeek > 0) {
+            studentGrowth = 100;
+        }
+
+        const weeklyTrends = [];
+        for (let i = 5; i >= 0; i--) {
+            const start = new Date(now.getTime() - (i + 1) * 7 * 24 * 60 * 60 * 1000);
+            const end = new Date(now.getTime() - i * 7 * 24 * 60 * 60 * 1000);
+            const label = `W-${i === 0 ? "Now" : i}`;
+            const value = enrollments.filter(e => {
+                const d = new Date(e.enrolled_at);
+                return d >= start && d < end;
+            }).length;
+            weeklyTrends.push({ label, value });
+        }
+
+        const monthlyTrends = [];
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        for (let i = 5; i >= 0; i--) {
+            const tempDate = new Date();
+            tempDate.setMonth(now.getMonth() - i);
+            const year = tempDate.getFullYear();
+            const month = tempDate.getMonth();
+            
+            const label = `${monthNames[month]} ${String(year).slice(-2)}`;
+            const value = enrollments.filter(e => {
+                const d = new Date(e.enrolled_at);
+                return d.getMonth() === month && d.getFullYear() === year;
+            }).length;
+            monthlyTrends.push({ label, value });
+        }
+
+        const completedRes = await pool.query("SELECT COUNT(*) FROM enrollments WHERE completed = true");
+        const completedCount = parseInt(completedRes.rows[0].count);
+        const totalEnrollments = enrollments.length;
+        const completionRate = totalEnrollments > 0 ? Math.round((completedCount / totalEnrollments) * 100) : 0;
+
+        const coursesRes = await pool.query(`
+            SELECT c.title, COUNT(e.id) as enrollment_count
+            FROM courses c
+            LEFT JOIN enrollments e ON e.course_id = c.id
+            GROUP BY c.id, c.title
+            ORDER BY enrollment_count DESC
+            LIMIT 5
+        `);
+
+        const recentActivityRes = await pool.query(`
+            SELECT e.id, u.full_name, c.title, e.enrolled_at, e.progress, e.completed
+            FROM enrollments e
+            JOIN users u ON e.user_id = u.id
+            JOIN courses c ON e.course_id = c.id
+            ORDER BY e.enrolled_at DESC
+            LIMIT 5
+        `);
+
+        const topicRes = await pool.query(`
+            SELECT c.topic, COUNT(e.id) as enrollment_count, ROUND(AVG(COALESCE(e.progress, 0))) as avg_progress, COUNT(DISTINCT c.id) as course_count
+            FROM courses c
+            LEFT JOIN enrollments e ON e.course_id = c.id
+            GROUP BY c.topic
+            ORDER BY enrollment_count DESC
+        `);
+
+        res.json({
+            enrollmentsCount: totalEnrollments,
+            enrollmentGrowth,
+            studentsCount: students.length,
+            studentGrowth,
+            completionRate,
+            weeklyTrends,
+            monthlyTrends,
+            topCourses: coursesRes.rows,
+            recentActivity: recentActivityRes.rows,
+            topicDistribution: topicRes.rows
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.get("/api/admin/users", async (req, res) => {
     try { const result = await pool.query("SELECT id, full_name, email, role, approved FROM users ORDER BY id DESC"); res.json(result.rows); } catch (err) { res.status(500).json({ error: err.message }); }
 });
@@ -597,6 +692,29 @@ app.put("/api/admin/users/:id/approve", async (req, res) => {
     try {
         await pool.query("UPDATE users SET approved = TRUE WHERE id = $1", [req.params.id]);
         res.json({ message: "User approved" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/admin/users/:id/suspend", async (req, res) => {
+    try {
+        await pool.query("UPDATE users SET approved = FALSE WHERE id = $1", [req.params.id]);
+        res.json({ message: "User suspended" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/admin/users/:id", async (req, res) => {
+    const { full_name, email } = req.body;
+    try {
+        const result = await pool.query(
+            "UPDATE users SET full_name = $1, email = $2, username = $2 WHERE id = $3 RETURNING *",
+            [full_name, email, req.params.id]
+        );
+        if (result.rows.length === 0) return res.status(404).json({ error: "User not found" });
+        res.json(result.rows[0]);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -614,8 +732,58 @@ app.get("/api/admin/enrollments", async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
+app.put("/api/admin/enrollments/:id", async (req, res) => {
+    const { progress, completed } = req.body;
+    try {
+        const result = await pool.query(
+            "UPDATE enrollments SET progress = $1, completed = $2 WHERE id = $3 RETURNING *",
+            [progress, completed, req.params.id]
+        );
+        if (result.rows.length === 0) return res.status(404).json({ error: "Enrollment not found" });
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.delete("/api/admin/enrollments/:id", async (req, res) => {
     try { await pool.query("DELETE FROM enrollments WHERE id = $1", [req.params.id]); res.json({ message: "Deleted" }); } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.put("/api/admin/courses/:id/archive", async (req, res) => {
+    try {
+        await pool.query("UPDATE courses SET archived = TRUE WHERE id = $1", [req.params.id]);
+        res.json({ message: "Course archived" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/admin/courses/:id/unarchive", async (req, res) => {
+    try {
+        await pool.query("UPDATE courses SET archived = FALSE WHERE id = $1", [req.params.id]);
+        res.json({ message: "Course unarchived" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/admin/enrollments/:id/archive", async (req, res) => {
+    try {
+        await pool.query("UPDATE enrollments SET archived = TRUE WHERE id = $1", [req.params.id]);
+        res.json({ message: "Enrollment archived" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/admin/enrollments/:id/unarchive", async (req, res) => {
+    try {
+        await pool.query("UPDATE enrollments SET archived = FALSE WHERE id = $1", [req.params.id]);
+        res.json({ message: "Enrollment unarchived" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 app.delete("/api/admin/users/:id", async (req, res) => {
@@ -706,10 +874,319 @@ app.put("/api/tasks/:taskId/status", async (req, res) => {
     const { status, submission_link } = req.body;
     try {
         await pool.query(
-            "UPDATE tasks SET status = $1, submission_link = COALESCE($2, submission_link) WHERE id = $3",
+            "UPDATE tasks SET status = $1, submission_link = $2, submitted_at = CASE WHEN $1 = 'completed' THEN CURRENT_TIMESTAMP ELSE NULL END WHERE id = $3",
             [status, submission_link, req.params.taskId]
         );
         res.json({ message: "Task status updated" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post("/api/queries", async (req, res) => {
+    const { user_id, name, email, subject, message } = req.body;
+    try {
+        const result = await pool.query(
+            "INSERT INTO queries (user_id, name, email, subject, message) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+            [user_id || null, name, email, subject, message]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get("/api/queries/user/:userId", async (req, res) => {
+    try {
+        const result = await pool.query(
+            "SELECT * FROM queries WHERE user_id = $1 ORDER BY created_at DESC",
+            [req.params.userId]
+        );
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/queries/:id", async (req, res) => {
+    const { subject, message } = req.body;
+    try {
+        const result = await pool.query(
+            "UPDATE queries SET subject = $1, message = $2 WHERE id = $3 RETURNING *",
+            [subject, message, req.params.id]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.delete("/api/queries/:id", async (req, res) => {
+    try {
+        await pool.query("DELETE FROM queries WHERE id = $1", [req.params.id]);
+        res.json({ message: "Query deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get("/api/admin/queries", async (req, res) => {
+    try {
+        const result = await pool.query(
+            "SELECT q.*, u.full_name as student_name FROM queries q LEFT JOIN users u ON q.user_id = u.id ORDER BY q.created_at DESC"
+        );
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put("/api/admin/queries/:id/reply", async (req, res) => {
+    const { reply } = req.body;
+    try {
+        const result = await pool.query(
+            "UPDATE queries SET reply = $1, replied_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *",
+            [reply, req.params.id]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port: parseInt(process.env.SMTP_PORT || "587"),
+    secure: process.env.SMTP_SECURE === "true", // true for 465, false for other ports
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+    }
+});
+
+app.post("/api/auth/forgot-password", async (req, res) => {
+    const { email } = req.body;
+    try {
+        const userRes = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (userRes.rows.length === 0) {
+            return res.status(404).json({ error: "No user found with this email" });
+        }
+        
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        await pool.query(
+            "INSERT INTO otps (email, otp, created_at) VALUES ($1, $2, CURRENT_TIMESTAMP) ON CONFLICT (email) DO UPDATE SET otp = $2, created_at = CURRENT_TIMESTAMP",
+            [email, otp]
+        );
+        
+        console.log("\n==============================================");
+        console.log(`[OTP VERIFICATION CODE FOR ${email}]: ${otp}`);
+        console.log("==============================================\n");
+
+        if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+            const mailOptions = {
+                from: `"UptoSkills AI Learn" <${process.env.SMTP_USER}>`,
+                to: email,
+                subject: "UptoSkills Verification Code",
+                html: `
+                    <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #0b0f19; color: white; padding: 30px; border-radius: 16px; max-width: 500px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.08);">
+                        <h2 style="color: #f97316; margin-top: 0; text-align: center;">UptoSkills AI Learn</h2>
+                        <p style="color: #cbd5e1; font-size: 1rem; line-height: 1.5;">You requested a verification OTP to reset your password. Please enter this code in the portal to set a new password:</p>
+                        <div style="background: rgba(249, 115, 22, 0.1); border: 1px solid #f97316; padding: 15px; border-radius: 12px; text-align: center; margin: 25px 0;">
+                            <span style="font-size: 32px; font-weight: 800; letter-spacing: 6px; color: #f97316;">${otp}</span>
+                        </div>
+                        <p style="color: #94a3b8; font-size: 0.8rem; line-height: 1.4; margin: 0;">This code will expire in 15 minutes. If you did not make this request, please secure your account immediately.</p>
+                    </div>
+                `
+            };
+            await transporter.sendMail(mailOptions);
+            res.json({ message: "OTP verification code sent to your email" });
+        } else {
+            console.warn("[SMTP WARNING] SMTP_USER or SMTP_PASS not set in backend/.env!");
+            res.json({ message: "OTP verification code printed in backend console logs (configure SMTP to send email)", otp: otp });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get("/api/auth/google", (req, res) => {
+    const client_id = process.env.GOOGLE_CLIENT_ID;
+    const redirect_uri = "http://localhost:5000/api/auth/google/callback";
+    const state = req.query.portal || "student";
+    if (!client_id) {
+        return res.send(`
+            <html>
+              <body style="font-family: sans-serif; background: #0b0f19; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+                <div style="background: #151d30; padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center; max-width: 500px;">
+                  <h2 style="color: #f97316; margin-top: 0;">Google OAuth Client ID Missing</h2>
+                  <p style="color: #cbd5e1; line-height: 1.6;">Please add your <strong>GOOGLE_CLIENT_ID</strong> and <strong>GOOGLE_CLIENT_SECRET</strong> to your <code>backend/.env</code> file to enable real Google authentication.</p>
+                  <button onclick="window.close()" style="background: #f97316; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px;">Close Window</button>
+                </div>
+              </body>
+            </html>
+        `);
+    }
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&response_type=code&scope=profile%20email&state=${state}`;
+    res.redirect(url);
+});
+
+app.get("/api/auth/google/callback", async (req, res) => {
+    const { code, state } = req.query;
+    const client_id = process.env.GOOGLE_CLIENT_ID;
+    const client_secret = process.env.GOOGLE_CLIENT_SECRET;
+    const redirect_uri = "http://localhost:5000/api/auth/google/callback";
+    const portalUrl = state === "admin" ? "http://localhost:5174/login" : "http://localhost:5173/login";
+
+    try {
+        const tokenRes = await axios.post("https://oauth2.googleapis.com/token", {
+            code,
+            client_id,
+            client_secret,
+            redirect_uri,
+            grant_type: "authorization_code"
+        });
+
+        const { access_token } = tokenRes.data;
+
+        const userRes = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
+            headers: { Authorization: `Bearer ${access_token}` }
+        });
+
+        const googleUser = userRes.data;
+        const email = googleUser.email;
+        const fullName = googleUser.name || googleUser.given_name || "Google User";
+        const role = state === "admin" ? "admin" : "student";
+
+        let dbUser = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (dbUser.rows.length === 0) {
+            const hash = await bcrypt.hash(Math.random().toString(36), 10);
+            const isApproved = role === "admin";
+            const insertRes = await pool.query(
+                "INSERT INTO users (username, email, password, role, full_name, approved) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                [email, email, hash, role, fullName, isApproved]
+            );
+            dbUser = insertRes;
+        }
+
+        const authenticatedUser = {
+            id: dbUser.rows[0].id,
+            email: dbUser.rows[0].email,
+            role: dbUser.rows[0].role,
+            fullName: dbUser.rows[0].full_name,
+            approved: dbUser.rows[0].approved,
+            provider: "google"
+        };
+
+        res.redirect(`${portalUrl}?oauth_success=true&user=${encodeURIComponent(JSON.stringify(authenticatedUser))}`);
+    } catch (err) {
+        console.error("Google OAuth Error:", err.message);
+        res.redirect(`${portalUrl}?oauth_error=${encodeURIComponent(err.message)}`);
+    }
+});
+
+app.get("/api/auth/github", (req, res) => {
+    const client_id = process.env.GITHUB_CLIENT_ID;
+    const redirect_uri = "http://localhost:5000/api/auth/github/callback";
+    const state = req.query.portal || "student";
+    if (!client_id) {
+        return res.send(`
+            <html>
+              <body style="font-family: sans-serif; background: #0b0f19; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+                <div style="background: #151d30; padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); text-align: center; max-width: 500px;">
+                  <h2 style="color: #f97316; margin-top: 0;">GitHub OAuth Client ID Missing</h2>
+                  <p style="color: #cbd5e1; line-height: 1.6;">Please add your <strong>GITHUB_CLIENT_ID</strong> and <strong>GITHUB_CLIENT_SECRET</strong> to your <code>backend/.env</code> file to enable real GitHub authentication.</p>
+                  <button onclick="window.close()" style="background: #f97316; color: white; border: none; padding: 10px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px;">Close Window</button>
+                </div>
+              </body>
+            </html>
+        `);
+    }
+    const url = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=user:email&state=${state}`;
+    res.redirect(url);
+});
+
+app.get("/api/auth/github/callback", async (req, res) => {
+    const { code, state } = req.query;
+    const client_id = process.env.GITHUB_CLIENT_ID;
+    const client_secret = process.env.GITHUB_CLIENT_SECRET;
+    const portalUrl = state === "admin" ? "http://localhost:5174/login" : "http://localhost:5173/login";
+
+    try {
+        const tokenRes = await axios.post("https://github.com/login/oauth/access_token", {
+            client_id,
+            client_secret,
+            code
+        }, {
+            headers: { Accept: "application/json" }
+        });
+
+        const { access_token } = tokenRes.data;
+
+        const userRes = await axios.get("https://api.github.com/user", {
+            headers: { Authorization: `Bearer ${access_token}` }
+        });
+
+        let email = userRes.data.email || `${userRes.data.login}@github.com`;
+        const fullName = userRes.data.name || userRes.data.login || "GitHub User";
+        const role = state === "admin" ? "admin" : "student";
+
+        let dbUser = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+        if (dbUser.rows.length === 0) {
+            const hash = await bcrypt.hash(Math.random().toString(36), 10);
+            const isApproved = role === "admin";
+            const insertRes = await pool.query(
+                "INSERT INTO users (username, email, password, role, full_name, approved) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+                [email, email, hash, role, fullName, isApproved]
+            );
+            dbUser = insertRes;
+        }
+
+        const authenticatedUser = {
+            id: dbUser.rows[0].id,
+            email: dbUser.rows[0].email,
+            role: dbUser.rows[0].role,
+            fullName: dbUser.rows[0].full_name,
+            approved: dbUser.rows[0].approved,
+            provider: "github"
+        };
+
+        res.redirect(`${portalUrl}?oauth_success=true&user=${encodeURIComponent(JSON.stringify(authenticatedUser))}`);
+    } catch (err) {
+        console.error("GitHub OAuth Error:", err.message);
+        res.redirect(`${portalUrl}?oauth_error=${encodeURIComponent(err.message)}`);
+    }
+});
+
+app.post("/api/auth/verify-otp", async (req, res) => {
+    const { email, otp } = req.body;
+    try {
+        const result = await pool.query("SELECT * FROM otps WHERE email = $1", [email]);
+        if (result.rows.length === 0) {
+            return res.status(400).json({ error: "Invalid email or OTP expired" });
+        }
+        if (result.rows[0].otp === otp.trim()) {
+            res.json({ success: true, message: "OTP verified successfully" });
+        } else {
+            res.status(400).json({ error: "Invalid OTP code" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post("/api/auth/reset-password", async (req, res) => {
+    const { email, password, otp } = req.body;
+    try {
+        const otpRes = await pool.query("SELECT * FROM otps WHERE email = $1", [email]);
+        if (otpRes.rows.length === 0 || otpRes.rows[0].otp !== otp.trim()) {
+            return res.status(400).json({ error: "OTP verification failed or expired" });
+        }
+
+        const hash = await bcrypt.hash(password, 10);
+        await pool.query("UPDATE users SET password = $1 WHERE email = $2", [hash, email]);
+        await pool.query("DELETE FROM otps WHERE email = $1", [email]);
+        res.json({ message: "Password updated successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

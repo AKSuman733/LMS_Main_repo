@@ -10,16 +10,18 @@ const AdminDashboard = () => {
     const [recentUsers, setRecentUsers] = useState([]);
 
     const normalizeUrl = (url) => {
-        if (!url) return "https://images.unsplash.com/photo-1534528741775-53994a69daeb";
+        if (!url) return "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168";
         if (url.startsWith("http")) return url;
         const cleanPath = url.startsWith("/") ? url.slice(1) : url;
         return `http://localhost:5000/${cleanPath}`;
     };
     const [popularCourses, setPopularCourses] = useState([]);
     const [recentReviews, setRecentReviews] = useState([]);
+    const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoadingData(true);
             try {
                 const [statsRes, usersRes, coursesRes] = await Promise.all([
                     axios.get("http://localhost:5000/api/admin/stats"),
@@ -39,10 +41,19 @@ const AdminDashboard = () => {
                 setRecentReviews(revRes.data);
             } catch (err) {
                 console.error("Error fetching dashboard data:", err);
+            } finally {
+                setLoadingData(false);
             }
         };
         fetchData();
     }, []);
+
+    if (loadingData) return (
+        <div className="premium-page-loader skeleton-pulse">
+            <div className="spinner-ring"></div>
+            <p className="loader-text">Loading... Platform Overview</p>
+        </div>
+    );
 
     const cards = [
         { title: "Total Active Users", value: stats.totalStudents, icon: Users, color: "var(--color-success)" },
@@ -99,7 +110,7 @@ const AdminDashboard = () => {
                 <Link to="/students" state={{ openModal: true }} className="qa-btn qa-primary">
                     <Users size={18} /> + New Student
                 </Link>
-                <Link to="/students" className="qa-btn qa-secondary">
+                <Link to="/students" state={{ activeTab: "archived" }} className="qa-btn qa-secondary">
                     <Clock size={18} /> Approve Pending
                 </Link>
                 <Link to="/reports" className="qa-btn qa-secondary">
@@ -116,7 +127,7 @@ const AdminDashboard = () => {
                         <div className="activity-list">
                             {recentUsers.map((u) => (
                                 <div key={u.id} className="activity-item">
-                                    <div className="user-initials" style={{ background: 'rgba(56, 189, 248, 0.1)', color: 'var(--color-info)' }}>{u.full_name?.charAt(0)}</div>
+                                    <div className="user-initials admin-dashboard-user-initials">{u.full_name?.charAt(0)}</div>
                                     <div className="item-info">
                                         <p className="item-title">{u.full_name}</p>
                                         <p className="item-sub">{u.email}</p>
@@ -157,7 +168,6 @@ const AdminDashboard = () => {
                                 <div className="perf-rank">#{i + 1}</div>
                                 <div className="perf-info">
                                     <p>{c.title}</p>
-                                    <span>{c.instructor_name}</span>
                                 </div>
                                 <div className="perf-stats-v">
                                     <div className="p-stat">
@@ -174,29 +184,29 @@ const AdminDashboard = () => {
                         ))}
                     </div>
 
-                    <div className="platform-health" style={{ marginTop: '30px', padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                        <h4 style={{ fontSize: '0.9rem', marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '8px' }}><Star size={16} color="var(--color-primary)" fill="var(--color-primary)" /> Trending Celebrity Faculty</h4>
-                        <div className="trending-inst-list" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div className="platform-health admin-dashboard-trending-faculty-card">
+                        <h4 className="admin-dashboard-trending-title"><Star size={16} color="var(--color-primary)" fill="var(--color-primary)" /> Trending Celebrity Faculty</h4>
+                        <div className="trending-inst-list admin-dashboard-trending-list">
                             {(!stats.instructorStats || stats.instructorStats.length === 0) ? (
-                                <p style={{ fontSize: '0.8rem', color: '#64748b', textAlign: 'center', margin: 0 }}>No instructor stats available.</p>
+                                <p className="admin-dashboard-empty-stats">No instructor stats available.</p>
                             ) : stats.instructorStats.slice(0, 4).map((inst) => {
                                 const total = stats.totalStudents || 1;
                                 const pct = Math.round((parseInt(inst.student_count) || 0) / total * 100);
                                 return (
-                                    <div key={inst.id} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div key={inst.id} className="admin-dashboard-inst-row">
                                         <img 
                                             src={normalizeUrl(inst.image)} 
                                             alt={inst.name} 
-                                            style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid rgba(255,255,255,0.08)' }} 
-                                            onError={(e) => e.target.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"} 
+                                            className="admin-dashboard-inst-avatar"
+                                            onError={(e) => e.target.src = "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168?w=100"} 
                                         />
-                                        <div style={{ flex: 1 }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '4px' }}>
-                                                <span style={{ fontWeight: 700, color: 'white' }}>{inst.name}</span>
-                                                <span style={{ color: 'var(--color-primary)', fontWeight: 800 }}>{pct}% <span style={{ color: '#64748b', fontWeight: 500 }}>({inst.student_count} learners)</span></span>
+                                        <div className="flex-1">
+                                            <div className="admin-dashboard-inst-info-row">
+                                                <span className="admin-dashboard-inst-name">{inst.name}</span>
+                                                <span className="admin-dashboard-inst-pct">{pct}% <span className="admin-dashboard-inst-count-label">({inst.student_count} learners)</span></span>
                                             </div>
-                                            <div style={{ height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden' }}>
-                                                <div style={{ height: '100%', width: `${pct}%`, background: 'linear-gradient(to right, var(--color-primary), var(--color-success))', borderRadius: '3px' }}></div>
+                                            <div className="admin-dashboard-inst-progress-bg">
+                                                <div className="admin-dashboard-inst-progress-fill" style={{ width: `${pct}%` }}></div>
                                             </div>
                                         </div>
                                     </div>
@@ -205,9 +215,9 @@ const AdminDashboard = () => {
                         </div>
                     </div>
 
-                    <div className="platform-health" style={{ marginTop: '20px', padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                        <h4 style={{ fontSize: '0.9rem', marginBottom: '15px' }}>Platform Performance</h4>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                    <div className="platform-health admin-dashboard-performance-card">
+                        <h4 className="admin-dashboard-performance-title">Platform Performance</h4>
+                        <div className="admin-dashboard-performance-grid">
                             <div className="health-stat">
                                 <span>Uptime</span>
                                 <strong>99.9%</strong>

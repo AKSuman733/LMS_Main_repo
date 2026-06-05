@@ -1,53 +1,42 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./Logo/Logo";
 import { AuthContext } from "../store/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import "../styles/AdminLayout.css";
 
+import {
+    LayoutDashboard,
+    Users,
+    BookOpen,
+    GraduationCap,
+    LogOut,
+    Bell,
+    X,
+    ChevronDown,
+    BarChart2,
+    MessageSquare,
+    Settings,
+    UserCircle,
+    ClipboardList,
+    Award
+} from "lucide-react";
+
 const Icons = {
-    LayoutDashboard: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-    ),
-    Users: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-    ),
-    BookOpen: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-    ),
-    GraduationCap: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-    ),
-    LogOut: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-    ),
-    Bell: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-    ),
-    X: ({ size = 14 }) => (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-    ),
-    ChevronDown: ({ size = 14, className = "" }) => (
-        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 12 15 18 9"></polyline></svg>
-    ),
-    BarChart: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-    ),
-    MessageSquare: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-    ),
-    Settings: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-    ),
-    UserCircle: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
-    ),
-    ClipboardList: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
-    ),
-    Award: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-    )
+    LayoutDashboard: (props) => <LayoutDashboard size={20} {...props} />,
+    Users: (props) => <Users size={20} {...props} />,
+    BookOpen: (props) => <BookOpen size={20} {...props} />,
+    GraduationCap: (props) => <GraduationCap size={20} {...props} />,
+    LogOut: (props) => <LogOut size={20} {...props} />,
+    Bell: (props) => <Bell size={20} {...props} />,
+    X: ({ size = 20, ...props }) => <X size={size} {...props} />,
+    ChevronDown: ({ size = 20, className = "", ...props }) => <ChevronDown size={size} className={className} {...props} />,
+    BarChart: (props) => <BarChart2 size={20} {...props} />,
+    MessageSquare: (props) => <MessageSquare size={20} {...props} />,
+    Settings: (props) => <Settings size={20} {...props} />,
+    UserCircle: (props) => <UserCircle size={20} {...props} />,
+    ClipboardList: (props) => <ClipboardList size={20} {...props} />,
+    Award: (props) => <Award size={20} {...props} />
 };
 
 const AdminLayout = ({ children }) => {
@@ -56,11 +45,32 @@ const AdminLayout = ({ children }) => {
     const { user, logout } = useContext(AuthContext);
     const [isNotifOpen, setIsNotifOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    useEffect(() => {
+        setIsSidebarOpen(false);
+    }, [location.pathname]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest(".profile-rel")) {
+                setIsProfileOpen(false);
+            }
+            if (!event.target.closest(".notif-rel")) {
+                setIsNotifOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const menuItems = [
         { name: "Overview", path: "/", icon: Icons.LayoutDashboard },
         { name: "Students", path: "/students", icon: Icons.Users },
         { name: "Tasks", path: "/tasks", icon: Icons.ClipboardList },
+        { name: "Queries", path: "/queries", icon: Icons.MessageSquare },
         { name: "Courses", path: "/courses", icon: Icons.BookOpen },
         { name: "Instructors", path: "/instructors", icon: Icons.Award },
         { name: "Enrollments", path: "/enrollments", icon: Icons.GraduationCap },
@@ -77,10 +87,14 @@ const AdminLayout = ({ children }) => {
 
     return (
         <div className="admin-layout-root">
-            <aside className="admin-sidebar">
+            {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
+            <aside className={`admin-sidebar ${isSidebarOpen ? "open" : ""}`}>
                 <div className="sidebar-brand">
                     <Logo size="small" />
                     <span className="admin-badge-text">Admin Panel</span>
+                    <button className="sidebar-close-btn" onClick={() => setIsSidebarOpen(false)}>
+                        <Icons.X size={20} />
+                    </button>
                 </div>
 
                 <nav className="sidebar-nav">
@@ -110,6 +124,9 @@ const AdminLayout = ({ children }) => {
             <main className="admin-main-content">
                 <header className="admin-top-bar">
                     <div className="top-bar-left">
+                        <button className="mobile-hamburger-btn" onClick={() => setIsSidebarOpen(true)}>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        </button>
                         <h2 className="page-title">
                             {menuItems.find(m => m.path === location.pathname)?.name || "Dashboard"}
                         </h2>
@@ -127,7 +144,7 @@ const AdminLayout = ({ children }) => {
                                         initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                        transition={{ duration: 0.2 }}
+                                        transition={{ duration: 0.15, ease: "easeOut" }}
                                     >
                                         <div className="notif-head">
                                             <h4>System Notifications</h4>
@@ -163,17 +180,17 @@ const AdminLayout = ({ children }) => {
                                         initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                         animate={{ opacity: 1, y: 0, scale: 1 }}
                                         exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                        transition={{ duration: 0.2 }}
+                                        transition={{ duration: 0.15, ease: "easeOut" }}
                                     >
                                         <div className="dropdown-user-header">
                                             <p className="p-name">{user?.fullName}</p>
                                             <p className="p-email">{user?.email}</p>
                                         </div>
                                         <div className="dropdown-divider"></div>
-                                        <Link to="/profile" style={{ textDecoration: 'none' }} onClick={() => setIsProfileOpen(false)}>
+                                        <Link to="/profile" className="admin-layout-link-unstyled" onClick={() => setIsProfileOpen(false)}>
                                             <button className="p-action">My Profile</button>
                                         </Link>
-                                        <Link to="/forgot-password" style={{ textDecoration: 'none' }} onClick={() => setIsProfileOpen(false)}>
+                                        <Link to="/forgot-password" className="admin-layout-link-unstyled" onClick={() => setIsProfileOpen(false)}>
                                             <button className="p-action">Change Password</button>
                                         </Link>
                                         <div className="dropdown-divider"></div>

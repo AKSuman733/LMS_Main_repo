@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Trash2, Edit2, Search, X, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import "../../styles/AdminStudents.css";
+import "../../styles/AdminTasks.css";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 const AdminTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -20,9 +22,26 @@ const AdminTasks = () => {
         status: "pending"
     });
 
+    const [loadingData, setLoadingData] = useState(true);
+    const [errorData, setErrorData] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState(null);
+
+    const loadInitialData = async () => {
+        setLoadingData(true);
+        setErrorData(false);
+        try {
+            await Promise.all([fetchTasks(), fetchUsers()]);
+        } catch (err) {
+            console.error("Error loading task data:", err);
+            setErrorData(true);
+        } finally {
+            setLoadingData(false);
+        }
+    };
+
     useEffect(() => {
-        fetchTasks();
-        fetchUsers();
+        loadInitialData();
     }, []);
 
     const fetchTasks = async () => {
@@ -95,23 +114,63 @@ const AdminTasks = () => {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this task?")) return;
+    const handleDelete = (id) => {
+        setTaskToDelete(id);
+        setIsConfirmOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        setIsConfirmOpen(false);
+        if (!taskToDelete) return;
         try {
-            await axios.delete(`http://localhost:5000/api/admin/tasks/${id}`);
+            await axios.delete(`http://localhost:5000/api/admin/tasks/${taskToDelete}`);
             toast.success("Task deleted successfully!");
             fetchTasks();
         } catch (err) {
             console.error("Error deleting task:", err);
             toast.error("Error deleting task.");
+        } finally {
+            setTaskToDelete(null);
         }
     };
 
-    const getStatusBadge = (status) => {
+    const getStatusBadge = (status, task) => {
+        const isLate = task.due_date && task.submitted_at && new Date(task.submitted_at) > new Date(task.due_date);
         switch (status) {
-            case 'completed': return <span className="status-badge active" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><CheckCircle size={12} /> Completed</span>;
-            case 'in_progress': return <span className="status-badge" style={{ background: 'rgba(56, 189, 248, 0.1)', color: 'var(--color-info)', display: 'flex', alignItems: 'center', gap: '4px' }}><Clock size={12} /> In Progress</span>;
-            default: return <span className="status-badge" style={{ background: 'rgba(249, 115, 22, 0.1)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '4px' }}><AlertCircle size={12} /> Pending</span>;
+            case 'completed': 
+                return (
+                    <div className="admin-tasks-status-col">
+                        <span 
+                            className="status-badge active admin-tasks-status-badge-flex" 
+                            style={{ 
+                                background: isLate ? 'rgba(239, 68, 68, 0.1)' : '', 
+                                color: isLate ? '#ef4444' : '' 
+                            }}
+                        >
+                            <CheckCircle size={12} /> {isLate ? "Completed (Late)" : "Completed"}
+                        </span>
+                        {task.submitted_at && (
+                            <span 
+                                className="admin-tasks-submission-time"
+                                style={{ color: isLate ? '#ef4444' : 'var(--color-success)' }}
+                            >
+                                Sub: {new Date(task.submitted_at).toLocaleString([], {dateStyle: 'short', timeStyle: 'short'})}
+                            </span>
+                        )}
+                    </div>
+                );
+            case 'in_progress': 
+                return (
+                    <span className="status-badge admin-tasks-status-badge-progress">
+                        <Clock size={12} /> In Progress
+                    </span>
+                );
+            default: 
+                return (
+                    <span className="status-badge admin-tasks-status-badge-pending">
+                        <AlertCircle size={12} /> Pending
+                    </span>
+                );
         }
     };
 
@@ -128,7 +187,7 @@ const AdminTasks = () => {
                     <p>Assign, track, and manage student responsibilities and deadlines.</p>
                 </div>
                 <button
-                    style={{ background: 'var(--color-primary)', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+                    className="admin-tasks-btn-create"
                     onClick={() => handleOpenModal()}
                 >
                     <Plus size={18} /> Create Task
@@ -140,134 +199,191 @@ const AdminTasks = () => {
                     <Search size={18} color="#64748b" />
                     <input
                         type="text"
-                        placeholder="Search tasks by title or assignee..."
+                        placeholder="Search tasks by title or student..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
             </div>
 
-            <div className="admin-table-wrapper">
-                <table className="admin-data-table">
-                    <thead>
-                        <tr>
-                            <th>Task Details</th>
-                            <th>Assignee</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredTasks.length === 0 ? (
-                            <tr><td colSpan="5" style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>No tasks found. Create one to get started.</td></tr>
-                        ) : filteredTasks.map(task => (
-                            <tr key={task.id}>
-                                <td>
-                                    <div style={{ padding: '8px 0' }}>
-                                        <p style={{ margin: '0 0 4px', fontWeight: 700, color: 'white' }}>{task.title}</p>
-                                        <p style={{ margin: 0, fontSize: '0.8rem', color: '#94a3b8', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{task.description || "No description provided."}</p>
-                                        {task.submission_link && (
-                                            <div style={{ marginTop: '8px', fontSize: '0.85rem' }}>
-                                                <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>Submission: </span>
-                                                <a href={task.submission_link} target="_blank" rel="noreferrer" style={{ color: 'var(--color-info)', textDecoration: 'none' }}>View Link</a>
-                                            </div>
-                                        )}
-                                    </div>
-                                </td>
-                                <td>
-                                    {task.assigned_to_name ? (
-                                        <div className="table-user-info">
-                                            <div className="user-avatar-small">{task.assigned_to_name.charAt(0)}</div>
-                                            <div>
-                                                <span style={{ display: 'block', fontSize: '0.9rem', color: '#e2e8f0' }}>{task.assigned_to_name}</span>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <span style={{ color: '#64748b', fontSize: '0.9rem', fontStyle: 'italic' }}>Unassigned</span>
-                                    )}
-                                </td>
-                                <td>
-                                    <span style={{ color: '#cbd5e1', fontSize: '0.9rem' }}>
-                                        {task.due_date ? new Date(task.due_date).toLocaleDateString() : "No deadline"}
-                                    </span>
-                                </td>
-                                <td>{getStatusBadge(task.status)}</td>
-                                <td>
-                                    <div className="table-actions">
-                                        <button className="action-btn" onClick={() => handleOpenModal(task)} title="Edit Task">
-                                            <Edit2 size={16} />
-                                        </button>
-                                        <button className="action-btn suspend" onClick={() => handleDelete(task.id)} title="Delete Task">
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                </td>
+            {errorData ? (
+                <div className="premium-error-state">
+                    <div className="error-icon-box">⚠️</div>
+                    <h3>Unable to Load Tasks</h3>
+                    <p>We encountered an error while connecting to the task management service. Please try again.</p>
+                    <div className="error-actions">
+                        <button className="error-retry-btn" onClick={loadInitialData}>Retry</button>
+                        <a href="mailto:support@uptoskills.com" className="error-support-link">Contact Support</a>
+                    </div>
+                </div>
+            ) : tasks.length === 0 && !loadingData ? (
+                <div className="premium-empty-state">
+                    <div className="empty-icon">📝</div>
+                    <h3>No Tasks Assigned</h3>
+                    <p>Need to assign responsibilities? Give responsibilities to students by creating a new student task.</p>
+                    <button className="empty-action-btn" onClick={() => handleOpenModal()}>
+                        + Create Task
+                    </button>
+                </div>
+            ) : (
+                <div className="admin-table-wrapper">
+                    <table className="admin-data-table">
+                        <thead>
+                            <tr>
+                                <th>Task Details</th>
+                                <th>Assignee</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {loadingData ? (
+                                Array.from({ length: 5 }).map((_, index) => (
+                                    <tr key={`task-skel-${index}`} className="skeleton-row">
+                                        <td>
+                                            <div className="admin-tasks-skel-cell">
+                                                <div className="skeleton-bar skeleton-pulse admin-tasks-skel-title" style={{ width: '60%' }} />
+                                                <div className="skeleton-bar skeleton-pulse" style={{ width: '85%', height: '12px' }} />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="admin-tasks-skel-assignee-row">
+                                                <div className="skeleton-checkbox skeleton-pulse admin-tasks-skel-avatar" />
+                                                <div className="skeleton-bar skeleton-pulse admin-tasks-skel-height-14" style={{ width: '60px' }} />
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div className="skeleton-bar skeleton-pulse admin-tasks-skel-height-14" style={{ width: '70px' }} />
+                                        </td>
+                                        <td>
+                                            <div className="skeleton-bar skeleton-pulse admin-tasks-skel-status" style={{ width: '80px' }} />
+                                        </td>
+                                        <td>
+                                            <div className="admin-tasks-skel-actions">
+                                                <div className="skeleton-checkbox skeleton-pulse admin-tasks-skel-action-btn" />
+                                                <div className="skeleton-checkbox skeleton-pulse admin-tasks-skel-action-btn" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : filteredTasks.length === 0 ? (
+                                <tr><td colSpan="5" className="admin-tasks-empty-row">No tasks found. Create one to get started.</td></tr>
+                            ) : filteredTasks.map(task => (
+                                <tr key={task.id}>
+                                    <td>
+                                        <div className="admin-tasks-details-cell">
+                                            <p className="admin-tasks-item-title">{task.title}</p>
+                                            <p className="admin-tasks-item-desc">{task.description || "No description provided."}</p>
+                                            {task.submission_link && (
+                                                <div className="admin-tasks-item-submission">
+                                                    <span className="admin-tasks-item-submission-label">Submission: </span>
+                                                    <a href={task.submission_link} target="_blank" rel="noreferrer" className="admin-tasks-item-submission-link">View Link</a>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {task.assigned_to_name ? (
+                                            <div className="table-user-info">
+                                                <div className="user-avatar-small">{task.assigned_to_name.charAt(0)}</div>
+                                                <div>
+                                                    <span className="admin-tasks-assignee-name">{task.assigned_to_name}</span>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <span className="admin-tasks-unassigned">Unassigned</span>
+                                        )}
+                                    </td>
+                                    <td>
+                                        <span className="admin-tasks-due-date">
+                                            {task.due_date ? new Date(task.due_date).toLocaleDateString() : "No deadline"}
+                                        </span>
+                                    </td>
+                                    <td>{getStatusBadge(task.status, task)}</td>
+                                    <td>
+                                        <div className="table-actions">
+                                            <button className="action-btn" onClick={() => handleOpenModal(task)} title="Edit Task">
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button className="action-btn suspend" onClick={() => handleDelete(task.id)} title="Delete Task">
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
             <AnimatePresence>
                 {isModalOpen && (
-                    <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+                    <div className="admin-tasks-modal-overlay" onClick={closeModal}>
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            style={{ background: 'var(--color-surface)', width: '100%', maxWidth: '500px', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' }}
+                            className="admin-tasks-modal-card"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <h3 style={{ margin: 0, color: 'white', fontSize: '1.2rem' }}>{currentTask ? "Edit Task" : "Create New Task"}</h3>
-                                <button onClick={closeModal} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}><X size={20} /></button>
+                            <div className="admin-tasks-modal-header">
+                                <h3 className="admin-tasks-modal-title">{currentTask ? "Edit Task" : "Create New Task"}</h3>
+                                <button className="close-modal-btn" onClick={closeModal}><X size={20} /></button>
                             </div>
 
-                            <form onSubmit={handleSubmit} style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <form onSubmit={handleSubmit} className="admin-tasks-modal-form">
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>Task Title</label>
-                                    <input type="text" required value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', color: 'white', fontSize: '0.95rem' }} placeholder="e.g. Develop new UI components" />
+                                    <label className="admin-tasks-modal-label">Task Title</label>
+                                    <input type="text" required value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="admin-tasks-modal-input" placeholder="e.g. Develop new UI components" />
                                 </div>
 
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>Description</label>
-                                    <textarea rows="3" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', color: 'white', fontSize: '0.95rem', resize: 'vertical' }} placeholder="Provide task details and expectations..." />
+                                    <label className="admin-tasks-modal-label">Description</label>
+                                    <textarea rows="3" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="admin-tasks-modal-textarea" placeholder="Provide task details and expectations..." />
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                                <div className="admin-tasks-modal-grid-row">
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>Assign To</label>
-                                        <select value={formData.assigned_to} onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', color: 'white', fontSize: '0.95rem' }}>
-                                            <option value="" style={{ background: 'var(--color-surface)' }}>Unassigned</option>
+                                        <label className="admin-tasks-modal-label">Assign To</label>
+                                        <select value={formData.assigned_to} onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })} className="admin-tasks-modal-input">
+                                            <option value="" className="admin-tasks-modal-option">Unassigned</option>
                                             {users.map(u => (
-                                                <option key={u.id} value={u.id} style={{ background: 'var(--color-surface)' }}>{u.full_name}</option>
+                                                <option key={u.id} value={u.id} className="admin-tasks-modal-option">{u.full_name}</option>
                                             ))}
                                         </select>
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>Due Date</label>
-                                        <input type="date" value={formData.due_date} onChange={(e) => setFormData({ ...formData, due_date: e.target.value })} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', color: 'white', fontSize: '0.95rem' }} />
+                                        <label className="admin-tasks-modal-label">Due Date</label>
+                                        <input type="date" value={formData.due_date} onChange={(e) => setFormData({ ...formData, due_date: e.target.value })} className="admin-tasks-modal-input" />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.85rem', color: '#94a3b8', marginBottom: '8px', fontWeight: 600 }}>Status</label>
-                                    <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', color: 'white', fontSize: '0.95rem' }}>
-                                        <option value="pending" style={{ background: 'var(--color-surface)' }}>Pending</option>
-                                        <option value="in_progress" style={{ background: 'var(--color-surface)' }}>In Progress</option>
-                                        <option value="completed" style={{ background: 'var(--color-surface)' }}>Completed</option>
+                                    <label className="admin-tasks-modal-label">Status</label>
+                                    <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="admin-tasks-modal-input">
+                                        <option value="pending" className="admin-tasks-modal-option">Pending</option>
+                                        <option value="in_progress" className="admin-tasks-modal-option">In Progress</option>
+                                        <option value="completed" className="admin-tasks-modal-option">Completed</option>
                                     </select>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
-                                    <button type="button" onClick={closeModal} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', padding: '12px', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-                                    <button type="submit" disabled={loading} style={{ flex: 1, background: 'var(--color-primary)', color: 'white', border: 'none', padding: '12px', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}>{loading ? "Saving..." : "Save Task"}</button>
+                                <div className="admin-tasks-modal-submit-container">
+                                    <button type="submit" disabled={loading} className="admin-tasks-modal-btn-submit">{loading ? "Saving..." : "Save Task"}</button>
                                 </div>
                             </form>
                         </motion.div>
                     </div>
                 )}
             </AnimatePresence>
+            <ConfirmationModal
+                isOpen={isConfirmOpen}
+                title="Delete Task"
+                message="Are you sure you want to delete this task?"
+                onConfirm={confirmDelete}
+                onCancel={() => setIsConfirmOpen(false)}
+            />
         </div>
     );
 };

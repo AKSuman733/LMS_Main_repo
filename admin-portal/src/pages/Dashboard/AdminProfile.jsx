@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { User, Mail, Shield, CheckCircle, ArrowRight } from "lucide-react";
+import "../../styles/AdminProfile.css";
 
 const AdminProfile = () => {
     const { user, login } = useContext(AuthContext);
@@ -37,7 +38,7 @@ const AdminProfile = () => {
     };
 
     return (
-        <div className="admin-profile-page" style={{ maxWidth: '800px' }}>
+        <div className="admin-profile-page admin-profile-container">
             <header className="page-header">
                 <div className="header-text">
                     <h2>Admin Account</h2>
@@ -46,57 +47,41 @@ const AdminProfile = () => {
             </header>
 
             <motion.div
-                className="profile-card-premium"
+                className="profile-card-premium admin-profile-card"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                style={{ background: 'var(--color-surface)', padding: '40px', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
             >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '40px' }}>
-                    <div style={{
-                        width: '100px',
-                        height: '100px',
-                        background: 'linear-gradient(135deg, var(--color-primary) 0%, #ea580c 100%)',
-                        borderRadius: '28px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '3.5rem',
-                        fontWeight: 900,
-                        color: 'white',
-                        boxShadow: '0 10px 20px rgba(249, 115, 22, 0.2)'
-                    }}>
+                <div className="admin-profile-header-info">
+                    <div className="admin-profile-avatar">
                         {user?.fullName?.charAt(0)}
                     </div>
                     <div>
-                        <h3 style={{ fontSize: '2rem', marginBottom: '8px', letterSpacing: '-0.5px' }}>{user?.fullName}</h3>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span style={{ background: 'rgba(249, 115, 22, 0.1)', color: 'var(--color-primary)', padding: '6px 16px', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 800, border: '1px solid rgba(249, 115, 22, 0.2)' }}>MASTER ADMINISTRATOR</span>
-                            <span style={{ color: 'var(--color-success)', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', fontWeight: 600 }}><CheckCircle size={14} /> Verified</span>
+                        <h3 className="admin-profile-name">{user?.fullName}</h3>
+                        <div className="admin-profile-badge-row">
+                            <span className="admin-profile-badge">ADMINISTRATOR</span>
+                            <span className="admin-profile-verified"><CheckCircle size={14} /> Verified</span>
                         </div>
                     </div>
                 </div>
 
-                <form onSubmit={handleUpdate} style={{ display: 'grid', gap: '25px' }}>
+                <form onSubmit={handleUpdate} className="admin-profile-form">
                     <div className="form-group-admin">
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.75rem', marginBottom: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>Full Name</label>
-                        <div style={{ position: 'relative' }}>
-                            <User style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: isEditing ? 'var(--color-primary)' : '#64748b' }} size={20} />
+                        <label className="admin-profile-form-label">Full Name</label>
+                        <div className="admin-profile-input-wrapper">
+                            <User 
+                                className="admin-profile-input-icon" 
+                                style={{ color: isEditing ? 'var(--color-primary)' : '#64748b' }} 
+                                size={20} 
+                            />
                             <input
                                 type="text"
                                 value={formData.fullName}
                                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                                 readOnly={!isEditing}
+                                className="admin-profile-input"
                                 style={{
-                                    width: '100%',
                                     background: isEditing ? 'rgba(15,23,42,0.8)' : 'rgba(255,255,255,0.02)',
                                     border: isEditing ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.05)',
-                                    padding: '18px 18px 18px 55px',
-                                    borderRadius: '18px',
-                                    color: 'white',
-                                    fontSize: '1rem',
-                                    transition: 'all 0.3s ease',
-                                    outline: 'none',
-                                    boxSizing: 'border-box'
                                 }}
                                 placeholder="Enter your full name"
                             />
@@ -104,32 +89,29 @@ const AdminProfile = () => {
                     </div>
 
                     <div className="form-group-admin">
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.75rem', marginBottom: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>Email Address</label>
-                        <div style={{ position: 'relative' }}>
-                            <Mail style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: isEditing ? 'var(--color-primary)' : '#64748b' }} size={20} />
+                        <label className="admin-profile-form-label">Email Address</label>
+                        <div className="admin-profile-input-wrapper">
+                            <Mail 
+                                className="admin-profile-input-icon" 
+                                style={{ color: isEditing ? 'var(--color-primary)' : '#64748b' }} 
+                                size={20} 
+                            />
                             <input
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 readOnly={!isEditing}
+                                className="admin-profile-input"
                                 style={{
-                                    width: '100%',
                                     background: isEditing ? 'rgba(15,23,42,0.8)' : 'rgba(255,255,255,0.02)',
                                     border: isEditing ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.05)',
-                                    padding: '18px 18px 18px 55px',
-                                    borderRadius: '18px',
-                                    color: 'white',
-                                    fontSize: '1rem',
-                                    transition: 'all 0.3s ease',
-                                    outline: 'none',
-                                    boxSizing: 'border-box'
                                 }}
                                 placeholder="name@uptoskills.com"
                             />
                         </div>
                     </div>
 
-                    <div style={{ marginTop: '30px', display: 'flex', gap: '20px' }}>
+                    <div className="admin-profile-btn-row">
                         {!isEditing ? (
                             <button
                                 type="button"
@@ -137,48 +119,31 @@ const AdminProfile = () => {
                                     e.preventDefault();
                                     setIsEditing(true);
                                 }}
-                                style={{ background: 'var(--color-primary)', color: 'white', border: 'none', padding: '16px 35px', borderRadius: '18px', fontWeight: 800, cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 15px rgba(249, 115, 22, 0.3)', transition: 'all 0.2s' }}
+                                className="admin-profile-btn-edit"
                             >
                                 Edit Account
                             </button>
                         ) : (
                             <>
-                                <button type="submit" disabled={loading} style={{ background: 'var(--color-success)', color: 'white', border: 'none', padding: '16px 35px', borderRadius: '18px', fontWeight: 800, cursor: 'pointer', fontSize: '1rem', boxShadow: '0 4px 15px rgba(16, 185, 129, 0.3)' }}>{loading ? "Saving Changes..." : "Apply Updates"}</button>
-                                <button type="button" onClick={() => setIsEditing(false)} style={{ background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', padding: '16px 35px', borderRadius: '18px', fontWeight: 800, cursor: 'pointer', fontSize: '1rem' }}>Discard</button>
+                                <button type="submit" disabled={loading} className="admin-profile-btn-apply">{loading ? "Saving Changes..." : "Apply Updates"}</button>
+                                <button type="button" onClick={() => setIsEditing(false)} className="admin-profile-btn-discard">Discard</button>
                             </>
                         )}
                     </div>
                 </form>
 
-                <div style={{ marginTop: '60px', padding: '30px', background: 'rgba(15, 23, 42, 0.4)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div className="security-section-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
-                        <div style={{ flex: '1', minWidth: '280px' }}>
-                            <h4 style={{ margin: '0 0 10px', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.2rem', fontWeight: 800 }}>
+                <div className="admin-profile-security-card">
+                    <div className="admin-profile-security-flex">
+                        <div className="admin-profile-security-text">
+                            <h4 className="admin-profile-security-title">
                                 <Shield size={24} color="var(--color-primary)" /> Advanced Security
                             </h4>
-                            <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0, lineHeight: '1.5' }}>
+                            <p className="admin-profile-security-desc">
                                 Manage your administrative authentication credentials and protect your account with a unique security key.
                             </p>
                         </div>
-                        <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
-                            <button style={{
-                                background: 'var(--color-surface)',
-                                color: 'var(--color-primary)',
-                                border: '2px solid rgba(249, 115, 22, 0.3)',
-                                padding: '16px 32px',
-                                borderRadius: '16px',
-                                fontWeight: 800,
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '12px',
-                                transition: 'all 0.3s ease',
-                                fontSize: '0.95rem',
-                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                            }}
-                                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(249, 115, 22, 0.05)'; e.currentTarget.style.borderColor = 'var(--color-primary)'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--color-surface)'; e.currentTarget.style.borderColor = 'rgba(249, 115, 22, 0.3)'; }}
-                            >
+                        <Link to="/forgot-password" className="admin-profile-security-link">
+                            <button className="admin-profile-security-btn">
                                 Update Security Key <ArrowRight size={18} />
                             </button>
                         </Link>

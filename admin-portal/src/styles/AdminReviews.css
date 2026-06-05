@@ -1,0 +1,68 @@
+.admin-reviews-grid {
+    display: grid;
+    gap: 20px;
+}
+.admin-reviews-loading {
+    text-align: center;
+    padding: 50px;
+    color: #64748b;
+}
+.admin-review-card {
+    background: var(--color-surface);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 25px;
+    align-items: start;
+}
+.admin-review-avatar-container {
+    width: 50px;
+    height: 50px;
+    background: rgba(249, 115, 22, 0.1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+}
+.admin-review-header-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.admin-review-user-name {
+    margin: 0;
+    font-size: 1.1rem;
+}
+.admin-review-course-title {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+.admin-review-stars-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+.admin-review-comment {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    font-style: italic;
+}
+.admin-review-btn-delete {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--color-error);
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.admin-review-btn-delete:hover {
+    background: var(--color-error);
+    color: white;
+}
