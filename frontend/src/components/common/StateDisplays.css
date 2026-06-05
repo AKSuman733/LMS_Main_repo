@@ -1,0 +1,104 @@
+.state-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  background: white;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.state-icon {
+  font-size: 48px;
+  color: #9ca3af;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: #f3f4f6;
+  border-radius: 50%;
+}
+
+.state-icon.error {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.state-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.state-message {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 0 24px 0;
+  max-width: 400px;
+}
+
+.state-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.state-action-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.state-action-btn.primary {
+  background: #f97316; /* primary orange */
+  color: white;
+}
+
+.state-action-btn.primary:hover {
+  background: #ea580c;
+}
+
+.state-action-link {
+  color: #8b5cf6;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.state-action-link:hover {
+  text-decoration: underline;
+}
+
+/* Dark mode support */
+[data-theme='dark'] .state-display {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+[data-theme='dark'] .state-title {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .state-message {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .state-icon {
+  background: #374151;
+  color: #d1d5db;
+}
+
+[data-theme='dark'] .state-icon.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
