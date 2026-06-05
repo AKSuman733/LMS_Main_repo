@@ -60,16 +60,21 @@ export default function ChatBot() {
   const [minimized, setMinimized] = useState(false);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
-
   const [courses, setCourses] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
   const [messages, setMessages] = useState([defaultBotMessage]);
 
   const user = useMemo(() => {
-    return JSON.parse(localStorage.getItem("studentUser") || "{}");
+    try {
+      return JSON.parse(localStorage.getItem("studentUser") || "{}");
+    } catch {
+      return {};
+    }
   }, [open]);
 
-  const isLoggedIn = Boolean(localStorage.getItem("studentToken") && user?.email);
+  const isLoggedIn = Boolean(
+    localStorage.getItem("studentToken") && user?.email
+  );
 
   const totalSpent = useMemo(() => {
     return enrollments.reduce((total, item) => {
@@ -100,14 +105,18 @@ export default function ChatBot() {
     }
 
     try {
-      const latestUser = JSON.parse(localStorage.getItem("studentUser") || "{}");
+      const latestUser = JSON.parse(
+        localStorage.getItem("studentUser") || "{}"
+      );
 
       if (!latestUser.email) {
         setEnrollments([]);
         return;
       }
 
-      const enrollmentData = await getEnrollmentsByStudentEmail(latestUser.email);
+      const enrollmentData = await getEnrollmentsByStudentEmail(
+        latestUser.email
+      );
       setEnrollments(enrollmentData || []);
     } catch {
       setEnrollments([]);
@@ -157,7 +166,9 @@ export default function ChatBot() {
     if (!isLoggedIn) {
       return {
         text: "Please login first, then I can show your enrolled courses.",
-        actions: [{ label: "Login", type: "route", path: "/login", icon: LogIn }],
+        actions: [
+          { label: "Login", type: "route", path: "/login", icon: LogIn },
+        ],
       };
     }
 
@@ -165,7 +176,12 @@ export default function ChatBot() {
       return {
         text: "You are not enrolled in any course yet. Explore courses and click Enroll Now.",
         actions: [
-          { label: "Browse Courses", type: "route", path: "/courses", icon: BookOpen },
+          {
+            label: "Browse Courses",
+            type: "route",
+            path: "/courses",
+            icon: BookOpen,
+          },
         ],
       };
     }
@@ -182,7 +198,12 @@ export default function ChatBot() {
         })
         .join("\n")}`,
       actions: [
-        { label: "Open Dashboard", type: "route", path: "/dashboard", icon: Home },
+        {
+          label: "Open Dashboard",
+          type: "route",
+          path: "/dashboard",
+          icon: Home,
+        },
       ],
     };
   };
@@ -200,7 +221,12 @@ export default function ChatBot() {
       return {
         text: formatCourseList(),
         actions: [
-          { label: "View All Courses", type: "route", path: "/courses", icon: BookOpen },
+          {
+            label: "View All Courses",
+            type: "route",
+            path: "/courses",
+            icon: BookOpen,
+          },
         ],
       };
     }
@@ -225,7 +251,9 @@ export default function ChatBot() {
       if (!isLoggedIn) {
         return {
           text: "Please login first, then I can show your spending and payment details.",
-          actions: [{ label: "Login", type: "route", path: "/login", icon: LogIn }],
+          actions: [
+            { label: "Login", type: "route", path: "/login", icon: LogIn },
+          ],
         };
       }
 
@@ -240,7 +268,12 @@ export default function ChatBot() {
       return {
         text: `Your total course spending is ₹${totalSpent}.\n\nPaid courses: ${paidCount}\nFree courses: ${freeCount}`,
         actions: [
-          { label: "Go Dashboard", type: "route", path: "/dashboard", icon: Home },
+          {
+            label: "Go Dashboard",
+            type: "route",
+            path: "/dashboard",
+            icon: Home,
+          },
         ],
       };
     }
@@ -253,14 +286,21 @@ export default function ChatBot() {
       if (!isLoggedIn) {
         return {
           text: "Please login first. After login, you can check certificates in your dashboard.",
-          actions: [{ label: "Login", type: "route", path: "/login", icon: LogIn }],
+          actions: [
+            { label: "Login", type: "route", path: "/login", icon: LogIn },
+          ],
         };
       }
 
       return {
         text: `Certificate rule:\n\nComplete a course 100% to become certificate eligible.\n\nCompleted courses: ${completedCourses.length}\nActive courses: ${activeCourses.length}`,
         actions: [
-          { label: "My Dashboard", type: "route", path: "/dashboard", icon: Award },
+          {
+            label: "My Dashboard",
+            type: "route",
+            path: "/dashboard",
+            icon: Award,
+          },
         ],
       };
     }
@@ -273,7 +313,12 @@ export default function ChatBot() {
       return {
         text: "To enroll:\n\n1. Open Courses page\n2. Select a course\n3. Click Enroll Now\n4. If course is free, it enrolls directly\n5. If course is paid, payment page opens first",
         actions: [
-          { label: "Browse Courses", type: "route", path: "/courses", icon: BookOpen },
+          {
+            label: "Browse Courses",
+            type: "route",
+            path: "/courses",
+            icon: BookOpen,
+          },
         ],
       };
     }
@@ -286,14 +331,21 @@ export default function ChatBot() {
       if (!isLoggedIn) {
         return {
           text: "Please login first to access your dashboard, courses, progress and certificates.",
-          actions: [{ label: "Login", type: "route", path: "/login", icon: LogIn }],
+          actions: [
+            { label: "Login", type: "route", path: "/login", icon: LogIn },
+          ],
         };
       }
 
       return {
         text: "Your dashboard contains enrolled courses, progress, certificates, stats and profile details.",
         actions: [
-          { label: "Open Dashboard", type: "route", path: "/dashboard", icon: Home },
+          {
+            label: "Open Dashboard",
+            type: "route",
+            path: "/dashboard",
+            icon: Home,
+          },
         ],
       };
     }
@@ -308,7 +360,12 @@ export default function ChatBot() {
       return {
         text: "You can contact UptoSkills support for course, payment, certificate and dashboard issues.\n\nPhone/WhatsApp: +91 9887196182\nEmail: support@uptoskills.com",
         actions: [
-          { label: "Contact Page", type: "route", path: "/contact", icon: HelpCircle },
+          {
+            label: "Contact Page",
+            type: "route",
+            path: "/contact",
+            icon: HelpCircle,
+          },
           { label: "WhatsApp", type: "whatsapp", icon: MessageCircle },
         ],
       };
@@ -324,7 +381,12 @@ export default function ChatBot() {
         text: "You can login or create an account to enroll in courses and track progress.",
         actions: [
           { label: "Login", type: "route", path: "/login", icon: LogIn },
-          { label: "Register", type: "route", path: "/register", icon: User },
+          {
+            label: "Register",
+            type: "route",
+            path: "/register",
+            icon: User,
+          },
         ],
       };
     }
@@ -336,10 +398,22 @@ export default function ChatBot() {
       q.includes("namaste")
     ) {
       return {
-        text: `Hello ${user.name || "student"} 👋\nHow can I help you today? You can ask about courses, fees, certificates, dashboard or enrollment.`,
+        text: `Hello ${
+          user.name || "student"
+        } 👋\nHow can I help you today? You can ask about courses, fees, certificates, dashboard or enrollment.`,
         actions: [
-          { label: "Courses", type: "route", path: "/courses", icon: BookOpen },
-          { label: "My Courses", type: "question", value: "Show my courses", icon: User },
+          {
+            label: "Courses",
+            type: "route",
+            path: "/courses",
+            icon: BookOpen,
+          },
+          {
+            label: "My Courses",
+            type: "question",
+            value: "Show my courses",
+            icon: User,
+          },
         ],
       };
     }
@@ -347,8 +421,18 @@ export default function ChatBot() {
     return {
       text: "I can help you with courses, enrollment, payment, certificates, dashboard, profile and support. Try asking: “Show my courses” or “How much have I spent?”",
       actions: [
-        { label: "Courses", type: "route", path: "/courses", icon: BookOpen },
-        { label: "Support", type: "route", path: "/contact", icon: HelpCircle },
+        {
+          label: "Courses",
+          type: "route",
+          path: "/courses",
+          icon: BookOpen,
+        },
+        {
+          label: "Support",
+          type: "route",
+          path: "/contact",
+          icon: HelpCircle,
+        },
       ],
     };
   };
@@ -375,7 +459,8 @@ export default function ChatBot() {
     if (action.type === "whatsapp") {
       window.open(
         "https://wa.me/919887196182?text=Hello%20UptoSkills%2C%20I%20need%20help%20regarding%20LMS%20platform.",
-        "_blank"
+        "_blank",
+        "noopener,noreferrer"
       );
       return;
     }
@@ -391,74 +476,65 @@ export default function ChatBot() {
 
   return (
     <>
-      <style>
-        {`
-          @keyframes chatPop {
-            0% {
-              opacity: 0;
-              transform: translateY(8px) scale(0.98);
-            }
-            100% {
-              opacity: 1;
-              transform: translateY(0) scale(1);
-            }
+      <style>{`
+        @keyframes chatPop {
+          0% {
+            opacity: 0;
+            transform: translateY(8px) scale(0.98);
           }
-
-          @keyframes botFloat {
-            0%, 100% {
-              transform: translateY(0);
-            }
-            50% {
-              transform: translateY(-8px);
-            }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
           }
+        }
 
+        .upto-chatbot-box {
+          width: min(420px, calc(100vw - 24px));
+          height: min(640px, calc(100dvh - 24px));
+          right: 12px;
+          bottom: 12px;
+        }
+
+        .upto-chatbot-box.minimized {
+          width: min(360px, calc(100vw - 24px));
+          height: 86px;
+        }
+
+        @media (max-width: 640px) {
           .upto-chatbot-box {
-            width: min(420px, calc(100vw - 24px));
-            height: min(640px, calc(100dvh - 24px));
-            right: 12px;
-            bottom: 12px;
+            width: 100vw;
+            height: 100dvh;
+            right: 0;
+            bottom: 0;
+            border-radius: 0;
           }
 
           .upto-chatbot-box.minimized {
-            width: min(360px, calc(100vw - 24px));
-            height: 86px;
+            width: calc(100vw - 24px);
+            height: 82px;
+            right: 12px;
+            bottom: 12px;
+            border-radius: 24px;
           }
+        }
 
-          @media (max-width: 640px) {
-            .upto-chatbot-box {
-              width: 100vw;
-              height: 100dvh;
-              right: 0;
-              bottom: 0;
-              border-radius: 0;
-            }
-
-            .upto-chatbot-box.minimized {
-              width: calc(100vw - 24px);
-              height: 82px;
-              right: 12px;
-              bottom: 12px;
-              border-radius: 24px;
-            }
+        @media (max-height: 720px) {
+          .upto-chatbot-box {
+            height: calc(100dvh - 20px);
+            bottom: 10px;
           }
-
-          @media (max-height: 720px) {
-            .upto-chatbot-box {
-              height: calc(100dvh - 20px);
-              bottom: 10px;
-            }
-          }
-        `}
-      </style>
+        }
+      `}</style>
 
       {!open && (
         <button
+          type="button"
           onClick={() => {
             setOpen(true);
             setMinimized(false);
           }}
           className="fixed bottom-5 right-5 z-[9999] group"
+          aria-label="Open chatbot"
         >
           <div className="absolute -inset-3 rounded-full bg-[#ff5a5f]/60 blur-xl transition group-hover:bg-[#ff6f73]" />
 
@@ -480,8 +556,12 @@ export default function ChatBot() {
         >
           <div className="relative shrink-0 overflow-hidden bg-[#ff5a5f] px-5 py-4 text-white">
             <div className="absolute -right-12 -top-14 h-40 w-40 rounded-full bg-white/10" />
-            <div className="absolute right-16 top-8 text-3xl text-white/35">✦</div>
-            <div className="absolute left-28 bottom-3 text-xl text-white/25">✦</div>
+            <div className="absolute right-16 top-8 text-3xl text-white/35">
+              ✦
+            </div>
+            <div className="absolute bottom-3 left-28 text-xl text-white/25">
+              ✦
+            </div>
 
             <div className="relative flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -491,7 +571,9 @@ export default function ChatBot() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-black leading-tight">UptoBuddy AI</h3>
+                  <h3 className="text-lg font-black leading-tight">
+                    UptoBuddy AI
+                  </h3>
                   <p className="text-xs font-semibold text-white/85">
                     Smart LMS Assistant
                   </p>
@@ -500,6 +582,7 @@ export default function ChatBot() {
 
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={() => setMinimized((prev) => !prev)}
                   className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/15 text-white transition hover:bg-white/25"
                   title="Minimize"
@@ -508,6 +591,7 @@ export default function ChatBot() {
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => setOpen(false)}
                   className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/25 bg-white/15 text-white shadow-sm transition hover:bg-white/25"
                   title="Close"
@@ -522,18 +606,31 @@ export default function ChatBot() {
             <>
               <div className="shrink-0 bg-[#ff5a5f] px-5 pb-4 text-white">
                 <div className="grid grid-cols-3 gap-3">
-                  <MiniStat icon={BookOpen} label="Courses" value={courses.length || "0"} />
-                  <MiniStat icon={User} label="Mine" value={enrollments.length || "0"} />
-                  <MiniStat icon={Wallet} label="Spent" value={`₹${totalSpent}`} />
+                  <MiniStat
+                    icon={BookOpen}
+                    label="Courses"
+                    value={courses.length || "0"}
+                  />
+                  <MiniStat
+                    icon={User}
+                    label="Mine"
+                    value={enrollments.length || "0"}
+                  />
+                  <MiniStat
+                    icon={Wallet}
+                    label="Spent"
+                    value={`₹${totalSpent}`}
+                  />
                 </div>
               </div>
 
-              <div className="shrink-0 grid grid-cols-2 gap-2 bg-white px-4 py-3">
+              <div className="grid shrink-0 grid-cols-2 gap-2 bg-white px-4 py-3">
                 {quickBoxes.map((box) => {
                   const Icon = box.icon;
 
                   return (
                     <button
+                      type="button"
                       key={box.title}
                       onClick={() => handleSend(box.question)}
                       className="rounded-2xl border border-slate-200 bg-slate-50 p-3 text-left shadow-sm transition hover:-translate-y-1 hover:border-[#ff5a5f] hover:bg-red-50"
@@ -589,6 +686,7 @@ export default function ChatBot() {
               <div className="shrink-0 border-t border-slate-200 bg-white p-4">
                 <div className="mb-3 flex items-center justify-between">
                   <button
+                    type="button"
                     onClick={clearChat}
                     className="text-xs font-bold text-slate-400 transition hover:text-[#ff5a5f]"
                   >
@@ -618,6 +716,7 @@ export default function ChatBot() {
                   <button
                     type="submit"
                     className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ff5a5f] text-white transition hover:scale-105"
+                    aria-label="Send message"
                   >
                     <Send size={18} />
                   </button>
@@ -649,7 +748,9 @@ function ChatBubble({ message, onAction }) {
       <div className={`max-w-[86%] ${isUser ? "text-right" : "text-left"}`}>
         <div
           className={`animate-[chatPop_0.25s_ease-out] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-6 ${
-            isUser ? "bg-[#ff5a5f] text-white" : "bg-slate-100 text-slate-700"
+            isUser
+              ? "bg-[#ff5a5f] text-white"
+              : "bg-slate-100 text-slate-700"
           }`}
         >
           {message.text}
@@ -662,6 +763,7 @@ function ChatBubble({ message, onAction }) {
 
               return (
                 <button
+                  type="button"
                   key={action.label}
                   onClick={() => onAction(action)}
                   className="inline-flex items-center gap-2 rounded-full bg-[#ff5a5f]/10 px-3 py-2 text-xs font-bold text-[#ff5a5f] transition hover:bg-[#ff5a5f] hover:text-white"
