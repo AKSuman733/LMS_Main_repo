@@ -282,8 +282,8 @@ export default function PythonLesson() {
             <div className="relative">
 
               <img
-                src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935"
-                alt="Python"
+                src={selectedMentor.image}
+                alt={selectedMentor.image}
                 className="w-full h-[500px] object-cover opacity-70"
               />
 
