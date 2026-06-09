@@ -353,8 +353,8 @@ export default function ArtificialIntelligenceLesson() {
             <div className="relative">
 
               <img
-                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600"
-                alt="AI"
+                src={selectedMentor.image}
+                alt={selectedMentor.image}
                 className="w-full h-[500px] object-cover opacity-70"
               />
 
