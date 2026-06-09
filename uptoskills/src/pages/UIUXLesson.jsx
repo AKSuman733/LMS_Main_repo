@@ -345,8 +345,8 @@ export default function UIUXLesson() {
             <div className="relative">
 
               <img
-                src="https://echopx.com/wp-content/uploads/2022/06/ui-ux-design.jpg"
-                alt="UI UX"
+                src={selectedTeacher.image}
+                alt={selectedTeacher.image}
                 className="w-full h-[430px] object-cover opacity-70"
               />
 
@@ -476,9 +476,153 @@ export default function UIUXLesson() {
             </div>
 
           </div>
+          
+          {/* PROGRESS + AI */}
+          <div className="grid md:grid-cols-2 gap-5 mb-6">
+
+            {/* PROGRESS */}
+            <div
+              className="rounded-[30px] p-6 border"
+              style={{
+                backgroundColor: colors.surface,
+                borderColor: "rgba(255,255,255,0.06)",
+              }}
+            >
+
+              <h2 className="text-2xl font-bold mb-5">
+                Progress 🚀
+              </h2>
+
+              <div className="flex justify-between mb-3">
+
+                <span
+                  style={{
+                    color: colors.textSecondary,
+                  }}
+                >
+                  Completed
+                </span>
+
+                <span className="font-bold">
+                  100%
+                </span>
+
+              </div>
+
+              <div
+                className="w-full h-3 rounded-full overflow-hidden mb-4"
+                style={{
+                  backgroundColor:
+                    "rgba(255,255,255,0.08)",
+                }}
+              >
+
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: "0%",
+                    background:
+                      `linear-gradient(90deg, ${colors.secondary}, ${colors.primary})`,
+                  }}
+                ></div>
+
+              </div>
+
+              <p
+                className="mb-5"
+                style={{
+                  color: colors.textSecondary,
+                }}
+              >
+                0 / 15 lessons completed
+              </p>
+
+              {/* DOWNLOAD CERTIFICATE */}
+              <button
+                className="
+                  w-full
+                  py-4
+                  rounded-2xl
+                  font-bold
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  transition-all
+                  duration-300
+                  hover:scale-[1.02]
+                "
+                style={{
+                  background:
+                    "linear-gradient(135deg, #22c55e, #16a34a)",
+                  color: "#fff",
+                }}
+              >
+
+                <Download className="w-5 h-5" />
+
+                Download Certificate
+
+              </button>
+
+            </div>
+
+            {/* AI TEACHERS */}
+            <div
+              className="rounded-[30px] p-6 border"
+              style={{
+                backgroundColor: colors.surface,
+                borderColor: "rgba(255,255,255,0.06)",
+              }}
+            >
+
+              <h2
+                className="text-2xl font-bold mb-5"
+                style={{
+                  color: colors.secondary,
+                }}
+              >
+                AI Teachers 🤖
+              </h2>
+
+              <div className="flex items-center justify-between gap-2">
+
+                {teachers.map((teacher, index) => (
+
+                  <div
+                    key={index}
+                    onClick={() =>
+                      setSelectedTeacher(teacher)
+                    }
+                    className="cursor-pointer"
+                  >
+
+                    <img
+                      src={teacher.image}
+                      alt={teacher.name}
+                      className={`
+                        w-20 h-20 rounded-2xl object-cover border-2
+                        ${
+                          selectedTeacher.name ===
+                          teacher.name
+                            ? "border-cyan-400"
+                            : "border-transparent"
+                        }
+                      `}
+                    />
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            </div>
+
+          </div>
 
           {/* AI TEACHERS */}
-          <div
+          {/*<div
             className="rounded-[30px] p-6 border mb-5"
             style={{
               backgroundColor: colors.surface,
@@ -527,7 +671,7 @@ export default function UIUXLesson() {
 
             </div>
 
-          </div>
+          </div>*/}
 
           {/* NOTES */}
           <div
@@ -562,19 +706,7 @@ export default function UIUXLesson() {
 
                 </button>
 
-                <button
-                  className="px-4 py-3 rounded-2xl font-bold flex items-center gap-2"
-                  style={{
-                    backgroundColor:
-                      "rgba(255,255,255,0.06)",
-                  }}
-                >
-
-                  <FileText className="w-4 h-4" />
-
-                  Figma File
-
-                </button>
+                
 
               </div>
 
