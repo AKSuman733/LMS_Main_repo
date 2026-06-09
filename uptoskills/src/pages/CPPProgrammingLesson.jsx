@@ -361,8 +361,8 @@ export default function CPPProgrammingLesson() {
             <div className="relative">
 
               <img
-                src="https://www.shutterstock.com/image-illustration/c-code-on-dark-background-600nw-1896170293.jpg"
-                alt="C++"
+                src={selectedMentor.image}
+                alt={selectedMentor.image}
                 className="w-full h-[500px] object-cover opacity-70"
               />
 
