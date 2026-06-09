@@ -356,8 +356,8 @@ export default function DataStructuresLesson() {
             <div className="relative">
 
               <img
-                src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4"
-                alt="DSA"
+                src={selectedMentor.image}
+                alt={selectedMentor.image}
                 className="w-full h-[500px] object-cover opacity-70"
               />
 
