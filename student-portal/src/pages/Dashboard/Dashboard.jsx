@@ -5,6 +5,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import "../../styles/Dashboard.css";    
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 import {
     Book,
@@ -18,7 +19,13 @@ import {
     Check,
     Star,
     MessageSquare,
-    Trash2
+    Trash2,
+    Shield,
+    ArrowRight,
+    Github,
+    Clock,
+    Target,
+    Search
 } from "lucide-react";
 
 const Icons = {
@@ -33,8 +40,10 @@ const Icons = {
     Check: (props) => <Check size={16} {...props} />,
     Star: (props) => <Star size={20} {...props} />,
     ChatBubble: (props) => <MessageSquare size={20} {...props} />,
-    Trash: (props) => <Trash2 size={18} {...props} />
+    Trash: (props) => <Trash2 size={18} {...props} />,
+    Search: (props) => <Search size={20} {...props} />
 };
+
 
 const Dashboard = () => {
     const { user, login, logout, instructors, selectedInstructor, changeInstructor } = useContext(AuthContext);
@@ -64,6 +73,84 @@ const Dashboard = () => {
     const [editSubject, setEditSubject] = useState("");
     const [editMessage, setEditMessage] = useState("");
     const [confirmDeleteQueryId, setConfirmDeleteQueryId] = useState(null);
+
+    const [taskSearchQuery, setTaskSearchQuery] = useState("");
+    const [taskStatusFilter, setTaskStatusFilter] = useState("all");
+    const [taskSortBy, setTaskSortBy] = useState("newest");
+
+    const [querySearchQuery, setQuerySearchQuery] = useState("");
+    const [queryStatusFilter, setQueryStatusFilter] = useState("all");
+    const [querySortBy, setQuerySortBy] = useState("newest");
+
+    const getProcessedTasks = () => {
+        let result = tasks.filter(task => {
+            const matchesSearch = 
+                task.title.toLowerCase().includes(taskSearchQuery.toLowerCase()) ||
+                (task.description && task.description.toLowerCase().includes(taskSearchQuery.toLowerCase()));
+            
+            if (!matchesSearch) return false;
+
+            if (taskStatusFilter !== "all" && task.status !== taskStatusFilter) {
+                return false;
+            }
+
+            return true;
+        });
+
+        result.sort((a, b) => {
+            if (taskSortBy === "newest") {
+                return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+            }
+            if (taskSortBy === "oldest") {
+                return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+            }
+            if (taskSortBy === "due_soon") {
+                if (!a.due_date) return 1;
+                if (!b.due_date) return -1;
+                return new Date(a.due_date) - new Date(b.due_date);
+            }
+            if (taskSortBy === "due_late") {
+                if (!a.due_date) return 1;
+                if (!b.due_date) return -1;
+                return new Date(b.due_date) - new Date(a.due_date);
+            }
+            return 0;
+        });
+
+        return result;
+    };
+
+    const filteredTasks = getProcessedTasks();
+
+    const getProcessedQueries = () => {
+        let result = queries.filter(q => {
+            const matchesSearch = 
+                q.subject.toLowerCase().includes(querySearchQuery.toLowerCase()) ||
+                q.message.toLowerCase().includes(querySearchQuery.toLowerCase());
+            
+            if (!matchesSearch) return false;
+
+            if (queryStatusFilter === "pending" && q.reply) return false;
+            if (queryStatusFilter === "replied" && !q.reply) return false;
+
+            return true;
+        });
+
+        result.sort((a, b) => {
+            if (querySortBy === "newest") {
+                return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+            }
+            if (querySortBy === "oldest") {
+                return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+            }
+            return 0;
+        });
+
+        return result;
+    };
+
+    const filteredQueries = getProcessedQueries();
+
 
     const handleEditQuery = async (e) => {
         e.preventDefault();
@@ -234,7 +321,6 @@ const Dashboard = () => {
 
     const menuItems = [
         { id: "learning", name: "My Learning", icon: <Icons.Book /> },
-        { id: "instructor", name: "View Celebrities", icon: <Icons.Star /> },
         { id: "tasks", name: "Tasks", icon: <Icons.ClipboardList /> },
         { id: "certificates", name: "Certificates", icon: <Icons.Award /> },
         { id: "queries", name: "Queries", icon: <Icons.ChatBubble /> },
@@ -319,17 +405,37 @@ const Dashboard = () => {
                             >
                                 <div className="stats-strip">
                                     <div className="strip-card">
+                                        <div className="kpi-header">
+                                            <div className="kpi-icon-bg info">
+                                                <Clock size={20} />
+                                            </div>
+                                            <span className="kpi-status info">Active</span>
+                                        </div>
                                         <p>Time Spent</p>
                                         <h3>{actualHoursLearned}h</h3>
                                         <span>Course hours completed</span>
                                     </div>
                                     <div className="strip-card">
+                                        <div className="kpi-header">
+                                            <div className={`kpi-icon-bg ${weeklyGoalPercent >= 80 ? 'success' : weeklyGoalPercent >= 40 ? 'warning' : 'error'}`}>
+                                                <Target size={20} />
+                                            </div>
+                                            <span className={`kpi-status ${weeklyGoalPercent >= 80 ? 'success' : weeklyGoalPercent >= 40 ? 'warning' : 'error'}`}>
+                                                {weeklyGoalPercent >= 80 ? 'On Track' : weeklyGoalPercent >= 40 ? 'In Progress' : 'Needs Focus'}
+                                            </span>
+                                        </div>
                                         <p>Weekly Goal ({WEEKLY_GOAL_TARGET} Lessons)</p>
                                         <h3>{weeklyGoalPercent}%</h3>
                                         <div className="mini-progress"><div style={{ width: `${weeklyGoalPercent}%` }}></div></div>
                                         <span className="goal-status-hint">{lessonCompletionCount}/{WEEKLY_GOAL_TARGET} lessons done this week</span>
                                     </div>
                                     <div className="strip-card">
+                                        <div className="kpi-header">
+                                            <div className="kpi-icon-bg warning">
+                                                <Award size={20} />
+                                            </div>
+                                            <span className="kpi-status warning">Leveling Up</span>
+                                        </div>
                                         <p>XP Earned</p>
                                         <h3>{lessonCompletionCount * 50}</h3>
                                         <span>Based on completion</span>
@@ -372,13 +478,51 @@ const Dashboard = () => {
                                 className="tab-pane"
                             >
                                 <div className="certificates-wall tasks-wall">
-                                    {tasks.length === 0 ? (
+                                    <div className="table-actions-bar">
+                                        <div className="table-search">
+                                            <Icons.Search size={18} color="#64748b" />
+                                            <input
+                                                type="text"
+                                                placeholder="Search tasks by title or description..."
+                                                value={taskSearchQuery}
+                                                onChange={(e) => setTaskSearchQuery(e.target.value)}
+                                                aria-label="Search tasks"
+                                            />
+                                        </div>
+                                        <div className="table-filters-sort-group">
+                                            <div className="filter-select-wrapper">
+                                                <select 
+                                                    value={taskStatusFilter} 
+                                                    onChange={(e) => setTaskStatusFilter(e.target.value)}
+                                                    className="table-filter-dropdown"
+                                                >
+                                                    <option value="all">All Statuses</option>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="in_progress">In Progress</option>
+                                                    <option value="completed">Completed</option>
+                                                </select>
+                                            </div>
+                                            <div className="filter-select-wrapper">
+                                                <select 
+                                                    value={taskSortBy} 
+                                                    onChange={(e) => setTaskSortBy(e.target.value)}
+                                                    className="table-filter-dropdown"
+                                                >
+                                                    <option value="newest">Newest First</option>
+                                                    <option value="oldest">Oldest First</option>
+                                                    <option value="due_soon">Due Soon</option>
+                                                    <option value="due_late">Due Late</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {filteredTasks.length === 0 ? (
                                         <div className="pane-empty">
                                             <Icons.ClipboardList />
-                                            <p>You have no assigned tasks right now.</p>
+                                            <p>No tasks found matching current filters.</p>
                                         </div>
                                     ) : (
-                                        tasks.map(task => (
+                                        filteredTasks.map(task => (
                                             <div key={task.id} className="dashboard-task-card">
                                                 <div className="dashboard-task-card-header">
                                                     <div>
@@ -584,9 +728,7 @@ const Dashboard = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" className="dashboard-provider-svg-github">
-                                                        <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.577.688.479C19.138 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
-                                                    </svg>
+                                                    <Github size={20} className="dashboard-provider-svg-github" />
                                                     <span className="dashboard-provider-text">Signed in via GitHub</span>
                                                 </>
                                             )}
@@ -597,14 +739,14 @@ const Dashboard = () => {
                                         <div className="dashboard-security-row">
                                             <div className="dashboard-security-text-col">
                                                 <h4 className="dashboard-security-title">
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                                    <Shield size={20} color="var(--color-primary)" strokeWidth={2.5} />
                                                     Account Security
                                                 </h4>
                                                 <p className="dashboard-security-subtitle">Update your password regularly to keep your account safe.</p>
                                             </div>
                                             <Link to="/forgot-password">
                                                 <button className="dashboard-security-btn">
-                                                    Change Password <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                                    Change Password <ArrowRight size={16} strokeWidth={2.5} />
                                                 </button>
                                             </Link>
                                         </div>
@@ -714,15 +856,50 @@ const Dashboard = () => {
                                         </Link>
                                     </div>
 
-                                    {queries.length === 0 ? (
+                                    <div className="table-actions-bar">
+                                        <div className="table-search">
+                                            <Icons.Search size={18} color="#64748b" />
+                                            <input
+                                                type="text"
+                                                placeholder="Search queries by subject or message..."
+                                                value={querySearchQuery}
+                                                onChange={(e) => setQuerySearchQuery(e.target.value)}
+                                                aria-label="Search queries"
+                                            />
+                                        </div>
+                                        <div className="table-filters-sort-group">
+                                            <div className="filter-select-wrapper">
+                                                <select 
+                                                    value={queryStatusFilter} 
+                                                    onChange={(e) => setQueryStatusFilter(e.target.value)}
+                                                    className="table-filter-dropdown"
+                                                >
+                                                    <option value="all">All Statuses</option>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="replied">Replied</option>
+                                                </select>
+                                            </div>
+                                            <div className="filter-select-wrapper">
+                                                <select 
+                                                    value={querySortBy} 
+                                                    onChange={(e) => setQuerySortBy(e.target.value)}
+                                                    className="table-filter-dropdown"
+                                                >
+                                                    <option value="newest">Newest First</option>
+                                                    <option value="oldest">Oldest First</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {filteredQueries.length === 0 ? (
                                         <div className="premium-empty-state dashboard-margin">
                                             <div className="empty-icon">💬</div>
-                                            <h3>No Queries Yet</h3>
-                                            <p>Need support or have a general question? Contact us directly and track the replies right here.</p>
-                                            <Link to="/contact" className="empty-action-btn">Ask a Question</Link>
+                                            <h3>No Queries Found</h3>
+                                            <p>Try adjusting your search or filter settings, or submit a new query.</p>
                                         </div>
                                     ) : (
-                                        queries.map(query => (
+                                        filteredQueries.map(query => (
                                             <div key={query.id} className="dashboard-query-card">
                                                 <div className="dashboard-query-card-header">
                                                     <div>
@@ -804,73 +981,17 @@ const Dashboard = () => {
                                         </div>
                                     )}
 
-                                    {confirmDeleteQueryId && (
-                                        <div className="dashboard-modal-backdrop" onClick={() => setConfirmDeleteQueryId(null)}>
-                                            <div className="dashboard-modal-content confirm-delete" onClick={e => e.stopPropagation()}>
-                                                <div className="dashboard-confirm-delete-icon">⚠️</div>
-                                                <h3 className="dashboard-confirm-delete-title">Are you sure?</h3>
-                                                <p className="dashboard-confirm-delete-desc">
-                                                    Do you really want to delete this query? This action cannot be undone.
-                                                </p>
-                                                <div className="dashboard-confirm-delete-actions">
-                                                    <button
-                                                        onClick={() => handleDeleteQuery(confirmDeleteQueryId)}
-                                                        className="dashboard-btn-delete-confirm"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setConfirmDeleteQueryId(null)}
-                                                        className="dashboard-btn-modal-cancel"
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
+                                    <ConfirmationModal
+                                        isOpen={!!confirmDeleteQueryId}
+                                        title="Delete Query"
+                                        message="Do you really want to delete this query? This action cannot be undone."
+                                        onConfirm={() => handleDeleteQuery(confirmDeleteQueryId)}
+                                        onCancel={() => setConfirmDeleteQueryId(null)}
+                                    />
                                 </div>
                             </motion.div>
                         )}
 
-                        {activeTab === 'instructor' && (
-                            <motion.div
-                                key="instructor"
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                className="tab-pane"
-                            >
-                                <div className="celebrity-picker-header">
-                                    <h3 className="dashboard-celebrity-picker-title">Meet Our Celebrity Instructors</h3>
-                                    <p className="dashboard-celebrity-picker-desc">Explore our roster of pop sensations and industry icons. Select your preferred mentor for any course directly inside the Course Player!</p>
-                                </div>
-
-                                <div className="celebrity-grid">
-                                    {instructors.map((inst) => {
-                                        return (
-                                            <motion.div
-                                                key={inst.id}
-                                                whileHover={{ y: -6, scale: 1.02 }}
-                                                className="dashboard-celebrity-card unselected"
-                                            >
-                                                <div className="dashboard-celebrity-card-img-wrapper">
-                                                    <img
-                                                        src={normalizeUrl(inst.image)}
-                                                        alt={inst.name}
-                                                        className="dashboard-celebrity-card-img unselected"
-                                                        onError={(e) => e.target.src = "https://plus.unsplash.com/premium_photo-1677252438411-9a930d7a5168?w=100"}
-                                                    />
-                                                </div>
-                                                <h4 className="dashboard-celebrity-card-name">{inst.name}</h4>
-                                                <p className="dashboard-celebrity-card-bio">{inst.bio}</p>
-                                            </motion.div>
-                                        );
-                                    })}
-                                </div>
-                            </motion.div>
-                        )}
                     </AnimatePresence>
                 </div>
             </main>

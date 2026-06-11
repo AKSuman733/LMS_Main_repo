@@ -27,8 +27,15 @@ const ForgotPassword = () => {
     const passStrength = getPasswordStrength(password);
     const passTouched = password.length > 0;
 
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isEmailTouched = email.length > 0;
+
     const handleSendOtp = async (e) => {
         e.preventDefault();
+        if (!isValidEmail(email)) {
+            toast.error("Please enter a valid email address.");
+            return;
+        }
         setLoading(true);
         try {
             await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
@@ -110,10 +117,12 @@ const ForgotPassword = () => {
                                     <input
                                         type="email"
                                         placeholder="Enter your registered email"
+                                        className={isEmailTouched ? (isValidEmail(email) ? "input-valid" : "input-invalid") : ""}
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
+                                    {isEmailTouched && !isValidEmail(email) && <span className="inline-error">Please enter a valid email format.</span>}
                                 </div>
 
                                 <button type="submit" className="auth-btn" disabled={loading}>

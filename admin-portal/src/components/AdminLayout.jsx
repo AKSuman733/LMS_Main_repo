@@ -19,7 +19,8 @@ import {
     Settings,
     UserCircle,
     ClipboardList,
-    Award
+    Award,
+    Menu
 } from "lucide-react";
 
 const Icons = {
@@ -36,7 +37,8 @@ const Icons = {
     Settings: (props) => <Settings size={20} {...props} />,
     UserCircle: (props) => <UserCircle size={20} {...props} />,
     ClipboardList: (props) => <ClipboardList size={20} {...props} />,
-    Award: (props) => <Award size={20} {...props} />
+    Award: (props) => <Award size={20} {...props} />,
+    Menu: (props) => <Menu size={24} {...props} />
 };
 
 const AdminLayout = ({ children }) => {
@@ -92,7 +94,7 @@ const AdminLayout = ({ children }) => {
                 <div className="sidebar-brand">
                     <Logo size="small" />
                     <span className="admin-badge-text">Admin Panel</span>
-                    <button className="sidebar-close-btn" onClick={() => setIsSidebarOpen(false)}>
+                    <button className="sidebar-close-btn" onClick={() => setIsSidebarOpen(false)} aria-label="Close Navigation Sidebar">
                         <Icons.X size={20} />
                     </button>
                 </div>
@@ -124,8 +126,8 @@ const AdminLayout = ({ children }) => {
             <main className="admin-main-content">
                 <header className="admin-top-bar">
                     <div className="top-bar-left">
-                        <button className="mobile-hamburger-btn" onClick={() => setIsSidebarOpen(true)}>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                        <button className="mobile-hamburger-btn" onClick={() => setIsSidebarOpen(true)} aria-label="Open Navigation Sidebar">
+                            <Icons.Menu />
                         </button>
                         <h2 className="page-title">
                             {menuItems.find(m => m.path === location.pathname)?.name || "Dashboard"}
@@ -133,7 +135,7 @@ const AdminLayout = ({ children }) => {
                     </div>
                     <div className="top-bar-actions">
                         <div className="notif-rel">
-                            <button className="notif-btn" onClick={() => setIsNotifOpen(!isNotifOpen)}>
+                            <button className="notif-btn" onClick={() => setIsNotifOpen(!isNotifOpen)} aria-label="System Notifications">
                                 <Icons.Bell />
                                 <span className="btn-badge"></span>
                             </button>
@@ -148,7 +150,7 @@ const AdminLayout = ({ children }) => {
                                     >
                                         <div className="notif-head">
                                             <h4>System Notifications</h4>
-                                            <button onClick={() => setIsNotifOpen(false)}><Icons.X size={14} /></button>
+                                            <button onClick={() => setIsNotifOpen(false)} aria-label="Close Notifications"><Icons.X size={14} /></button>
                                         </div>
                                         <div className="notif-body">
                                             <div className="notif-entry">

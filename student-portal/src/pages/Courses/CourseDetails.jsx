@@ -6,21 +6,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import "../../styles/CourseDetails.css";
 
+import { Star, Play, Check, Send, Shield } from "lucide-react";
+
 const Icons = {
-    Star: ({ fill = "none", stroke = "currentColor" }) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill={fill} stroke={stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+    Star: ({ fill = "none", stroke = "currentColor", size = 18 }) => (
+        <Star size={size} fill={fill} stroke={stroke} strokeWidth={2} />
     ),
-    Play: () => (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+    Play: ({ size = 16 }) => (
+        <Play size={size} fill="none" stroke="currentColor" strokeWidth={2.5} />
     ),
-    Check: () => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    Check: ({ size = 18 }) => (
+        <Check size={size} strokeWidth={3} />
     ),
-    Send: () => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+    Send: ({ size = 18 }) => (
+        <Send size={size} strokeWidth={2.5} />
     ),
-    Shield: () => (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    Shield: ({ size = 20 }) => (
+        <Shield size={size} strokeWidth={2.5} color="var(--color-primary)" />
     )
 };
 

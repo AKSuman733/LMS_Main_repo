@@ -1,10 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../store/AuthContext";
+import { Clock } from "lucide-react";
 import Home from "../pages/Home";
 import Courses from "../pages/Courses/Courses";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
+import Celebrities from "../pages/Celebrities";
 import CourseDetails from "../pages/Courses/CourseDetails";
 import CoursePlayer from "../pages/Courses/CoursePlayer";
 import Login from "../pages/Auth/Login";
@@ -19,14 +21,11 @@ import "../styles/MainLayout.css";
 const AppRoutes = () => {
   const { user } = useContext(AuthContext);
 
-  if (user && !user.approved && user.role !== "admin") {
+  if (user && !user.approved) {
     return (
       <div className="pending-approval-root">
         <div className="pending-approval-card">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-warning)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="pending-approval-icon">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-          </svg>
+          <Clock size={48} color="var(--color-warning)" className="pending-approval-icon" />
           <h2 className="pending-approval-title">Account Pending Approval</h2>
           <p className="pending-approval-text">
             Your account has been successfully created and is currently awaiting administrator approval. You will gain full access to the portal once your account is verified. This page will automatically refresh once approved.
@@ -38,15 +37,16 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/courses" element={<PrivateRoute><Courses /></PrivateRoute>} />
-      <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
-      <Route path="/contact" element={<PrivateRoute><Contact /></PrivateRoute>} />
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/celebrities" element={<Celebrities />} />
       <Route path="/resources" element={<PrivateRoute><Resources /></PrivateRoute>} />
-      <Route path="/course/:id" element={<PrivateRoute><CourseDetails /></PrivateRoute>} />
+      <Route path="/course/:id" element={<CourseDetails />} />
       <Route path="/course/:id/player" element={<PrivateRoute><CoursePlayer /></PrivateRoute>} />
       <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
       <Route path="/certificate/:enrollmentId" element={<PrivateRoute><Certificate /></PrivateRoute>} />

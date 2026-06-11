@@ -291,9 +291,10 @@ const EnhancedTable = ({
                         placeholder={searchPlaceholder}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
+                        aria-label="Search records"
                     />
                     {searchQuery && (
-                        <button className="clear-search-btn" onClick={() => setSearchQuery("")}>
+                        <button className="clear-search-btn" onClick={() => setSearchQuery("")} aria-label="Clear search query">
                             <X size={16} />
                         </button>
                     )}
@@ -335,6 +336,7 @@ const EnhancedTable = ({
                                         type="checkbox"
                                         checked={isAllPageSelected()}
                                         onChange={handleSelectAll}
+                                        aria-label="Select all rows on this page"
                                     />
                                     <span className="checkmark"></span>
                                 </label>
@@ -467,6 +469,7 @@ const EnhancedTable = ({
                                                         type="checkbox"
                                                         checked={isSelected}
                                                         onChange={(e) => handleSelectRow(row.id, e.target.checked)}
+                                                        aria-label={`Select row ${row.id}`}
                                                     />
                                                     <span className="checkmark"></span>
                                                 </label>
@@ -489,6 +492,7 @@ const EnhancedTable = ({
                                                     <button 
                                                         className="row-dots-btn"
                                                         onClick={(e) => toggleRowMenu(row.id, e)}
+                                                        aria-label="Open actions menu"
                                                     >
                                                         <MoreVertical size={16} />
                                                     </button>

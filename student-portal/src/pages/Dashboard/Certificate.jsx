@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Gem } from "lucide-react";
 import "../../styles/Dashboard.css";
 import "../../styles/Certificate.css";
 
@@ -108,11 +109,7 @@ const Certificate = () => {
 
                 <div className="cert-top-section">
                     <div className="cert-icon-container">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6 3h12l4 6-10 13L2 9z"></path>
-                            <path d="M11 3 8 9l4 13 4-13-3-6z"></path>
-                            <path d="M2 9h20"></path>
-                        </svg>
+                        <Gem size={64} strokeWidth={1.5} />
                     </div>
 
                     <h5 className="cert-org-title">

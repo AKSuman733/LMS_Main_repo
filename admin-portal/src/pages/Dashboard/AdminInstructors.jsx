@@ -9,6 +9,7 @@ import ConfirmationModal from "../../components/ConfirmationModal";
 const AdminInstructors = () => {
     const [instructors, setInstructors] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState("name_asc");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentInstructor, setCurrentInstructor] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -97,50 +98,37 @@ const AdminInstructors = () => {
         }
 
         setFormData({ ...formData, image: file });
-        
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setPreviewUrl(reader.result);
-        };
-        reader.readAsDataURL(file);
+        setPreviewUrl(URL.createObjectURL(file));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (fileError) {
-            toast.error("Please fix form errors first.");
-            return;
+        setLoading(true);
+
+        const data = new FormData();
+        data.append("name", formData.name);
+        data.append("bio", formData.bio);
+        if (formData.image instanceof File) {
+            data.append("image", formData.image);
         }
 
-        setLoading(true);
         try {
-            const data = new FormData();
-            data.append("name", formData.name);
-            data.append("bio", formData.bio);
-
-            if (formData.image instanceof File) {
-                data.append("image", formData.image);
-            } else if (typeof formData.image === "string") {
-                data.append("image", formData.image);
-            }
-
-            const config = {
-                headers: { "Content-Type": "multipart/form-data" }
-            };
-
             if (currentInstructor) {
-                await axios.put(`http://localhost:5000/api/instructors/${currentInstructor.id}`, data, config);
-                toast.success("Instructor details updated successfully!");
+                await axios.put(`http://localhost:5000/api/admin/instructors/${currentInstructor.id}`, data, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+                toast.success("Instructor updated successfully!");
             } else {
-                await axios.post("http://localhost:5000/api/instructors", data, config);
-                toast.success("New celebrity instructor added successfully!");
+                await axios.post("http://localhost:5000/api/admin/instructors", data, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+                toast.success("Instructor added successfully!");
             }
-
             fetchInstructors();
             closeModal();
         } catch (err) {
             console.error("Error saving instructor:", err);
-            toast.error(err.response?.data?.error || "Error saving instructor data.");
+            toast.error(err.response?.data?.message || "Failed to save instructor.");
         } finally {
             setLoading(false);
         }
@@ -155,8 +143,8 @@ const AdminInstructors = () => {
         setIsConfirmOpen(false);
         if (!instructorToDelete) return;
         try {
-            await axios.delete(`http://localhost:5000/api/instructors/${instructorToDelete}`);
-            toast.success("Instructor removed successfully.");
+            await axios.delete(`http://localhost:5000/api/admin/instructors/${instructorToDelete}`);
+            toast.success("Instructor removed successfully!");
             fetchInstructors();
         } catch (err) {
             console.error("Error deleting instructor:", err);
@@ -166,10 +154,32 @@ const AdminInstructors = () => {
         }
     };
 
-    const filteredInstructors = instructors.filter(i =>
-        i.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (i.bio && i.bio.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    const getProcessedInstructors = () => {
+        let result = instructors.filter(i =>
+            i.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (i.bio && i.bio.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+
+        result.sort((a, b) => {
+            if (sortBy === "name_asc") {
+                return a.name.localeCompare(b.name);
+            }
+            if (sortBy === "name_desc") {
+                return b.name.localeCompare(a.name);
+            }
+            if (sortBy === "newest") {
+                return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+            }
+            if (sortBy === "oldest") {
+                return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+            }
+            return 0;
+        });
+
+        return result;
+    };
+
+    const filteredInstructors = getProcessedInstructors();
 
     return (
         <div className="admin-instructors-page">
@@ -192,6 +202,20 @@ const AdminInstructors = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
+                </div>
+                <div className="table-filters-sort-group">
+                    <div className="filter-select-wrapper">
+                        <select 
+                            value={sortBy} 
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="table-filter-dropdown"
+                        >
+                            <option value="name_asc">Name (A-Z)</option>
+                            <option value="name_desc">Name (Z-A)</option>
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 

@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { MessageSquare, Send, Edit3, Trash2, CheckCircle, Clock } from "lucide-react";
+import { MessageSquare, Send, Edit3, Trash2, CheckCircle, Clock, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import "../../styles/AdminQueries.css";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 const AdminQueries = () => {
     const [queries, setQueries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeFilter, setActiveFilter] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortBy, setSortBy] = useState("newest");
 
     const [replyingQuery, setReplyingQuery] = useState(null);
     const [replyText, setReplyText] = useState("");
@@ -61,11 +64,35 @@ const AdminQueries = () => {
         }
     };
 
-    const filteredQueries = queries.filter(q => {
-        if (activeFilter === "pending") return !q.reply;
-        if (activeFilter === "replied") return !!q.reply;
-        return true;
-    });
+    const getFilteredAndSortedQueries = () => {
+        let result = queries.filter(q => {
+            const matchesSearch = 
+                q.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                q.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                q.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                q.message.toLowerCase().includes(searchQuery.toLowerCase());
+            
+            if (!matchesSearch) return false;
+
+            if (activeFilter === "pending") return !q.reply;
+            if (activeFilter === "replied") return !!q.reply;
+            return true;
+        });
+
+        result.sort((a, b) => {
+            if (sortBy === "newest") {
+                return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+            }
+            if (sortBy === "oldest") {
+                return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+            }
+            return 0;
+        });
+
+        return result;
+    };
+
+    const filteredQueries = getFilteredAndSortedQueries();
 
     if (loading) return (
         <div className="premium-page-loader skeleton-pulse">
@@ -81,23 +108,43 @@ const AdminQueries = () => {
                     <h2 className="admin-queries-title">Student Queries</h2>
                     <p className="admin-queries-subtitle">Manage, reply, and resolve queries submitted by students.</p>
                 </div>
-
-                <div className="admin-queries-filters-container">
-                    {["all", "pending", "replied"].map((filter) => (
-                        <button
-                            key={filter}
-                            onClick={() => setActiveFilter(filter)}
-                            className="admin-queries-filter-btn"
-                            style={{
-                                background: activeFilter === filter ? 'var(--color-primary)' : 'transparent',
-                                color: activeFilter === filter ? 'white' : '#94a3b8'
-                            }}
-                        >
-                            {filter.toUpperCase()}
-                        </button>
-                    ))}
-                </div>
             </header>
+
+            <div className="table-actions-bar">
+                <div className="table-search">
+                    <Search size={18} color="#64748b" />
+                    <input
+                        type="text"
+                        placeholder="Search by student, email, subject..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        aria-label="Search student queries"
+                    />
+                </div>
+                <div className="table-filters-sort-group">
+                    <div className="admin-queries-filters-container">
+                        {["all", "pending", "replied"].map((filter) => (
+                            <button
+                                key={filter}
+                                onClick={() => setActiveFilter(filter)}
+                                className={`admin-queries-filter-btn ${activeFilter === filter ? 'active' : ''}`}
+                            >
+                                {filter.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="filter-select-wrapper">
+                        <select 
+                            value={sortBy} 
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="table-filter-dropdown"
+                        >
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
             {filteredQueries.length === 0 ? (
                 <div className="premium-empty-state admin-queries-empty-state">
@@ -132,11 +179,7 @@ const AdminQueries = () => {
                                 </div>
 
                                 <span 
-                                    className="admin-queries-status-tag"
-                                    style={{
-                                        background: query.reply ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-                                        color: query.reply ? 'var(--color-success)' : '#f59e0b',
-                                    }}
+                                    className={`admin-queries-status-tag ${query.reply ? 'resolved' : 'pending'}`}
                                 >
                                     {query.reply ? <CheckCircle size={12} /> : <Clock size={12} />}
                                     {query.reply ? "RESOLVED" : "PENDING REPLY"}
@@ -216,40 +259,13 @@ const AdminQueries = () => {
                 )}
             </AnimatePresence>
 
-            <AnimatePresence>
-                {deleteQueryId && (
-                    <div className="admin-queries-modal-overlay" onClick={() => setDeleteQueryId(null)}>
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="admin-queries-modal-card-delete"
-                            onClick={e => e.stopPropagation()}
-                        >
-                            <div className="admin-queries-warning-emoji">⚠️</div>
-                            <h3 className="admin-queries-warning-title">Are you sure?</h3>
-                            <p className="admin-queries-warning-desc">
-                                Do you really want to delete this query? This action cannot be undone.
-                            </p>
-                            <div className="admin-queries-warning-actions">
-                                <button
-                                    onClick={() => handleDeleteQuery(deleteQueryId)}
-                                    className="admin-queries-modal-btn-delete"
-                                >
-                                    Delete
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setDeleteQueryId(null)}
-                                    className="admin-queries-modal-btn-cancel"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
+            <ConfirmationModal
+                isOpen={!!deleteQueryId}
+                title="Delete Query"
+                message="Do you really want to delete this query? This action cannot be undone."
+                onConfirm={() => handleDeleteQuery(deleteQueryId)}
+                onCancel={() => setDeleteQueryId(null)}
+            />
         </div>
     );
 };

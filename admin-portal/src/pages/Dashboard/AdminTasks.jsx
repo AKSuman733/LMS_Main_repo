@@ -11,6 +11,8 @@ const AdminTasks = () => {
     const [tasks, setTasks] = useState([]);
     const [users, setUsers] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
+    const [sortBy, setSortBy] = useState("newest");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -174,10 +176,40 @@ const AdminTasks = () => {
         }
     };
 
-    const filteredTasks = tasks.filter(t =>
-        t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (t.assigned_to_name && t.assigned_to_name.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    const getProcessedTasks = () => {
+        let result = tasks.filter(t =>
+            t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (t.assigned_to_name && t.assigned_to_name.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+
+        if (statusFilter !== "all") {
+            result = result.filter(t => t.status === statusFilter);
+        }
+
+        result.sort((a, b) => {
+            if (sortBy === "newest") {
+                return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+            }
+            if (sortBy === "oldest") {
+                return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+            }
+            if (sortBy === "due_soon") {
+                if (!a.due_date) return 1;
+                if (!b.due_date) return -1;
+                return new Date(a.due_date) - new Date(b.due_date);
+            }
+            if (sortBy === "due_late") {
+                if (!a.due_date) return 1;
+                if (!b.due_date) return -1;
+                return new Date(b.due_date) - new Date(a.due_date);
+            }
+            return 0;
+        });
+
+        return result;
+    };
+
+    const filteredTasks = getProcessedTasks();
 
     return (
         <div className="admin-students-page">
@@ -203,6 +235,32 @@ const AdminTasks = () => {
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
+                </div>
+                <div className="table-filters-sort-group">
+                    <div className="filter-select-wrapper">
+                        <select 
+                            value={statusFilter} 
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="table-filter-dropdown"
+                        >
+                            <option value="all">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div className="sort-select-wrapper">
+                        <select 
+                            value={sortBy} 
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="table-sort-dropdown"
+                        >
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="due_soon">Due Date (Soon)</option>
+                            <option value="due_late">Due Date (Late)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
