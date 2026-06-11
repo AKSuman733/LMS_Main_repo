@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useAuth } from '../../store/AuthContext';
-import { useTheme } from '../../store/ThemeContext';
+import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 import { Save, X, User, Lock, Bell, Moon, Sun } from 'lucide-react';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const AdminSettings = () => {
   const { user } = useAuth();

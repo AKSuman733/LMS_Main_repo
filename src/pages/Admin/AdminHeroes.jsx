@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Plus, CheckCircle, XCircle } from 'lucide-react';
 import DataTable from '../../components/DataTable';
 import Modal from '../../components/Modal';
 import { getLocalHeroes, saveLocalHero, updateLocalHero, deleteLocalHero } from '../../utils/mockData';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const AdminHeroes = () => {
-  const [heroes, setHeroes] = useState([]);
+  const [heroes, setHeroes] = useState(() => getLocalHeroes());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingHero, setEditingHero] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [heroToDelete, setHeroToDelete] = useState(null);
+  const [errors, setErrors] = useState({});
   const { addToast } = useToast();
 
   // Form State
@@ -22,10 +23,6 @@ const AdminHeroes = () => {
     tags: '',
     status: 'Active'
   });
-
-  useEffect(() => {
-    loadHeroes();
-  }, []);
 
   const loadHeroes = () => {
     setHeroes(getLocalHeroes());
@@ -52,6 +49,7 @@ const AdminHeroes = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingHero(null);
+    setErrors({});
   };
 
   const handleImageUpload = (e) => {
@@ -66,8 +64,14 @@ const AdminHeroes = () => {
   };
 
   const handleSave = () => {
-    if (!formData.name.trim()) {
-      addToast({ type: 'error', message: 'Hero name is required.' });
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Hero name is required.';
+    if (!formData.title.trim()) newErrors.title = 'Title / Role is required.';
+    
+    setErrors(newErrors);
+    
+    if (Object.keys(newErrors).length > 0) {
+      addToast({ type: 'error', message: 'Please fix the errors in the form.' });
       return;
     }
 
@@ -220,24 +224,38 @@ const AdminHeroes = () => {
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+            <label htmlFor="heroName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
             <input 
+              id="heroName"
               type="text" 
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              onChange={(e) => {
+                setFormData({...formData, name: e.target.value});
+                if (errors.name) setErrors({...errors, name: ''});
+              }}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${errors.name ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
               placeholder="e.g. Mass Hero Style (Mahesh Babu)"
             />
+            {errors.name && <p className="mt-1 text-xs text-red-500" id="name-error" role="alert">{errors.name}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title / Role</label>
+            <label htmlFor="heroTitle" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title / Role</label>
             <input 
+              id="heroTitle"
               type="text" 
               value={formData.title}
-              onChange={(e) => setFormData({...formData, title: e.target.value})}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              onChange={(e) => {
+                setFormData({...formData, title: e.target.value});
+                if (errors.title) setErrors({...errors, title: ''});
+              }}
+              aria-invalid={!!errors.title}
+              aria-describedby={errors.title ? "title-error" : undefined}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${errors.title ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
               placeholder="e.g. Action Star"
             />
+            {errors.title && <p className="mt-1 text-xs text-red-500" id="title-error" role="alert">{errors.title}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tags (comma separated)</label>

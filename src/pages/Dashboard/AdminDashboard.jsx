@@ -5,7 +5,7 @@ import {
   TrendingUp, TrendingDown, Clock, CheckCircle, ChevronDown,
   Settings, Sun, Moon, LayoutGrid, LayoutList, Eye, EyeOff
 } from 'lucide-react';
-import { useTheme } from '../../store/ThemeContext';
+import { useTheme } from '../../hooks/useTheme';
 import { 
   MOCK_METRICS, 
   MOCK_ACTIVITY_FEED, 
@@ -14,7 +14,7 @@ import {
   MOCK_TOP_HEROES,
   MOCK_STUDENT_GROWTH
 } from '../../utils/mockData';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -31,17 +31,14 @@ const AdminDashboard = () => {
   const [dateFilter, setDateFilter] = useState('Last 30 Days');
   const [showDateDropdown, setShowDateDropdown] = useState(false);
   const [showControls, setShowControls] = useState(false);
-  const [compactLayout, setCompactLayout] = useState(false);
-  const [heroVisibility, setHeroVisibility] = useState(true);
+  const [compactLayout, setCompactLayout] = useState(() => {
+    return localStorage.getItem('admin_pref_layout') === 'compact';
+  });
+  const [heroVisibility, setHeroVisibility] = useState(() => {
+    return localStorage.getItem('admin_pref_hero') !== 'hidden';
+  });
 
-  // Load preferences from local storage if available
-  useEffect(() => {
-    const prefLayout = localStorage.getItem('admin_pref_layout');
-    if (prefLayout) setCompactLayout(prefLayout === 'compact');
-    
-    const prefHero = localStorage.getItem('admin_pref_hero');
-    if (prefHero) setHeroVisibility(prefHero !== 'hidden');
-  }, []);
+
 
   const toggleLayout = () => {
     const newVal = !compactLayout;

@@ -460,6 +460,7 @@ const DataTable = ({
 const RowActionMenu = ({ row, actions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = React.useRef(null);
+  const buttonRef = React.useRef(null);
 
   React.useEffect(() => {
     const handleClickOutside = (event) => {
@@ -467,21 +468,37 @@ const RowActionMenu = ({ row, actions }) => {
         setIsOpen(false);
       }
     };
+    
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
     <div className="relative inline-block text-left" ref={menuRef}>
       <button
+        ref={buttonRef}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-label="Row actions"
         onClick={() => setIsOpen(!isOpen)}
-        className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 focus:outline-none"
+        className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <MoreVertical className="w-5 h-5" />
       </button>
 
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10 border border-gray-200 dark:border-gray-700 animate-scale-in">
+        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10 border border-gray-200 dark:border-gray-700 animate-scale-in focus:outline-none">
           <div className="py-1" role="menu" aria-orientation="vertical">
             {actions.map((action, idx) => (
               <button
@@ -492,9 +509,9 @@ const RowActionMenu = ({ row, actions }) => {
                 }}
                 className={`block w-full text-left px-4 py-2 text-sm ${
                   action.destructive 
-                    ? 'text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20' 
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
+                    ? 'text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 focus:bg-red-50 dark:focus:bg-red-900/20' 
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700'
+                } focus:outline-none`}
                 role="menuitem"
               >
                 {action.label}

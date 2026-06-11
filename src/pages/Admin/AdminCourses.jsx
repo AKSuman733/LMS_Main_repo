@@ -3,7 +3,7 @@ import { Plus, BookOpen } from 'lucide-react';
 import { getLocalCourses, saveLocalCourse, updateLocalCourse, deleteLocalCourse } from '../../utils/mockData';
 import DataTable from '../../components/DataTable';
 import Modal from '../../components/Modal';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const emptyForm = {
   title: '',

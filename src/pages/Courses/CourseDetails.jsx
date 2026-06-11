@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Clock, BarChart, UserCircle, CheckCircle } from 'lucide-react';
 import { getLocalCourses, saveLocalEnrollment, getLocalHeroes } from '../../utils/mockData';
+import Spinner from '../../components/Spinner';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -42,7 +43,7 @@ const CourseDetails = () => {
     }, 600);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="p-8 flex justify-center"><Spinner /></div>;
   if (!course) return <div>Course not found</div>;
 
   return (

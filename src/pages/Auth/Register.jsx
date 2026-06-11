@@ -1,21 +1,42 @@
 import { useState } from 'react';
 
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../store/AuthContext';
+import Spinner from '../../components/Spinner';
+
 
 const Register = ({ forcedRole }) => {
   const params = useParams();
   const role = forcedRole || params.role;
   const navigate = useNavigate();
-  const { login } = useAuth();
-  
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!name) {
+      newErrors.name = 'Full name is required';
+    }
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'Email address is invalid';
+    }
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validate()) return;
     setLoading(true);
     
     // Simulate network delay and mock registration
@@ -30,58 +51,98 @@ const Register = ({ forcedRole }) => {
         {role} Registration 
       </h3>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Full Name
           </label>
           <input
+            id="name"
             type="text"
             required
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={(e) => {
+              setName(e.target.value);
+              if (errors.name) setErrors({ ...errors, name: '' });
+            }}
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "name-error" : undefined}
+            className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.name ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
           />
+          {errors.name && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="name-error" role="alert">
+              {errors.name}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Email address
           </label>
           <input
+            id="email"
             type="email"
             required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (errors.email) setErrors({ ...errors, email: '' });
+            }}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
+            className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.email ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
           />
+          {errors.email && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="email-error" role="alert">
+              {errors.email}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             Password
           </label>
           <input
+            id="password"
             type="password"
             required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              if (errors.password) setErrors({ ...errors, password: '' });
+            }}
+            aria-invalid={!!errors.password}
+            aria-describedby={errors.password ? "password-error" : undefined}
+            className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.password ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
           />
+          {errors.password && (
+            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="password-error" role="alert">
+              {errors.password}
+            </p>
+          )}
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
         >
-          {loading ? 'Registering...' : 'Register'}
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <Spinner size="sm" />
+              Registering...
+            </span>
+          ) : (
+            'Register'
+          )}
         </button>
       </form>
 
       <div className="mt-6 text-center text-sm">
         <span className="text-gray-600 dark:text-gray-400">Already have an account? </span>
-        <Link to={`/login/${role}`} className="font-medium text-blue-600 hover:text-blue-500">
+        <Link to={`/login/${role}`} className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
           Sign in here
         </Link>
       </div>

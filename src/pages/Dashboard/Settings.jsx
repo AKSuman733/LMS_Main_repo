@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useTheme } from '../../store/ThemeContext';
-import { useAuth } from '../../store/AuthContext';
+import { useTheme } from '../../hooks/useTheme';
+import { useAuth } from '../../hooks/useAuth';
 import { Sun, Moon, User, Lock, Bell, Save, X } from 'lucide-react';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const Settings = () => {
   const { theme, toggleTheme } = useTheme();

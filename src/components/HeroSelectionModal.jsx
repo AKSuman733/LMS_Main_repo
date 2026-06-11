@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Check } from 'lucide-react';
 import { getLocalHeroes } from '../utils/mockData';
 
@@ -8,9 +8,11 @@ const HeroSelectionModal = ({ isOpen, onClose, onSelectHero, currentHeroId }) =>
 
   useEffect(() => {
     if (isOpen) {
-      const allHeroes = getLocalHeroes();
-      setHeroes(allHeroes.filter(h => h.status === 'Active'));
-      setSelectedId(currentHeroId);
+      setTimeout(() => {
+        const allHeroes = getLocalHeroes();
+        setHeroes(allHeroes.filter(h => h.status === 'Active'));
+        setSelectedId(currentHeroId);
+      }, 0);
     }
   }, [isOpen, currentHeroId]);
 

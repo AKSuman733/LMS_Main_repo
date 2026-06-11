@@ -1,6 +1,6 @@
-
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './store/AuthContext';
+import { useAuth } from './hooks/useAuth';
+import Spinner from './components/Spinner';
 
 // Layouts
 import MainLayout from './layouts/MainLayout';
@@ -34,7 +34,7 @@ import AdminHeroes from './pages/Admin/AdminHeroes';
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading } = useAuth();
   
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><Spinner /></div>;
   
   const mode = import.meta.env.MODE;
   const redirectPath = mode === 'student' ? '/login/student' : 

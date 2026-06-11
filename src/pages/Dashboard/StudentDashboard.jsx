@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  BookOpen, Award, Sparkles, ChevronRight, PlayCircle, 
+import {
+  BookOpen, Award, Sparkles, PlayCircle, 
   CheckCircle, Zap, Flame, Clock, Trophy, BarChart2,
   Settings, Activity, Target, Star
 } from 'lucide-react';
@@ -15,7 +15,7 @@ import {
   MOCK_ACTIVITY_FEED,
   MOCK_TOP_HEROES
 } from '../../utils/mockData';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const StudentDashboard = () => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
@@ -116,10 +116,10 @@ const StudentDashboard = () => {
             <button onClick={() => navigate('/student/courses')} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
               <BookOpen size={16} /> Browse Catalog
             </button>
-            <button onClick={() => navigate('/student/certificates')} className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors shadow-sm">
+            <button onClick={() => navigate('/student/enrolled?tab=Certificates')} className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors shadow-sm">
               <Award size={16} /> My Certificates
             </button>
-            <button onClick={() => addToast({ type: 'info', message: 'Settings panel coming soon!' })} className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors shadow-sm">
+            <button onClick={() => navigate('/student/settings')} className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors shadow-sm">
               <Settings size={16} /> Settings
             </button>
           </div>
@@ -268,7 +268,7 @@ const StudentDashboard = () => {
                 <Activity size={18} className="text-green-500" /> Recent Activity
               </h3>
               <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2.5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 dark:before:via-gray-700 before:to-transparent hidden-scrollbar overflow-y-auto max-h-64 pr-2">
-                {MOCK_ACTIVITY_FEED.slice(0, 4).map((activity, idx) => (
+                {MOCK_ACTIVITY_FEED.slice(0, 4).map((activity) => (
                   <div key={activity.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                     <div className="flex items-center justify-center w-6 h-6 rounded-full border border-white dark:border-gray-800 bg-gray-100 dark:bg-gray-700 text-gray-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
                       <div className="w-2 h-2 rounded-full bg-blue-500"></div>

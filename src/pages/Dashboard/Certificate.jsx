@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Award } from 'lucide-react';
 import { getLocalEnrollments } from '../../utils/mockData';
+import Spinner from '../../components/Spinner';
 
 const Certificate = () => {
   const { enrollmentId } = useParams();
@@ -29,7 +30,7 @@ const Certificate = () => {
     }, 400);
   }, [enrollmentId]);
 
-  if (loading) return <div>Loading certificate...</div>;
+  if (loading) return <div className="p-8 flex justify-center"><Spinner /></div>;
   if (error) return <div className="text-red-500 p-6">{error}</div>;
 
   return (

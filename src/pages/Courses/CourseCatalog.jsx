@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import { Clock, BarChart } from 'lucide-react';
+import Spinner from '../../components/Spinner';
 import { getLocalCourses } from '../../utils/mockData';
 
 const CourseCatalog = () => {
@@ -15,7 +16,7 @@ const CourseCatalog = () => {
     }, 400);
   }, []);
 
-  if (loading) return <div>Loading courses...</div>;
+  if (loading) return <div className="p-8 flex justify-center"><Spinner /></div>;
 
   return (
     <div className="space-y-6">

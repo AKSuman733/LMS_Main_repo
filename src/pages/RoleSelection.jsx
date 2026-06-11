@@ -1,13 +1,14 @@
 
 import { useNavigate, Navigate } from 'react-router-dom';
 import { User, Shield } from 'lucide-react';
-import { useAuth } from '../store/AuthContext';
+import { useAuth } from '../hooks/useAuth';
+import Spinner from '../components/Spinner';
 
 const RoleSelection = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><Spinner /></div>;
 
   if (user) {
     return <Navigate to={`/${user.role}/dashboard`} />;

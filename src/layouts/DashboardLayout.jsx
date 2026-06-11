@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../store/AuthContext';
-import { useTheme } from '../store/ThemeContext';
+import { useAuth } from '../hooks/useAuth';
+import { useTheme } from '../hooks/useTheme';
 import { LogOut, Sun, Moon, BookOpen, Settings, LayoutDashboard, Users, Award, Star, Menu, X } from 'lucide-react';
 
 const DashboardLayout = ({ role }) => {

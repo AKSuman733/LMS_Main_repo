@@ -3,7 +3,7 @@ import { MOCK_ADMIN_ENROLLMENTS } from '../../utils/mockData';
 import { Clock, CheckCircle, Activity, ClipboardList } from 'lucide-react';
 import DataTable from '../../components/DataTable';
 import Modal from '../../components/Modal';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const AdminEnrollments = () => {
   const [enrollments, setEnrollments] = useState([]);

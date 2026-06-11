@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MOCK_ADMIN_COMPLETED_COURSES } from '../../utils/mockData';
 import { Award, Calendar, Hash } from 'lucide-react';
+import Spinner from '../../components/Spinner';
 
 const AdminCompletedCourses = () => {
   const [completed, setCompleted] = useState([]);
@@ -14,7 +15,7 @@ const AdminCompletedCourses = () => {
     }, 400);
   }, []);
 
-  if (loading) return <div>Loading completed courses...</div>;
+  if (loading) return <div className="p-8 flex justify-center"><Spinner /></div>;
 
   return (
     <div className="space-y-6">

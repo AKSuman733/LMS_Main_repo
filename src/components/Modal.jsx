@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { X, AlertTriangle, Info } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { X, AlertTriangle } from 'lucide-react';
 
 const Modal = ({ 
   isOpen, 

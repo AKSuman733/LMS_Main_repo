@@ -3,7 +3,7 @@ import { MOCK_STUDENTS } from '../../utils/mockData';
 import { ArrowLeft, CheckCircle, Clock, AlertCircle, Users } from 'lucide-react';
 import DataTable from '../../components/DataTable';
 import Modal from '../../components/Modal';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const AdminStudents = () => {
   const [students, setStudents] = useState([]);

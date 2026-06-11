@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  Search, Filter, Clock, Award, PlayCircle, BookOpen, 
-  Sparkles, ChevronRight, AlertCircle, ArrowUpDown, CheckCircle, RotateCcw
+import { Link, useLocation } from 'react-router-dom';
+import {
+  Search, Filter, Clock, PlayCircle, BookOpen, 
+  Sparkles, AlertCircle, ArrowUpDown, CheckCircle, RotateCcw
 } from 'lucide-react';
 import { 
   getLocalEnrollments, 
@@ -11,13 +11,17 @@ import {
   restartCourseLocal
 } from '../../utils/mockData';
 import HeroSelectionModal from '../../components/HeroSelectionModal';
-import { useToast } from '../../components/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 
 const EnrolledCourses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const [activeTab, setActiveTab] = useState('All');
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('tab') || 'All';
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('recent');
   

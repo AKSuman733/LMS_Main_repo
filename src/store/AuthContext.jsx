@@ -1,19 +1,15 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-const AuthContext = createContext();
-export const useAuth = () => useContext(AuthContext);
+import { useState, useEffect } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  // Removed loading state since it's not used
 
   useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem('user');
-    
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    // Initial load logic if any async check is needed, but we used sync localStorage
   }, []);
 
   const login = (userData) => {
@@ -27,8 +23,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
 };

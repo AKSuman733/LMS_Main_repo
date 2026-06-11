@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, Circle, ArrowLeft, Trophy, Play, UserCog } from 'lucide-react';
 import { getLocalEnrollments, getLocalCourses, markLessonCompleteLocal, getLocalHeroes, changeEnrollmentHero, restartCourseLocal } from '../../utils/mockData';
 import HeroSelectionModal from '../../components/HeroSelectionModal';
+import Spinner from '../../components/Spinner';
 
 const CourseLearning = () => {
   const { enrollmentId } = useParams();
@@ -16,50 +17,49 @@ const CourseLearning = () => {
   const [loading, setLoading] = useState(true);
   const [isHeroModalOpen, setIsHeroModalOpen] = useState(false);
   const [activeHero, setActiveHero] = useState(null);
-
   useEffect(() => {
+    const loadCourseData = () => {
+      setTimeout(() => {
+        const enrollments = getLocalEnrollments();
+        const currentEnrollment = enrollments.find(e => e.id === parseInt(enrollmentId));
+        
+        if (!currentEnrollment) {
+          navigate('/student/enrolled');
+          return;
+        }
+        
+        setEnrollment(currentEnrollment);
+
+        const foundCourse = getLocalCourses().find(c => c.id === currentEnrollment.course_id);
+        if (!foundCourse) {
+          navigate('/student/enrolled');
+          return;
+        }
+
+        setCourse(foundCourse);
+        setLessons(foundCourse.lessons);
+        
+        if (foundCourse.lessons.length > 0 && !activeLesson) {
+          setActiveLesson(foundCourse.lessons[0]);
+        }
+
+        // Load active hero
+        const heroes = getLocalHeroes();
+        let hero;
+        if (currentEnrollment.activeHeroId) {
+          hero = heroes.find(h => h.id === currentEnrollment.activeHeroId);
+        } else {
+          hero = heroes.find(h => h.name === currentEnrollment.instructor_style);
+        }
+        setActiveHero(hero || heroes[0]);
+        
+        setLoading(false);
+      }, 300);
+    };
+
     loadCourseData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enrollmentId, navigate]);
-
-  const loadCourseData = () => {
-    setTimeout(() => {
-      const enrollments = getLocalEnrollments();
-      const currentEnrollment = enrollments.find(e => e.id === parseInt(enrollmentId));
-      
-      if (!currentEnrollment) {
-        navigate('/student/enrolled');
-        return;
-      }
-      
-      setEnrollment(currentEnrollment);
-
-      const foundCourse = getLocalCourses().find(c => c.id === currentEnrollment.course_id);
-      if (!foundCourse) {
-        navigate('/student/enrolled');
-        return;
-      }
-
-      setCourse(foundCourse);
-      setLessons(foundCourse.lessons);
-      
-      if (foundCourse.lessons.length > 0 && !activeLesson) {
-        setActiveLesson(foundCourse.lessons[0]);
-      }
-
-      // Load active hero
-      const heroes = getLocalHeroes();
-      let hero = null;
-      if (currentEnrollment.activeHeroId) {
-        hero = heroes.find(h => h.id === currentEnrollment.activeHeroId);
-      } else {
-        // Fallback for old enrollments
-        hero = heroes.find(h => h.name === currentEnrollment.instructor_style);
-      }
-      setActiveHero(hero || heroes[0]);
-      
-      setLoading(false);
-    }, 300);
-  };
 
   const markComplete = () => {
     if (!activeLesson) return;
@@ -95,7 +95,7 @@ const CourseLearning = () => {
     }
   };
 
-  if (loading) return <div>Loading course content...</div>;
+  if (loading) return <div className="p-8 flex justify-center"><Spinner /></div>;
 
   const currentPercentage = enrollment?.progress_percentage || 0;
   const isCompleted = enrollment?.completed;
