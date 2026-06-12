@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import AdminLoginPage from "../pages/Admin/AdminLoginPage";
 import AdminDashboardPage from "../pages/Admin/AdminDashboardPage";
+import AdminDashboardPageEnhanced from "../pages/Admin/AdminDashboardPageEnhanced";
 import AdminCoursesPage from "../pages/Admin/AdminCoursesPage";
 import AdminStudentsPage from "../pages/Admin/AdminStudentsPage";
 import AdminMentorsPage from "../pages/Admin/AdminMentorsPage";
@@ -37,6 +38,7 @@ export default function AdminRoutes() {
         }
       >
         <Route index element={<AdminDashboardPage />} />
+        <Route path="dashboard-enhanced" element={<AdminDashboardPageEnhanced />} />
         <Route path="courses" element={<AdminCoursesPage />} />
         <Route path="students" element={<AdminStudentsPage />} />
         <Route path="mentors" element={<AdminMentorsPage />} />

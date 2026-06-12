@@ -1,77 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  Award,
-  BookOpen,
-  CheckCircle2,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ClipboardCheck,
-  FileText,
-  Heart,
-  Loader2,
-  Lock,
-  MessageCircle,
-  NotebookPen,
-  Play,
-  Settings,
-  Star,
-  Target,
-  Trophy,
-  Upload,
-  User,
-  X,
-  Zap,
+  Award, BookOpen, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight,
+  FileText, Loader2, MessageCircle, NotebookPen, Play, Send, Target,
+  Trophy, Upload, X,
 } from "lucide-react";
-
 import {
+  addEnrollmentComment,
   getCourseEnrollmentById,
+  saveEnrollmentNotes,
   updateAssignmentStatus,
   updateLearningProgress,
   updateQuizStatus,
+  uploadAssignmentFile,
 } from "../../services/courseEnrollmentApi";
 
-const fallbackLessons = [
-  "Introduction and Course Overview",
-  "Core Concepts and Fundamentals",
-  "Practical Implementation",
-  "Real World Example",
-  "Practice Task",
-  "Quiz",
-  "Assignment",
-];
-
-const demoQuizQuestions = [
-  {
-    id: "q1",
-    question: "What is the main goal of this lesson?",
-    options: [
-      "Only watching content",
-      "Learning with practice",
-      "Skipping assignment",
-      "Finishing without quiz",
-    ],
-    answer: "Learning with practice",
-  },
-  {
-    id: "q2",
-    question: "What increases your learning progress?",
-    options: ["Completing topics", "Completing lessons", "Practice", "All of these"],
-    answer: "All of these",
-  },
-  {
-    id: "q3",
-    question: "What is required for certificate eligibility?",
-    options: [
-      "Open course once",
-      "Complete course progress",
-      "Only login",
-      "Only payment",
-    ],
-    answer: "Complete course progress",
-  },
-];
+const API_ORIGIN = (import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api").replace(/\/api\/?$/, "");
 
 export default function CourseLearningPage() {
   const { enrollmentId } = useParams();
@@ -79,1019 +23,241 @@ export default function CourseLearningPage() {
 
   const [enrollment, setEnrollment] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [savingId, setSavingId] = useState("");
   const [error, setError] = useState("");
-
+  const [savingId, setSavingId] = useState("");
   const [activeMode, setActiveMode] = useState("journey");
   const [activeTopicIndex, setActiveTopicIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notes, setNotes] = useState("");
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState([]);
-
-  const [assignmentUrl, setAssignmentUrl] = useState("");
-  const [assignmentFileName, setAssignmentFileName] = useState("");
-
-  const [quizStarted, setQuizStarted] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState({});
-  const [quizResult, setQuizResult] = useState(null);
-
-  const notesKey = `uptoskills-notes-${enrollmentId}`;
-  const commentsKey = `uptoskills-comments-${enrollmentId}`;
-
-  const progress = Number(enrollment?.progress || 0);
-
-  const courseTitle = enrollment?.courseTitle || "Course Learning";
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [assignmentUrl, setAssignmentUrl] = useState("");
+  const [assignmentFile, setAssignmentFile] = useState(null);
+  const [actionMessage, setActionMessage] = useState("");
 
   const fetchEnrollment = async () => {
     try {
       setLoading(true);
       setError("");
-
       const data = await getCourseEnrollmentById(enrollmentId);
-
       setEnrollment(data);
-      setAssignmentUrl(data?.assignment?.submissionUrl || "");
-      setNotes(localStorage.getItem(notesKey) || "");
-      setComments(JSON.parse(localStorage.getItem(commentsKey) || "[]"));
+      setNotes(data.notes || "");
+      setAssignmentUrl(data.assignment?.submissionUrl || "");
     } catch (err) {
-      setError(err.message || "Failed to load course learning page.");
+      setError(err.message || "Failed to load course player.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchEnrollment();
-  }, [enrollmentId]);
+  useEffect(() => { fetchEnrollment(); }, [enrollmentId]);
 
-  const topics = useMemo(() => {
-    if (enrollment?.learningTopics?.length > 0) {
-      return enrollment.learningTopics;
-    }
+  const course = enrollment?.courseId || {};
+  const curriculum = Array.isArray(course.curriculum) ? [...course.curriculum].sort((a, b) => (a.order || 0) - (b.order || 0)) : [];
+  const quizQuestions = Array.isArray(course.quizQuestions) ? course.quizQuestions : [];
+  const assignmentConfig = course.assignment || {};
+  const topics = enrollment?.learningTopics || [];
 
-    return fallbackLessons.map((title, index) => ({
-      topicId: `fallback-topic-${index + 1}`,
-      title,
-      isCompleted: false,
-    }));
-  }, [enrollment]);
+  const activeTopicProgress = topics[activeTopicIndex];
+  const activeTopic = curriculum.find((t) => String(t._id) === activeTopicProgress?.topicId) || curriculum[activeTopicIndex];
+  const subtopicProgress = (enrollment?.learningSubTopics || []).filter((s) => s.topicId === String(activeTopic?._id));
+  const activeSubTopicProgress = subtopicProgress[activeLessonIndex];
+  const activeSubTopic = (activeTopic?.subTopics || []).find((s) => String(s._id) === activeSubTopicProgress?.subTopicId) || activeTopic?.subTopics?.[activeLessonIndex];
+  const currentLesson = activeSubTopic || activeTopic;
+  const currentProgressItem = activeSubTopic ? activeSubTopicProgress : activeTopicProgress;
 
-  const activeTopic = topics[activeTopicIndex] || topics[0];
-
-  const activeSubtopics = useMemo(() => {
-    if (!activeTopic) return [];
-
-    const realSubtopics = (enrollment?.learningSubTopics || []).filter(
-      (item) => item.topicId === activeTopic.topicId
-    );
-
-    if (realSubtopics.length > 0) return realSubtopics;
-
-    return [
-      {
-        subTopicId: `${activeTopic.topicId}-lesson-1`,
-        topicId: activeTopic.topicId,
-        title: "Concept Explanation",
-        isCompleted: activeTopic.isCompleted,
-      },
-      {
-        subTopicId: `${activeTopic.topicId}-lesson-2`,
-        topicId: activeTopic.topicId,
-        title: "Practical Example",
-        isCompleted: false,
-      },
-      {
-        subTopicId: `${activeTopic.topicId}-lesson-3`,
-        topicId: activeTopic.topicId,
-        title: "Practice Check",
-        isCompleted: false,
-      },
-    ];
-  }, [enrollment, activeTopic]);
-
-  const currentLesson =
-    activeSubtopics[activeLessonIndex] || activeSubtopics[0] || activeTopic;
-
-  const totalLessons = topics.length + Number(enrollment?.learningSubTopics?.length || 0);
-
+  const progress = Number(enrollment?.progress || 0);
   const completedLessons = useMemo(() => {
-    const completedTopics = (enrollment?.learningTopics || []).filter(
-      (item) => item.isCompleted
+    const leafTopics = curriculum.filter((t) => !t.subTopics?.length).filter((t) =>
+      enrollment?.learningTopics?.some((p) => p.topicId === String(t._id) && p.isCompleted)
     ).length;
+    const doneSubs = (enrollment?.learningSubTopics || []).filter((s) => s.isCompleted).length;
+    return leafTopics + doneSubs;
+  }, [curriculum, enrollment]);
+  const totalLessons = curriculum.reduce((sum, t) => sum + (t.subTopics?.length || 1), 0);
 
-    const completedSubtopics = (enrollment?.learningSubTopics || []).filter(
-      (item) => item.isCompleted
-    ).length;
-
-    return completedTopics + completedSubtopics;
-  }, [enrollment]);
-
-  const handleToggleTopic = async (topic) => {
-    if (String(topic.topicId).startsWith("fallback")) {
-      alert("This demo topic is not connected to backend. Add real topics from admin course form.");
-      return;
-    }
-
+  const updateProgress = async (item, complete) => {
+    if (!item) return;
     try {
-      setSavingId(topic.topicId);
-
-      const updated = await updateLearningProgress(enrollmentId, {
-        type: "topic",
-        topicId: topic.topicId,
-        isCompleted: !topic.isCompleted,
+      setSavingId(item.subTopicId || item.topicId);
+      const updated = await updateLearningProgress(enrollmentId, item.subTopicId ? {
+        type: "subTopic", topicId: item.topicId, subTopicId: item.subTopicId, isCompleted: complete,
+      } : {
+        type: "topic", topicId: item.topicId, isCompleted: complete,
       });
-
       setEnrollment(updated);
+      setActionMessage(complete ? "Lesson completed." : "Lesson marked incomplete.");
     } catch (err) {
-      alert(err.message || "Failed to update topic.");
-    } finally {
-      setSavingId("");
-    }
+      setActionMessage(err.message);
+    } finally { setSavingId(""); }
   };
 
-  const handleToggleSubtopic = async (subtopic) => {
-    if (String(subtopic.subTopicId).includes("fallback")) {
-      alert("This demo lesson is not connected to backend. Add real subtopics from admin course form.");
-      return;
+  const handleContinue = async () => {
+    if (currentProgressItem && !currentProgressItem.isCompleted) {
+      await updateProgress(currentProgressItem, true);
     }
-
-    try {
-      setSavingId(subtopic.subTopicId);
-
-      const updated = await updateLearningProgress(enrollmentId, {
-        type: "subTopic",
-        topicId: subtopic.topicId,
-        subTopicId: subtopic.subTopicId,
-        isCompleted: !subtopic.isCompleted,
-      });
-
-      setEnrollment(updated);
-    } catch (err) {
-      alert(err.message || "Failed to update lesson.");
-    } finally {
-      setSavingId("");
+    if (activeSubTopic && activeLessonIndex < (activeTopic?.subTopics?.length || 0) - 1) {
+      setActiveLessonIndex((i) => i + 1);
+    } else if (activeTopicIndex < curriculum.length - 1) {
+      setActiveTopicIndex((i) => i + 1);
+      setActiveLessonIndex(0);
+    } else {
+      setActiveMode("quiz");
     }
   };
 
   const handlePrevious = () => {
-    if (activeLessonIndex > 0) {
-      setActiveLessonIndex((prev) => prev - 1);
-      return;
-    }
-
-    if (activeTopicIndex > 0) {
-      setActiveTopicIndex((prev) => prev - 1);
-      setActiveLessonIndex(0);
+    if (activeLessonIndex > 0) setActiveLessonIndex((i) => i - 1);
+    else if (activeTopicIndex > 0) {
+      const previousTopic = curriculum[activeTopicIndex - 1];
+      setActiveTopicIndex((i) => i - 1);
+      setActiveLessonIndex(Math.max(0, (previousTopic?.subTopics?.length || 1) - 1));
     }
   };
 
-  const handleContinue = async () => {
-    if (currentLesson?.subTopicId) {
-      await handleToggleSubtopic(currentLesson);
-    } else if (activeTopic) {
-      await handleToggleTopic(activeTopic);
-    }
-
-    if (activeLessonIndex < activeSubtopics.length - 1) {
-      setActiveLessonIndex((prev) => prev + 1);
-      return;
-    }
-
-    if (activeTopicIndex < topics.length - 1) {
-      setActiveTopicIndex((prev) => prev + 1);
-      setActiveLessonIndex(0);
-    }
-  };
-
-  const handleSaveNotes = () => {
-    localStorage.setItem(notesKey, notes);
-    alert("Notes saved successfully.");
-  };
-
-  const handleAddComment = () => {
-    if (!commentText.trim()) return;
-
-    const user = JSON.parse(localStorage.getItem("studentUser") || "{}");
-
-    const newComment = {
-      id: Date.now(),
-      name: user.name || "Student",
-      message: commentText.trim(),
-      time: new Date().toLocaleString(),
-    };
-
-    const updatedComments = [newComment, ...comments];
-
-    setComments(updatedComments);
-    setCommentText("");
-    localStorage.setItem(commentsKey, JSON.stringify(updatedComments));
-  };
-
-  const handleStartQuiz = async () => {
+  const saveNotes = async () => {
     try {
-      setQuizStarted(true);
-      setQuizResult(null);
-
-      const updated = await updateQuizStatus(enrollmentId, {
-        status: "In Progress",
-      });
-
-      setEnrollment(updated);
-    } catch (err) {
-      alert(err.message || "Failed to start quiz.");
-    }
+      await saveEnrollmentNotes(enrollmentId, notes);
+      setActionMessage("Notes saved to backend.");
+    } catch (err) { setActionMessage(err.message); }
   };
 
-  const handleSubmitQuiz = async () => {
-    let score = 0;
+  const addComment = async () => {
+    if (!commentText.trim()) return;
+    const user = JSON.parse(localStorage.getItem("studentUser") || "{}");
+    try {
+      const comments = await addEnrollmentComment(enrollmentId, {
+        name: user.name || enrollment.studentName || "Student",
+        email: user.email || enrollment.email || "",
+        message: commentText,
+      });
+      setEnrollment((prev) => ({ ...prev, comments }));
+      setCommentText("");
+    } catch (err) { setActionMessage(err.message); }
+  };
 
-    demoQuizQuestions.forEach((question) => {
-      if (quizAnswers[question.id] === question.answer) {
-        score += 1;
-      }
+  const startQuiz = async () => {
+    try {
+      const updated = await updateQuizStatus(enrollmentId, { status: "In Progress" });
+      setEnrollment(updated);
+      setQuizStarted(true);
+      setQuizAnswers({});
+    } catch (err) { setActionMessage(err.message); }
+  };
+
+  const submitQuiz = async () => {
+    if (!quizQuestions.length) return;
+    const unanswered = quizQuestions.some((q) => !quizAnswers[String(q._id)]);
+    if (unanswered) return setActionMessage("Please answer every quiz question.");
+
+    let score = 0;
+    let totalMarks = 0;
+    quizQuestions.forEach((q) => {
+      const marks = Number(q.marks || 1);
+      totalMarks += marks;
+      if (quizAnswers[String(q._id)] === q.correctAnswer) score += marks;
     });
 
     try {
-      const updated = await updateQuizStatus(enrollmentId, {
-        status: "Completed",
-        score,
-        totalMarks: demoQuizQuestions.length,
-      });
-
+      const updated = await updateQuizStatus(enrollmentId, { status: "Completed", score, totalMarks });
       setEnrollment(updated);
-      setQuizResult({
-        score,
-        totalMarks: demoQuizQuestions.length,
-      });
       setQuizStarted(false);
-    } catch (err) {
-      alert(err.message || "Failed to submit quiz.");
-    }
+      setActionMessage(`Quiz submitted. Score: ${score}/${totalMarks}`);
+    } catch (err) { setActionMessage(err.message); }
   };
 
-  const handleAssignmentFile = (event) => {
-    const file = event.target.files?.[0];
-
-    if (!file) return;
-
-    setAssignmentFileName(file.name);
-    setAssignmentUrl(`Uploaded file: ${file.name}`);
-  };
-
-  const handleSubmitAssignment = async () => {
-    if (!assignmentUrl.trim()) {
-      alert("Please paste assignment link or upload a file.");
-      return;
-    }
-
+  const submitAssignment = async () => {
     try {
-      const updated = await updateAssignmentStatus(enrollmentId, {
-        status: "Submitted",
-        title: `${courseTitle} Assignment`,
-        submissionUrl: assignmentUrl.trim(),
+      let updated;
+      if (assignmentFile) updated = await uploadAssignmentFile(enrollmentId, assignmentFile);
+      else if (assignmentUrl.trim()) updated = await updateAssignmentStatus(enrollmentId, {
+        status: "Submitted", title: assignmentConfig.title || `${course.title} Assignment`, submissionUrl: assignmentUrl.trim(),
       });
-
+      else return setActionMessage("Select a file or paste a submission link.");
       setEnrollment(updated);
-      alert("Assignment submitted successfully.");
-    } catch (err) {
-      alert(err.message || "Failed to submit assignment.");
-    }
+      setAssignmentFile(null);
+      setActionMessage("Assignment submitted successfully.");
+    } catch (err) { setActionMessage(err.message); }
   };
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#101827] text-white">
-        <div className="text-center">
-          <Loader2 className="mx-auto animate-spin text-emerald-400" size={52} />
-          <p className="mt-4 font-bold text-slate-300">Loading course player...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !enrollment) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#101827] px-6 text-white">
-        <div className="max-w-lg rounded-3xl border border-slate-700 bg-[#1d2938] p-8 text-center">
-          <h1 className="text-3xl font-black">Course Player Not Found</h1>
-          <p className="mt-3 text-slate-400">{error || "Enrollment not found."}</p>
-          <Link
-            to="/courses"
-            className="mt-6 inline-flex rounded-2xl bg-emerald-400 px-6 py-3 font-black text-slate-950"
-          >
-            Back to Courses
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const isFirstLesson = activeTopicIndex === 0 && activeLessonIndex === 0;
-  const isLastLesson =
-    activeTopicIndex === topics.length - 1 &&
-    activeLessonIndex === activeSubtopics.length - 1;
+  if (loading) return <Centered><Loader2 className="animate-spin text-cyan-400" size={52} /><p>Loading course player...</p></Centered>;
+  if (error || !enrollment) return <Centered><h1 className="text-3xl font-black">Course Player Not Found</h1><p>{error}</p><Link className="rounded-xl bg-cyan-400 px-5 py-3 font-black text-slate-950" to="/courses">Back to Courses</Link></Centered>;
 
   return (
     <div className="min-h-screen bg-[#101827] text-white">
-      <header className="sticky top-0 z-50 border-b border-slate-700 bg-[#1d2938]">
-        <div className="flex h-[74px] items-center justify-between px-5">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/courses")}
-              className="rounded-full p-2 text-slate-400 transition hover:bg-slate-700 hover:text-white"
-            >
-              <X size={22} />
-            </button>
-
-            <button
-              onClick={() => navigate("/courses")}
-              className="rounded-full p-2 text-slate-400 transition hover:bg-slate-700 hover:text-white"
-            >
-              <ChevronLeft size={24} />
-            </button>
-
-            <div>
-              <h1 className="font-black text-white">{courseTitle}</h1>
-              <p className="text-sm text-slate-400">
-                by {enrollment.mentorName || "UptoSkills Mentor"}
-              </p>
-            </div>
+      <header className="sticky top-0 z-40 border-b border-slate-700 bg-[#1d2938]">
+        <div className="flex min-h-[74px] items-center justify-between gap-3 px-3 sm:px-5">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-4">
+            <button onClick={() => navigate("/courses")} className="rounded-full p-2 hover:bg-slate-700"><X size={21} /></button>
+            <button onClick={() => setSidebarOpen(true)} className="rounded-full p-2 lg:hidden"><BookOpen size={21} /></button>
+            <div className="min-w-0"><h1 className="truncate font-black">{course.title || enrollment.courseTitle}</h1><p className="truncate text-xs text-slate-400">by {enrollment.mentorName || "UptoSkills Mentor"}</p></div>
           </div>
-
-          <div className="hidden items-center gap-4 md:flex">
-            <div className="flex items-center gap-2 rounded-full bg-rose-500/10 px-4 py-2 font-black text-rose-400">
-              <Heart size={17} fill="currentColor" />
-              5
-            </div>
-
-            <div className="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-slate-300">
-              <span className="text-pink-400">🎒 lvl 4</span>{" "}
-              <span className="ml-2">1594 xp</span>
-            </div>
-
-            <div className="text-sm font-black text-emerald-400">
-              Progress: {progress}%{" "}
-              <span className="text-slate-400">
-                ({completedLessons}/{totalLessons || topics.length} lessons)
-              </span>
-            </div>
-
-            <Settings className="text-slate-400" size={21} />
-          </div>
+          <div className="text-right"><p className="text-sm font-black text-emerald-400">{progress}%</p><p className="hidden text-xs text-slate-400 sm:block">{completedLessons}/{totalLessons} lessons</p></div>
         </div>
-
-        <div className="h-[3px] bg-slate-800">
-          <div
-            className="h-full bg-emerald-400 transition-all"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+        <div className="h-1 bg-slate-800"><div className="h-full bg-emerald-400" style={{ width: `${progress}%` }} /></div>
       </header>
 
-      <div className="grid min-h-[calc(100vh-74px)] grid-cols-1 lg:grid-cols-[335px_1fr]">
-        <aside className="border-r border-slate-700 bg-[#1d2938] p-4">
-          <h2 className="mb-5 text-xl font-black">League Content</h2>
+      <div className="grid min-h-[calc(100vh-75px)] lg:grid-cols-[320px_1fr]">
+        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} curriculum={curriculum} enrollment={enrollment} activeTopicIndex={activeTopicIndex} activeLessonIndex={activeLessonIndex} onSelect={(ti, li) => { setActiveTopicIndex(ti); setActiveLessonIndex(li); setActiveMode("journey"); setSidebarOpen(false); }} setMode={setActiveMode} />
 
-          <div className="space-y-3">
-            {topics.map((topic, topicIndex) => {
-              const selected = activeTopicIndex === topicIndex;
-              const subtopics = (enrollment.learningSubTopics || []).filter(
-                (item) => item.topicId === topic.topicId
-              );
-
-              const displaySubtopics =
-                subtopics.length > 0
-                  ? subtopics
-                  : [
-                      {
-                        subTopicId: `${topic.topicId}-demo-1`,
-                        title: "Lesson Overview",
-                        isCompleted: topic.isCompleted,
-                        topicId: topic.topicId,
-                      },
-                      {
-                        subTopicId: `${topic.topicId}-demo-2`,
-                        title: "Practice Content",
-                        isCompleted: false,
-                        topicId: topic.topicId,
-                      },
-                    ];
-
-              return (
-                <div
-                  key={topic.topicId}
-                  className={`overflow-hidden rounded-lg border ${
-                    selected
-                      ? "border-blue-500/40 bg-blue-500/10"
-                      : "border-slate-600 bg-slate-900/40"
-                  }`}
-                >
-                  <button
-                    onClick={() => {
-                      setActiveTopicIndex(topicIndex);
-                      setActiveLessonIndex(0);
-                      setActiveMode("journey");
-                    }}
-                    className={`flex w-full items-center justify-between px-4 py-3 text-left font-black ${
-                      selected
-                        ? "bg-blue-600/20 text-blue-300"
-                        : "text-slate-200 hover:bg-slate-800"
-                    }`}
-                  >
-                    <span>
-                      {topicIndex + 1}. {topic.title}
-                    </span>
-                    {selected ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-                  </button>
-
-                  {selected && (
-                    <div className="border-t border-slate-700 py-2">
-                      {displaySubtopics.map((lesson, lessonIndex) => {
-                        const lessonSelected = activeLessonIndex === lessonIndex;
-
-                        return (
-                          <button
-                            key={lesson.subTopicId}
-                            onClick={() => {
-                              setActiveLessonIndex(lessonIndex);
-                              setActiveMode("journey");
-                            }}
-                            className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-bold ${
-                              lessonSelected
-                                ? "border-r-2 border-blue-400 bg-blue-500/20 text-blue-300"
-                                : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                            }`}
-                          >
-                            {lesson.isCompleted ? (
-                              <CheckCircle2 size={18} className="text-emerald-400" />
-                            ) : lessonSelected ? (
-                              <Play size={18} className="text-slate-300" fill="currentColor" />
-                            ) : (
-                              <Play size={18} className="text-slate-500" fill="currentColor" />
-                            )}
-
-                            <span className="truncate">{lesson.title}</span>
-                          </button>
-                        );
-                      })}
-
-                      <button
-                        onClick={() => setActiveMode("quiz")}
-                        className="flex w-full items-center gap-3 px-8 py-3 text-left text-sm font-black text-amber-400 hover:bg-slate-800"
-                      >
-                        <Trophy size={17} />
-                        Quiz
-                      </button>
-
-                      <button
-                        onClick={() => setActiveMode("assignment")}
-                        className="flex w-full items-center gap-3 px-8 py-3 text-left text-sm font-black text-cyan-300 hover:bg-slate-800"
-                      >
-                        <FileText size={17} />
-                        Assignment
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-
-            <button
-              onClick={() => setActiveMode("certificate")}
-              className="mt-5 flex w-full items-center justify-between rounded-lg border border-slate-600 bg-slate-900/50 px-4 py-4 font-black text-slate-200 hover:bg-slate-800"
-            >
-              <span className="flex items-center gap-2">
-                <Play size={18} fill="currentColor" />
-                Complete League
-              </span>
-
-              <span className="rounded-md bg-amber-500/20 px-3 py-1 text-xs text-amber-300">
-                Final
-              </span>
-            </button>
-          </div>
-        </aside>
-
-        <main className="flex min-h-[calc(100vh-74px)] flex-col">
-          <div className="border-b border-slate-700 bg-[#1d2938] px-6 py-5">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-black">
-                  {activeMode === "journey" && (currentLesson?.title || activeTopic?.title)}
-                  {activeMode === "quiz" && "Quiz Challenge"}
-                  {activeMode === "assignment" && "Assignment Submission"}
-                  {activeMode === "notes" && "Learning Notepad"}
-                  {activeMode === "comments" && "Community Discussion"}
-                  {activeMode === "certificate" && "Certificate Progress"}
-                </h2>
-
-                <p className="mt-1 text-sm text-slate-400">
-                  <span className="font-black text-amber-400">🏆 35 XP</span>{" "}
-                  Mission {activeTopicIndex + 1} of {topics.length}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <ModeButton
-                  active={activeMode === "journey"}
-                  onClick={() => setActiveMode("journey")}
-                  icon={BookOpen}
-                  text="Journey"
-                />
-
-                <ModeButton
-                  active={activeMode === "quiz"}
-                  onClick={() => setActiveMode("quiz")}
-                  icon={Target}
-                  text="Challenges"
-                />
-
-                <ModeButton
-                  active={activeMode === "comments"}
-                  onClick={() => setActiveMode("comments")}
-                  icon={MessageCircle}
-                  text="Community"
-                  badge="2"
-                />
-
-                <button
-                  onClick={() => setActiveMode("notes")}
-                  className="rounded-xl border border-slate-600 px-5 py-3 font-black text-slate-200 hover:bg-slate-800"
-                >
-                  Notes
-                </button>
-
-                <button className="rounded-xl bg-rose-500 px-5 py-3 font-black text-white hover:bg-rose-400">
-                  Upgrade Pro
-                </button>
+        <main className="flex min-w-0 flex-col">
+          <div className="border-b border-slate-700 bg-[#1d2938] px-4 py-4 sm:px-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div><h2 className="font-black">{activeMode === "journey" ? currentLesson?.title || "Lesson" : modeTitle(activeMode)}</h2><p className="text-xs text-slate-400">Module {activeTopicIndex + 1} of {Math.max(curriculum.length, 1)}</p></div>
+              <div className="flex max-w-full gap-2 overflow-x-auto pb-1">
+                <Mode text="Journey" active={activeMode === "journey"} onClick={() => setActiveMode("journey")} />
+                <Mode text="Quiz" active={activeMode === "quiz"} onClick={() => setActiveMode("quiz")} />
+                <Mode text="Assignment" active={activeMode === "assignment"} onClick={() => setActiveMode("assignment")} />
+                <Mode text="Notes" active={activeMode === "notes"} onClick={() => setActiveMode("notes")} />
+                <Mode text="Community" active={activeMode === "comments"} onClick={() => setActiveMode("comments")} />
+                <Mode text="Certificate" active={activeMode === "certificate"} onClick={() => setActiveMode("certificate")} />
               </div>
             </div>
           </div>
 
-          <section className="flex flex-1 items-center justify-center bg-[#111827] p-6">
-            {activeMode === "journey" && (
-              <JourneyScreen
-                courseTitle={courseTitle}
-                activeTopic={activeTopic}
-                currentLesson={currentLesson}
-                savingId={savingId}
-                handleToggleTopic={handleToggleTopic}
-                handleToggleSubtopic={handleToggleSubtopic}
-              />
-            )}
+          {actionMessage && <div className="mx-4 mt-4 rounded-xl border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-sm text-cyan-200 sm:mx-6">{actionMessage}</div>}
 
-            {activeMode === "quiz" && (
-              <QuizScreen
-                enrollment={enrollment}
-                quizStarted={quizStarted}
-                quizAnswers={quizAnswers}
-                setQuizAnswers={setQuizAnswers}
-                quizResult={quizResult}
-                handleStartQuiz={handleStartQuiz}
-                handleSubmitQuiz={handleSubmitQuiz}
-              />
-            )}
-
-            {activeMode === "assignment" && (
-              <AssignmentScreen
-                enrollment={enrollment}
-                assignmentUrl={assignmentUrl}
-                setAssignmentUrl={setAssignmentUrl}
-                assignmentFileName={assignmentFileName}
-                handleAssignmentFile={handleAssignmentFile}
-                handleSubmitAssignment={handleSubmitAssignment}
-              />
-            )}
-
-            {activeMode === "notes" && (
-              <NotesScreen notes={notes} setNotes={setNotes} handleSaveNotes={handleSaveNotes} />
-            )}
-
-            {activeMode === "comments" && (
-              <CommentsScreen
-                commentText={commentText}
-                setCommentText={setCommentText}
-                comments={comments}
-                handleAddComment={handleAddComment}
-              />
-            )}
-
-            {activeMode === "certificate" && (
-              <CertificateScreen enrollment={enrollment} progress={progress} />
-            )}
+          <section className="flex-1 overflow-y-auto p-4 sm:p-6">
+            {activeMode === "journey" && <Journey lesson={currentLesson} progressItem={currentProgressItem} saving={savingId} onToggle={updateProgress} />}
+            {activeMode === "quiz" && <Quiz questions={quizQuestions} enrollment={enrollment} started={quizStarted} answers={quizAnswers} setAnswers={setQuizAnswers} onStart={startQuiz} onSubmit={submitQuiz} />}
+            {activeMode === "assignment" && <Assignment config={assignmentConfig} enrollment={enrollment} url={assignmentUrl} setUrl={setAssignmentUrl} file={assignmentFile} setFile={setAssignmentFile} onSubmit={submitAssignment} />}
+            {activeMode === "notes" && <Notes value={notes} setValue={setNotes} onSave={saveNotes} />}
+            {activeMode === "comments" && <Comments enrollment={enrollment} value={commentText} setValue={setCommentText} onAdd={addComment} />}
+            {activeMode === "certificate" && <Certificate enrollment={enrollment} course={course} />}
           </section>
 
-          <footer className="border-t border-slate-700 bg-[#1d2938] px-5 py-4">
-            <div className="flex items-center justify-between gap-4">
-              <button
-                onClick={handlePrevious}
-                disabled={isFirstLesson}
-                className="flex items-center gap-2 rounded-lg bg-slate-700 px-8 py-4 font-black text-slate-300 transition hover:bg-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <ChevronLeft />
-                Previous
-              </button>
-
-              <div className="hidden items-center gap-3 sm:flex">
-                <div className="h-2 w-40 overflow-hidden rounded-full bg-slate-700">
-                  <div
-                    className="h-full rounded-full bg-violet-500"
-                    style={{
-                      width: `${Math.min(
-                        100,
-                        ((activeTopicIndex + 1) / topics.length) * 100
-                      )}%`,
-                    }}
-                  />
-                </div>
-
-                <span className="font-black text-slate-300">
-                  <Zap className="inline text-violet-400" size={22} />{" "}
-                  {activeTopicIndex + 1} of {topics.length}
-                </span>
-              </div>
-
-              <button
-                onClick={handleContinue}
-                disabled={isLastLesson && progress >= 100}
-                className="flex items-center gap-2 rounded-lg bg-violet-600 px-8 py-4 font-black text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Continue
-                <ChevronRight />
-              </button>
-            </div>
-          </footer>
+          {activeMode === "journey" && <footer className="sticky bottom-0 border-t border-slate-700 bg-[#1d2938] p-3 sm:p-4"><div className="flex items-center justify-between gap-3"><button onClick={handlePrevious} disabled={activeTopicIndex === 0 && activeLessonIndex === 0} className="flex items-center gap-1 rounded-xl bg-slate-700 px-4 py-3 font-black disabled:opacity-40"><ChevronLeft />Previous</button><button onClick={handleContinue} className="flex items-center gap-1 rounded-xl bg-violet-600 px-5 py-3 font-black">Continue<ChevronRight /></button></div></footer>}
         </main>
       </div>
     </div>
   );
 }
 
-function JourneyScreen({
-  courseTitle,
-  activeTopic,
-  currentLesson,
-  savingId,
-  handleToggleTopic,
-  handleToggleSubtopic,
-}) {
-  const title = currentLesson?.title || activeTopic?.title || "Lesson";
-
-  return (
-    <div className="mx-auto max-w-3xl text-center">
-      <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-pink-500/20 text-5xl">
-        🎯
-      </div>
-
-      <h1 className="mt-8 text-4xl font-black md:text-5xl">
-        Welcome to {title}!
-      </h1>
-
-      <p className="mt-8 text-xl leading-9 text-slate-200">
-        🎉 Woohoo! Time for your lesson in{" "}
-        <span className="font-black text-cyan-300">{courseTitle}</span>. This
-        section explains the topic clearly, helps you understand concepts, and
-        prepares you for practice, quiz and assignment.
-      </p>
-
-      <div className="mt-8 rounded-3xl border border-slate-700 bg-[#1d2938] p-6 text-left">
-        <h2 className="text-2xl font-black">What you will learn</h2>
-
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          <LearningPoint text="Concept clarity" />
-          <LearningPoint text="Practical example" />
-          <LearningPoint text="Practice task" />
-        </div>
-      </div>
-
-      <button
-        onClick={() =>
-          currentLesson?.subTopicId
-            ? handleToggleSubtopic(currentLesson)
-            : handleToggleTopic(activeTopic)
-        }
-        className="mt-8 rounded-xl bg-emerald-400 px-7 py-4 font-black text-slate-950"
-      >
-        {savingId ? "Saving..." : "Mark This Lesson Complete"}
-      </button>
-    </div>
-  );
+function Sidebar({ open, onClose, curriculum, enrollment, activeTopicIndex, activeLessonIndex, onSelect, setMode }) {
+  const content = <aside className="h-full overflow-y-auto border-r border-slate-700 bg-[#1d2938] p-4"><div className="mb-4 flex items-center justify-between"><h2 className="text-xl font-black">Course Content</h2><button className="lg:hidden" onClick={onClose}><X /></button></div><div className="space-y-3">{curriculum.map((topic, ti) => { const selected = ti === activeTopicIndex; return <div key={topic._id} className="overflow-hidden rounded-xl border border-slate-700"><button onClick={() => onSelect(ti, 0)} className={`flex w-full items-center justify-between px-4 py-3 text-left font-black ${selected ? "bg-blue-500/20 text-blue-300" : "bg-slate-900"}`}><span>{ti + 1}. {topic.title}</span>{selected ? <ChevronDown /> : <ChevronRight />}</button>{selected && <div>{(topic.subTopics?.length ? topic.subTopics : [topic]).map((lesson, li) => { const pid = String(topic._id); const sid = topic.subTopics?.length ? String(lesson._id) : null; const done = sid ? enrollment.learningSubTopics?.some(s => s.topicId === pid && s.subTopicId === sid && s.isCompleted) : enrollment.learningTopics?.some(t => t.topicId === pid && t.isCompleted); return <button key={lesson._id} onClick={() => onSelect(ti, li)} className={`flex w-full items-center gap-2 px-4 py-3 text-left text-sm ${li === activeLessonIndex ? "bg-blue-500/10 text-blue-300" : "text-slate-400"}`}>{done ? <CheckCircle2 className="text-emerald-400" size={17} /> : <Play size={17} />}<span className="truncate">{lesson.title}</span></button> })}</div>}</div> })}</div><div className="mt-5 grid gap-2"><button onClick={() => setMode("quiz")} className="rounded-xl bg-amber-500/10 p-3 text-left font-black text-amber-300">Quiz</button><button onClick={() => setMode("assignment")} className="rounded-xl bg-cyan-500/10 p-3 text-left font-black text-cyan-300">Assignment</button></div></aside>;
+  return <>{open && <div className="fixed inset-0 z-50 bg-black/60 lg:hidden" onClick={onClose}><div className="h-full w-[88%] max-w-[340px]" onClick={e => e.stopPropagation()}>{content}</div></div>}<div className="hidden lg:block">{content}</div></>;
 }
 
-function QuizScreen({
-  enrollment,
-  quizStarted,
-  quizAnswers,
-  setQuizAnswers,
-  quizResult,
-  handleStartQuiz,
-  handleSubmitQuiz,
-}) {
-  return (
-    <div className="w-full max-w-4xl">
-      <div className="rounded-3xl border border-slate-700 bg-[#1d2938] p-8">
-        <div className="flex items-center gap-3">
-          <Trophy className="text-amber-400" size={32} />
-          <h1 className="text-4xl font-black">Quiz Challenge</h1>
-        </div>
-
-        <p className="mt-4 text-slate-400">
-          Status:{" "}
-          <span className="font-black text-white">
-            {enrollment.quiz?.status || "Not Started"}
-          </span>
-        </p>
-
-        {enrollment.quiz?.status === "Completed" && (
-          <div className="mt-5 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 p-5 text-emerald-300">
-            Score: {enrollment.quiz.score}/{enrollment.quiz.totalMarks}
-          </div>
-        )}
-
-        {!quizStarted ? (
-          <button
-            onClick={handleStartQuiz}
-            className="mt-8 rounded-xl bg-amber-500 px-7 py-4 font-black text-white"
-          >
-            Start Quiz
-          </button>
-        ) : (
-          <div className="mt-8 space-y-6">
-            {demoQuizQuestions.map((question, index) => (
-              <div
-                key={question.id}
-                className="rounded-2xl border border-slate-700 bg-slate-900 p-5"
-              >
-                <h2 className="text-xl font-black">
-                  {index + 1}. {question.question}
-                </h2>
-
-                <div className="mt-4 grid gap-3 md:grid-cols-2">
-                  {question.options.map((option) => (
-                    <button
-                      key={option}
-                      onClick={() =>
-                        setQuizAnswers((prev) => ({
-                          ...prev,
-                          [question.id]: option,
-                        }))
-                      }
-                      className={`rounded-xl border p-4 text-left font-bold ${
-                        quizAnswers[question.id] === option
-                          ? "border-cyan-400 bg-cyan-400/10 text-cyan-300"
-                          : "border-slate-700 bg-slate-800 text-slate-300"
-                      }`}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <button
-              onClick={handleSubmitQuiz}
-              className="rounded-xl bg-cyan-400 px-7 py-4 font-black text-slate-950"
-            >
-              Submit Quiz
-            </button>
-          </div>
-        )}
-
-        {quizResult && (
-          <div className="mt-5 rounded-2xl border border-cyan-400/30 bg-cyan-400/10 p-5 text-cyan-300">
-            Your score: {quizResult.score}/{quizResult.totalMarks}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+function Journey({ lesson, progressItem, saving, onToggle }) {
+  if (!lesson) return <Panel><h2 className="text-2xl font-black">No curriculum added</h2><p className="mt-2 text-slate-400">Add topics from the admin course form.</p></Panel>;
+  const content = lesson.content || lesson.description || "Lesson content has not been added yet.";
+  return <Panel><div className="text-center"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-pink-500/20 text-3xl">🎯</div><h1 className="mt-5 text-3xl font-black sm:text-5xl">{lesson.title}</h1><p className="mx-auto mt-5 max-w-3xl whitespace-pre-line text-left text-base leading-8 text-slate-200 sm:text-lg">{content}</p>{lesson.videoUrl && <div className="mt-6 aspect-video overflow-hidden rounded-2xl bg-black"><iframe className="h-full w-full" src={youtubeEmbed(lesson.videoUrl)} title={lesson.title} allowFullScreen /></div>}{lesson.resourceUrl && <a href={lesson.resourceUrl} target="_blank" rel="noreferrer" className="mt-5 inline-block rounded-xl border border-cyan-400 px-5 py-3 font-black text-cyan-300">Open Resource</a>}<div><button disabled={!progressItem || saving} onClick={() => onToggle(progressItem, !progressItem?.isCompleted)} className={`mt-6 rounded-xl px-6 py-3 font-black ${progressItem?.isCompleted ? "bg-emerald-400 text-slate-950" : "bg-cyan-400 text-slate-950"}`}>{saving ? "Saving..." : progressItem?.isCompleted ? "Completed ✓" : "Mark Complete"}</button></div></div></Panel>;
 }
 
-function AssignmentScreen({
-  enrollment,
-  assignmentUrl,
-  setAssignmentUrl,
-  assignmentFileName,
-  handleAssignmentFile,
-  handleSubmitAssignment,
-}) {
-  return (
-    <div className="w-full max-w-4xl">
-      <div className="rounded-3xl border border-slate-700 bg-[#1d2938] p-8">
-        <div className="flex items-center gap-3">
-          <FileText className="text-cyan-300" size={32} />
-          <h1 className="text-4xl font-black">Assignment</h1>
-        </div>
+function Quiz({ questions, enrollment, started, answers, setAnswers, onStart, onSubmit }) { return <Panel><div className="flex items-center gap-3"><Trophy className="text-amber-400" /><h1 className="text-3xl font-black">Quiz Challenge</h1></div>{!questions.length ? <p className="mt-5 text-slate-400">Admin has not added quiz questions.</p> : !started ? <><p className="mt-4 text-slate-400">Status: {enrollment.quiz?.status}</p>{enrollment.quiz?.status === "Completed" && <p className="mt-4 rounded-xl bg-emerald-400/10 p-4 text-emerald-300">Score: {enrollment.quiz.score}/{enrollment.quiz.totalMarks} ({enrollment.quiz.percentage}%)</p>}<button onClick={onStart} className="mt-6 rounded-xl bg-amber-500 px-6 py-3 font-black">Start Quiz</button></> : <div className="mt-6 space-y-5">{questions.map((q, qi) => <div key={q._id} className="rounded-2xl border border-slate-700 bg-slate-900 p-5"><h3 className="font-black">{qi + 1}. {q.question}</h3><div className="mt-4 grid gap-3 sm:grid-cols-2">{q.options.map(opt => <button key={opt} onClick={() => setAnswers(p => ({ ...p, [String(q._id)]: opt }))} className={`rounded-xl border p-3 text-left ${answers[String(q._id)] === opt ? "border-cyan-400 bg-cyan-400/10" : "border-slate-700"}`}>{opt}</button>)}</div></div>)}<button onClick={onSubmit} className="rounded-xl bg-cyan-400 px-6 py-3 font-black text-slate-950">Submit Quiz</button></div>}</Panel>; }
 
-        <p className="mt-4 text-slate-400">
-          Status:{" "}
-          <span className="font-black text-white">
-            {enrollment.assignment?.status || "Not Submitted"}
-          </span>
-        </p>
+function Assignment({ config, enrollment, url, setUrl, file, setFile, onSubmit }) { const uploaded = enrollment.assignment?.uploadedFileUrl; return <Panel><div className="flex items-center gap-3"><FileText className="text-cyan-300" /><h1 className="text-3xl font-black">Assignment</h1></div><div className="mt-5 rounded-2xl bg-amber-400/10 p-5"><h2 className="text-xl font-black text-amber-300">{config.title || "Course Assignment"}</h2><p className="mt-3 whitespace-pre-line text-slate-200">{config.question || "Admin has not added an assignment question."}</p>{config.instructions && <p className="mt-3 text-sm text-slate-400">{config.instructions}</p>}</div><div className="mt-5 grid gap-4 md:grid-cols-2"><input value={url} onChange={e => setUrl(e.target.value)} placeholder="GitHub / Drive link" className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3" /><label className="cursor-pointer rounded-xl border border-dashed border-cyan-400/50 bg-cyan-400/10 p-5 text-center"><Upload className="mx-auto text-cyan-300" /><span className="mt-2 block font-black">{file ? file.name : "Choose file"}</span><input type="file" className="hidden" accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg" onChange={e => setFile(e.target.files?.[0] || null)} /></label></div>{uploaded && <a className="mt-4 block text-cyan-300" href={`${API_ORIGIN}${uploaded}`} target="_blank" rel="noreferrer">View uploaded file: {enrollment.assignment.originalFileName}</a>}<button onClick={onSubmit} className="mt-5 rounded-xl bg-cyan-400 px-6 py-3 font-black text-slate-950">Submit Assignment</button></Panel>; }
 
-        <div className="mt-7 rounded-2xl border border-amber-400/30 bg-amber-400/10 p-5">
-          <h2 className="text-2xl font-black text-amber-300">
-            Assignment Question
-          </h2>
+function Notes({ value, setValue, onSave }) { return <Panel><div className="flex items-center gap-3"><NotebookPen className="text-cyan-300" /><h1 className="text-3xl font-black">Learning Notepad</h1></div><textarea value={value} onChange={e => setValue(e.target.value)} className="mt-5 min-h-[420px] w-full rounded-2xl border border-slate-700 bg-slate-900 p-4 outline-none" placeholder="Write notes..." /><button onClick={onSave} className="mt-4 rounded-xl bg-cyan-400 px-6 py-3 font-black text-slate-950">Save Notes</button></Panel>; }
 
-          <p className="mt-4 leading-8 text-slate-200">
-            Create a practical project or report based on this course lesson.
-            Include your learning points, screenshots, code/output and submit
-            your GitHub, Drive link or upload a file.
-          </p>
-        </div>
+function Comments({ enrollment, value, setValue, onAdd }) { return <Panel><div className="flex items-center gap-3"><MessageCircle className="text-cyan-300" /><h1 className="text-3xl font-black">Community</h1></div><div className="mt-5 flex flex-col gap-3 sm:flex-row"><input value={value} onChange={e => setValue(e.target.value)} className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3" placeholder="Ask a doubt..." /><button onClick={onAdd} className="flex items-center justify-center gap-2 rounded-xl bg-cyan-400 px-5 py-3 font-black text-slate-950"><Send size={17} />Send</button></div><div className="mt-5 space-y-3">{(enrollment.comments || []).map(c => <div key={c._id} className="rounded-xl bg-slate-900 p-4"><div className="flex justify-between gap-3"><b className="text-cyan-300">{c.name}</b><span className="text-xs text-slate-500">{new Date(c.createdAt).toLocaleString()}</span></div><p className="mt-2 text-slate-300">{c.message}</p></div>)}</div></Panel>; }
 
-        <div className="mt-7 grid gap-5 md:grid-cols-2">
-          <div className="rounded-2xl border border-slate-700 bg-slate-900 p-5">
-            <h3 className="font-black">Paste Assignment Link</h3>
+function Certificate({ enrollment, course }) { const rules = course.certificateRules || {}; return <Panel><div className="text-center"><Award className="mx-auto text-emerald-400" size={64} /><h1 className="mt-4 text-3xl font-black">Certificate Progress</h1><div className={`mt-6 rounded-2xl p-6 ${enrollment.certificateEligible ? "bg-emerald-400/10 text-emerald-300" : "bg-slate-900 text-slate-400"}`}><h2 className="text-2xl font-black">{enrollment.certificateEligible ? "Certificate Eligible" : "Not Eligible Yet"}</h2><p className="mt-3">Progress required: {rules.minimumProgress ?? 100}%</p><p>Quiz passing: {rules.passingPercentage ?? 70}%</p><p>Assignment required: {rules.assignmentRequired === false ? "No" : "Yes"}</p></div></div></Panel>; }
 
-            <input
-              value={assignmentUrl}
-              onChange={(event) => setAssignmentUrl(event.target.value)}
-              placeholder="Paste GitHub / Drive / project link"
-              className="mt-4 w-full rounded-xl border border-slate-700 bg-[#111827] px-4 py-3 text-white outline-none focus:border-cyan-400"
-            />
-          </div>
-
-          <div className="rounded-2xl border border-slate-700 bg-slate-900 p-5">
-            <h3 className="font-black">Upload Assignment File</h3>
-
-            <label className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-cyan-400/50 bg-cyan-400/10 p-8 text-center">
-              <Upload className="text-cyan-300" size={36} />
-              <span className="mt-3 font-black text-cyan-300">
-                Choose File
-              </span>
-              <span className="mt-1 text-xs text-slate-400">
-                PDF, DOC, ZIP, PNG, JPG
-              </span>
-
-              <input type="file" className="hidden" onChange={handleAssignmentFile} />
-            </label>
-
-            {assignmentFileName && (
-              <p className="mt-3 text-sm font-bold text-emerald-300">
-                Selected: {assignmentFileName}
-              </p>
-            )}
-          </div>
-        </div>
-
-        <button
-          onClick={handleSubmitAssignment}
-          className="mt-7 rounded-xl bg-cyan-400 px-7 py-4 font-black text-slate-950"
-        >
-          Submit Assignment
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function NotesScreen({ notes, setNotes, handleSaveNotes }) {
-  return (
-    <div className="w-full max-w-4xl">
-      <div className="rounded-3xl border border-slate-700 bg-[#1d2938] p-8">
-        <div className="flex items-center gap-3">
-          <NotebookPen className="text-cyan-300" size={32} />
-          <h1 className="text-4xl font-black">Learning Notepad</h1>
-        </div>
-
-        <textarea
-          value={notes}
-          onChange={(event) => setNotes(event.target.value)}
-          placeholder="Write your notes here..."
-          className="mt-7 min-h-[430px] w-full rounded-2xl border border-slate-700 bg-[#111827] p-5 text-white outline-none focus:border-cyan-400"
-        />
-
-        <button
-          onClick={handleSaveNotes}
-          className="mt-5 rounded-xl bg-cyan-400 px-7 py-4 font-black text-slate-950"
-        >
-          Save Notes
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function CommentsScreen({
-  commentText,
-  setCommentText,
-  comments,
-  handleAddComment,
-}) {
-  return (
-    <div className="w-full max-w-4xl">
-      <div className="rounded-3xl border border-slate-700 bg-[#1d2938] p-8">
-        <div className="flex items-center gap-3">
-          <MessageCircle className="text-cyan-300" size={32} />
-          <h1 className="text-4xl font-black">Community Discussion</h1>
-        </div>
-
-        <div className="mt-7 flex gap-3">
-          <input
-            value={commentText}
-            onChange={(event) => setCommentText(event.target.value)}
-            placeholder="Ask doubt or add comment..."
-            className="w-full rounded-xl border border-slate-700 bg-[#111827] px-5 py-4 text-white outline-none focus:border-cyan-400"
-          />
-
-          <button
-            onClick={handleAddComment}
-            className="rounded-xl bg-cyan-400 px-6 py-4 font-black text-slate-950"
-          >
-            Send
-          </button>
-        </div>
-
-        <div className="mt-7 space-y-4">
-          {comments.length > 0 ? (
-            comments.map((comment) => (
-              <div
-                key={comment.id}
-                className="rounded-2xl border border-slate-700 bg-slate-900 p-5"
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="font-black text-cyan-300">{comment.name}</h3>
-                  <span className="text-xs text-slate-500">{comment.time}</span>
-                </div>
-
-                <p className="mt-3 text-slate-300">{comment.message}</p>
-              </div>
-            ))
-          ) : (
-            <div className="rounded-2xl border border-slate-700 bg-slate-900 p-6 text-center text-slate-400">
-              No comments yet.
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CertificateScreen({ enrollment, progress }) {
-  return (
-    <div className="w-full max-w-3xl text-center">
-      <div className="rounded-3xl border border-slate-700 bg-[#1d2938] p-10">
-        <Award className="mx-auto text-emerald-400" size={70} />
-
-        <h1 className="mt-6 text-4xl font-black">Certificate Progress</h1>
-
-        <p className="mt-4 text-slate-300">
-          Complete all lessons, quiz and assignment to unlock certificate.
-        </p>
-
-        <div
-          className={`mt-8 rounded-2xl border p-6 ${
-            enrollment.certificateEligible || progress >= 100
-              ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-300"
-              : "border-slate-700 bg-slate-900 text-slate-400"
-          }`}
-        >
-          <h2 className="text-2xl font-black">
-            {enrollment.certificateEligible || progress >= 100
-              ? "Certificate Eligible"
-              : "Not Eligible Yet"}
-          </h2>
-
-          <p className="mt-2">Current Progress: {progress}%</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ModeButton({ active, onClick, icon: Icon, text, badge }) {
-  return (
-    <button
-      onClick={onClick}
-      className={`relative flex items-center gap-2 rounded-xl border px-5 py-3 font-black transition ${
-        active
-          ? "border-violet-500 bg-violet-500/20 text-violet-300"
-          : "border-slate-600 bg-slate-900 text-slate-200 hover:bg-slate-800"
-      }`}
-    >
-      {badge && (
-        <span className="absolute -left-2 -top-2 rounded-full bg-violet-600 px-2 py-1 text-xs text-white">
-          {badge}
-        </span>
-      )}
-      <Icon size={18} />
-      {text}
-    </button>
-  );
-}
-
-function LearningPoint({ text }) {
-  return (
-    <div className="rounded-2xl border border-slate-700 bg-slate-900 p-4">
-      <CheckCircle2 className="text-emerald-400" />
-      <p className="mt-3 font-bold text-slate-200">{text}</p>
-    </div>
-  );
-}
+function Mode({ text, active, onClick }) { return <button onClick={onClick} className={`whitespace-nowrap rounded-xl border px-4 py-2 text-sm font-black ${active ? "border-violet-500 bg-violet-500/20 text-violet-300" : "border-slate-600"}`}>{text}</button>; }
+function Panel({ children }) { return <div className="mx-auto w-full max-w-5xl rounded-2xl border border-slate-700 bg-[#1d2938] p-4 sm:p-7">{children}</div>; }
+function Centered({ children }) { return <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#101827] px-5 text-center text-white">{children}</div>; }
+function modeTitle(mode) { return ({ quiz: "Quiz Challenge", assignment: "Assignment", notes: "Learning Notepad", comments: "Community", certificate: "Certificate" })[mode] || "Learning"; }
+function youtubeEmbed(url = "") { const m = url.match(/(?:youtu\.be\/|v=|embed\/)([\w-]{11})/); return m ? `https://www.youtube.com/embed/${m[1]}` : url; }

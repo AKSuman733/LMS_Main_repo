@@ -1,0 +1,47 @@
+✅ FINAL SETUP (exact kya karna hai)
+Step 1: current remote check karo
+git remote -v
+
+
+
+Step 2: 2 remotes set karo
+Captain repo (CharvRaj branch)
+git remote add captain https://github.com/AKSuman733/LMS_Main_repo.git
+
+
+Leader repo
+git remote add leader https://github.com/CharvRaj/uptoskillsmain.git
+
+
+
+
+Step 3: confirm
+git remote -v
+
+
+
+
+🚀 STEP 4: ab push ka rule (IMPORTANT)
+🟢 Captain repo (sirf CharvRaj branch)
+git push captain CharvRaj
+🟢 Leader repo (main branch)
+git push leader main
+💡 SIMPLE RULE YAAD RAKHO
+Repo	Branch
+LMS_Main_repo	CharvRaj
+uptoskillsmain	main
+❌ YE MAT KARNA
+LMS_Main_repo ke main me push ❌
+kisi aur branch me accidental push ❌
+👍 FINAL FLOW (daily use)
+git add .
+git commit -m "update"
+git push captain CharvRaj
+git push leader main
+🔥 RESULT
+
+✔ sirf 2 repos update honge
+✔ koi third repo / main branch affect nahi hoga
+✔ clean separation rahega
+
+Agar chaho to main tumhe 1 single command automation (git push-all) bana ke de sakta hoon jisse galti hi na ho 👍
