@@ -13,9 +13,13 @@ import {
   Compass,
   UserCheck,
   GraduationCap,
+<<<<<<< HEAD
   Star,
   MessageCircle,
   FileText
+=======
+  Star
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 } from 'lucide-react';
 
 const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
@@ -138,6 +142,7 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
           {!isCollapsed && <span>Manage Celebrities</span>}
         </Link>
 
+<<<<<<< HEAD
         <Link
           to="/admin/queries"
           title="Support Queries"
@@ -146,6 +151,11 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
           <MessageCircle size={20} />
           {!isCollapsed && <span>Support Queries</span>}
         </Link>        <Link
+=======
+
+
+        <Link
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           to="/admin/courses"
           title="Course Management"
           className={`sidebar-link ${isActive('/admin/courses') ? 'active' : ''}`}
@@ -155,6 +165,7 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
         </Link>
 
         <Link
+<<<<<<< HEAD
           to="/admin/reports"
           title="Reports"
           className={`sidebar-link ${isActive('/admin/reports') ? 'active' : ''}`}
@@ -164,6 +175,8 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
         </Link>
 
         <Link
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           to="/admin/explore"
           title="Explore Platform"
           className={`sidebar-link ${isActive('/admin/explore') ? 'active' : ''}`}

@@ -3,6 +3,46 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Star, Award, BookOpen, Flame, Compass, ChevronRight } from 'lucide-react';
 
+<<<<<<< HEAD
+=======
+const getCelebStyling = (name) => {
+  const n = (name || '').toLowerCase();
+  if (n.includes('shahrukh') || n.includes('srk')) {
+    return {
+      border: '2.5px solid #fbbf24',
+      boxShadow: '0 0 30px rgba(245, 158, 11, 0.45), 0 15px 35px rgba(0,0,0,0.25)',
+      filter: 'contrast(1.08) brightness(1.03) saturate(1.05)'
+    };
+  }
+  if (n.includes('salman')) {
+    return {
+      border: '2.5px solid #3b82f6',
+      boxShadow: '0 0 30px rgba(59, 130, 246, 0.45), 0 15px 35px rgba(0,0,0,0.25)',
+      filter: 'contrast(1.06) brightness(1.03) saturate(1.05)'
+    };
+  }
+  if (n.includes('amir') || n.includes('aamir')) {
+    return {
+      border: '2.5px solid #10b981',
+      boxShadow: '0 0 30px rgba(16, 185, 129, 0.45), 0 15px 35px rgba(0,0,0,0.25)',
+      filter: 'contrast(1.08) brightness(1.02) saturate(1.03)'
+    };
+  }
+  if (n.includes('amitabh') || n.includes('bachan')) {
+    return {
+      border: '2.5px solid #8b5cf6',
+      boxShadow: '0 0 30px rgba(139, 92, 246, 0.45), 0 15px 35px rgba(0,0,0,0.25)',
+      filter: 'contrast(1.08) brightness(1.03) saturate(1.05)'
+    };
+  }
+  return {
+    border: '1px solid var(--border-color)',
+    boxShadow: '0 15px 35px rgba(0,0,0,0.15)',
+    filter: 'none'
+  };
+};
+
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 const Celebrities = () => {
   const navigate = useNavigate();
 
@@ -94,6 +134,7 @@ const Celebrities = () => {
         flexDirection: 'column',
         gap: '60px'
       }}>
+<<<<<<< HEAD
         {celebs.map((celeb, idx) => {
           const themes = [
             { border: '#fbbf24', shadow: 'rgba(245, 158, 11, 0.45)', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' }, // Orange
@@ -107,6 +148,9 @@ const Celebrities = () => {
           const badgeBackground = celeb.color || theme.gradient;
 
           return (
+=======
+        {celebs.map((celeb, idx) => (
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           <div 
             key={idx} 
             className="celeb-showcase-card card glass" 
@@ -130,8 +174,13 @@ const Celebrities = () => {
                 position: 'absolute',
                 top: '-10px',
                 left: '-10px',
+<<<<<<< HEAD
                 background: badgeBackground,
                 color: '#fff',
+=======
+                background: celeb.color || 'var(--primary-color)',
+                color: '#000',
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 padding: '4px 14px',
                 borderRadius: '8px',
                 fontWeight: '800',
@@ -140,7 +189,11 @@ const Celebrities = () => {
                 boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
                 zIndex: 2
               }}>
+<<<<<<< HEAD
                 {celeb.badge || 'New'}
+=======
+                {celeb.badge}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               </div>
               <div style={{ position: 'relative' }}>
                 <img 
@@ -151,9 +204,13 @@ const Celebrities = () => {
                     height: '280px',
                     borderRadius: '20px',
                     objectFit: 'cover',
+<<<<<<< HEAD
                     border: `2.5px solid ${theme.border}`,
                     boxShadow: `0 0 30px ${theme.shadow}, 0 15px 35px rgba(0,0,0,0.25)`,
                     filter: 'contrast(1.08) brightness(1.03) saturate(1.05)',
+=======
+                    ...getCelebStyling(celeb.name),
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                     transition: 'all 0.3s ease'
                   }}
                 />
@@ -219,6 +276,33 @@ const Celebrities = () => {
                 {celeb.description}
               </p>
 
+<<<<<<< HEAD
+=======
+              {/* Specs Grid */}
+              <div style={{
+                display: 'flex',
+                gap: '30px',
+                marginBottom: '30px',
+                background: 'var(--surface-color-light)',
+                padding: '16px 24px',
+                borderRadius: '16px',
+                border: '1px solid var(--border-color)',
+                width: 'fit-content'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <BookOpen size={16} style={{ color: 'var(--primary-color)' }} />
+                  <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    <strong>{celeb.stats?.lessons || 0}</strong> HD Lectures
+                  </span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Compass size={16} style={{ color: 'var(--primary-color)' }} />
+                  <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    Topic: <strong>{celeb.topic}</strong>
+                  </span>
+                </div>
+              </div>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
               {/* Action Button */}
               <button 
@@ -242,7 +326,11 @@ const Celebrities = () => {
               </button>
             </div>
           </div>
+<<<<<<< HEAD
         );})}
+=======
+        ))}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
       </div>
     </div>
   );

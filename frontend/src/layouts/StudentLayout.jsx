@@ -3,7 +3,10 @@ import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { Sun, Moon, User, LogOut, Bell, Menu } from 'lucide-react';
 import toast from 'react-hot-toast';
 import StudentSidebar from '../components/Student/StudentSidebar';
+<<<<<<< HEAD
 import NotificationsDropdown from '../components/common/NotificationsDropdown';
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 import '../styles/AdminLayout.css'; // Reuse the premium layout styles
 
 const StudentLayout = () => {
@@ -89,7 +92,10 @@ const StudentLayout = () => {
 
   return (
     <div className={`admin-layout ${isCollapsed ? 'collapsed' : ''}`}>
+<<<<<<< HEAD
       <a href="#main-content" className="skip-to-main-content">Skip to Main Content</a>
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
       <div 
         className={`sidebar-overlay ${isMobileOpen ? 'active' : ''}`} 
         onClick={() => setIsMobileOpen(false)}
@@ -100,7 +106,11 @@ const StudentLayout = () => {
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
       />
+<<<<<<< HEAD
       <main id="main-content" className="admin-main-content">
+=======
+      <main className="admin-main-content">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         <header className="admin-top-header">
           <button 
             className="mobile-menu-btn"
@@ -109,7 +119,13 @@ const StudentLayout = () => {
             <Menu size={24} />
           </button>
           <div className="header-actions">
+<<<<<<< HEAD
             <NotificationsDropdown />
+=======
+            <button className="theme-toggle" title="Notifications">
+              <Bell size={20} />
+            </button>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme">
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>

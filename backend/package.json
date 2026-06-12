@@ -13,7 +13,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+<<<<<<< HEAD
     "@google/generative-ai": "^0.24.1",
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -25,8 +28,12 @@
     "nodemailer": "^8.0.7",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+<<<<<<< HEAD
     "pg": "^8.20.0",
     "stripe": "^22.2.0"
+=======
+    "pg": "^8.20.0"
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

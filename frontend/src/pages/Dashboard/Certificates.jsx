@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -82,6 +83,14 @@ const Certificates = () => {
       alert("Sharing is not supported natively on this browser. You can download the certificate and share the image!");
     }
   };
+=======
+import { Award, Download, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const Certificates = () => {
+  // Currently mock data, could be fetched from backend if certificates are implemented
+  const certificates = [];
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
   return (
     <div className="certificates-page container pb-20">
@@ -96,16 +105,24 @@ const Certificates = () => {
           </div>
           <div>
             <p className="text-sm text-gray-400">Total Earned</p>
+<<<<<<< HEAD
             <p className="text-xl font-bold text-white">{loading ? '-' : certificates.length}</p>
+=======
+            <p className="text-xl font-bold text-white">{certificates.length}</p>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
       {loading ? (
         <div className="py-24 flex justify-center items-center">
           <Loader2 className="animate-spin text-primary-color" size={48} />
         </div>
       ) : certificates.length === 0 ? (
+=======
+      {certificates.length === 0 ? (
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         <div className="empty-state py-24 glass">
           <Award size={80} className="text-gray-700 mb-6 mx-auto" />
           <h2 className="text-3xl font-bold mb-4">No certificates yet</h2>
@@ -114,7 +131,11 @@ const Certificates = () => {
           </p>
           <div className="flex gap-4 justify-center">
             <Link to="/my-learning" className="btn btn-primary px-8">Continue Learning</Link>
+<<<<<<< HEAD
             <Link to="/courses" className="btn glass px-8">Explore New Courses</Link>
+=======
+            <Link to="/student/explore" className="btn glass px-8">Explore New Courses</Link>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </div>
           
           <div className="mt-16 pt-12 border-t border-white/5 max-w-3xl mx-auto">
@@ -145,6 +166,7 @@ const Certificates = () => {
           </div>
         </div>
       ) : (
+<<<<<<< HEAD
         <div className="admin-table-container card glass overflow-hidden">
           <table className="admin-table">
             <thead>
@@ -546,6 +568,10 @@ const Certificates = () => {
               </div>
             </div>
           </div>
+=======
+        <div className="certificates-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Mapping would go here if data existed */}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         </div>
       )}
     </div>

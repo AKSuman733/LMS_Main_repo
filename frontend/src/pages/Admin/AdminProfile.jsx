@@ -10,9 +10,13 @@ import {
   Lock,
   Key,
   ShieldCheck,
+<<<<<<< HEAD
   CheckCircle,
   Eye,
   EyeOff
+=======
+  CheckCircle
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 } from 'lucide-react';
 
 const AdminProfile = () => {
@@ -26,9 +30,12 @@ const AdminProfile = () => {
     newPassword: '',
     confirmPassword: ''
   });
+<<<<<<< HEAD
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -107,6 +114,7 @@ const AdminProfile = () => {
                     className="form-input-premium pl-12"
                     placeholder="Enter your full name"
                     value={formData.name}
+<<<<<<< HEAD
                     onChange={(e) => {
                       const val = e.target.value;
                       const filtered = val.replace(/[^a-zA-Z\s]/g, '');
@@ -115,6 +123,9 @@ const AdminProfile = () => {
                       }
                       setFormData({...formData, name: filtered});
                     }}
+=======
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   />
                 </div>
               </div>
@@ -163,6 +174,7 @@ const AdminProfile = () => {
             <form className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="form-group md:col-span-2">
                 <label className="form-label">Current Password</label>
+<<<<<<< HEAD
                 <div style={{ position: 'relative' }}>
                   <Lock size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280', pointerEvents: 'none' }} />
                   <input 
@@ -180,11 +192,21 @@ const AdminProfile = () => {
                   >
                     {showCurrentPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
+=======
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input 
+                    type="password" 
+                    className="form-input-premium pl-12"
+                    placeholder="••••••••••••"
+                  />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="form-label">New Password</label>
+<<<<<<< HEAD
                 <div style={{ position: 'relative' }}>
                   <Key size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280', pointerEvents: 'none' }} />
                   <input 
@@ -202,11 +224,21 @@ const AdminProfile = () => {
                   >
                     {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
+=======
+                <div className="relative">
+                  <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input 
+                    type="password" 
+                    className="form-input-premium pl-12"
+                    placeholder="Min. 8 characters"
+                  />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </div>
               </div>
 
               <div className="form-group">
                 <label className="form-label">Confirm New Password</label>
+<<<<<<< HEAD
                 <div style={{ position: 'relative' }}>
                   <Key size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#6b7280', pointerEvents: 'none' }} />
                   <input 
@@ -224,6 +256,15 @@ const AdminProfile = () => {
                   >
                     {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
+=======
+                <div className="relative">
+                  <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input 
+                    type="password" 
+                    className="form-input-premium pl-12"
+                    placeholder="Repeat new password"
+                  />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </div>
               </div>
 

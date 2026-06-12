@@ -200,7 +200,11 @@ const AdminDashboard = () => {
         <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/approvals')}>
           <CheckCircle size={18} /> Approve Pending
         </button>
+<<<<<<< HEAD
         <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/reports')}>
+=======
+        <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/dashboard')}>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           <BarChart2 size={18} /> View Reports
         </button>
       </div>

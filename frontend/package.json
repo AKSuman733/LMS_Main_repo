@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@react-pdf/renderer": "^4.5.1",
     "@stripe/react-stripe-js": "^6.6.0",
     "@stripe/stripe-js": "^9.8.0",
@@ -19,11 +20,17 @@
     "dompurify": "^3.4.10",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.14.0",
+=======
+    "axios": "^1.16.0",
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     "lucide-react": "^0.344.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.6.0",
+<<<<<<< HEAD
     "react-markdown": "^10.1.0",
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     "react-router-dom": "^6.22.3",
     "recharts": "^3.8.1"
   },

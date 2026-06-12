@@ -22,7 +22,11 @@ const StudentLogin = () => {
   const [searchParams] = useSearchParams();
 
   const validateEmail = (email) => {
+<<<<<<< HEAD
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+=======
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     return re.test(email);
   };
 
@@ -166,7 +170,11 @@ const StudentLogin = () => {
           <form onSubmit={handleSubmit} className="auth-form-premium">
             <div className="form-group-premium">
               <label>Email Address <span className="required-asterisk">*</span></label>
+<<<<<<< HEAD
               <div className="input-with-icon">
+=======
+              <div className="input-premium-wrapper">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 <Mail size={18} />
                 <input 
                   type="email" 
@@ -189,7 +197,11 @@ const StudentLogin = () => {
                   <label>Password <span className="required-asterisk">*</span></label>
                   <Link to="/forgot-password">Forgot password?</Link>
                 </div>
+<<<<<<< HEAD
                 <div className="input-with-icon password-field">
+=======
+                <div className="input-premium-wrapper password-field">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   <Lock size={18} />
                   <input 
                     type={showPassword ? "text" : "password"} 
@@ -200,7 +212,11 @@ const StudentLogin = () => {
                   />
                   <button 
                     type="button" 
+<<<<<<< HEAD
                     className="password-toggle"
+=======
+                    className="password-toggle-premium"
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -215,7 +231,11 @@ const StudentLogin = () => {
                     {timer > 0 ? `Expires in ${formatTime(timer)}` : 'Expired'}
                   </span>
                 </div>
+<<<<<<< HEAD
                 <div className="input-with-icon">
+=======
+                <div className="input-premium-wrapper">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   <Lock size={18} />
                   <input 
                     type="text" 
@@ -468,7 +488,10 @@ const StudentLogin = () => {
           border: none;
           color: var(--text-secondary);
           cursor: pointer;
+<<<<<<< HEAD
           z-index: 10;
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         }
 
         .label-row-premium {

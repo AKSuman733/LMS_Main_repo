@@ -32,7 +32,11 @@ const Register = () => {
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
+<<<<<<< HEAD
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+=======
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     return re.test(email);
   };
 
@@ -150,11 +154,18 @@ const Register = () => {
 
           <form onSubmit={handleSubmit} className="auth-form-premium">
             <div className="form-group-premium">
+<<<<<<< HEAD
               <label htmlFor="name">Full Name <span className="required-asterisk" aria-hidden="true">*</span></label>
               <div className="input-with-icon">
                 <User size={18} aria-hidden="true" />
                 <input 
                   id="name"
+=======
+              <label>Full Name <span className="required-asterisk">*</span></label>
+              <div className="input-premium-wrapper">
+                <User size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   type="text" 
                   placeholder="John Doe" 
                   value={formData.name}
@@ -172,17 +183,25 @@ const Register = () => {
             </div>
 
             <div className="form-group-premium">
+<<<<<<< HEAD
               <label htmlFor="email">Email Address <span className="required-asterisk" aria-hidden="true">*</span></label>
               <div className="input-with-icon">
                 <Mail size={18} aria-hidden="true" />
                 <input 
                   id="email"
+=======
+              <label>Email Address <span className="required-asterisk">*</span></label>
+              <div className="input-premium-wrapper">
+                <Mail size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   type="email" 
                   className={emailValid === true ? 'input-success' : emailValid === false ? 'input-error' : ''}
                   placeholder="name@company.com" 
                   value={formData.email}
                   onChange={handleEmailChange}
                   required 
+<<<<<<< HEAD
                   aria-invalid={emailValid === false}
                   aria-describedby={emailValid === false ? "email-error" : undefined}
                 />
@@ -198,6 +217,20 @@ const Register = () => {
                 <Lock size={18} aria-hidden="true" />
                 <input 
                   id="password"
+=======
+                />
+                {emailValid === true && <CheckCircle2 className="validation-icon success" size={18} />}
+                {emailValid === false && <XCircle className="validation-icon error" size={18} />}
+              </div>
+              {emailValid === false && <span className="field-error-text">Please enter a valid email</span>}
+            </div>
+
+            <div className="form-group-premium">
+              <label>Password <span className="required-asterisk">*</span></label>
+              <div className="input-premium-wrapper password-field">
+                <Lock size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   type={showPassword ? "text" : "password"} 
                   className={formData.password.length > 0 && passwordScore >= 3 ? 'input-success' : formData.password.length > 0 ? 'input-error' : ''}
                   placeholder="••••••••" 
@@ -205,6 +238,7 @@ const Register = () => {
                   onChange={handlePasswordChange}
                   required 
                 />
+<<<<<<< HEAD
                 {formData.password.length > 0 && passwordScore >= 3 && <CheckCircle2 className="validation-icon success" size={18} aria-hidden="true" />}
                 {formData.password.length > 0 && passwordScore < 3 && <XCircle className="validation-icon error" size={18} aria-hidden="true" />}
                 <button 
@@ -214,6 +248,16 @@ const Register = () => {
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+=======
+                {formData.password.length > 0 && passwordScore >= 3 && <CheckCircle2 className="validation-icon success" size={18} />}
+                {formData.password.length > 0 && passwordScore < 3 && <XCircle className="validation-icon error" size={18} />}
+                <button 
+                  type="button" 
+                  className="password-toggle-premium"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </button>
               </div>
               
@@ -245,17 +289,25 @@ const Register = () => {
             </div>
 
             <div className="form-group-premium">
+<<<<<<< HEAD
               <label htmlFor="confirmPassword">Confirm Password <span className="required-asterisk" aria-hidden="true">*</span></label>
               <div className="input-with-icon password-field">
                 <Lock size={18} aria-hidden="true" />
                 <input 
                   id="confirmPassword"
+=======
+              <label>Confirm Password <span className="required-asterisk">*</span></label>
+              <div className="input-premium-wrapper password-field">
+                <Lock size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   type={showConfirmPassword ? "text" : "password"}
                   className={formData.confirmPassword.length > 0 && formData.confirmPassword === formData.password ? 'input-success' : formData.confirmPassword.length > 0 ? 'input-error' : ''} 
                   placeholder="••••••••" 
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                   required 
+<<<<<<< HEAD
                   aria-invalid={formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password}
                   aria-describedby={formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password ? "confirm-error" : undefined}
                 />
@@ -272,6 +324,21 @@ const Register = () => {
               </div>
               {formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password && (
                 <span id="confirm-error" className="field-error-text">Passwords do not match</span>
+=======
+                />
+                {formData.confirmPassword.length > 0 && formData.confirmPassword === formData.password && <CheckCircle2 className="validation-icon success" size={18} />}
+                {formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password && <XCircle className="validation-icon error" size={18} />}
+                <button 
+                  type="button" 
+                  className="password-toggle-premium"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+              {formData.confirmPassword.length > 0 && formData.confirmPassword !== formData.password && (
+                <span className="field-error-text">Passwords do not match</span>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               )}
             </div>
 
@@ -289,11 +356,19 @@ const Register = () => {
           </div>
 
           <div className="social-auth-premium">
+<<<<<<< HEAD
             <button className="social-btn-premium" aria-label="Sign up with Google">
               <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="" aria-hidden="true" /> Google
             </button>
             <button className="social-btn-premium" aria-label="Sign up with GitHub">
               <Globe size={18} aria-hidden="true" /> GitHub
+=======
+            <button className="social-btn-premium">
+              <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="Google" /> Google
+            </button>
+            <button className="social-btn-premium">
+              <Globe size={18} /> GitHub
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             </button>
           </div>
 
@@ -502,7 +577,10 @@ const Register = () => {
           border: none;
           color: var(--text-secondary);
           cursor: pointer;
+<<<<<<< HEAD
           z-index: 10;
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         }
 
         .label-row-premium {

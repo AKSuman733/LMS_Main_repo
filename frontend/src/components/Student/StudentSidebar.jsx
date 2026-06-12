@@ -9,9 +9,13 @@ import {
   ChevronLeft,
   ChevronRight,
   Trophy,
+<<<<<<< HEAD
   Search,
   MessageCircle,
   FileText
+=======
+  Search
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 } from 'lucide-react';
 
 const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
@@ -135,6 +139,7 @@ const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobile
         </Link>
 
         <Link
+<<<<<<< HEAD
           to="/my-queries"
           title="Queries by me"
           className={`sidebar-link ${isActive('/my-queries') ? 'active' : ''}`}
@@ -153,6 +158,8 @@ const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobile
         </Link>
 
         <Link
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           to="/student/profile"
           title="Profile"
           className={`sidebar-link ${isActive('/student/profile') ? 'active' : ''}`}

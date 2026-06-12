@@ -95,13 +95,21 @@ const Navbar = () => {
             <Link to="/courses" className="nav-link">Explore</Link>
             <Link to="/celebrities" className="nav-link">Celebrities</Link>
             <Link to="/about" className="nav-link">About Us</Link>
+<<<<<<< HEAD
             <Link to="/contact" className="nav-link">Contact</Link>
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </div>
         )}
 
         <div className="nav-actions" style={user?.role === 'admin' ? { marginLeft: 'auto' } : {}}>
+<<<<<<< HEAD
           <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme" aria-label="Toggle Theme">
             {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
+=======
+          <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme">
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </button>
           
           {user ? (
@@ -110,8 +118,13 @@ const Navbar = () => {
               <div className="user-profile">
                 <User size={20} />
                 <span className="user-name">{user.name}</span>
+<<<<<<< HEAD
                 <button onClick={handleLogout} className="logout-btn" aria-label="Logout">
                   <LogOut size={18} aria-hidden="true" />
+=======
+                <button onClick={handleLogout} className="logout-btn">
+                  <LogOut size={18} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </button>
               </div>
             </div>
@@ -126,11 +139,17 @@ const Navbar = () => {
           <button 
             className="mobile-nav-toggle" 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+<<<<<<< HEAD
             aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu-content"
           >
             <Menu size={24} aria-hidden="true" />
+=======
+            aria-label="Toggle Menu"
+          >
+            <Menu size={24} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </button>
         </div>
       </div>
@@ -138,14 +157,21 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div className="mobile-menu-overlay">
+<<<<<<< HEAD
           <div id="mobile-menu-content" className="mobile-menu-content">
+=======
+          <div className="mobile-menu-content">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             {(!user || user.role !== 'admin') && (
               <div className="mobile-nav-links">
                 <Link to="/" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
                 <Link to="/courses" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Explore</Link>
                 <Link to="/celebrities" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Celebrities</Link>
                 <Link to="/about" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+<<<<<<< HEAD
                 <Link to="/contact" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               </div>
             )}
             
@@ -156,7 +182,11 @@ const Navbar = () => {
                   <User size={20} />
                   <span className="user-name">{user.name}</span>
                   <button onClick={handleLogout} className="logout-btn">
+<<<<<<< HEAD
                     <LogOut size={18} aria-hidden="true" />
+=======
+                    <LogOut size={18} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                     Logout
                   </button>
                 </div>

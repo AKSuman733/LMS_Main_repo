@@ -24,16 +24,28 @@ const Footer = () => {
             <p className="footer-description">
               Empowering the next generation of tech leaders with world-class education and industry-recognized skills.
             </p>
+<<<<<<< HEAD
             <div className="social-links" aria-label="Social Media">
               <a href="#" className="social-link" aria-label="Facebook"><Facebook size={20} aria-hidden="true" /></a>
               <a href="#" className="social-link" aria-label="Twitter"><Twitter size={20} aria-hidden="true" /></a>
               <a href="#" className="social-link" aria-label="Instagram"><Instagram size={20} aria-hidden="true" /></a>
               <a href="#" className="social-link" aria-label="LinkedIn"><Linkedin size={20} aria-hidden="true" /></a>
+=======
+            <div className="social-links">
+              <a href="#" className="social-link"><Facebook size={20} /></a>
+              <a href="#" className="social-link"><Twitter size={20} /></a>
+              <a href="#" className="social-link"><Instagram size={20} /></a>
+              <a href="#" className="social-link"><Linkedin size={20} /></a>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             </div>
           </div>
 
           {/* Quick Links */}
+<<<<<<< HEAD
           <nav className="footer-col" aria-label="Quick Links">
+=======
+          <div className="footer-col">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             <h3>Quick Links</h3>
             <ul className="footer-links">
               <li><Link to="/">Home</Link></li>
@@ -43,10 +55,17 @@ const Footer = () => {
               <li><Link to="/login/student">Student Login</Link></li>
               <li><Link to="/register">Create Account</Link></li>
             </ul>
+<<<<<<< HEAD
           </nav>
 
           {/* Categories */}
           <nav className="footer-col" aria-label="Popular Categories">
+=======
+          </div>
+
+          {/* Categories */}
+          <div className="footer-col">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             <h3>Popular Categories</h3>
             <ul className="footer-links">
               <li><Link to="/courses?category=AI">Artificial Intelligence</Link></li>
@@ -54,7 +73,11 @@ const Footer = () => {
               <li><Link to="/courses?category=Cloud Computing">Cloud Computing</Link></li>
               <li><Link to="/courses?category=Data Science">Data Science</Link></li>
             </ul>
+<<<<<<< HEAD
           </nav>
+=======
+          </div>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
           {/* Contact Info */}
           <div className="footer-col contact-col">
@@ -79,11 +102,19 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p>&copy; {new Date().getFullYear()} UptoSkills Learning Platform. All rights reserved.</p>
+<<<<<<< HEAD
             <nav className="footer-legal" aria-label="Legal">
               <a href="#">Privacy Policy</a>
               <a href="#">Terms of Service</a>
               <a href="#">Cookie Policy</a>
             </nav>
+=======
+            <div className="footer-legal">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Cookie Policy</a>
+            </div>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </div>
         </div>
       </div>

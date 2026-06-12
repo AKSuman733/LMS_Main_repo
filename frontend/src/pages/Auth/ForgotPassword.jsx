@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
 import { Mail, Lock, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+=======
+import { Mail, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Home from '../Home';
@@ -14,7 +18,10 @@ const ForgotPassword = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+<<<<<<< HEAD
   const [showPassword, setShowPassword] = useState(false);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
   const handleRequestOTP = async (e) => {
     e.preventDefault();
@@ -117,15 +124,23 @@ const ForgotPassword = () => {
               </div>
               <div className="form-group">
                 <label>New Password</label>
+<<<<<<< HEAD
                 <div className="input-with-icon password-field">
                   <Lock size={18} />
                   <input 
                     type={showPassword ? "text" : "password"} 
+=======
+                <div className="input-with-icon">
+                  <Lock size={18} />
+                  <input 
+                    type="password" 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                     placeholder="••••••••" 
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required 
                   />
+<<<<<<< HEAD
                   <button 
                     type="button" 
                     className="password-toggle"
@@ -134,6 +149,8 @@ const ForgotPassword = () => {
                   >
                     {showPassword ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
                   </button>
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </div>
               </div>
               <button type="submit" className="btn btn-primary w-full" disabled={loading}>

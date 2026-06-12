@@ -9,7 +9,10 @@ import CourseList from './pages/Courses/CourseList';
 import CourseDetail from './pages/Courses/CourseDetail';
 import Celebrities from './pages/Celebrities';
 import AboutUs from './pages/AboutUs';
+<<<<<<< HEAD
 import ContactUs from './pages/ContactUs';
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 import Dashboard from './pages/Dashboard/Dashboard';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/Admin/AdminDashboard';
@@ -18,12 +21,17 @@ import AdminProfile from './pages/Admin/AdminProfile';
 import UserManagement from './pages/Admin/UserManagement';
 import ManageInstructors from './pages/Admin/ManageInstructors';
 import ManageCelebrities from './pages/Admin/ManageCelebrities';
+<<<<<<< HEAD
 import AdminSupportQueries from './pages/Admin/AdminSupportQueries';
 import Reports from './pages/Admin/Reports';
 import MyLearning from './pages/Dashboard/MyLearning';
 import Certificates from './pages/Dashboard/Certificates';
 import StudentQueries from './pages/Dashboard/StudentQueries';
 import MyReceipts from './pages/Dashboard/MyReceipts';
+=======
+import MyLearning from './pages/Dashboard/MyLearning';
+import Certificates from './pages/Dashboard/Certificates';
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 import LoginSelection from './pages/Auth/LoginSelection';
 import AdminLogin from './pages/Auth/AdminLogin';
 import StudentLogin from './pages/Auth/StudentLogin';
@@ -101,8 +109,11 @@ function App() {
             <Route path="course/:id" element={<CourseDetail />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="celebrities" element={<ManageCelebrities />} />
+<<<<<<< HEAD
             <Route path="queries" element={<AdminSupportQueries />} />
             <Route path="reports" element={<Reports />} />
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             <Route path="profile" element={<AdminProfile />} />
           </Route>
 
@@ -156,7 +167,10 @@ function App() {
           <Route path="course/:id" element={<CourseDetail />} />
           <Route path="celebrities" element={<Celebrities />} />
           <Route path="about" element={<AboutUs />} />
+<<<<<<< HEAD
           <Route path="contact" element={<ContactUs />} />
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         </Route>
 
         {/* Student Routes - Using StudentLayout (Sidebar) */}
@@ -165,10 +179,15 @@ function App() {
           <Route path="student/explore" element={<CourseList />} />
           <Route path="student/course/:id" element={<CourseDetail />} />
           <Route path="student/profile" element={<AdminProfile />} />
+<<<<<<< HEAD
           <Route path="student/receipts" element={<MyReceipts />} />
           <Route path="my-learning" element={<MyLearning />} />
           <Route path="certificates" element={<Certificates />} />
           <Route path="my-queries" element={<StudentQueries />} />
+=======
+          <Route path="my-learning" element={<MyLearning />} />
+          <Route path="certificates" element={<Certificates />} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         </Route>
 
         <Route path="/login" element={<StudentLogin />} />

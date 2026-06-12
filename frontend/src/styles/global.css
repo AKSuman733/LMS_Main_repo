@@ -301,6 +301,7 @@ ul {
 
 /* Global focus states */
 *:focus-visible {
+<<<<<<< HEAD
   outline: 3px solid currentColor !important;
   outline-offset: 3px !important;
   box-shadow: 0 0 0 4px var(--primary-color) !important;
@@ -428,4 +429,8 @@ ul {
     box-shadow: none !important;
     padding: 0 !important;
   }
+=======
+  outline: 2px solid var(--primary-color) !important;
+  outline-offset: 2px !important;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 }

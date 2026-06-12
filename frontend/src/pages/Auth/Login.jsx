@@ -22,7 +22,11 @@ const Login = () => {
   const location = useLocation();
 
   const validateEmail = (email) => {
+<<<<<<< HEAD
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+=======
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     return re.test(email);
   };
 
@@ -164,11 +168,18 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
+<<<<<<< HEAD
             <label htmlFor="email">Email Address <span className="required-asterisk" aria-hidden="true">*</span></label>
             <div className="input-with-icon">
               <Mail size={18} aria-hidden="true" />
               <input 
                 id="email"
+=======
+            <label>Email Address <span className="required-asterisk">*</span></label>
+            <div className="input-with-icon">
+              <Mail size={18} />
+              <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 type="email" 
                 className={emailValid === true ? 'input-success' : emailValid === false ? 'input-error' : ''}
                 placeholder="name@company.com" 
@@ -176,6 +187,7 @@ const Login = () => {
                 onChange={handleEmailChange}
                 required 
                 disabled={showOTP}
+<<<<<<< HEAD
                 aria-invalid={emailValid === false}
                 aria-describedby={emailValid === false ? "email-error" : undefined}
               />
@@ -183,11 +195,19 @@ const Login = () => {
               {emailValid === false && <XCircle className="validation-icon error" size={18} aria-hidden="true" />}
             </div>
             {emailValid === false && <span id="email-error" className="field-error-text">Please enter a valid email</span>}
+=======
+              />
+              {emailValid === true && <CheckCircle2 className="validation-icon success" size={18} />}
+              {emailValid === false && <XCircle className="validation-icon error" size={18} />}
+            </div>
+            {emailValid === false && <span className="field-error-text">Please enter a valid email</span>}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </div>
 
           {!showOTP ? (
             <div className="form-group">
               <div className="label-row">
+<<<<<<< HEAD
                 <label htmlFor="password">Password <span className="required-asterisk" aria-hidden="true">*</span></label>
                 <Link to="/forgot-password">Forgot password?</Link>
               </div>
@@ -195,6 +215,14 @@ const Login = () => {
                 <Lock size={18} aria-hidden="true" />
                 <input 
                   id="password"
+=======
+                <label>Password <span className="required-asterisk">*</span></label>
+                <Link to="/forgot-password">Forgot password?</Link>
+              </div>
+              <div className="input-with-icon password-field">
+                <Lock size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
                   value={password}
@@ -205,24 +233,38 @@ const Login = () => {
                   type="button" 
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
+<<<<<<< HEAD
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+=======
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </button>
               </div>
             </div>
           ) : (
             <div className="form-group">
               <div className="label-row">
+<<<<<<< HEAD
                 <label htmlFor="otp">One-Time Password (OTP)</label>
+=======
+                <label>One-Time Password (OTP)</label>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 <span style={{fontSize: '0.8rem', color: timer > 0 ? '#4A90E2' : '#dc2626'}}>
                   {timer > 0 ? `Expires in ${formatTime(timer)}` : 'OTP Expired'}
                 </span>
               </div>
               <div className="input-with-icon">
+<<<<<<< HEAD
                 <Lock size={18} aria-hidden="true" />
                 <input 
                   id="otp"
+=======
+                <Lock size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   type="text" 
                   placeholder="123456" 
                   maxLength="6"
@@ -265,11 +307,19 @@ const Login = () => {
         </div>
 
         <div className="social-auth">
+<<<<<<< HEAD
           <button className="btn btn-outline w-full" aria-label="Login with GitHub">
             <Globe size={18} aria-hidden="true" /> GitHub
           </button>
           <button className="btn btn-outline w-full" onClick={handleGoogleLogin} aria-label="Login with Google">
             <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="" aria-hidden="true" /> Google
+=======
+          <button className="btn btn-outline w-full">
+            <Globe size={18} /> GitHub
+          </button>
+          <button className="btn btn-outline w-full" onClick={handleGoogleLogin}>
+            <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="Google" /> Google
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </button>
         </div>
 

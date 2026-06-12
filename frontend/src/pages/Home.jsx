@@ -3,7 +3,10 @@ import { ArrowRight, Play, Star, Users, BookOpen, ShieldCheck, Zap, Globe } from
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Home.css';
+<<<<<<< HEAD
 import Chatbot from '../components/common/Chatbot';
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 import heroImage from '../assets/online_learning_path.png';
 import featuresImage from '../assets/features.png';
 
@@ -18,7 +21,10 @@ const formatImageUrl = (url) => {
 const Home = () => {
   const navigate = useNavigate();
   const [freeCourses, setFreeCourses] = useState([]);
+<<<<<<< HEAD
   const [celebrities, setCelebrities] = useState([]);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
   useEffect(() => {
     const fetchFreeCourses = async () => {
@@ -30,6 +36,7 @@ const Home = () => {
         console.error('Error fetching free courses', err);
       }
     };
+<<<<<<< HEAD
 
     const fetchCelebrities = async () => {
       try {
@@ -42,6 +49,9 @@ const Home = () => {
 
     fetchFreeCourses();
     fetchCelebrities();
+=======
+    fetchFreeCourses();
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
   }, []);
 
   const displayCourses = freeCourses.length > 0 ? freeCourses : [
@@ -147,6 +157,7 @@ const Home = () => {
           </div>
 
           <div className="celebrity-grid" style={{
+<<<<<<< HEAD
             display: 'flex',
             overflowX: 'auto',
             scrollBehavior: 'smooth',
@@ -156,6 +167,14 @@ const Home = () => {
             paddingBottom: '20px'
           }}>
             {(celebrities.length > 0 ? celebrities : [
+=======
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '30px',
+            marginTop: '40px'
+          }}>
+            {[
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               {
                 name: 'Shahrukh Khan',
                 avatar: '/srk_avatar.jpg',
@@ -188,6 +207,7 @@ const Home = () => {
                 topic: 'C & Systems Engineering',
                 color: 'linear-gradient(135deg, #8b5cf6, #6d28d9)'
               }
+<<<<<<< HEAD
             ]).map((celeb, idx) => {
               const themes = [
                 { border: '#fbbf24', shadow: 'rgba(245, 158, 11, 0.6)', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' }, // Orange
@@ -263,6 +283,82 @@ const Home = () => {
                       ⭐
                     </div>
                   </div>
+=======
+            ].map((celeb, idx) => (
+              <div 
+                key={idx} 
+                className="celebrity-card card glass p-6 text-center animate-fade-in"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  borderRadius: '24px',
+                  border: '1px solid var(--border-color)',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  background: 'var(--surface-color)',
+                  padding: '30px 24px',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.08)'
+                }}
+                onClick={() => navigate(`/courses?celebrity=${encodeURIComponent(celeb.name)}`)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-10px)';
+                  e.currentTarget.style.borderColor = 'var(--primary-color)';
+                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(139, 92, 246, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
+                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08)';
+                }}
+              >
+                <div className="avatar-wrapper mb-6" style={{position: 'relative', marginBottom: '24px'}}>
+                  <img 
+                    src={celeb.avatar} 
+                    alt={celeb.name} 
+                    style={{
+                      width: '110px',
+                      height: '110px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: celeb.name === 'Shahrukh Khan' ? '3px solid #fbbf24' :
+                              celeb.name === 'Salman Khan' ? '3px solid #3b82f6' :
+                              celeb.name === 'Amir Khan' ? '3px solid #10b981' :
+                              (celeb.name.includes('Amitabh') || celeb.name.includes('Bachan')) ? '3px solid #8b5cf6' :
+                              '3px solid var(--border-color)',
+                      boxShadow: celeb.name === 'Shahrukh Khan' ? '0 0 20px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 celeb.name === 'Salman Khan' ? '0 0 20px rgba(59, 130, 246, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 celeb.name === 'Amir Khan' ? '0 0 20px rgba(16, 185, 129, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 (celeb.name.includes('Amitabh') || celeb.name.includes('Bachan')) ? '0 0 20px rgba(139, 92, 246, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 '0 8px 24px rgba(0,0,0,0.2)',
+                      filter: celeb.name === 'Shahrukh Khan' ? 'contrast(1.08) brightness(1.03) saturate(1.05)' :
+                              celeb.name === 'Salman Khan' ? 'contrast(1.06) brightness(1.03) saturate(1.05)' :
+                              celeb.name === 'Amir Khan' ? 'contrast(1.08) brightness(1.02) saturate(1.03)' :
+                              (celeb.name.includes('Amitabh') || celeb.name.includes('Bachan')) ? 'contrast(1.08) brightness(1.03) saturate(1.05)' :
+                              'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                  />
+                  <div className="absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center text-white" style={{
+                    background: celeb.color, 
+                    position: 'absolute', 
+                    bottom: '0', 
+                    right: '8px', 
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.9rem'
+                  }}>
+                    ⭐
+                  </div>
+                </div>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 
                 <h3 className="text-xl font-bold text-white mb-2" style={{fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '8px'}}>{celeb.name}</h3>
                 <span className="text-sm font-semibold mb-4 px-3 py-1 rounded-full" style={{
@@ -285,7 +381,11 @@ const Home = () => {
                   <span className="text-sm font-bold text-white block" style={{fontSize: '0.9rem', fontWeight: '700', color: 'var(--text-primary)'}}>{celeb.topic}</span>
                 </div>
               </div>
+<<<<<<< HEAD
             );})}
+=======
+            ))}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
           </div>
         </div>
       </section>
@@ -398,9 +498,12 @@ const Home = () => {
           </div>
         </div>
       </section>
+<<<<<<< HEAD
 
       {/* Render Chatbot only on Home page */}
       <Chatbot />
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     </div>
   );
 };

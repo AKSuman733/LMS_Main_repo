@@ -6,10 +6,13 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth.routes');
 const courseRoutes = require('./routes/course.routes');
 const celebrityRoutes = require('./routes/celebrity.routes');
+<<<<<<< HEAD
 const contactRoutes = require('./routes/contact.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const chatRoutes = require('./routes/chat.routes');
 const reportRoutes = require('./routes/report.routes');
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
 const session = require('express-session');
 const passport = require('./config/passport');
@@ -55,10 +58,13 @@ app.use(passport.session());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/celebrities', celebrityRoutes);
+<<<<<<< HEAD
 app.use('/api/contact', contactRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/reports', reportRoutes);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 app.use('/api/upload', require('./routes/upload.routes'));
 
 // Static folder for uploads

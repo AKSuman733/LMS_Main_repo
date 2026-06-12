@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
@@ -35,16 +36,48 @@ const getCelebrityImage = (name, celebritiesList = []) => {
   
   // Final fallback if no image is available
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff`;
+=======
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Clock, BookOpen, Star, PlayCircle, Lock, ChevronRight, CheckCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
+import '../../styles/CourseDetail.css';
+
+const getCelebrityImage = (name) => {
+  const n = (name || '').toLowerCase();
+  if (n.includes('shahrukh') || n.includes('srk')) {
+    // Premium AI-style Shahrukh Khan avatar
+    return '/srk_avatar.jpg';
+  }
+  if (n.includes('salman')) {
+    // Powerful, action-styled cyber warrior avatar
+    return '/salman_avatar.jpg';
+  }
+  if (n.includes('amir') || n.includes('aamir')) {
+    // High-tech neon digital genius avatar
+    return '/amir_avatar.jpg';
+  }
+  if (n.includes('amitabh') || n.includes('bachan')) {
+    // Majestic silver wise AI grand master avatar
+    return '/amitabh_avatar.jpg';
+  }
+  return null;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 };
 
 const CourseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const location = useLocation();
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
+<<<<<<< HEAD
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [clientSecret, setClientSecret] = useState('');
   const [selectedCelebrity, setSelectedCelebrity] = useState(localStorage.getItem(`course_${id}_celebrity`) || '');
@@ -82,6 +115,15 @@ const CourseDetail = () => {
     }
   };
 
+=======
+  const [selectedCelebrity, setSelectedCelebrity] = useState(localStorage.getItem(`course_${id}_celebrity`) || '');
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  useEffect(() => {
+    fetchCourse();
+  }, [id]);
+
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
   const fetchCourse = async () => {
     try {
       const res = await axios.get(`http://localhost:5001/api/courses/${id}`);
@@ -119,6 +161,7 @@ const CourseDetail = () => {
 
     try {
       const token = localStorage.getItem('token');
+<<<<<<< HEAD
       
       // Check if course requires payment
       if (course && course.price && parseFloat(course.price) > 0) {
@@ -138,6 +181,8 @@ const CourseDetail = () => {
       }
 
       // Free course enrollment
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
       await axios.post(
         'http://localhost:5001/api/courses/enroll', 
         { course_id: id },
@@ -205,11 +250,18 @@ const CourseDetail = () => {
                   }}
                 >
                   <option value="">No Celebrity (Standard Course)</option>
+<<<<<<< HEAD
                   {celebritiesList.map(celeb => (
                     <option key={celeb.id} value={celeb.name}>
                       {celeb.name} ({celeb.topic || celeb.badge || 'Expert'} learning)
                     </option>
                   ))}
+=======
+                  <option value="Shahrukh Khan">Shahrukh Khan (King Khan style learning)</option>
+                  <option value="Salman Khan">Salman Khan (Bhaijaan style learning)</option>
+                  <option value="Amir Khan">Amir Khan (Mr. Perfectionist learning)</option>
+                  <option value="Amitabh Bachan">Amitabh Bachan (Big B styled lectures)</option>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                 </select>
               </div>
 
@@ -228,10 +280,17 @@ const CourseDetail = () => {
                   marginTop: '16px',
                   marginBottom: '20px'
                 }}>
+<<<<<<< HEAD
                   {getCelebrityImage(selectedCelebrity, celebritiesList) && (
                     <img 
                       src={getCelebrityImage(selectedCelebrity, celebritiesList)} 
                       alt={`Presenter ${selectedCelebrity}`} 
+=======
+                  {getCelebrityImage(selectedCelebrity) && (
+                    <img 
+                      src={getCelebrityImage(selectedCelebrity)} 
+                      alt={selectedCelebrity} 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                       style={{
                         width: '26px',
                         height: '26px',
@@ -290,7 +349,11 @@ const CourseDetail = () => {
               </div>
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6">
                 <div style={{flex: 1}}>
+<<<<<<< HEAD
                   <h2 className="text-xl font-bold text-white mb-2">{activeLesson.title}</h2>
+=======
+                  <h3 className="text-xl font-bold text-white mb-2">{activeLesson.title}</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                   <p className="text-gray-400 text-sm">{activeLesson.content || 'Enjoy this lecture video.'}</p>
                 </div>
                 <button
@@ -331,7 +394,11 @@ const CourseDetail = () => {
                     >
                       <div className="lesson-index">{index + 1}</div>
                       <div className="lesson-info" style={{flex: 1}}>
+<<<<<<< HEAD
                         <h3 className={isActive ? 'text-primary-color font-bold' : ''} style={isActive ? {color: '#8b5cf6'} : {}}>{lesson.title}</h3>
+=======
+                        <h4 className={isActive ? 'text-primary-color font-bold' : ''} style={isActive ? {color: '#8b5cf6'} : {}}>{lesson.title}</h4>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                         <span className="text-xs text-gray-500">Video Lecture</span>
                       </div>
                       {progress && progress.isEnrolled ? (
@@ -373,7 +440,11 @@ const CourseDetail = () => {
         <div className="course-right">
           <div className="enroll-card card">
             <div className="price-tag">
+<<<<<<< HEAD
               {course.price === "0.00" || !course.price ? 'Free' : `₹${course.price}`}
+=======
+              {course.price === "0.00" ? 'Free' : `$${course.price}`}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             </div>
             <button 
               onClick={progress && progress.isEnrolled ? () => navigate(`/student/course/${id}`) : handleEnroll} 
@@ -384,7 +455,11 @@ const CourseDetail = () => {
             </button>
             <p className="enroll-note">Get instant access to all materials</p>
             <div className="course-includes">
+<<<<<<< HEAD
               <h3>This course includes:</h3>
+=======
+              <h4>This course includes:</h4>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               <ul>
                 <li><PlayCircle size={16} /> 5 hours on-demand video</li>
                 <li><BookOpen size={16} /> 12 downloadable resources</li>
@@ -395,6 +470,7 @@ const CourseDetail = () => {
           </div>
         </div>
       </div>
+<<<<<<< HEAD
 
       <PaymentModal 
         isOpen={isPaymentModalOpen}
@@ -404,6 +480,8 @@ const CourseDetail = () => {
         user={user}
         onSuccess={handleSuccessEnrollment}
       />
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     </div>
   );
 };

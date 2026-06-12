@@ -131,7 +131,11 @@ const CourseList = () => {
         <aside className="filters-sidebar">
           <div className="filter-card">
             <div className="filter-group">
+<<<<<<< HEAD
               <h2>Categories</h2>
+=======
+              <h3>Categories</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               <div className="category-list">
                 {categories.map(cat => (
                   <label key={cat} className={`category-item ${selectedCategory === cat ? 'active' : ''}`}>
@@ -148,7 +152,11 @@ const CourseList = () => {
             </div>
 
             <div className="filter-group border-t pt-6">
+<<<<<<< HEAD
               <h2>Difficulty Level</h2>
+=======
+              <h3>Difficulty Level</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               <div className="checkbox-list">
                 <label className={`checkbox-item ${selectedLevels.includes('Beginner') ? 'active' : ''}`}>
                   <input 
@@ -178,7 +186,11 @@ const CourseList = () => {
             </div>
 
             <div className="filter-group border-t pt-6">
+<<<<<<< HEAD
               <h2>Course Duration</h2>
+=======
+              <h3>Course Duration</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               <div className="checkbox-list">
                 <label className={`checkbox-item ${durationFilter === 'All' ? 'active' : ''}`}>
                   <input
@@ -228,8 +240,13 @@ const CourseList = () => {
           <div className="results-toolbar">
             <span className="results-count">Showing <strong>{courses.length}</strong> courses</span>
             <div className="view-toggle">
+<<<<<<< HEAD
               <button className="active" title="Grid View" aria-label="Grid View"><Grid size={18} aria-hidden="true" /></button>
               <button title="List View" aria-label="List View"><List size={18} aria-hidden="true" /></button>
+=======
+              <button className="active" title="Grid View"><Grid size={18} /></button>
+              <button title="List View"><List size={18} /></button>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             </div>
           </div>
 
@@ -240,8 +257,13 @@ const CourseList = () => {
             </div>
           ) : courses.length === 0 ? (
             <div className="empty-state">
+<<<<<<< HEAD
               <BookOpen size={48} aria-hidden="true" />
               <h2>No courses found</h2>
+=======
+              <BookOpen size={48} />
+              <h3>No courses found</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
               <p>Try adjusting your filters or search terms</p>
             </div>
           ) : (
@@ -257,7 +279,11 @@ const CourseList = () => {
                 return (
                   <Link to={detailLink} key={course.id} className="course-card card">
                     <div className="course-thumbnail">
+<<<<<<< HEAD
                       <img src={formatImageUrl(course.thumbnail)} alt={course.title || 'Course thumbnail'} />
+=======
+                      <img src={formatImageUrl(course.thumbnail)} alt={course.title} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                       <div className="course-badge">{course.category}</div>
                       {(() => {
                         const celeb = localStorage.getItem(`course_${course.id}_celebrity`);
@@ -285,7 +311,11 @@ const CourseList = () => {
                             {getCelebrityImage(celeb) && (
                               <img
                                 src={getCelebrityImage(celeb)}
+<<<<<<< HEAD
                                 alt={`Presenter ${celeb}`}
+=======
+                                alt={celeb}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
                                 style={{
                                   width: '22px',
                                   height: '22px',

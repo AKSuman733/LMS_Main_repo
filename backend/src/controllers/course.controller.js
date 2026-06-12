@@ -1,5 +1,8 @@
 const db = require('../config/db');
+<<<<<<< HEAD
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
 
 exports.getAllCourses = async (req, res) => {
   const { search, category, celebrity } = req.query;
@@ -307,7 +310,11 @@ exports.getUserEnrollments = async (req, res) => {
     const results = await Promise.all(enrollments.rows.map(async (course) => {
       const totalLessons = await db.query('SELECT COUNT(*) FROM lessons WHERE course_id = $1', [course.id]);
       const completedLessons = await db.query(
+<<<<<<< HEAD
         'SELECT COUNT(*), MAX(p.updated_at) as completed_at FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = $1 AND l.course_id = $2 AND p.status = $3',
+=======
+        'SELECT COUNT(*) FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = $1 AND l.course_id = $2 AND p.status = $3',
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
         [user_id, course.id, 'completed']
       );
 
@@ -317,8 +324,12 @@ exports.getUserEnrollments = async (req, res) => {
 
       return {
         ...course,
+<<<<<<< HEAD
         progress: percentage,
         completed_at: percentage === 100 ? completedLessons.rows[0].completed_at : null
+=======
+        progress: percentage
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
       };
     }));
 
@@ -379,6 +390,7 @@ exports.bulkDeleteCourses = async (req, res) => {
     res.status(500).json({ error: 'Error deleting courses' });
   }
 };
+<<<<<<< HEAD
 
 exports.createCheckoutSession = async (req, res) => {
   const { course_id } = req.body;
@@ -493,3 +505,5 @@ exports.createPaymentIntent = async (req, res) => {
     res.status(500).json({ error: 'Server error while creating payment intent' });
   }
 };
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
