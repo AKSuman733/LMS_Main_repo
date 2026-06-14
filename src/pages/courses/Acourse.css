@@ -1,0 +1,179 @@
+.udemy-course-page {
+  /* width: 100%;
+  min-height: 100vh; */
+
+  padding: 20px;
+  /* padding-top: 20px; */
+
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+
+  box-sizing: border-box;
+}
+
+/* HEADER */
+.course-header {
+  margin-bottom: 20px;
+}
+
+.course-header h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.course-header p {
+  margin: 5px 0 0;
+  color: gray;
+}
+
+/* ADD COURSE SECTION */
+.add-course {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-course input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  flex: 1;
+}
+
+.add-course button {
+  padding: 10px 15px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-course button:hover {
+  opacity: 0.8;
+}
+
+/* GRID */
+.course-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(280px, 1fr));
+
+  gap: 20px;
+}
+
+/* CARD */
+.course-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+}
+
+.course-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.course-info {
+  padding: 10px;
+}
+
+.course-info h4 {
+  margin: 0 0 10px;
+}
+
+/* ACTION BUTTONS */
+.actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.actions button:hover {
+  opacity: 0.8;
+}
+
+.actions .delete {
+  background: red;
+  color: white;
+}
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+
+.pagination button:hover {
+  background: #f0f0f0;
+}
+
+.pagination button.active {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* MODAL CONTENT */
+.modal-course {
+  text-align: center;
+}
+
+.modal-course img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .course-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-course {
+    flex-direction: column;
+  }
+}

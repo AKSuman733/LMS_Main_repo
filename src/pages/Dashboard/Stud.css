@@ -1,0 +1,501 @@
+
+
+
+/* =========================
+   STUDENT PAGE
+========================= */
+
+
+.udemy-student-page {
+
+  /* min-height: 100vh; */
+  
+  /* background:#0f172a; */
+   background: linear-gradient(135deg, #1e293b, #0f172a);
+  /* margin-left:250px ; */
+  border-radius: 5px;
+  padding: 15px;
+  /* padding-top: 50px; */
+  font-family: Arial, sans-serif;
+
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.student-header {
+
+  margin-bottom: 35px;
+
+}
+
+.student-header h2 {
+
+  font-size: 30px;
+
+  font-weight: 200;
+
+  color:white;
+
+  /* margin-bottom: 4px; */
+
+}
+
+.student-header p {
+
+  font-size: 15px;
+
+  color: #6b7280;
+
+}
+
+/* =========================
+   STUDENT GRID
+========================= */
+
+.student-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+
+  gap: 5px;
+
+}
+
+/* =========================
+   STUDENT CARD
+========================= */
+
+.student-card {
+
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 28px 22px;
+
+  text-align: center;
+
+  transition: all 0.3s ease;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.05);
+
+}
+
+/* HOVER EFFECT */
+
+.student-card:hover {
+
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.08);
+
+}
+
+/* =========================
+   AVATAR
+========================= */
+/* 
+.avatar {
+
+  width: 75px;
+
+  height: 75px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #ff6b35,
+    #ff9f1c
+  );
+
+  color: white;
+
+  font-size: 28px;
+
+  font-weight: bold;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+} */
+
+/* =========================
+   NAME
+========================= */
+
+.student-card h3 {
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  margin-bottom: 10px;
+
+}
+
+/* =========================
+   COURSE
+========================= */
+
+.course {
+
+  font-size: 14px;
+
+  color: #00b5a5;
+
+  font-weight: 600;
+
+  margin-bottom: 8px;
+
+}
+
+/* =========================
+   EMAIL
+========================= */
+
+.email {
+
+  font-size: 14px;
+
+  color: #6b7280;
+
+  margin-bottom: 18px;
+
+}
+
+/* =========================
+   BADGE
+========================= */
+
+.badge {
+
+  display: inline-block;
+
+  background: #dcfce7;
+
+  color: #15803d;
+
+  padding: 7px 14px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  margin-bottom: 20px;
+
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.student-card button {
+
+  width: 100%;
+
+  height: 45px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #ff6b35;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+}
+
+/* HOVER */
+
+.student-card button:hover {
+
+  background: #e85a28;
+
+  box-shadow:
+    0 6px 14px rgba(255,107,53,0.25);
+
+}
+
+/* CLICK */
+
+.student-card button:active {
+
+  transform: scale(0.98);
+
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+
+  grid-column: 1/-1;
+
+  background: white;
+
+  padding: 60px 20px;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+}
+
+.empty-state h2 {
+
+  color: #111827;
+
+  margin-bottom: 10px;
+
+}
+
+.empty-state p {
+
+  color: #6b7280;
+
+}
+
+/* =========================
+   MODAL CONTENT
+========================= */
+
+.modal-box {
+
+  text-align: center;
+
+  padding: 20px 10px;
+
+}
+
+.modal-avatar {
+
+  width: 90px;
+
+  height: 90px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    135deg,
+    #00b5a5,
+    #0ea5e9
+  );
+
+  color: white;
+
+  font-size: 34px;
+
+  font-weight: bold;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 20px;
+
+}
+
+.modal-box h3 {
+
+  font-size: 24px;
+
+  color: #111827;
+
+  margin-bottom: 10px;
+
+}
+
+.modal-box p {
+
+  color: #6b7280;
+
+  margin-bottom: 8px;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .udemy-student-page {
+
+    padding: 8px;
+
+  }
+
+  .student-header h2 {
+
+    font-size: 26px;
+
+  }
+
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+}
+
+.table-container {
+  width: 100%;
+  padding: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* TABLE */
+/* .student-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+} */
+.student-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.student-table th,
+.student-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.student-table th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+.student-table tr:hover {
+  background: #fafafa;
+}
+
+/* BUTTON */
+/* .view-btn {
+  padding: 6px 10px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+} */
+.view-btn {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  opacity: 0.8;
+}
+
+/* EMPTY ROW */
+.empty-row {
+  text-align: center;
+  padding: 20px;
+  color: gray;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .student-table {
+    min-width: 800px;
+    font-size: 14px;
+  }
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+
+/* .toolbar input,
+.toolbar select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+} */
+.toolbar input,
+.toolbar select {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* .toolbar button {
+  padding: 8px 12px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+} */
+.toolbar button {
+  min-height: 44px;
+  padding: 8px 12px;
+}
+.toolbar button:hover {
+  opacity: 0.8;
+}

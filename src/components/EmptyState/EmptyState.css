@@ -1,0 +1,31 @@
+.empty-state {
+  min-height: 400px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 16px;
+
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 60px;
+}
+
+.empty-state button {
+  background: orange;
+
+  border: none;
+
+  padding: 12px 18px;
+
+  border-radius: 8px;
+
+  color: white;
+
+  cursor: pointer;
+}

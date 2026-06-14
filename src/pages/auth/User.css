@@ -1,0 +1,173 @@
+/* FULL PAGE */
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+}
+
+/* LEFT SIDE */
+.auth-left {
+  flex: 1;
+  background: radial-gradient(circle at top, #1e293b, #0b1220);
+  color: white;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-left h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.auth-left p {
+  color: #94a3b8;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.auth-left ul {
+  margin-top: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.auth-left ul li {
+  margin-bottom: 10px;
+  color: #cbd5e1;
+}
+
+/* RIGHT SIDE */
+.auth-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8fafc;
+}
+
+/* CARD */
+/* .auth-card {
+  width: 360px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+} */
+.auth-card {
+  width: 100%;
+  max-width: 360px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+.auth-card h2 {
+  margin-bottom: 5px;
+}
+
+.subtext {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+/* DEMO BOX */
+.demo-box {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  font-size: 13px;
+  color: #334155;
+}
+
+.demo-box p {
+  margin: 2px 0;
+}
+
+/* RESPONSIVE */
+/* @media (max-width: 768px) {
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    padding: 30px;
+    text-align: center;
+  }
+
+  .auth-card {
+    width: 90%;
+  }
+} */
+
+@media (max-width: 768px) {
+
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .auth-right {
+    padding: 8px;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+}
+
+
+
+.auth-links {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.auth-links span {
+  color: #3b82f6;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-links span:hover {
+  text-decoration: underline;
+}
+
+.auth-links .forgot {
+  margin-top: 8px;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-links .forgot:hover {
+  text-decoration: underline;
+}
+
+
+
+.forgot {
+  margin-top: 8px;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: 0.2s;
+}
+
+.forgot:hover {
+  color: #dc2626;
+  text-decoration: none;
+}

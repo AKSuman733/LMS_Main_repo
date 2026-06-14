@@ -1,0 +1,36 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* Variables */
+:root {
+  --sidebar-width: 200px;
+  --sidebar-collapsed: 80px;
+  --header-height: 70px;
+}
+
+/* Global Page Container */
+.page-container {
+  width: 100%;
+  min-height: 100%;
+
+  padding: 16px;
+
+  box-sizing: border-box;
+}

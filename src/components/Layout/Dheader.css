@@ -1,0 +1,146 @@
+
+/* ================= HEADER ================= */
+label{
+  color:#cbd5e1;
+}
+.headerbar {
+  height: 70px;
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #0f172a;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-nav {
+  display: flex;
+  align-items:left;
+}
+
+.header-nav a {
+  margin: 0px 50px; /* Space between links */
+  cursor: pointer;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ICON BUTTONS */
+.icon-btn {
+  background: transparent;
+  border: 1px solid #1e293b;
+
+  color:white;
+  padding: 8px 10px;
+
+  border-radius: 10px;
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #fff;
+}
+
+/* ================= DROPDOWN ================= */
+
+/* DROPDOWN WRAPPER */
+.dropdown {
+  position: relative;
+}
+
+/* MAIN BUTTON */
+.dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+  border-radius: 10px;
+
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: white;
+
+  transition: 0.2s ease;
+}
+
+.dropdown-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ARROW */
+.arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+/* MENU (hidden by default) */
+.dropdown-menu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+
+  width: 170px;
+
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  pointer-events: none;
+
+  transition: all 0.2s ease;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* SHOW (drop DOWN) */
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ITEMS */
+.dropdown-menu button {
+  width: 100%;
+  padding: 12px;
+
+  border: none;
+  background: transparent;
+
+  text-align: left;
+  color: #cbd5e1;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dropdown-menu button:hover {
+  background: #1e293b;
+  color: white;
+}

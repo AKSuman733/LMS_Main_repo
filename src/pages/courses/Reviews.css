@@ -1,0 +1,94 @@
+.reviews-page {
+  padding: 20px;
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.reviews-header h2 {
+  margin: 0;
+  text-align: center;
+  color:black;
+}
+
+.reviews-header p {
+  color: black;
+  margin-top: 5px;
+}
+
+.reviewdownload-btn {
+  border: none !important;
+  padding: 4px 10px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 11px !important;
+  font-weight: 300 !important;
+  color: white !important;
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #7c3aed
+  );
+}
+/* .reviewdownload-btn:hover {
+  transform: translateY(-2px);
+} */
+
+.reviews-table-wrapper {
+  overflow-x: auto;
+  background: #1e293b;
+  border-radius: 5px;
+  border: 1px solid #334155;
+}
+
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reviews-table thead {
+  background: #0f172a;
+}
+
+.reviews-table th {
+  padding: 16px;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+}
+
+.reviews-table td {
+  padding: 16px;
+  border-bottom: 1px solid #334155;
+  color: #e2e8f0;
+}
+
+.reviews-table tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.review-column {
+  max-width: 450px;
+  line-height: 1.5;
+}
+
+.reviews-pagination button.active,
+.reviews-pagination .active {
+  color:black;
+}
+
+@media (max-width: 768px) {
+  .reviews-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .download-btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,171 @@
+.course-page {
+  /* min-height: 100vh;
+  margin-left: 250px; */
+  padding: 40px;
+  /* background: #0f172a; */
+   background: linear-gradient(135deg, #1e293b, #0f172a);
+  font-family: "Poppins", sans-serif;
+}
+
+/* HEADER */
+.course-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.course-header h1 {
+  font-size: 28px;
+  font-weight: 200;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.course-header p {
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.filters input,
+.filters select {
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  min-width: 180px;
+}
+
+/* COURSE GRID */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 30px;
+}
+
+/* COURSE CARD */
+.course-card {
+  background: #ffffff;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-8px);
+}
+
+/* IMAGE */
+.course-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+/* INFO */
+.course-info {
+  padding: 20px;
+}
+
+.course-info h3 {
+  font-size: 20px;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.course-info p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 4px 0;
+}
+
+/* ENROLL BUTTON */
+.enroll-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(to right, #2563eb, #3b82f6);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.enroll-btn:hover {
+  background: linear-gradient(to right, #1d4ed8, #2563eb);
+  transform: scale(1.02);
+}
+
+/* NO RESULTS */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 18px;
+  padding: 40px;
+}
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.pagination button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #1e293b;
+  /* color: white; */
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* .pagination button:hover:not(:disabled) {
+  background: #334155;
+} */
+
+/* .pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} */
+
+.pagination span {
+  color:white;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .course-page {
+    padding: 20px;
+  }
+
+  .course-header h1 {
+    font-size: 30px;
+  }
+
+  .course-header p {
+    font-size: 14px;
+  }
+
+  .filters input,
+  .filters select {
+    width: 100%;
+  }
+}

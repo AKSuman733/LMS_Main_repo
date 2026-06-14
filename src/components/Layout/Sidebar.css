@@ -1,0 +1,147 @@
+:root {
+  --header-height: 70px;
+  --sidebar-width: 200px;
+  --sidebar-collapsed: 80px;
+}
+
+.sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--header-height));
+
+  background: #0f172a;
+  color: white;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  transition: width 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+
+/* Expanded */
+.sidebar.open {
+  width: var(--sidebar-width);
+}
+
+/* Collapsed */
+.sidebar.closed {
+  width: var(--sidebar-collapsed);
+}
+
+/* Title */
+.sidebar-title {
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Menu */
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 14px 20px;
+  cursor: pointer;
+
+  transition: background 0.3s ease;
+}
+
+.sidebar-item:hover {
+  background: #1e293b;
+}
+
+.sidebar-item.active {
+  background: #2563eb;
+}
+
+.sidebar-icon {
+  font-size: 18px;
+  min-width: 24px;
+}
+
+/* Collapsed Sidebar */
+.sidebar.closed .sidebar-title {
+  display: none;
+}
+
+.sidebar.closed .sidebar-item span:last-child {
+  display: none;
+}
+
+.sidebar.closed .sidebar-item {
+  justify-content: center;
+  padding: 14px 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .sidebar {
+    width: var(--sidebar-width);
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar.closed {
+    transform: translateX(-100%);
+    width: var(--sidebar-width);
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 15px;
+}
+
+.sidebar-toggle {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar.closed .sidebar-header {
+  justify-content: center;
+}
+
+.sidebar.closed .sidebar-label {
+  display: none;
+}
+
+.sidebar.closed .sidebar-title {
+  display: none;
+}

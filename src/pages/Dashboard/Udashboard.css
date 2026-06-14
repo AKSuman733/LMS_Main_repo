@@ -1,0 +1,245 @@
+.main-content {
+  padding: 20px;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  /* min-height: 100vh; */
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.welcome-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  padding: 35px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+}
+
+.welcome-text {
+  font-size: 2rem;
+  color: #ea580c;
+  margin-bottom: 10px;
+}
+
+.sub-text {
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.explore-btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.explore-btn:hover {
+  transform: translateY(-3px);
+}
+
+.group1 {
+  width: 260px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stats-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  padding: 20px;
+  border-radius: 18px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  border-color: #334155;
+}
+
+.stats-card h3 {
+  color: white;
+  font-size: 20px !important;
+  font-weight:10px ;
+  margin-bottom: 8px;
+}
+
+.stats-card p {
+  color: #94a3b8;
+}
+
+/* =========================
+   COMMON DASHBOARD CARD
+========================= */
+
+.dashboard-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 25px;
+}
+
+.dashboard-card h2 {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header button {
+  background: transparent;
+  border: none;
+  color: #60a5fa;
+  cursor: pointer;
+}
+
+/* =========================
+   CONTINUE LEARNING
+========================= */
+
+.course-progress h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.course-progress p {
+  color: #94a3b8;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #1e293b;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #8b5cf6
+  );
+  border-radius: 999px;
+}
+
+.course-progress span {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+
+/* =========================
+   RECOMMENDED COURSES
+========================= */
+
+.recommended-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.recommend-card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 14px;
+  padding: 20px;
+  transition: 0.3s;
+}
+
+.recommend-card:hover {
+  transform: translateY(-5px);
+}
+
+.recommend-card h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.recommend-card p {
+  color: #94a3b8;
+}
+
+/* =========================
+   AI CARD
+========================= */
+
+.ai-card {
+  background: linear-gradient(
+    135deg,
+    #312e81,
+    #581c87
+  );
+  border: none;
+}
+
+.ai-card p {
+  color: #e2e8f0;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .recommended-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px;
+  }
+
+  .welcome-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 25px;
+  }
+
+  .group1 {
+    width: 180px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

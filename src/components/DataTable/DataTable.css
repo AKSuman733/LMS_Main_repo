@@ -1,0 +1,88 @@
+.table-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.table-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  width: 250px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table thead {
+  background: #F3F1ED;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 14px;
+  text-align: left;
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background: #F9F8F6;
+}
+
+.custom-table tbody tr:hover {
+  background: #FFF5F0;
+}
+
+.bulk-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.bulk-actions button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.row-actions {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px
+    rgba(0,0,0,0.1);
+}
+
+.row-actions:hover .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-menu button {
+  border: none;
+  background: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}

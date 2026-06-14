@@ -1,0 +1,131 @@
+/* .mycourses-page {
+  padding: 10px; */
+  /* padding-top: 70px; */
+  /* margin-left: 250px; */
+  /* background:#0f172a; */
+   /* background: linear-gradient(135deg, #1e293b, #0f172a); */
+  /* min-height: 100vh; */
+/* } */
+.mycourses-page {
+  padding: 60px;
+  /* padding-top: 90px;  */
+  /* keeps space for fixed header */
+
+
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+/* HEADER */
+.mycourses-header h1 {
+  margin: 0;
+  font-weight: 100;
+  font-family: sans-serif;
+  font-size:30 ;
+}
+
+.mycourses-header p {
+  color: gray;
+  margin-bottom: 20px;
+}
+
+/* GRID */
+.mycourses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.mycourse-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* STATUS */
+.status {
+  display: inline-block;
+  background: #e7f6ea;
+  color: green;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+/* PRICE */
+.price {
+  font-size: 13px;
+  color: gray;
+}
+
+/* PROGRESS */
+.progress-section {
+  margin-top: 10px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #5624d0;
+}
+
+/* BUTTONS */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.view-btn {
+  flex: 1;
+  background: #5624d0;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  flex: 1;
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 50px;
+}
+
+.empty-state button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background: #5624d0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

@@ -1,0 +1,88 @@
+/* Base reset for interactive elements */
+button,
+a {
+  transition: all 150ms ease;
+  cursor: pointer;
+}
+
+/* Accessibility focus (VERY IMPORTANT) */
+:focus-visible {
+  outline: 2px solid #FF6B35;
+  outline-offset: 2px;
+}
+
+button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #FF6B35;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e85a2a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: scale(0.98);
+  transition: transform 100ms ease;
+}
+
+button:focus-visible {
+  outline: 2px solid #FF6B35;
+  outline-offset: 2px;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 150ms ease;
+}
+a:hover {
+  text-decoration: underline;
+  color: #FF6B35;
+}
+tr {
+  transition: background 150ms ease;
+}
+tr:hover {
+  background-color: #fff3e6;
+}
+
+.card {
+  border-radius: 10px;
+  transition: all 200ms ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+.card:active {
+  transform: scale(0.98);
+  transition: transform 100ms ease;
+}
+.sidebar-item {
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: all 150ms ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-item:hover {
+  background-color: #f5f5f5;
+}
+.sidebar-item.active {
+  background-color: #FF6B35;
+  color: white;
+}
+.sidebar-item:hover {
+  background-color: #f5f5f5;
+  transform: translateX(2px);
+}

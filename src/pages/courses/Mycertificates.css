@@ -1,0 +1,136 @@
+.cert-page {
+  padding: 45px;
+  /* padding-top:60px; */
+  /* min-height: 100vh;
+  margin-left: 250px; */
+  font-family: "Poppins", sans-serif;
+
+  /* background: radial-gradient(
+    circle at top,
+    #1e293b 0%,
+    #0f172a 45%,
+    #020617 100%
+  ); */
+   background: linear-gradient(135deg, #1e293b, #0f172a);
+
+  color: white;
+}
+
+/* HERO */
+.cert-hero {
+  margin-bottom: 40px;
+}
+
+.cert-hero h1 {
+  font-size: 30px;
+  font-weight:50;
+  margin: 0;
+}
+
+.cert-hero p {
+  color: #cbd5e1;
+  margin-top: 8px;
+}
+
+/* GRID */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 28px;
+}
+
+/* CARD */
+.cert-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  overflow: hidden;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.cert-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 18px 50px rgba(99, 102, 241, 0.25);
+}
+
+/* IMAGE */
+.cert-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: 0.4s ease;
+}
+
+.cert-card:hover img {
+  transform: scale(1.08);
+}
+
+/* BADGE */
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* VERIFIED BADGE */
+.verified {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 0 15px rgba(34,197,94,0.4);
+}
+
+/* CONTENT */
+.cert-content {
+  padding: 20px;
+}
+
+.cert-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cert-content p {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 8px 0 16px;
+}
+
+/* BUTTON */
+.download-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  color: white;
+
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .cert-page {
+    padding: 20px;
+  }
+
+  .cert-hero h1 {
+    font-size: 28px;
+  }
+}
