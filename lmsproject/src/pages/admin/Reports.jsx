@@ -1,3 +1,5 @@
+import AdminLayout from '../../components/AdminLayout';
+
 function Reports() {
   const stats = [
     { label: 'Weekly Enrollments', value: '348', accent: 'bg-orange-500' },
@@ -7,17 +9,17 @@ function Reports() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-white p-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-10">
-          <p className="text-orange-400 font-semibold mb-3">Admin Panel</p>
+    <AdminLayout title="Reports & Insights" subtitle="Analyze course performance and trends.">
+      <div className="max-w-6xl mx-auto space-y-10">
+        <div className="space-y-3">
+          <p className="text-orange-400 font-semibold uppercase tracking-[0.2em]">Admin Panel</p>
           <h1 className="text-5xl font-black">Reports & Insights</h1>
-          <p className="text-gray-400 mt-2">Track course performance, revenue, and student engagement.</p>
+          <p className="text-gray-400">Track course performance, revenue, and student engagement.</p>
         </div>
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {stats.map((item) => (
-            <div key={item.label} className="bg-white/5 border border-white/10 rounded-3xl p-6">
+            <div key={item.label} className="rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-0.5 hover:bg-white/10">
               <p className="text-gray-400 text-sm mb-4">{item.label}</p>
               <h2 className="text-4xl font-black">{item.value}</h2>
               <div className={`mt-6 h-2 rounded-full ${item.accent}`} />
@@ -26,7 +28,7 @@ function Reports() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 transition hover:-translate-y-0.5 hover:bg-white/10">
             <h2 className="text-2xl font-bold mb-5">Enrollment Trend</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between text-gray-300">
@@ -53,7 +55,7 @@ function Reports() {
             </div>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 transition hover:-translate-y-0.5 hover:bg-white/10">
             <h2 className="text-2xl font-bold mb-5">Course Ratings</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between text-gray-300">
@@ -72,7 +74,7 @@ function Reports() {
           </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 }
 

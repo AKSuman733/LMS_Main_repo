@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AdminLayout from '../../components/AdminLayout';
 import Toast from '../../components/Toast';
 
 const initialItems = [
@@ -17,18 +18,18 @@ function Approvals() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-white p-8">
+    <AdminLayout title="Approvals" subtitle="Process pending approvals with a single click.">
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-10">
-          <p className="text-orange-400 font-semibold mb-3">Admin Panel</p>
+      <div className="max-w-6xl mx-auto space-y-8">
+        <div className="space-y-3">
+          <p className="text-orange-400 font-semibold uppercase tracking-[0.2em]">Admin Panel</p>
           <h1 className="text-5xl font-black">Pending Approvals</h1>
-          <p className="text-gray-400 mt-2">Review requests and update their status instantly.</p>
+          <p className="text-gray-400">Review requests and update their status instantly.</p>
         </div>
 
         <div className="space-y-4">
           {items.map((item) => (
-            <div key={item.id} className="bg-white/5 border border-white/10 rounded-3xl p-6 sm:flex sm:items-center sm:justify-between gap-4">
+            <div key={item.id} className="group rounded-3xl border border-white/10 bg-white/5 p-6 sm:flex sm:items-center sm:justify-between gap-4 transition hover:-translate-y-0.5 hover:bg-white/10">
               <div>
                 <p className="text-gray-400 text-sm uppercase tracking-[0.2em] mb-2">{item.type} request</p>
                 <h2 className="text-2xl font-bold mb-1">{item.title}</h2>
@@ -38,10 +39,10 @@ function Approvals() {
               </div>
 
               <div className="flex flex-wrap gap-3 mt-6 sm:mt-0">
-                <button onClick={() => updateStatus(item.id, 'approved')} disabled={item.status !== 'pending'} className="bg-green-600 hover:bg-green-500 transition px-5 py-3 rounded-2xl font-semibold disabled:bg-white/10 disabled:text-gray-400">
+                <button onClick={() => updateStatus(item.id, 'approved')} disabled={item.status !== 'pending'} className="rounded-3xl bg-green-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-500 disabled:bg-white/10 disabled:text-gray-400">
                   Approve
                 </button>
-                <button onClick={() => updateStatus(item.id, 'rejected')} disabled={item.status !== 'pending'} className="bg-red-600 hover:bg-red-500 transition px-5 py-3 rounded-2xl font-semibold disabled:bg-white/10 disabled:text-gray-400">
+                <button onClick={() => updateStatus(item.id, 'rejected')} disabled={item.status !== 'pending'} className="rounded-3xl bg-red-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-500 disabled:bg-white/10 disabled:text-gray-400">
                   Reject
                 </button>
               </div>
@@ -49,7 +50,7 @@ function Approvals() {
           ))}
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 }
 

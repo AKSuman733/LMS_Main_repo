@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AdminLayout from '../../components/AdminLayout';
 import Toast from '../../components/Toast';
 
 function AddIntern() {
@@ -37,42 +38,58 @@ function AddIntern() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-white p-8">
+    <AdminLayout title="Add Intern" subtitle="Create an intern record and schedule onboarding.">
       {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
       <div className="max-w-4xl mx-auto">
-        <div className="mb-10">
-          <p className="text-orange-400 font-semibold mb-3">Admin Panel</p>
+        <div className="mb-10 space-y-3">
+          <p className="text-orange-400 font-semibold uppercase tracking-[0.2em]">Admin Panel</p>
           <h1 className="text-5xl font-black">Add New Intern</h1>
-          <p className="text-gray-400 mt-2">Create an intern record and schedule their onboarding.</p>
+          <p className="text-gray-400">Create an intern record and schedule their onboarding.</p>
         </div>
 
-        <form className="bg-white/5 border border-white/10 rounded-3xl p-8" onSubmit={handleSubmit}>
-          <div className="grid md:grid-cols-2 gap-6">
+        <form className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-black/10" onSubmit={handleSubmit}>
+          <div className="grid gap-6 md:grid-cols-2">
             <div>
-              <label className="block mb-2 text-gray-300">Intern Name</label>
+              <label htmlFor="intern-name" className="block mb-2 text-gray-300">Intern Name</label>
               <input
+                id="intern-name"
+                required
+                aria-required="true"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'intern-name-error' : undefined}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className={`w-full bg-[#0B1120] border ${errors.name ? 'border-red-500' : name ? 'border-green-500' : 'border-white/10'} rounded-2xl px-5 py-4 outline-none`}
               />
-              {errors.name && <div className="text-sm text-red-400 mt-1">{errors.name}</div>}
+              {errors.name && <div id="intern-name-error" className="text-sm text-red-400 mt-1">{errors.name}</div>}
             </div>
 
             <div>
-              <label className="block mb-2 text-gray-300">Email Address</label>
+              <label htmlFor="intern-email" className="block mb-2 text-gray-300">Email Address</label>
               <input
+                id="intern-email"
+                type="email"
+                required
+                aria-required="true"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'intern-email-error' : undefined}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={`w-full bg-[#0B1120] border ${errors.email ? 'border-red-500' : email ? 'border-green-500' : 'border-white/10'} rounded-2xl px-5 py-4 outline-none`}
               />
-              {errors.email && <div className="text-sm text-red-400 mt-1">{errors.email}</div>}
+              {errors.email && <div id="intern-email-error" className="text-sm text-red-400 mt-1">{errors.email}</div>}
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 mt-6">
             <div>
-              <label className="block mb-2 text-gray-300">Department</label>
-              <select value={department} onChange={(e) => setDepartment(e.target.value)} className="w-full bg-[#0B1120] border border-white/10 rounded-2xl px-5 py-4 outline-none">
+              <label htmlFor="intern-department" className="block mb-2 text-gray-300">Department</label>
+              <select
+                id="intern-department"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="w-full bg-[#0B1120] border border-white/10 rounded-2xl px-5 py-4 outline-none"
+              >
                 <option>Software Engineering</option>
                 <option>Design</option>
                 <option>Data Science</option>
@@ -81,28 +98,47 @@ function AddIntern() {
             </div>
 
             <div>
-              <label className="block mb-2 text-gray-300">Start Date</label>
+              <label htmlFor="intern-start-date" className="block mb-2 text-gray-300">Start Date</label>
               <input
+                id="intern-start-date"
                 type="date"
+                required
+                aria-required="true"
+                aria-invalid={!!errors.startDate}
+                aria-describedby={errors.startDate ? 'intern-start-date-error' : undefined}
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 className={`w-full bg-[#0B1120] border ${errors.startDate ? 'border-red-500' : startDate ? 'border-green-500' : 'border-white/10'} rounded-2xl px-5 py-4 outline-none`}
               />
-              {errors.startDate && <div className="text-sm text-red-400 mt-1">{errors.startDate}</div>}
+              {errors.startDate && <div id="intern-start-date-error" className="text-sm text-red-400 mt-1">{errors.startDate}</div>}
             </div>
           </div>
 
-          <div className="mt-8 flex gap-4">
-            <button type="submit" disabled={submitting} className="bg-orange-600 px-6 py-3 rounded-2xl font-bold text-white transition hover:bg-orange-500">
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="rounded-3xl bg-orange-600 px-6 py-4 text-sm font-bold text-white transition hover:bg-orange-500 disabled:cursor-not-allowed disabled:bg-orange-700"
+            >
               {submitting ? 'Saving...' : 'Save Intern'}
             </button>
-            <button type="button" onClick={() => { setName(''); setEmail(''); setDepartment('Software Engineering'); setStartDate(''); setErrors({}); }} className="border border-white/10 px-6 py-3 rounded-2xl text-white">
+            <button
+              type="button"
+              onClick={() => {
+                setName('');
+                setEmail('');
+                setDepartment('Software Engineering');
+                setStartDate('');
+                setErrors({});
+              }}
+              className="rounded-3xl border border-white/10 px-6 py-4 text-sm font-semibold text-white transition hover:border-orange-300 hover:text-orange-300"
+            >
               Reset
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </AdminLayout>
   );
 }
 

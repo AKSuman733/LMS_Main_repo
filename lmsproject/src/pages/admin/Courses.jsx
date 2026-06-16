@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import AdminLayout from '../../components/AdminLayout';
 import DataTable from '../../components/DataTable';
 import CardSkeleton from '../../components/CardSkeleton';
 
@@ -42,7 +43,7 @@ function Courses() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#070B14] text-white p-8">
+    <AdminLayout title="Courses" subtitle="Review, publish, and manage your course catalog.">
       <div className="max-w-7xl mx-auto space-y-8">
         {loading ? (
           <div className="grid gap-6 md:grid-cols-3">
@@ -52,15 +53,15 @@ function Courses() {
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-0.5 hover:bg-white/10">
               <p className="text-sm uppercase tracking-[0.2em] text-gray-400">Total Courses</p>
               <h2 className="mt-3 text-4xl font-black">{data.length}</h2>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-0.5 hover:bg-white/10">
               <p className="text-sm uppercase tracking-[0.2em] text-gray-400">Published</p>
               <h2 className="mt-3 text-4xl font-black">{data.filter((item) => item.status === 'Published').length}</h2>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 transition hover:-translate-y-0.5 hover:bg-white/10">
               <p className="text-sm uppercase tracking-[0.2em] text-gray-400">Drafts</p>
               <h2 className="mt-3 text-4xl font-black">{data.filter((item) => item.status === 'Draft').length}</h2>
             </div>
@@ -88,7 +89,7 @@ function Courses() {
           onBulkArchive={handleBulkArchive}
         />
       </div>
-    </div>
+    </AdminLayout>
   );
 }
 

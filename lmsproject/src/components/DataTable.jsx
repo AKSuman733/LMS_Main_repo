@@ -29,6 +29,10 @@ function sortValues(a, b) {
   return a.toString().localeCompare(b.toString(), undefined, { sensitivity: 'base' });
 }
 
+function getRowLabel(row) {
+  return row.name || row.title || row.label || `row ${row.id}`;
+}
+
 function DataTable({
   title,
   columns,
@@ -209,6 +213,7 @@ function DataTable({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search records..."
+              aria-label="Search table records"
               className="rounded-2xl border border-white/10 bg-[#0B1120] px-4 py-3 text-white outline-none focus:border-orange-500"
             />
             {selectedCount > 0 && (
@@ -235,17 +240,25 @@ function DataTable({
 
         <div className="overflow-x-auto rounded-3xl border border-white/10 bg-white text-slate-900 shadow-sm">
           <table className="min-w-full border-collapse text-left">
+            <caption className="sr-only">{title} table</caption>
             <thead className="bg-[#F3F1ED] text-sm text-slate-900">
               <tr>
-                <th className="border-b border-slate-200 px-4 py-4">
+                <th scope="col" className="border-b border-slate-200 px-4 py-4">
                   <label className="inline-flex items-center gap-2">
-                    <input type="checkbox" checked={allSelected} onChange={handleSelectAll} className="h-4 w-4 rounded border-slate-300 text-orange-600" />
+                    <input type="checkbox" checked={allSelected} onChange={handleSelectAll} aria-label="Select all rows" className="h-4 w-4 rounded border-slate-300 text-orange-600" />
                   </label>
                 </th>
                 {columns.map((column) => (
-                  <th key={column.key} className="border-b border-slate-200 px-4 py-4 align-middle">
+                  <th scope="col" key={column.key} className="border-b border-slate-200 px-4 py-4 align-middle">
                     <div className="flex items-center gap-2">
-                      <button type="button" className="flex items-center gap-1 font-semibold" onClick={() => column.sortable && toggleSort(column.key)}>
+                      <button
+                        type="button"
+                        aria-label={`Sort by ${column.label}`}
+                        aria-sort={sortKey === column.key ? (sortDir === 'asc' ? 'ascending' : 'descending') : 'none'}
+                        aria-disabled={!column.sortable}
+                        onClick={() => column.sortable && toggleSort(column.key)}
+                        className={`flex items-center gap-1 font-semibold ${column.sortable ? 'cursor-pointer text-slate-900' : 'cursor-default text-slate-500'}`}
+                      >
                         {column.label}
                         {sortKey === column.key && (
                           <span>{sortDir === 'asc' ? '▲' : '▼'}</span>
@@ -253,11 +266,11 @@ function DataTable({
                       </button>
                       {column.filterOptions && (
                         <div className="relative">
-                          <button type="button" onClick={() => setOpenFilter(openFilter === column.key ? null : column.key)} className="rounded-full border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50">
+                          <button type="button" aria-label={`Filter ${column.label}`} aria-controls={`filter-panel-${column.key}`} aria-expanded={openFilter === column.key} aria-haspopup="true" onClick={() => setOpenFilter(openFilter === column.key ? null : column.key)} className="rounded-full border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50">
                             Filter
                           </button>
                           {openFilter === column.key && (
-                            <div className="absolute right-0 top-10 z-20 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl">
+                            <div id={`filter-panel-${column.key}`} className="absolute right-0 top-10 z-20 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl" role="menu" aria-label={`Filter options for ${column.label}`}>
                               <div className="mb-3 flex items-center justify-between text-sm font-semibold text-slate-800">
                                 <span>Filter {column.label}</span>
                                 <button type="button" onClick={() => setFilters((current) => ({ ...current, [column.key]: [] }))} className="text-orange-600 hover:text-orange-500">
@@ -284,7 +297,7 @@ function DataTable({
                     </div>
                   </th>
                 ))}
-                <th className="border-b border-slate-200 px-4 py-4">Actions</th>
+                <th scope="col" className="border-b border-slate-200 px-4 py-4">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -292,7 +305,7 @@ function DataTable({
                 <tr key={row.id} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-[#F9F8F6]'} hover:bg-[#FFF5F0]`}>
                   <td className="border-b border-slate-200 px-4 py-4 align-middle">
                     <label className="inline-flex items-center gap-2">
-                      <input type="checkbox" checked={selected.includes(row.id)} onChange={() => handleSelectRow(row.id)} className="h-4 w-4 rounded border-slate-300 text-orange-600" />
+                      <input type="checkbox" checked={selected.includes(row.id)} onChange={() => handleSelectRow(row.id)} aria-label={`Select ${getRowLabel(row)}`} className="h-4 w-4 rounded border-slate-300 text-orange-600" />
                     </label>
                   </td>
                   {columns.map((column) => (
@@ -302,15 +315,23 @@ function DataTable({
                   ))}
                   <td className="border-b border-slate-200 px-4 py-4 align-middle">
                     <div className="relative inline-flex">
-                      <button type="button" onClick={() => setMenuRow(menuRow === row.id ? null : row.id)} className="rounded-full border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-100">
+                      <button
+                        type="button"
+                        aria-haspopup="menu"
+                        aria-controls={`row-actions-${row.id}`}
+                        aria-expanded={menuRow === row.id}
+                        aria-label={`Open actions for ${getRowLabel(row)}`}
+                        onClick={() => setMenuRow(menuRow === row.id ? null : row.id)}
+                        className="rounded-full border border-slate-300 bg-white px-3 py-2 text-slate-700 hover:bg-slate-100"
+                      >
                         ⋯
                       </button>
                       {menuRow === row.id && (
-                        <div className="absolute right-0 top-12 z-20 w-40 rounded-2xl border border-slate-200 bg-white shadow-xl">
-                          <button type="button" onClick={() => { onView?.(row); setMenuRow(null); }} className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-100">View</button>
-                          <button type="button" onClick={() => { onEdit?.(row); setMenuRow(null); }} className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-100">Edit</button>
-                          <button type="button" onClick={() => openConfirm('delete', row)} className="w-full px-4 py-3 text-left text-sm text-red-600 hover:bg-slate-100">Delete</button>
-                          <button type="button" onClick={() => openConfirm('archive', row)} className="w-full px-4 py-3 text-left text-sm text-amber-600 hover:bg-slate-100">Archive</button>
+                        <div className="absolute right-0 top-12 z-20 w-40 rounded-2xl border border-slate-200 bg-white shadow-xl" role="menu" aria-label="Row actions">
+                          <button type="button" role="menuitem" onClick={() => { onView?.(row); setMenuRow(null); }} className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-100">View</button>
+                          <button type="button" role="menuitem" onClick={() => { onEdit?.(row); setMenuRow(null); }} className="w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-100">Edit</button>
+                          <button type="button" role="menuitem" onClick={() => openConfirm('delete', row)} className="w-full px-4 py-3 text-left text-sm text-red-600 hover:bg-slate-100">Delete</button>
+                          <button type="button" role="menuitem" onClick={() => openConfirm('archive', row)} className="w-full px-4 py-3 text-left text-sm text-amber-600 hover:bg-slate-100">Archive</button>
                         </div>
                       )}
                     </div>
