@@ -1,81 +1,122 @@
+
+/* =========================
+   DESIGN TOKENS (PAGE LEVEL)
+   NO UI CHANGE
+========================= */
 .cert-page {
-  padding: 45px;
-  /* padding-top:60px; */
-  /* min-height: 100vh;
-  margin-left: 250px; */
-  font-family: "Poppins", sans-serif;
+  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
+  --bg-dark: #020617;
 
-  /* background: radial-gradient(
-    circle at top,
-    #1e293b 0%,
-    #0f172a 45%,
-    #020617 100%
-  ); */
-   background: linear-gradient(135deg, #1e293b, #0f172a);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
 
-  color: white;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --primary-1: #6366f1;
+  --primary-2: #7c3aed;
+
+  --success-1: #22c55e;
+  --success-2: #16a34a;
+
+  --shadow-sm: 0 10px 30px rgba(0,0,0,0.35);
+  --shadow-hover: 0 18px 50px rgba(99, 102, 241, 0.25);
+
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-full: 999px;
+
+  --space-xs: 6px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 14px;
+  --space-xl: 18px;
+  --space-xxl: 20px;
+
+  --transition: 0.4s ease;
+  --transition-fast: 0.3s ease;
 }
 
-/* HERO */
+/* =========================
+   PAGE WRAPPER
+========================= */
+.cert-page {
+  padding: 45px;
+  font-family: "Poppins", sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
+/* =========================
+   HERO
+========================= */
 .cert-hero {
   margin-bottom: 40px;
 }
 
 .cert-hero h1 {
   font-size: 30px;
-  font-weight:50;
+  font-weight: 50;
   margin: 0;
 }
 
 .cert-hero p {
-  color: #cbd5e1;
-  margin-top: 8px;
+  color: var(--text-secondary);
+  margin-top: var(--space-sm);
 }
 
-/* GRID */
+/* =========================
+   GRID
+========================= */
 .cert-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 28px;
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 .cert-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   backdrop-filter: blur(16px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-
-  transition: all 0.4s ease;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
   position: relative;
 }
 
 .cert-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 18px 50px rgba(99, 102, 241, 0.25);
+  box-shadow: var(--shadow-hover);
 }
 
-/* IMAGE */
+/* =========================
+   IMAGE
+========================= */
 .cert-image img {
   width: 100%;
   height: 180px;
   object-fit: cover;
-  transition: 0.4s ease;
+  transition: var(--transition);
 }
 
 .cert-card:hover img {
   transform: scale(1.08);
 }
 
-/* BADGE */
+/* =========================
+   BADGE
+========================= */
 .badge {
   position: absolute;
   top: 12px;
   right: 12px;
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -83,11 +124,13 @@
 
 /* VERIFIED BADGE */
 .verified {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: linear-gradient(135deg, var(--success-1), var(--success-2));
   box-shadow: 0 0 15px rgba(34,197,94,0.4);
 }
 
-/* CONTENT */
+/* =========================
+   CONTENT
+========================= */
 .cert-content {
   padding: 20px;
 }
@@ -98,25 +141,27 @@
 }
 
 .cert-content p {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 14px;
   margin: 8px 0 16px;
 }
 
-/* BUTTON */
+/* =========================
+   BUTTON
+========================= */
 .download-btn {
   width: 100%;
   padding: 12px;
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
 
-  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
   color: white;
 
   font-weight: 600;
   cursor: pointer;
 
-  transition: all 0.3s ease;
+  transition: var(--transition-fast);
 }
 
 .download-btn:hover {
@@ -124,7 +169,9 @@
   box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
   .cert-page {
     padding: 20px;

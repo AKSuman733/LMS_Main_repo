@@ -1,38 +1,71 @@
+
+/* =========================
+   DESIGN TOKENS (PAGE LEVEL)
+   NO UI CHANGE
+========================= */
 .analytics {
-  padding: 30px;
-  /* padding-top: 50px; */
-  /* margin-left: 250px; */
-    background: linear-gradient(135deg, #1e293b, #0f172a);
+  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
+
+  --bg-card: #0f172a;
+  --bg-item: #f8fafc;
+
+  --text-primary: #ffffff;
+  --text-dark: #0f172a;
+
+  --shadow-sm: 0 8px 25px rgba(0,0,0,0.1);
+
+  --radius-md: 18px;
+  --radius-sm: 8px;
+
+  --space-sm: 10px;
+  --space-md: 12px;
+  --space-lg: 25px;
+  --space-xl: 30px;
 }
 
+/* =========================
+   PAGE WRAPPER
+========================= */
+.analytics {
+  padding: var(--space-xl);
+  background: var(--bg-page);
+}
+
+/* =========================
+   TITLE
+========================= */
 .analytics h2 {
-  margin-bottom: 10px;
-  color: #fff;
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
 }
 
+/* =========================
+   CHART GRID
+========================= */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(250px, 1fr)
-  );
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-lg);
 }
 
+/* =========================
+   CHART CARD
+========================= */
 .chart-card {
-  /* background: #ffffff; */
-  background:#0f172a;
-  border-radius: 18px;
-  padding: 10px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.1);
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .chart-card h3 {
-  margin-bottom: 10px;
-  /* color: #0f172a; */
-  color:#f8fafc
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
 }
 
+/* =========================
+   ACTIVITY LIST
+========================= */
 .activity-list {
   list-style: none;
   padding: 0;
@@ -41,6 +74,6 @@
 .activity-list li {
   padding: 12px;
   margin-bottom: 10px;
-  background: #f8fafc;
-  border-radius: 8px;
+  background: var(--bg-item);
+  border-radius: var(--radius-sm);
 }

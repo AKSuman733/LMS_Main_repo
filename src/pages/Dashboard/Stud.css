@@ -1,23 +1,42 @@
+:root {
+  /* Surface */
+  --surface-primary: #ffffff;
+  --surface-soft: #f5f5f5;
+  --surface-border: #eeeeee;
 
+  /* Text */
+  --text-dark: #111827;
+  --text-gray: #6b7280;
+  --text-muted-2: #9ca3af;
 
+  /* Brand */
+  --brand-primary: #ff6b35;
+  --brand-hover: #e85a28;
 
-/* =========================
-   STUDENT PAGE
-========================= */
+  --brand-teal: #00b5a5;
 
+  /* Badge */
+  --badge-bg: #dcfce7;
+  --badge-text: #15803d;
 
-.udemy-student-page {
+  /* Radius (standardized) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
 
-  /* min-height: 100vh; */
-  
-  /* background:#0f172a; */
-   background: linear-gradient(135deg, #1e293b, #0f172a);
-  /* margin-left:250px ; */
-  border-radius: 5px;
-  padding: 15px;
-  /* padding-top: 50px; */
+  /* Shadow */
+  --shadow-sm: 0 4px 14px rgba(0,0,0,0.05);
+  --shadow-md: 0 10px 24px rgba(0,0,0,0.08);
+}  
+ .udemy-student-page {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  /* border-radius: var(--radius-lg); */
+  /* padding: var(--space-5); */
   font-family: Arial, sans-serif;
-
+  padding: 15px;
 }
 
 /* =========================
@@ -25,227 +44,104 @@
 ========================= */
 
 .student-header {
-
-  margin-bottom: 35px;
-
+  margin-bottom: var(--space-7);
 }
 
 .student-header h2 {
-
   font-size: 30px;
-
   font-weight: 200;
-
-  color:white;
-
-  /* margin-bottom: 4px; */
-
+  color: var(--surface-primary);
 }
 
 .student-header p {
-
   font-size: 15px;
-
-  color: #6b7280;
-
+  color: var(--text-gray);
 }
 
 /* =========================
-   STUDENT GRID
+   GRID
 ========================= */
 
 .student-grid {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit, minmax(250px, 1fr));
-
-  gap: 5px;
-
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-2);
 }
 
 /* =========================
-   STUDENT CARD
+   CARD
 ========================= */
 
 .student-card {
-
-  background: white;
-
-  border-radius: 18px;
-
-  padding: 28px 22px;
-
+  background: var(--surface-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
   text-align: center;
-
   transition: all 0.3s ease;
-
-  box-shadow:
-    0 4px 14px rgba(0,0,0,0.05);
-
+  box-shadow: var(--shadow-sm);
 }
-
-/* HOVER EFFECT */
 
 .student-card:hover {
-
   transform: translateY(-5px);
-
-  box-shadow:
-    0 10px 24px rgba(0,0,0,0.08);
-
+  box-shadow: var(--shadow-md);
 }
 
-/* =========================
-   AVATAR
-========================= */
-/* 
-.avatar {
-
-  width: 75px;
-
-  height: 75px;
-
-  border-radius: 50%;
-
-  background: linear-gradient(
-    135deg,
-    #ff6b35,
-    #ff9f1c
-  );
-
-  color: white;
-
-  font-size: 28px;
-
-  font-weight: bold;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  margin: 0 auto 18px;
-
-} */
-
-/* =========================
-   NAME
-========================= */
-
+/* TEXT */
 .student-card h3 {
-
   font-size: 22px;
-
   font-weight: 700;
-
-  color: #111827;
-
-  margin-bottom: 10px;
-
+  color: var(--text-dark);
+  margin-bottom: var(--space-3);
 }
 
-/* =========================
-   COURSE
-========================= */
-
+/* COURSE */
 .course {
-
   font-size: 14px;
-
-  color: #00b5a5;
-
+  color: var(--brand-teal);
   font-weight: 600;
-
-  margin-bottom: 8px;
-
+  margin-bottom: var(--space-2);
 }
 
-/* =========================
-   EMAIL
-========================= */
-
+/* EMAIL */
 .email {
-
   font-size: 14px;
-
-  color: #6b7280;
-
-  margin-bottom: 18px;
-
+  color: var(--text-gray);
+  margin-bottom: var(--space-4);
 }
 
-/* =========================
-   BADGE
-========================= */
-
+/* BADGE */
 .badge {
-
   display: inline-block;
-
-  background: #dcfce7;
-
-  color: #15803d;
-
+  background: var(--badge-bg);
+  color: var(--badge-text);
   padding: 7px 14px;
-
-  border-radius: 999px;
-
+  border-radius: var(--radius-pill);
   font-size: 12px;
-
   font-weight: 600;
-
-  margin-bottom: 20px;
-
+  margin-bottom: var(--space-5);
 }
 
-/* =========================
-   BUTTON
-========================= */
-
+/* BUTTON */
 .student-card button {
-
   width: 100%;
-
   height: 45px;
-
   border: none;
-
-  border-radius: 10px;
-
-  background: #ff6b35;
-
-  color: white;
-
+  border-radius: var(--radius-md);
+  background: var(--brand-primary);
+  color: var(--surface-primary);
   font-size: 15px;
-
   font-weight: 600;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
-
 }
-
-/* HOVER */
 
 .student-card button:hover {
-
-  background: #e85a28;
-
-  box-shadow:
-    0 6px 14px rgba(255,107,53,0.25);
-
+  background: var(--brand-hover);
+  box-shadow: var(--shadow-md);
 }
 
-/* CLICK */
-
 .student-card button:active {
-
   transform: scale(0.98);
-
 }
 
 /* =========================
@@ -253,194 +149,90 @@
 ========================= */
 
 .empty-state {
-
   grid-column: 1/-1;
-
-  background: white;
-
+  background: var(--surface-primary);
   padding: 60px 20px;
-
   text-align: center;
-
-  border-radius: 18px;
-
+  border-radius: var(--radius-xl);
 }
 
 .empty-state h2 {
-
-  color: #111827;
-
-  margin-bottom: 10px;
-
+  color: var(--text-dark);
 }
 
 .empty-state p {
-
-  color: #6b7280;
-
+  color: var(--text-gray);
 }
 
 /* =========================
-   MODAL CONTENT
+   MODAL
 ========================= */
 
 .modal-box {
-
   text-align: center;
-
-  padding: 20px 10px;
-
+  padding: var(--space-5);
 }
 
 .modal-avatar {
-
   width: 90px;
-
   height: 90px;
-
   border-radius: 50%;
-
-  background: linear-gradient(
-    135deg,
-    #00b5a5,
-    #0ea5e9
-  );
-
+  background: linear-gradient(135deg, #00b5a5, #0ea5e9);
   color: white;
-
   font-size: 34px;
-
   font-weight: bold;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
-  margin: 0 auto 20px;
-
+  margin: 0 auto var(--space-5);
 }
 
 .modal-box h3 {
-
   font-size: 24px;
-
-  color: #111827;
-
-  margin-bottom: 10px;
-
+  color: var(--text-dark);
 }
 
 .modal-box p {
-
-  color: #6b7280;
-
-  margin-bottom: 8px;
-
+  color: var(--text-gray);
 }
 
 /* =========================
-   RESPONSIVE
+   TABLE
 ========================= */
 
-@media (max-width: 768px) {
-
-  .udemy-student-page {
-
-    padding: 8px;
-
-  }
-
-  .student-header h2 {
-
-    font-size: 26px;
-
-  }
-
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.pagination button {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  background: white;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pagination span {
-  font-weight: 500;
-}
-
-.table-container {
-  width: 100%;
-  padding: 10px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* TABLE */
-/* .student-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-} */
 .student-table {
   width: 100%;
   min-width: 700px;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
+  background: var(--surface-primary);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-.student-table th,
-.student-table td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
+.student-table th {
+  background: var(--surface-soft);
+  font-weight: bold;
 }
 
+.student-table td,
 .student-table th {
-  background: #f5f5f5;
-  font-weight: bold;
+  padding: 12px;
+  border-bottom: 1px solid var(--surface-border);
+  text-align: left;
 }
 
 .student-table tr:hover {
   background: #fafafa;
 }
 
-/* BUTTON */
-/* .view-btn {
-  padding: 6px 10px;
-  border: none;
-  background: black;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-} */
+/* VIEW BUTTON */
 .view-btn {
   min-height: 44px;
   padding: 8px 12px;
   border: none;
   background: black;
   color: white;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
@@ -452,50 +244,81 @@
 .empty-row {
   text-align: center;
   padding: 20px;
-  color: gray;
+  color: var(--text-muted-2);
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .student-table {
-    min-width: 800px;
-    font-size: 14px;
-  }
-}
+/* =========================
+   TOOLBAR
+========================= */
 
 .toolbar {
   display: flex;
-  gap: 10px;
-  margin: 15px 0;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
   flex-wrap: wrap;
 }
 
-/* .toolbar input,
-.toolbar select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-} */
 .toolbar input,
 .toolbar select {
   min-height: 44px;
   padding: 8px 12px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 
-/* .toolbar button {
-  padding: 8px 12px;
-  border: none;
-  background: black;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-} */
 .toolbar button {
   min-height: 44px;
   padding: 8px 12px;
 }
+
 .toolbar button:hover {
   opacity: 0.8;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: var(--surface-primary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .udemy-student-page {
+    padding: var(--space-3);
+  }
+
+  .student-header h2 {
+    font-size: 26px;
+  }
+
+  .student-table {
+    min-width: 800px;
+    font-size: 14px;
+  }
 }

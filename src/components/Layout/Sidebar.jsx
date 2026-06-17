@@ -42,15 +42,15 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       path: "/mentors",
       icon: <FaRobot />,
     },
+      {
+      label: "Reviews",
+      path: "/reviews",
+      icon: <FaStar/>,
+    },
     {
       label: "Analytics",
       path: "/analytics",
       icon: <FaChartBar />,
-    },
-     {
-      label: "Reviews",
-      path: "/reviews",
-      icon: <FaStar/>,
     },
   ];
 

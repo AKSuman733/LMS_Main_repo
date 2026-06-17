@@ -1,7 +1,44 @@
+:root {
+  /* Backgrounds */
+  --bg-main: linear-gradient(135deg, #1e293b, #0f172a);
+  --bg-dark: #0f172a;
+  --bg-card: #111827;
+
+  /* Borders */
+  --border-primary: #1e293b;
+  --border-hover: #334155;
+  --border-dark: #1f2937;
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #cbd5e1;
+
+  /* Accent */
+  --accent-orange: #ea580c;
+  --accent-blue: #60a5fa;
+
+  /* Buttons */
+  --btn-gradient: linear-gradient(135deg, #6366f1, #7c3aed);
+  --progress-gradient: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  --ai-gradient: linear-gradient(135deg, #312e81, #581c87);
+
+  /* Spacing */
+  --space-sm: 10px;
+  --space-md: 20px;
+  --space-lg: 25px;
+  --space-xl: 35px;
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+} 
 .main-content {
-  padding: 20px;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  /* min-height: 100vh; */
+  padding: var(--space-md);
+  background: var(--bg-main);
 }
 
 /* =========================
@@ -12,32 +49,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  padding: 35px;
-  border-radius: 20px;
-  margin-bottom: 25px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-primary);
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-lg);
 }
 
 .welcome-text {
   font-size: 2rem;
-  color: #ea580c;
-  margin-bottom: 10px;
+  color: var(--accent-orange);
+  margin-bottom: var(--space-sm);
 }
 
 .sub-text {
-  color: #94a3b8;
+  color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: var(--space-md);
 }
 
 .explore-btn {
   padding: 12px 22px;
   border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #6366f1, #7c3aed);
-  color: white;
+  border-radius: var(--radius-sm);
+  background: var(--btn-gradient);
+  color: var(--text-primary);
   font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
@@ -58,50 +95,50 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 .stats-card {
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  padding: 20px;
-  border-radius: 18px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-primary);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
   text-align: center;
   transition: 0.3s;
 }
 
 .stats-card:hover {
   transform: translateY(-5px);
-  border-color: #334155;
+  border-color: var(--border-hover);
 }
 
 .stats-card h3 {
-  color: white;
+  color: var(--text-primary);
   font-size: 20px !important;
-  font-weight:10px ;
+  font-weight: 400;
   margin-bottom: 8px;
 }
 
 .stats-card p {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 /* =========================
-   COMMON DASHBOARD CARD
+   DASHBOARD CARD
 ========================= */
 
 .dashboard-card {
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  border-radius: 18px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
   padding: 24px;
-  margin-bottom: 25px;
+  margin-bottom: var(--space-lg);
 }
 
 .dashboard-card h2 {
-  color: white;
-  margin-bottom: 10px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
   font-size: 1.2rem;
 }
 
@@ -114,7 +151,7 @@
 .card-header button {
   background: transparent;
   border: none;
-  color: #60a5fa;
+  color: var(--accent-blue);
   cursor: pointer;
 }
 
@@ -123,39 +160,34 @@
 ========================= */
 
 .course-progress h3 {
-  color: white;
-  margin-bottom: 10px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
 }
 
 .course-progress p {
-  color: #94a3b8;
+  color: var(--text-secondary);
   margin-bottom: 15px;
 }
 
 .progress-bar {
   width: 100%;
   height: 10px;
-  background: #1e293b;
-  border-radius: 999px;
+  background: var(--border-primary);
+  border-radius: var(--radius-pill);
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-sm);
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    #3b82f6,
-    #8b5cf6
-  );
-  border-radius: 999px;
+  background: var(--progress-gradient);
+  border-radius: var(--radius-pill);
 }
 
 .course-progress span {
-  color: #cbd5e1;
+  color: var(--text-muted);
   font-size: 14px;
 }
-
 
 /* =========================
    RECOMMENDED COURSES
@@ -164,14 +196,14 @@
 .recommended-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--space-md);
 }
 
 .recommend-card {
-  background: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 14px;
-  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
   transition: 0.3s;
 }
 
@@ -180,12 +212,12 @@
 }
 
 .recommend-card h3 {
-  color: white;
-  margin-bottom: 10px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
 }
 
 .recommend-card p {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 /* =========================
@@ -193,11 +225,7 @@
 ========================= */
 
 .ai-card {
-  background: linear-gradient(
-    135deg,
-    #312e81,
-    #581c87
-  );
+  background: var(--ai-gradient);
   border: none;
 }
 
@@ -206,7 +234,7 @@
 }
 
 /* =========================
-   MOBILE
+   RESPONSIVE
 ========================= */
 
 @media (max-width: 992px) {
@@ -227,7 +255,7 @@
   .welcome-section {
     flex-direction: column;
     text-align: center;
-    gap: 25px;
+    gap: var(--space-lg);
   }
 
   .group1 {
@@ -240,6 +268,6 @@
 
   .card-header {
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-sm);
   }
 }

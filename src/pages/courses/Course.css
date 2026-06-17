@@ -1,63 +1,104 @@
+
+/* =========================
+   DESIGN TOKENS (PAGE LEVEL)
+   NO UI CHANGE
+========================= */
 .course-page {
-  /* min-height: 100vh;
-  margin-left: 250px; */
+  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
+
+  --bg-card: #ffffff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --text-light: #ffffff;
+
+  --border: transparent;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 22px;
+
+  --shadow-sm: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 15px;
+  --space-xl: 20px;
+  --space-xxl: 30px;
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+.course-page {
   padding: 40px;
-  /* background: #0f172a; */
-   background: linear-gradient(135deg, #1e293b, #0f172a);
+  background: var(--bg-page);
   font-family: "Poppins", sans-serif;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 .course-header {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-sm);
 }
 
 .course-header h1 {
   font-size: 28px;
   font-weight: 200;
-  color: white;
+  color: var(--text-light);
   margin-bottom: 5px;
 }
 
 .course-header p {
   font-size: 18px;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
-/* FILTERS */
+/* =========================
+   FILTERS
+========================= */
 .filters {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: var(--space-lg);
   flex-wrap: wrap;
-  margin-bottom: 30px;
+  margin-bottom: var(--space-xxl);
 }
 
 .filters input,
 .filters select {
   padding: 12px 15px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: none;
   outline: none;
   font-size: 14px;
   min-width: 180px;
 }
 
-/* COURSE GRID */
+/* =========================
+   GRID
+========================= */
 .course-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 30px;
+  gap: var(--space-xxl);
 }
 
-/* COURSE CARD */
+/* =========================
+   CARD
+========================= */
 .course-card {
-  background: #ffffff;
-  border-radius: 22px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: 0.3s ease;
 }
 
 .course-card:hover {
@@ -78,79 +119,77 @@
 
 .course-info h3 {
   font-size: 20px;
-  color: #0f172a;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .course-info p {
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-secondary);
   margin: 4px 0;
 }
 
-/* ENROLL BUTTON */
+/* =========================
+   ENROLL BUTTON
+========================= */
 .enroll-btn {
   width: 100%;
   margin-top: 12px;
   padding: 12px;
   border: none;
-  border-radius: 12px;
-  background: linear-gradient(to right, #2563eb, #3b82f6);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(to right, var(--primary), #3b82f6);
   color: white;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .enroll-btn:hover {
-  background: linear-gradient(to right, #1d4ed8, #2563eb);
+  background: linear-gradient(to right, var(--primary-hover), var(--primary));
   transform: scale(1.02);
 }
 
-/* NO RESULTS */
+/* =========================
+   NO RESULTS
+========================= */
 .no-results {
   grid-column: 1 / -1;
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 18px;
   padding: 40px;
 }
 
-/* PAGINATION */
+/* =========================
+   PAGINATION
+========================= */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: var(--space-lg);
   margin-top: 40px;
 }
 
 .pagination button {
   padding: 10px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: #1e293b;
-  /* color: white; */
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
-/* .pagination button:hover:not(:disabled) {
-  background: #334155;
-} */
-
-/* .pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-} */
-
 .pagination span {
-  color:white;
+  color: var(--text-light);
   font-weight: 600;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
   .course-page {
     padding: 20px;

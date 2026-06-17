@@ -1,8 +1,39 @@
+:root {
+  /* Page */
+  --dashboard-page-bg: #0f172a;
+  --dashboard-page-text: #fff;
+
+  /* Surfaces */
+  --dashboard-surface-primary: #111827;
+  --dashboard-surface-secondary: #1e293b;
+  --dashboard-surface-hover: #273549;
+
+  /* Borders */
+  --dashboard-border: #334155;
+  --dashboard-border-light: #475569;
+
+  /* Text */
+  --dashboard-text-secondary: #cbd5e1;
+  --dashboard-text-heading: #f8fafc;
+  --dashboard-text-accent: #818cf8;
+  --dashboard-text-dark: #111827;
+
+  /* Brand */
+  --dashboard-primary: #6366f1;
+  --dashboard-secondary: #7c3aed;
+  --dashboard-accent: #8b5cf6;
+  --dashboard-pink: #ec4899;
+
+  /* Contact */
+  --dashboard-contact-bg: antiquewhite;
+}
+
+
 .main-content {
   padding: 24px;
   min-height: 100vh;
-  background: #0f172a;
-  color: #fff;
+  background:var(--dashboard-page-bg);
+  color:var( --dashboard-page-text);
 }
 
 /* ================= HERO ================= */
@@ -12,20 +43,12 @@
   justify-content: space-between;
   align-items: center;
   gap: 40px;
-
   padding: 50px;
   margin-bottom: 24px;
-
-  background: linear-gradient(
-    135deg,
-    #111827,
-    #1e293b
-  );
-
-  border: 1px solid #334155;
   border-radius: 24px;
-
-  /* animation: fadeIn 0.7s ease; */
+  background: linear-gradient(135deg,var(--dashboard-surface-primary),
+  var(--dashboard-surface-secondary));
+  border: 1px solid var(--dashboard-border);
 }
 
 .hero-left {
@@ -34,16 +57,16 @@
 
 .hero-left h1 {
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 200;
   line-height: 1.2;
   margin-bottom: 16px;
 
-  background: linear-gradient(
-    90deg,
-    #6366f1,
-    #8b5cf6,
-    #ec4899
-  );
+ background: linear-gradient(
+  90deg,
+  var(--dashboard-primary),
+  var(--dashboard-accent),
+  var(--dashboard-pink)
+);
 background-clip: initial;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -51,7 +74,7 @@ background-clip: initial;
 
 .hero-left p {
   font-size: 1.05rem;
-  color: #cbd5e1;
+  color: var(--dashboard-text-secondary);
   line-height: 1.8;
   max-width: 600px;
 }
@@ -76,10 +99,10 @@ background-clip: initial;
   border: none;
   color: white;
   background: linear-gradient(
-    135deg,
-    #6366f1,
-    #7c3aed
-  );
+  135deg,
+  var(--dashboard-primary),
+  var(--dashboard-secondary)
+);
 }
 
 .primary-btn:hover {
@@ -90,7 +113,7 @@ background-clip: initial;
 .secondary-btn {
   background: orange;
   color: white;
-  border: 1px solid #475569;
+  border: 1px solid var(--dashboard-border-light);
 }
 
 .secondary-btn:hover {
@@ -122,8 +145,8 @@ background-clip: initial;
   padding: 24px;
   text-align: center;
 
-  background: #111827;
-  border: 1px solid #334155;
+  background: var(--dashboard-surface-primary);
+  border: 1px solid var(--dashboard-border); 
   border-radius: 18px;
 
   transition: all 0.3s ease;
@@ -139,11 +162,11 @@ background-clip: initial;
   font-size: 2.2rem;
   font-weight: 700;
 
-  background: linear-gradient(
-    90deg,
-    #6366f1,
-    #8b5cf6
-  );
+background: linear-gradient(
+  90deg,
+  var(--dashboard-primary),
+  var(--dashboard-accent)
+);
 background-clip: initial;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -152,7 +175,7 @@ background-clip: initial;
 }
 
 .stats-card p {
-  color: #cbd5e1;
+  color: var(--dashboard-text-secondary);
 }
 
 /* ================= GRID ================= */
@@ -167,9 +190,8 @@ background-clip: initial;
 
 .card {
   padding: 24px;
-
-  background: #111827;
-  border: 1px solid #334155;
+  background: var(--dashboard-surface-primary);
+border: 1px solid var(--dashboard-border);
   border-radius: 20px;
 
   transition: all 0.3s ease;
@@ -186,13 +208,13 @@ background-clip: initial;
 .card h2 {
   margin-bottom: 18px;
   font-size: 1.4rem;
-  color: #f8fafc;
+  color: var(--dashboard-text-heading);
 }
 
 /* ================= ABOUT ================= */
 
 .about-card p {
-  color: #cbd5e1;
+color: var(--dashboard-text-secondary);
   line-height: 1.8;
   margin-bottom: 12px;
 }
@@ -207,26 +229,25 @@ background-clip: initial;
 
 .course-grid div {
   padding: 18px;
-  background: #1e293b;
-  border-radius: 14px;
-  border: 1px solid #334155;
+background: var(--dashboard-surface-secondary);
+border: 1px solid var(--dashboard-border);
 
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .course-grid div:hover {
-  border-color: #6366f1;
+  border-color: var(--dashboard-primary);
   transform: translateY(-3px);
 }
 
 .course-grid h3 {
   margin-bottom: 6px;
-  color: #818cf8;
+  color: var(--dashboard-text-accent);
 }
 
 .course-grid p {
-  color: #cbd5e1;
+  color: var(--dashboard-text-secondary);
 }
 
 /* ================= HOW IT WORKS ================= */
@@ -240,13 +261,13 @@ background-clip: initial;
 .journey-grid div {
   padding: 10px 10px;
   border-radius: 12px;
-  background: #1e293b;
+  background: var(--dashboard-surface-secondary);
   color: #e2e8f0;
   transition: 0.3s ease;
 }
 
 .journey-grid div:hover {
-  background: #273549;
+ background: var(--dashboard-surface-hover);
 }
 
 /* ================= TESTIMONIAL ================= */
@@ -254,23 +275,23 @@ background-clip: initial;
 .testimonial {
   padding: 20px;
   border-radius: 14px;
-  background: #1e293b;
+  background: var(--dashboard-surface-secondary);
 }
 
 .testimonial p {
   margin: 12px 0;
-  color: #cbd5e1;
+  color: var(--dashboard-text-secondary);
   line-height: 1.7;
 }
 
 .testimonial h4 {
-  color: #818cf8;
+  color: var(--dashboard-text-accent);
 }
 
 /* ================= CONTACT ================= */
 .contact-section {
-  background-color: antiquewhite;
-  color: #111827;
+  background-color: var(--dashboard-contact-bg);
+color: var(--dashboard-text-dark);
 
   padding: 30px;
   border-radius: 16px;
@@ -279,16 +300,10 @@ background-clip: initial;
 }
 
 .contact-section h2 {
-  color: #111827;
+  color: var(--dashboard-text-dark);
   margin-bottom: 20px;
 }
 
-/* .contact-item {
-  padding: 12px 0;
-  color: #374151;
-  font-size: 16px;
-  border-bottom: 1px solid #d1d5db;
-} */
 
 .contact-item:last-child {
   border-bottom: none;
@@ -329,11 +344,11 @@ background-clip: initial;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+ background: var(--dashboard-page-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6366f1;
+  background: var(--dashboard-primary);
   border-radius: 10px;
 }
 

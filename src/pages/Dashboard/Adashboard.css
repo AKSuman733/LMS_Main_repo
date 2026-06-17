@@ -1,51 +1,81 @@
-/* ========== DESIGN TOKENS ========== */
 
+/* =========================
+   DESIGN TOKENS (GLOBAL PAGE LEVEL)
+   NO UI CHANGE
+========================= */
 :root {
+  /* Layout */
   --sidebar-width: 200px;
   --sidebar-collapsed: 80px;
   --header-height: 70px;
 
+  /* Backgrounds */
   --bg-gradient: radial-gradient(circle at top, #1e293b, #0b1220);
   --card-bg: rgba(255, 255, 255, 0.05);
-  --border: rgba(255, 255, 255, 0.08);
+
+  /* Borders */
+  --border-soft: rgba(255, 255, 255, 0.08);
+
+  /* Text */
   --text-muted: #94a3b8;
+  --text-primary: #ffffff;
+
+  /* Buttons */
+  --primary: #f59e0b;
+  --primary-hover: #d97706;
+
+  --secondary: #38bdf8;
+  --secondary-bg-hover: rgba(56,189,248,0.12);
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+
+  /* Spacing */
+  --space-xs: 6px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 15px;
+  --space-xl: 18px;
+  --space-xxl: 22px;
+  --space-xxxl: 30px;
+
+  /* Effects */
+  --blur: 10px;
+  --shadow-hover: 0 10px 25px rgba(0,0,0,0.3);
+
+  /* Animation */
+  --transition-fast: 0.2s ease;
+  --transition: 0.25s ease;
 }
 
-/* ========== BASE LAYOUT ========== */
-
+/* =========================
+   BASE LAYOUT
+========================= */
 .dashboard {
-  /* min-height: 100vh; */
   font-family: Arial, sans-serif;
   position: relative;
-  /* padding-top: 50px; */
 }
 
-/* ========== MAIN CONTENT ========== */
-
+/* =========================
+   MAIN CONTENT
+========================= */
 .content {
-  /* min-height: 100vh; */
   box-sizing: border-box;
-  object-position: top;
   background: var(--bg-gradient);
-  color: white;
-
-  padding: 10px;
-  /* padding-top: calc(var(--header-height) + 20px); */
-
-  /* margin-left: var(--sidebar-width); */
-  /* width: calc(100% - var(--sidebar-width)); */
-
+  color: var(--text-primary);
+  padding: var(--space-sm);
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-/* Sidebar collapsed state (desktop) */
+/* Sidebar collapsed state */
 .dashboard.sidebar-collapsed .content {
-  /* margin-left: var(--sidebar-collapsed); */
   width: calc(100% - var(--sidebar-collapsed));
 }
 
-/* ========== HEADER TEXT ========== */
-
+/* =========================
+   HEADER TEXT
+========================= */
 .content-header h1 {
   font-size: 28px;
   font-weight: 200;
@@ -54,32 +84,33 @@
 
 .content-header p {
   color: var(--text-muted);
-  margin-top: 6px;
+  margin-top: var(--space-xs);
 }
 
-/* ========== KPI GRID ========== */
-
+/* =========================
+   KPI GRID
+========================= */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  gap: var(--space-lg);
   margin-top: 22px;
 }
 
 .kpi-card {
   background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
 
-  padding: 18px;
-  backdrop-filter: blur(10px);
+  padding: var(--space-xl);
+  backdrop-filter: blur(var(--blur));
 
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .kpi-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-hover);
 }
 
 .kpi-card h2 {
@@ -88,15 +119,16 @@
 }
 
 .kpi-card p {
-  margin-top: 8px;
+  margin-top: var(--space-sm);
   font-size: 13px;
   color: var(--text-muted);
 }
 
-/* ========== SECTION TITLE ========== */
-
+/* =========================
+   SECTION TITLE
+========================= */
 .section-title {
-  margin-top: 28px;
+  margin-top: var(--space-xxl);
 }
 
 .section-title h2 {
@@ -108,69 +140,71 @@
   font-size: 13px;
 }
 
-/* ========== ACTION BUTTONS ========== */
-
+/* =========================
+   ACTION BUTTONS
+========================= */
 .actions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  margin-top: 15px;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 .action-btn {
   height: 44px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: none;
   cursor: pointer;
   font-weight: 200;
-  transition: 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 /* PRIMARY */
 .action-btn.primary {
-  background: #f59e0b;
+  background: var(--primary);
   color: white;
 }
 
 .action-btn.primary:hover {
-  background: #d97706;
+  background: var(--primary-hover);
   transform: translateY(-2px);
 }
 
 /* SECONDARY */
 .action-btn.secondary {
   background: transparent;
-  border: 2px solid #38bdf8;
-  color: #38bdf8;
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
 }
 
 .action-btn.secondary:hover {
-  background: rgba(56,189,248,0.12);
+  background: var(--secondary-bg-hover);
   transform: translateY(-2px);
 }
 
-/* ========== INSIGHTS ========== */
-
+/* =========================
+   INSIGHTS
+========================= */
 .insights {
-  margin-top: 30px;
+  margin-top: var(--space-xxxl);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 15px;
+  gap: var(--space-lg);
 }
 
 .insight-card {
   background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
 
-  padding: 18px;
+  padding: var(--space-xl);
 
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: var(--transition);
 }
 
 .insight-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-hover);
 }
 
 .insight-card h3 {
@@ -178,13 +212,14 @@
 }
 
 .insight-card p {
-  margin-top: 6px;
+  margin-top: var(--space-xs);
   font-size: 13px;
   color: var(--text-muted);
 }
 
-/* ========== ANIMATION SUPPORT ========== */
-
+/* =========================
+   ANIMATION
+========================= */
 .page-fade {
   animation: fadeIn 200ms ease-in;
 }
@@ -200,8 +235,9 @@
   }
 }
 
-/* ========== LAYER FIX (IMPORTANT) ========== */
-
+/* =========================
+   Z-INDEX LAYERS
+========================= */
 .sidebar {
   z-index: 1000;
 }
@@ -210,8 +246,9 @@
   z-index: 1100;
 }
 
-/* ========== RESPONSIVE ========== */
-
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
 
   .content {
@@ -233,7 +270,6 @@
     grid-template-columns: 1fr;
   }
 
-  /* FIX OVERLAP */
   .sidebar {
     position: fixed;
     transform: translateX(-100%);

@@ -1,12 +1,47 @@
+
+/* =========================
+   DESIGN TOKENS (PAGE LEVEL)
+========================= */
 .mc-page {
-  padding: 20px;
-  background: #0f172a;
-  min-height: 100vh;
-  color: white;
-  font-family: Arial;
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+
+  --text-primary: #ffffff;
+  --text-dark: #000000;
+
+  --success: #22c55e;
+  --warning: #facc15;
+  --danger: #ef4444;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --space-xs: 4px;
+  --space-sm: 6px;
+  --space-md: 10px;
+  --space-lg: 12px;
+  --space-xl: 15px;
+  --space-xxl: 20px;
+
+  --font-base: Arial;
+
+  --transition: 0.3s ease;
 }
 
-/* HEADER */
+/* =========================
+   PAGE WRAPPER
+========================= */
+.mc-page {
+  padding: var(--space-xxl);
+  background: var(--bg-page);
+  min-height: 100vh;
+  color: var(--text-primary);
+  font-family: var(--font-base);
+}
+
+/* =========================
+   HEADER
+========================= */
 .mc-header {
   display: flex;
   justify-content: space-between;
@@ -14,96 +49,106 @@
 }
 
 .mc-badge {
-  background: #1e293b;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background: var(--bg-card);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-sm);
 }
 
-/* STATS */
+/* =========================
+   STATS
+========================= */
 .mc-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin: 20px 0;
+  gap: var(--space-xl);
+  margin: var(--space-xxl) 0;
 }
 
 .mc-card {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 12px;
+  background: var(--bg-card);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
   text-align: center;
 }
 
-/* FORM */
+/* =========================
+   FORM
+========================= */
 .mc-form {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 12px;
+  background: var(--bg-card);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-md);
 }
 
 .mc-form input,
 .mc-form textarea,
 .mc-form select {
-  padding: 10px;
-  border-radius: 8px;
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
   border: none;
   outline: none;
 }
 
+/* BUTTON */
 .mc-form button {
-  background: #22c55e;
-  padding: 10px;
+  background: var(--success);
+  padding: var(--space-md);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
-/* LIST */
+/* =========================
+   LIST
+========================= */
 .mc-list {
-  margin-top: 20px;
+  margin-top: var(--space-xxl);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-xl);
 }
 
 .mc-item {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 12px;
+  background: var(--bg-card);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
   display: flex;
   justify-content: space-between;
 }
 
+/* DELETE BUTTON */
 .mc-item .delete {
-  background: red;
+  background: var(--danger);
   border: none;
-  padding: 6px 10px;
-  color: white;
-  border-radius: 6px;
+  padding: var(--space-md);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
-/* LEVEL BADGES */
+/* =========================
+   LEVEL BADGES
+========================= */
 .badge {
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 6px;
-  margin-top: 5px;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
   font-size: 12px;
+  margin-top: var(--space-sm);
 }
 
 .badge.Easy {
-  background: #22c55e;
+  background: var(--success);
 }
 
 .badge.Medium {
-  background: #facc15;
-  color: black;
+  background: var(--warning);
+  color: var(--text-dark);
 }
 
 .badge.Hard {
-  background: #ef4444;
+  background: var(--danger);
 }

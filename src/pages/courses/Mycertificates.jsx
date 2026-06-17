@@ -59,11 +59,6 @@ function Mycertificates() {
               <span className="badge verified">
                 {cert.status}
               </span>
-
-              <div className="cert-overlay-text">
-                <h2>{cert.title}</h2>
-                <p>Issued by AI Learning Platform</p>
-              </div>
             </div>
 
             {/* ACTION */}

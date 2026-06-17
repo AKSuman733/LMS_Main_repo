@@ -1,131 +1,172 @@
-/* .mycourses-page {
-  padding: 10px; */
-  /* padding-top: 70px; */
-  /* margin-left: 250px; */
-  /* background:#0f172a; */
-   /* background: linear-gradient(135deg, #1e293b, #0f172a); */
-  /* min-height: 100vh; */
-/* } */
+
+/* =========================
+   DESIGN TOKENS (PAGE LEVEL)
+========================= */
 .mycourses-page {
-  padding: 60px;
-  /* padding-top: 90px;  */
-  /* keeps space for fixed header */
+  --bg-page: linear-gradient(135deg, #0f172a, #1e293b);
 
+  --bg-card: #ffffff;
 
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  --primary: #5624d0;
+  --danger: red;
 
-  overflow-y: auto;
-  transition: all 0.3s ease;
+  --text-primary: #0f172a;
+  --text-secondary: gray;
+  --text-muted: #666;
+  --text-success: green;
+  --bg-success-light: #e7f6ea;
+
+  --border-light: #eee;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+
+  --shadow-sm: 0 2px 10px rgba(0,0,0,0.08);
+
+  --space-xs: 3px;
+  --space-sm: 6px;
+  --space-md: 8px;
+  --space-lg: 10px;
+  --space-xl: 15px;
+  --space-xxl: 20px;
+
+  --transition: 0.3s ease;
 }
 
-/* HEADER */
+/* =========================
+   PAGE WRAPPER
+========================= */
+.mycourses-page {
+  padding-bottom: 120px;
+  background: var(--bg-page);
+  overflow-y: auto;
+  transition: var(--transition);
+}
+
+/* =========================
+   HEADER
+========================= */
 .mycourses-header h1 {
   margin: 0;
   font-weight: 100;
   font-family: sans-serif;
-  font-size:30 ;
+  font-size: 30px;
 }
 
 .mycourses-header p {
-  color: gray;
-  margin-bottom: 20px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
 }
 
-/* GRID */
+/* =========================
+   GRID
+========================= */
 .mycourses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 20px;
+  gap: var(--space-xl);
 }
 
-/* CARD */
+/* =========================
+   CARD
+========================= */
 .mycourse-card {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background: var(--bg-card);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
-/* STATUS */
+/* =========================
+   STATUS
+========================= */
 .status {
   display: inline-block;
-  background: #e7f6ea;
-  color: green;
+  background: var(--bg-success-light);
+  color: var(--text-success);
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 12px;
-  margin-left: 10px;
+  margin-left: var(--space-sm);
 }
 
-/* PRICE */
+/* =========================
+   PRICE
+========================= */
 .price {
   font-size: 13px;
-  color: gray;
+  color: var(--text-secondary);
 }
 
-/* PROGRESS */
+/* =========================
+   PROGRESS
+========================= */
 .progress-section {
-  margin-top: 10px;
+  margin-top: var(--space-lg);
 }
 
 .progress-header {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  margin-bottom: 5px;
+  margin-bottom: var(--space-sm);
 }
 
 .progress-bar {
   height: 8px;
-  background: #eee;
+  background: var(--border-light);
   border-radius: 10px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: #5624d0;
+  background: var(--primary);
 }
 
-/* BUTTONS */
+/* =========================
+   BUTTONS
+========================= */
 .actions {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
 }
 
 .view-btn {
   flex: 1;
-  background: #5624d0;
+  background: var(--primary);
   color: white;
   border: none;
-  padding: 8px;
-  border-radius: 6px;
+  padding: var(--space-lg);
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
 .remove-btn {
   flex: 1;
-  background: red;
+  background: var(--danger);
   color: white;
   border: none;
-  padding: 8px;
-  border-radius: 6px;
+  padding: var(--space-lg);
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 
-/* EMPTY STATE */
+/* =========================
+   EMPTY STATE
+========================= */
 .empty-state {
   text-align: center;
   padding: 50px;
 }
 
 .empty-state button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  background: #5624d0;
+  margin-top: var(--space-xl);
+  padding: var(--space-lg) var(--space-xl);
+  background: var(--primary);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }

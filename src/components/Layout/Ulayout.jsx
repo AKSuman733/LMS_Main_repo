@@ -102,7 +102,7 @@ function Ulayout() {
               fontSize: "13px"
             }}
           >
-            👋 Hi! I’m your AI Mentor. Ask anything about your course.
+            👋 Hi! I'm your AI Mentor. Ask anything about your course.
           </div>
 
           {/* INPUT */}

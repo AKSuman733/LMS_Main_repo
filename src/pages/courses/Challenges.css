@@ -1,139 +1,151 @@
-/* ==========================
-   CHALLENGES PAGE
-========================== */
 
+/* =========================
+   DESIGN TOKENS (PAGE LEVEL)
+   NO UI CHANGE
+========================= */
 .challenges-page {
-  /* min-height: 100vh; */
-  padding: 20px;
-background: linear-gradient(135deg, #1e293b, #0f172a);
+  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
+
+  --bg-card: #ffffff;
+  --bg-button: linear-gradient(135deg, #2563eb, #4f46e5);
+  --bg-button-hover-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+
+  --text-primary: #0f172a;
+  --text-light: #ffffff;
+  --text-success: #15803d;
+
+  --border-accent: #2563eb;
+  --border-success: #22c55e;
+
+  --bg-success-light: #dcfce7;
+
+  --radius-md: 10px;
+  --radius-lg: 18px;
+
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 12px 30px rgba(15, 23, 42, 0.10);
+
+  --space-sm: 5px;
+  --space-md: 10px;
+  --space-lg: 15px;
+  --space-xl: 20px;
+
+  --transition: 0.3s ease;
 }
 
+/* =========================
+   PAGE WRAPPER
+========================= */
+.challenges-page {
+  padding: var(--space-xl);
+  background: var(--bg-page);
+}
+
+/* =========================
+   TITLE
+========================= */
 .challenges-page h1 {
   font-size: 2rem;
   font-weight: 200;
-  color:white;
-  margin-bottom: 20px;
+  color: var(--text-light);
+  margin-bottom: var(--space-xl);
 }
 
-/* ==========================
+/* =========================
    CHALLENGE LIST
-========================== */
-
+========================= */
 .challenge-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  /* max-width: 900px; */
+  gap: var(--space-sm);
 }
 
-/* ==========================
+/* =========================
    CHALLENGE CARD
-========================== */
-
+========================= */
 .challenge-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 10px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  border-left: 6px solid #2563eb;
+  border-left: 6px solid var(--border-accent);
 
-  box-shadow:
-    0 4px 12px rgba(15, 23, 42, 0.05),
-    0 8px 24px rgba(15, 23, 42, 0.04);
-
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
 .challenge-card:hover {
   transform: translateX(8px);
-
-  box-shadow:
-    0 12px 30px rgba(15, 23, 42, 0.10);
+  box-shadow: var(--shadow-hover);
 }
 
-/* ==========================
+/* =========================
    TITLE
-========================== */
-
+========================= */
 .challenge-card h3 {
   margin: 0;
-  color: #0f172a;
+  color: var(--text-primary);
   font-size: 1.1rem;
   font-weight: 200;
 }
 
-/* ==========================
+/* =========================
    BUTTONS
-========================== */
-
+========================= */
 .challenge-card button {
   min-width: 170px;
-
-  padding: 12px 18px;
+  padding: var(--space-md) 18px;
 
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
 
   font-size: 0.95rem;
   font-weight: 600;
 
   cursor: pointer;
-
-  transition: 0.3s ease;
+  transition: var(--transition);
 }
 
-/* Pending */
-
+/* Pending button */
 .challenge-card button:not(:disabled) {
-  background: linear-gradient(
-    135deg,
-    #2563eb,
-    #4f46e5
-  );
-
-  color: white;
+  background: var(--bg-button);
+  color: var(--text-light);
 }
 
 .challenge-card button:not(:disabled):hover {
   transform: translateY(-2px);
-
-  box-shadow:
-    0 10px 20px rgba(37, 99, 235, 0.25);
+  box-shadow: var(--bg-button-hover-shadow);
 }
 
-/* Completed */
-
+/* Completed button */
 .challenge-card button:disabled {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--bg-success-light);
+  color: var(--text-success);
   font-weight: 200;
 }
 
-/* ==========================
-   COMPLETED CARD
-========================== */
-
+/* Completed card state */
 .challenge-card:has(button:disabled) {
-  border-left-color: #22c55e;
+  border-left-color: var(--border-success);
 }
 
-/* ==========================
+/* =========================
    RESPONSIVE
-========================== */
-
+========================= */
 @media (max-width: 768px) {
   .challenges-page {
-    padding: 20px;
+    padding: var(--space-xl);
   }
 
   .challenge-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 15px;
+    gap: var(--space-xl);
   }
 
   .challenge-card button {
