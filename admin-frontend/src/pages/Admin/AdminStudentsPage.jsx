@@ -15,6 +15,9 @@ import {
   Users,
   X,
 } from "lucide-react";
+import DataTable from "../../components/ui/DataTable";
+import { ConfirmModal } from "../../components/ui/Modal";
+import { showSuccess, showError } from "../../components/ui/Toasts";
 
 import {
   createStudent,
@@ -54,6 +57,10 @@ export default function AdminStudentsPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmBulkAction, setConfirmBulkAction] = useState(null);
 
   const fetchStudents = async () => {
     try {
@@ -211,20 +218,61 @@ export default function AdminStudentsPage() {
   };
 
   const handleDeleteStudent = async (student) => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${student.name}"?`
-    );
+    // Use confirm modal instead of window.confirm
+    setConfirmTarget(student);
+    setConfirmAction(() => async () => {
+      try {
+        setError("");
+        await deleteStudent(student._id);
 
-    if (!confirmDelete) return;
+        setStudents((prev) => prev.filter((item) => item._id !== student._id));
+        setSuccess("Student deleted successfully.");
+        showSuccess("Student deleted successfully.");
+      } catch (err) {
+        const msg = err.message || "Failed to delete student.";
+        setError(msg);
+        showError(msg);
+      } finally {
+        setConfirmTarget(null);
+        setConfirmAction(null);
+      }
+    });
+  };
 
+  const handleBulkDelete = async () => {
+    if (!selectedIds.length) return;
     try {
-      setError("");
-      await deleteStudent(student._id);
-
-      setStudents((prev) => prev.filter((item) => item._id !== student._id));
-      setSuccess("Student deleted successfully.");
+      for (const id of selectedIds) {
+        await deleteStudent(id);
+      }
+      setStudents((prev) => prev.filter((s) => !selectedIds.includes(s._id)));
+      setSelectedIds([]);
+      showSuccess(`${selectedIds.length} students deleted`);
     } catch (err) {
-      setError(err.message || "Failed to delete student.");
+      const msg = err.message || "Failed to delete selected students.";
+      setError(msg);
+      showError(msg);
+    } finally {
+      setConfirmBulkAction(null);
+    }
+  };
+
+  const handleArchiveStudents = async (ids) => {
+    try {
+      const updated = await Promise.all(
+        ids.map((id) => updateStudent(id, { status: "Blocked" }))
+      );
+      setStudents((prev) =>
+        prev.map((student) =>
+          updated.find((item) => item._id === student._id) || student
+        )
+      );
+      setSelectedIds([]);
+      showSuccess(`${ids.length} student${ids.length === 1 ? "" : "s"} archived.`);
+    } catch (err) {
+      const msg = err.message || "Failed to archive students.";
+      setError(msg);
+      showError(msg);
     }
   };
 
@@ -315,151 +363,35 @@ export default function AdminStudentsPage() {
         <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-10 text-center">
           <Users className="mx-auto text-slate-500" size={52} />
           <h2 className="mt-4 text-2xl font-black">No students found</h2>
-          <p className="mt-2 text-slate-400">
-            Add your first student or change filters.
-          </p>
+          <p className="mt-2 text-slate-400">Add your first student or change filters.</p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[1050px] text-left">
-              <thead className="bg-white/5 text-sm text-slate-400">
-                <tr>
-                  <th className="p-4">Student</th>
-                  <th className="p-4">Contact</th>
-                  <th className="p-4">Course</th>
-                  <th className="p-4">Progress</th>
-                  <th className="p-4">Spent</th>
-                  <th className="p-4">Certificate</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {filteredStudents.map((student) => (
-                  <tr
-                    key={student._id}
-                    className="border-t border-white/10 transition hover:bg-white/5"
-                  >
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-purple-600 font-black text-slate-950">
-                          {student.name
-                            .split(" ")
-                            .map((word) => word[0])
-                            .join("")
-                            .slice(0, 2)}
-                        </div>
-
-                        <div>
-                          <p className="font-black">{student.name}</p>
-                          <p className="text-xs text-slate-500">
-                            Joined: {student.joinedDate || "N/A"}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="p-4">
-                      <p className="flex items-center gap-2 text-sm text-slate-300">
-                        <Mail size={14} className="text-cyan-300" />
-                        {student.email}
-                      </p>
-                      <p className="mt-1 flex items-center gap-2 text-sm text-slate-400">
-                        <Phone size={14} className="text-emerald-300" />
-                        {student.phone}
-                      </p>
-                    </td>
-
-                    <td className="p-4">
-                      <p className="flex items-center gap-2 font-bold text-cyan-300">
-                        <BookOpen size={16} />
-                        {student.courseName || "No course"}
-                      </p>
-                    </td>
-
-                    <td className="p-4">
-                      <div className="w-44">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-slate-400">Progress</span>
-                          <span className="font-bold text-cyan-300">
-                            {student.progress}%
-                          </span>
-                        </div>
-
-                        <div className="mt-2 h-2 rounded-full bg-slate-800">
-                          <div
-                            className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
-                            style={{ width: `${student.progress}%` }}
-                          />
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="p-4 font-bold text-emerald-300">
-                      ₹{student.totalSpent || 0}
-                    </td>
-
-                    <td className="p-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold ${
-                          student.certificateEarned
-                            ? "bg-emerald-400/10 text-emerald-300"
-                            : "bg-slate-700 text-slate-300"
-                        }`}
-                      >
-                        {student.certificateEarned ? "Earned" : "Not Yet"}
-                      </span>
-                    </td>
-
-                    <td className="p-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold ${
-                          student.status === "Active"
-                            ? "bg-emerald-400/10 text-emerald-300"
-                            : student.status === "Pending"
-                            ? "bg-orange-400/10 text-orange-300"
-                            : "bg-red-400/10 text-red-300"
-                        }`}
-                      >
-                        {student.status}
-                      </span>
-                    </td>
-
-                    <td className="p-4">
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() =>
-                            alert(
-                              `${student.name}\n${student.email}\n${student.courseName}\nProgress: ${student.progress}%`
-                            )
-                          }
-                          className="rounded-xl bg-cyan-400/10 p-3 text-cyan-300 transition hover:bg-cyan-400 hover:text-slate-950"
-                        >
-                          <Eye size={17} />
-                        </button>
-
-                        <button
-                          onClick={() => openEditModal(student)}
-                          className="rounded-xl bg-orange-400/10 p-3 text-orange-300 transition hover:bg-orange-400 hover:text-slate-950"
-                        >
-                          <Edit3 size={17} />
-                        </button>
-
-                        <button
-                          onClick={() => handleDeleteStudent(student)}
-                          className="rounded-xl bg-red-500/10 p-3 text-red-400 transition hover:bg-red-500 hover:text-white"
-                        >
-                          <Trash2 size={17} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={() => { if (selectedIds.length) setConfirmBulkAction('delete'); }} disabled={!selectedIds.length} className="px-3 py-2 rounded bg-red-600 text-white disabled:opacity-40">Delete Selected</button>
+            </div>
+            <div className="text-sm text-gray-400">{selectedIds.length} selected</div>
           </div>
+
+          <DataTable
+            columns={[
+              { key: 'name', label: 'Student', accessor: 'name', sortable: true, render: (r) => r.name },
+              { key: 'contact', label: 'Contact', accessor: 'email' , render: (r) => (<div><div>{r.email}</div><div className="text-xs text-gray-400">{r.phone}</div></div>)},
+              { key: 'course', label: 'Course', accessor: 'courseName' },
+              { key: 'progress', label: 'Progress', accessor: 'progress', sortable: true, render: (r)=>(<div className="w-44"><div className="flex justify-between text-xs"><span className="text-gray-400">Progress</span><span className="font-bold text-cyan-300">{r.progress}%</span></div><div className="mt-2 h-2 rounded-full bg-slate-800"><div className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500" style={{width: `${r.progress}%`}}/></div></div>)},
+              { key: 'spent', label: 'Spent', accessor: 'totalSpent', render: (r) => `₹${r.totalSpent || 0}` },
+              { key: 'certificate', label: 'Certificate', accessor: 'certificateEarned', render: (r) => r.certificateEarned ? 'Earned' : 'Not Yet' },
+              { key: 'status', label: 'Status', accessor: 'status' },
+            ]}
+            data={filteredStudents}
+            rowKey="_id"
+            onEdit={(r)=> openEditModal(r)}
+            onDelete={(r)=> handleDeleteStudent(r)}
+            onBulkDelete={() => setConfirmBulkAction('delete')}
+            onArchive={handleArchiveStudents}
+            onSelectionChange={(ids)=> setSelectedIds(ids)}
+          />
         </div>
       )}
 
@@ -473,6 +405,25 @@ export default function AdminStudentsPage() {
           editingStudent={editingStudent}
           closeModal={() => setModalOpen(false)}
           error={error}
+        />
+      )}
+      {confirmTarget && (
+        <ConfirmModal
+          open={!!confirmTarget}
+          title="Delete Student"
+          message={`Are you sure you want to delete "${confirmTarget.name}"?`}
+          onConfirm={() => confirmAction && confirmAction()}
+          onCancel={() => { setConfirmTarget(null); setConfirmAction(null); }}
+        />
+      )}
+
+      {confirmBulkAction && (
+        <ConfirmModal
+          open={!!confirmBulkAction}
+          title="Delete Selected"
+          message={`Are you sure you want to delete ${selectedIds.length} selected students?`}
+          onConfirm={handleBulkDelete}
+          onCancel={() => setConfirmBulkAction(null)}
         />
       )}
     </div>

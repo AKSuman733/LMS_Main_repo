@@ -16,6 +16,8 @@ import {
   Video,
   X,
 } from "lucide-react";
+import { ConfirmModal } from "../../components/ui/Modal";
+import { showSuccess, showError } from "../../components/ui/Toasts";
 
 import {
   createCourse,
@@ -131,6 +133,8 @@ export default function AdminCoursesPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(null);
 
   const fetchCourses = async () => {
     try {
@@ -680,21 +684,24 @@ export default function AdminCoursesPage() {
   };
 
   const handleDeleteCourse = async (course) => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${course.title}"?`
-    );
+    setConfirmTarget(course);
+    setConfirmAction(() => async () => {
+      try {
+        setError("");
+        await deleteCourse(course._id);
 
-    if (!confirmDelete) return;
-
-    try {
-      setError("");
-      await deleteCourse(course._id);
-
-      setCourses((prev) => prev.filter((item) => item._id !== course._id));
-      setSuccess("Course deleted successfully.");
-    } catch (err) {
-      setError(err.message || "Failed to delete course.");
-    }
+        setCourses((prev) => prev.filter((item) => item._id !== course._id));
+        setSuccess("Course deleted successfully.");
+        showSuccess("Course deleted successfully.");
+      } catch (err) {
+        const msg = err.message || "Failed to delete course.";
+        setError(msg);
+        showError(msg);
+      } finally {
+        setConfirmTarget(null);
+        setConfirmAction(null);
+      }
+    });
   };
 
   const totalCourses = courses.length;
@@ -863,6 +870,15 @@ export default function AdminCoursesPage() {
           removeQuizQuestion={removeQuizQuestion}
           updateQuizQuestion={updateQuizQuestion}
           updateQuizOption={updateQuizOption}
+        />
+      )}
+      {confirmTarget && (
+        <ConfirmModal
+          open={!!confirmTarget}
+          title="Delete Course"
+          message={`Are you sure you want to delete "${confirmTarget.title}"?`}
+          onConfirm={() => confirmAction && confirmAction()}
+          onCancel={() => { setConfirmTarget(null); setConfirmAction(null); }}
         />
       )}
     </div>

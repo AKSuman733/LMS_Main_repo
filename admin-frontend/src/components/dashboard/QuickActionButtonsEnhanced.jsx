@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus, CheckCircle, BarChart3, User } from "lucide-react";
-import { colors, spacing } from "../../constants/designTokens";
+import { colors, spacing, typography } from "../../styles/designTokens";
 
 /**
  * QuickActionButtonsEnhanced Component
@@ -28,18 +28,18 @@ export default function QuickActionButtonsEnhanced({ onActionClick = () => {} })
       variant: "primary",
       icon: () => <Plus size={24} className="group-hover:scale-110 transition-transform" />,
       action: "create-course",
-      color: colors.primary.base,
-      bgColor: colors.primary.light,
+      color: colors.primary.main,
+      bgColor: '#FFF2EC',
     },
     {
       id: "create-intern",
-      label: "New Mentor",
-      description: "Add a new instructor or mentor",
+      label: "New Intern",
+      description: "Add a new intern or instructor",
       variant: "primary",
       icon: () => <User size={24} className="group-hover:scale-110 transition-transform" />,
       action: "create-intern",
-      color: colors.primary.base,
-      bgColor: colors.primary.light,
+      color: colors.primary.main,
+      bgColor: '#FFF2EC',
     },
     {
       id: "approve-pending",
@@ -48,18 +48,18 @@ export default function QuickActionButtonsEnhanced({ onActionClick = () => {} })
       variant: "secondary",
       icon: () => <CheckCircle size={24} className="group-hover:scale-110 transition-transform" />,
       action: "approve-pending",
-      color: colors.secondary.base,
-      bgColor: colors.secondary.light,
+      color: colors.secondary.main,
+      bgColor: '#E6FFFB',
     },
     {
       id: "view-reports",
-      label: "View Analytics",
+      label: "View Reports",
       description: "Access reports & statistics",
       variant: "secondary",
       icon: () => <BarChart3 size={24} className="group-hover:scale-110 transition-transform" />,
       action: "view-reports",
-      color: colors.secondary.base,
-      bgColor: colors.secondary.light,
+      color: colors.secondary.main,
+      bgColor: '#E6FFFB',
     },
   ];
 

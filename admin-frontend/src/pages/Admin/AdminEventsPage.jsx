@@ -204,21 +204,24 @@ export default function AdminEventsPage() {
   };
 
   const handleDeleteEvent = async (event) => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${event.title}"?`
-    );
+    setConfirmTarget(event);
+    setConfirmAction(() => async () => {
+      try {
+        setError("");
+        await deleteEvent(event._id);
 
-    if (!confirmDelete) return;
-
-    try {
-      setError("");
-      await deleteEvent(event._id);
-
-      setEvents((prev) => prev.filter((item) => item._id !== event._id));
-      setSuccess("Event deleted successfully.");
-    } catch (err) {
-      setError(err.message || "Failed to delete event.");
-    }
+        setEvents((prev) => prev.filter((item) => item._id !== event._id));
+        setSuccess("Event deleted successfully.");
+        showSuccess("Event deleted successfully.");
+      } catch (err) {
+        const msg = err.message || "Failed to delete event.";
+        setError(msg);
+        showError(msg);
+      } finally {
+        setConfirmTarget(null);
+        setConfirmAction(null);
+      }
+    });
   };
 
   return (

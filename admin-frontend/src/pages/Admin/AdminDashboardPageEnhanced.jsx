@@ -10,7 +10,7 @@ import {
   TrendingUp,
   Activity,
 } from "lucide-react";
-import { colors } from "../../constants/designTokens";
+import { colors } from "../../styles/designTokens";
 
 /**
  * AdminDashboardPageEnhanced
@@ -151,11 +151,11 @@ export default function AdminDashboardPageEnhanced() {
 
           <div
             className="bg-white rounded-xl p-6 shadow-sm border-2"
-            style={{ borderColor: colors.primary.base }}
+            style={{ borderColor: colors.primary.main }}
           >
             <div
               className="text-sm font-semibold uppercase tracking-wide"
-              style={{ color: colors.primary.base }}
+              style={{ color: colors.primary.main }}
             >
               Revenue
             </div>
@@ -167,11 +167,11 @@ export default function AdminDashboardPageEnhanced() {
 
           <div
             className="bg-white rounded-xl p-6 shadow-sm border-2"
-            style={{ borderColor: colors.secondary.base }}
+            style={{ borderColor: colors.secondary.main }}
           >
             <div
               className="text-sm font-semibold uppercase tracking-wide"
-              style={{ color: colors.secondary.base }}
+              style={{ color: colors.secondary.main }}
             >
               Engagement
             </div>

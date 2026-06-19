@@ -25,6 +25,10 @@ import {
   updateEventRegistration,
 } from "../../services/eventRegistrationApi";
 
+import DataTable from "../../components/ui/DataTable";
+import { ConfirmModal } from "../../components/ui/Modal";
+import { showSuccess, showError } from "../../components/ui/Toasts";
+
 const emptyForm = {
   eventId: "",
   studentName: "",
@@ -50,6 +54,10 @@ export default function AdminEventRegistrationsPage() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmBulkAction, setConfirmBulkAction] = useState(null);
 
   const fetchRegistrations = async () => {
     try {
@@ -206,24 +214,63 @@ export default function AdminEventRegistrationsPage() {
   };
 
   const handleDeleteRegistration = async (registration) => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete registration of "${registration.studentName}"?`
-    );
+    setConfirmTarget(registration);
+    setConfirmAction(() => async () => {
+      try {
+        setError("");
+        await deleteEventRegistration(registration._id);
 
-    if (!confirmDelete) return;
+        setRegistrations((prev) => prev.filter((item) => item._id !== registration._id));
 
+        setSuccess("Registration deleted successfully.");
+        showSuccess("Registration deleted successfully.");
+        await fetchEvents();
+      } catch (err) {
+        const msg = err.message || "Failed to delete registration.";
+        setError(msg);
+        showError(msg);
+      } finally {
+        setConfirmTarget(null);
+        setConfirmAction(null);
+      }
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    if (!selectedIds.length) return;
     try {
-      setError("");
-      await deleteEventRegistration(registration._id);
-
-      setRegistrations((prev) =>
-        prev.filter((item) => item._id !== registration._id)
-      );
-
-      setSuccess("Registration deleted successfully.");
+      for (const id of selectedIds) {
+        await deleteEventRegistration(id);
+      }
+      setRegistrations((prev) => prev.filter((r) => !selectedIds.includes(r._id)));
+      showSuccess(`${selectedIds.length} registrations deleted`);
+      setSelectedIds([]);
       await fetchEvents();
     } catch (err) {
-      setError(err.message || "Failed to delete registration.");
+      const msg = err.message || "Failed to delete selected registrations.";
+      setError(msg);
+      showError(msg);
+    } finally {
+      setConfirmBulkAction(null);
+    }
+  };
+
+  const handleArchiveRegistrations = async (ids) => {
+    try {
+      const updated = await Promise.all(
+        ids.map((id) => updateEventRegistration(id, { status: "Cancelled" }))
+      );
+      setRegistrations((prev) =>
+        prev.map((registration) =>
+          updated.find((item) => item._id === registration._id) || registration
+        )
+      );
+      setSelectedIds([]);
+      showSuccess(`${ids.length} registration${ids.length === 1 ? "" : "s"} archived.`);
+    } catch (err) {
+      const msg = err.message || "Failed to archive registrations.";
+      setError(msg);
+      showError(msg);
     }
   };
 
@@ -321,143 +368,35 @@ export default function AdminEventRegistrationsPage() {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/80">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[1100px] text-left">
-              <thead className="bg-white/5 text-sm text-slate-400">
-                <tr>
-                  <th className="p-4">Student</th>
-                  <th className="p-4">Event</th>
-                  <th className="p-4">Contact</th>
-                  <th className="p-4">Attendance</th>
-                  <th className="p-4">Certificate</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {filteredRegistrations.map((registration) => (
-                  <tr
-                    key={registration._id}
-                    className="border-t border-white/10 transition hover:bg-white/5"
-                  >
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-purple-600 font-black text-slate-950">
-                          {registration.studentName
-                            .split(" ")
-                            .map((word) => word[0])
-                            .join("")
-                            .slice(0, 2)}
-                        </div>
-
-                        <div>
-                          <p className="font-black">{registration.studentName}</p>
-                          <p className="text-xs text-slate-500">
-                            ID: {registration._id.slice(-6).toUpperCase()}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    <td className="p-4">
-                      <p className="font-bold text-cyan-300">
-                        {registration.eventTitle}
-                      </p>
-                    </td>
-
-                    <td className="p-4">
-                      <p className="flex items-center gap-2 text-sm text-slate-300">
-                        <Mail size={14} className="text-cyan-300" />
-                        {registration.email}
-                      </p>
-
-                      <p className="mt-1 flex items-center gap-2 text-sm text-slate-400">
-                        <Phone size={14} className="text-emerald-300" />
-                        {registration.phone}
-                      </p>
-                    </td>
-
-                    <td className="p-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold ${
-                          registration.attendance === "Present"
-                            ? "bg-emerald-400/10 text-emerald-300"
-                            : registration.attendance === "Absent"
-                            ? "bg-red-400/10 text-red-300"
-                            : "bg-orange-400/10 text-orange-300"
-                        }`}
-                      >
-                        {registration.attendance}
-                      </span>
-                    </td>
-
-                    <td className="p-4">
-                      {registration.certificateEligible ? (
-                        <div>
-                          <span className="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-bold text-emerald-300">
-                            Eligible
-                          </span>
-                          <p className="mt-2 text-xs text-slate-400">
-                            {registration.certificateNumber}
-                          </p>
-                        </div>
-                      ) : (
-                        <span className="rounded-full bg-slate-700 px-3 py-1 text-xs font-bold text-slate-300">
-                          Not Eligible
-                        </span>
-                      )}
-                    </td>
-
-                    <td className="p-4">
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-bold ${
-                          registration.status === "Registered"
-                            ? "bg-cyan-400/10 text-cyan-300"
-                            : "bg-red-400/10 text-red-300"
-                        }`}
-                      >
-                        {registration.status}
-                      </span>
-                    </td>
-
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          onClick={() => markAttendance(registration, "Present")}
-                          className="rounded-xl bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-300 transition hover:bg-emerald-400 hover:text-slate-950"
-                        >
-                          Present
-                        </button>
-
-                        <button
-                          onClick={() => markAttendance(registration, "Absent")}
-                          className="rounded-xl bg-red-400/10 px-3 py-2 text-xs font-bold text-red-300 transition hover:bg-red-500 hover:text-white"
-                        >
-                          Absent
-                        </button>
-
-                        <button
-                          onClick={() => openEditModal(registration)}
-                          className="rounded-xl bg-orange-400/10 p-3 text-orange-300 transition hover:bg-orange-400 hover:text-slate-950"
-                        >
-                          <Edit3 size={16} />
-                        </button>
-
-                        <button
-                          onClick={() => handleDeleteRegistration(registration)}
-                          className="rounded-xl bg-red-500/10 p-3 text-red-400 transition hover:bg-red-500 hover:text-white"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-6">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button onClick={() => { if (selectedIds.length) setConfirmBulkAction('delete'); }} disabled={!selectedIds.length} className="px-3 py-2 rounded bg-red-600 text-white disabled:opacity-40">Delete Selected</button>
+            </div>
+            <div className="text-sm text-gray-400">{selectedIds.length} selected</div>
           </div>
+
+          <DataTable
+            columns={[
+              { key: 'student', label: 'Student', accessor: 'studentName', render: (r) => r.studentName },
+              { key: 'event', label: 'Event', accessor: 'eventTitle' },
+              { key: 'contact', label: 'Contact', accessor: 'email', render: (r)=>(<div><div>{r.email}</div><div className="text-xs text-gray-400">{r.phone}</div></div>)},
+              { key: 'attendance', label: 'Attendance', accessor: 'attendance' },
+              { key: 'certificate', label: 'Certificate', accessor: 'certificateEligible', render: (r)=> r.certificateEligible ? 'Eligible' : 'Not Eligible' },
+              { key: 'status', label: 'Status', accessor: 'status' },
+            ]}
+            data={filteredRegistrations}
+            rowKey="_id"
+            onEdit={(r)=> openEditModal(r)}
+            onDelete={(r)=> handleDeleteRegistration(r)}
+            onBulkDelete={() => setConfirmBulkAction('delete')}
+            onArchive={handleArchiveRegistrations}
+            onSelectionChange={(ids)=> setSelectedIds(ids)}
+            actions={{
+              markPresent: (r) => markAttendance(r, 'Present'),
+              markAbsent: (r) => markAttendance(r, 'Absent'),
+            }}
+          />
         </div>
       )}
 
@@ -471,6 +410,25 @@ export default function AdminEventRegistrationsPage() {
           editingRegistration={editingRegistration}
           closeModal={() => setModalOpen(false)}
           error={error}
+        />
+      )}
+      {confirmTarget && (
+        <ConfirmModal
+          open={!!confirmTarget}
+          title="Delete Registration"
+          message={`Are you sure you want to delete registration of "${confirmTarget.studentName}"?`}
+          onConfirm={() => confirmAction && confirmAction()}
+          onCancel={() => { setConfirmTarget(null); setConfirmAction(null); }}
+        />
+      )}
+
+      {confirmBulkAction && (
+        <ConfirmModal
+          open={!!confirmBulkAction}
+          title="Delete Selected"
+          message={`Are you sure you want to delete ${selectedIds.length} selected registrations?`}
+          onConfirm={handleBulkDelete}
+          onCancel={() => setConfirmBulkAction(null)}
         />
       )}
     </div>
