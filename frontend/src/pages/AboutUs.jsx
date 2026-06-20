@@ -27,7 +27,11 @@ const AboutUs = () => {
       <div className="about-hero" style={{
         position: 'relative',
         padding: '120px 20px 80px',
+<<<<<<< HEAD
         background: 'radial-gradient(circle at 50% 30%, rgba(0, 181, 165, 0.08), transparent 60%)',
+=======
+        background: 'radial-gradient(circle at 50% 30%, rgba(236, 72, 153, 0.08), transparent 60%)',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         textAlign: 'center',
         borderBottom: '1px solid var(--border-color)'
       }}>
@@ -35,7 +39,11 @@ const AboutUs = () => {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
+<<<<<<< HEAD
           background: 'rgba(0, 181, 165, 0.1)',
+=======
+          background: 'rgba(236, 72, 153, 0.1)',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           color: 'var(--secondary-color)',
           padding: '6px 16px',
           borderRadius: '30px',
@@ -216,7 +224,11 @@ const AboutUs = () => {
               alignItems: 'center',
               gap: '10px',
               border: 'none',
+<<<<<<< HEAD
               boxShadow: '0 8px 25px rgba(255, 107, 53, 0.2)'
+=======
+              boxShadow: '0 8px 25px rgba(139, 92, 246, 0.2)'
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             }}
           >
             Explore Interactive Courses <ArrowRight size={20} />

@@ -52,10 +52,17 @@ const AdminApproval = () => {
 
   const triggerApproveConfirm = (userId, userName) => {
     confirmAction(
+<<<<<<< HEAD
       <>Are you sure you want to authorize <span style={{ color: '#FF6B35', fontWeight: 800 }}>{userName}</span>?</>,
       () => handleApprove(userId),
       'Confirm',
       'var(--primary-gradient)'
+=======
+      <>Are you sure you want to authorize <span style={{ color: '#8b5cf6', fontWeight: 800 }}>{userName}</span>?</>,
+      () => handleApprove(userId),
+      'Confirm',
+      'linear-gradient(135deg, #8b5cf6, #ec4899)'
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     );
   };
 
@@ -91,8 +98,13 @@ const AdminApproval = () => {
             </div>
           </div>
           <div>
+<<<<<<< HEAD
             <div className="font-bold text-primary">{highlight(row.name)}</div>
             <div className="text-xs text-secondary flex items-center gap-1">
+=======
+            <div className="font-bold text-white">{highlight(row.name)}</div>
+            <div className="text-xs text-gray-500 flex items-center gap-1">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <Mail size={12} /> {highlight(row.email)}
             </div>
           </div>
@@ -143,7 +155,11 @@ const AdminApproval = () => {
             ids.forEach(id => handleApprove(id));
           },
           'Approve',
+<<<<<<< HEAD
           'var(--primary-gradient)'
+=======
+          'linear-gradient(135deg, #8b5cf6, #ec4899)'
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         );
       }
     },
@@ -210,7 +226,11 @@ const AdminApproval = () => {
       <div className="admin-header-row mb-10">
         <div>
           <h1 className="text-3xl font-bold mb-2">Pending Approvals</h1>
+<<<<<<< HEAD
           <p className="text-secondary">Review and authorize new user registrations on UptoSkills</p>
+=======
+          <p className="text-gray-500">Review and authorize new user registrations on UptoSkills</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
         <div className="flex items-center gap-3">
           <span className="bg-primary-color/10 text-primary-color px-4 py-2 rounded-xl text-sm font-bold border border-primary-color/20 flex items-center gap-2">
@@ -227,7 +247,11 @@ const AdminApproval = () => {
               <CheckCircle2 size={20} />
               <p className="font-medium">{approvalResult.message}</p>
             </div>
+<<<<<<< HEAD
             <button onClick={() => setApprovalResult(null)} className="text-secondary hover:text-primary transition-colors">
+=======
+            <button onClick={() => setApprovalResult(null)} className="text-gray-500 hover:text-white transition-colors">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <X size={20} />
             </button>
           </div>

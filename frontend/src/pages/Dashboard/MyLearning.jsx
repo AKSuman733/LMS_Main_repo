@@ -78,8 +78,14 @@ const MyLearning = () => {
         <div className="header-text">
           <h1>My Learning</h1>
           <p>Keep track of your progress and continue where you left off</p>
+<<<<<<< HEAD
           <div className="text-sm font-semibold text-secondary mt-3">
             Enrollments: {enrollments.length}
+=======
+          <div className="text-xs text-gray-500 mt-2">
+            Debug: User ID {user?.id} | Enrollments: {enrollments.length}
+            <button onClick={fetchEnrollments} className="ml-4 underline">Refresh</button>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
         </div>
         <div className="header-search">
@@ -100,7 +106,11 @@ const MyLearning = () => {
         </div>
       ) : enrollments.length === 0 ? (
         <div className="empty-state py-20">
+<<<<<<< HEAD
           <BookOpen size={64} className="text-secondary mb-6" />
+=======
+          <BookOpen size={64} className="text-gray-600 mb-6" />
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           <h2>You haven't enrolled in any courses yet</h2>
           <p className="mb-8">Explore our catalog and start your learning journey today!</p>
           <Link to="/student/explore" className="btn btn-primary">Browse Courses</Link>
@@ -147,12 +157,20 @@ const MyLearning = () => {
                             border: (celeb.toLowerCase().includes('shahrukh') || celeb.toLowerCase().includes('srk')) ? '1.5px solid #fbbf24' :
                                     celeb.toLowerCase().includes('salman') ? '1.5px solid #3b82f6' :
                                     (celeb.toLowerCase().includes('amir') || celeb.toLowerCase().includes('aamir')) ? '1.5px solid #10b981' :
+<<<<<<< HEAD
                                     (celeb.toLowerCase().includes('amitabh') || celeb.toLowerCase().includes('bachan')) ? '1.5px solid #FF6B35' :
+=======
+                                    (celeb.toLowerCase().includes('amitabh') || celeb.toLowerCase().includes('bachan')) ? '1.5px solid #8b5cf6' :
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                                     '1.5px solid #000',
                             boxShadow: (celeb.toLowerCase().includes('shahrukh') || celeb.toLowerCase().includes('srk')) ? '0 0 8px #fbbf24' :
                                        celeb.toLowerCase().includes('salman') ? '0 0 8px #3b82f6' :
                                        (celeb.toLowerCase().includes('amir') || celeb.toLowerCase().includes('aamir')) ? '0 0 8px #10b981' :
+<<<<<<< HEAD
                                        (celeb.toLowerCase().includes('amitabh') || celeb.toLowerCase().includes('bachan')) ? '0 0 8px #FF6B35' :
+=======
+                                       (celeb.toLowerCase().includes('amitabh') || celeb.toLowerCase().includes('bachan')) ? '0 0 8px #8b5cf6' :
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                                        'none'
                           }} 
                         />
@@ -180,7 +198,11 @@ const MyLearning = () => {
                 
                 <div className="progress-container-premium mb-6">
                   <div className="progress-info mb-2">
+<<<<<<< HEAD
                     <span className="text-sm font-medium text-secondary">Course Progress</span>
+=======
+                    <span className="text-sm font-medium text-gray-400">Course Progress</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     <span className="text-sm font-bold text-primary-color">{course.progress}%</span>
                   </div>
                   <div className="progress-bar-bg">

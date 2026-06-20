@@ -12,18 +12,12 @@ import {
   Image as ImageIcon,
   Upload,
   Clock,
-  IndianRupee,
-  Eye,
-  Archive,
-  Download
+  IndianRupee
 } from 'lucide-react';
-import DataTable from '../../components/common/DataTable';
-import { confirmAction } from '../../utils/confirmAction';
 
 const CourseManagement = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,13 +57,13 @@ const CourseManagement = () => {
 
   const fetchCourses = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      const response = await axios.get('http://localhost:5001/api/courses');
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5001/api/courses/instructor-courses', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setCourses(response.data);
     } catch (err) {
       console.error('Error fetching courses', err);
-      setError('Failed to fetch courses. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -91,8 +85,6 @@ const CourseManagement = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result);
-        // In a real app, you'd upload the file to a server here
-        // For now, we'll store the base64 or a placeholder
         setFormData({ ...formData, thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400' });
       };
       reader.readAsDataURL(file);
@@ -126,24 +118,17 @@ const CourseManagement = () => {
     }
   };
 
-  const handleDelete = (course) => {
-    confirmAction(
-      <>Are you sure you want to delete <span style={{ color: '#ef4444', fontWeight: 800 }}>{course.title}</span>?</>,
-      async () => {
-        const token = localStorage.getItem('token');
-        try {
-          await axios.delete(`http://localhost:5001/api/courses/${course.id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          toast.success('Course deleted successfully!');
-          fetchCourses();
-        } catch (err) {
-          toast.error('Delete failed');
-        }
-      },
-      'Delete',
-      '#ef4444'
-    );
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem('token');
+    try {
+      await axios.delete(`http://localhost:5001/api/courses/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      toast.success('Course deleted successfully!');
+      fetchCourses();
+    } catch (err) {
+      toast.error('Delete failed');
+    }
   };
 
   const openEditModal = (course) => {
@@ -179,194 +164,114 @@ const CourseManagement = () => {
     c.category?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const columns = [
-    {
-      key: 'title',
-      label: 'Course Details',
-      sortable: true,
-      render: (row, highlight) => (
-        <div className="flex items-center gap-4">
-          <div className="table-img-wrapper">
-            <img 
-              src={row.thumbnail || 'https://via.placeholder.com/50'} 
-              alt="" 
-              className="course-table-img"
-            />
-          </div>
-          <div>
-<<<<<<< HEAD
-            <div className="font-bold text-primary">{highlight(row.title)}</div>
-            <div className="text-xs text-secondary flex items-center gap-1 mt-1">
-=======
-            <div className="font-bold text-white">{highlight(row.title)}</div>
-            <div className="text-xs text-gray-500 flex items-center gap-1 mt-1">
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
-              <Clock size={12} /> {highlight(row.duration)}
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      key: 'category',
-      label: 'Category',
-      sortable: true,
-      filterable: true,
-      render: (row, highlight) => (
-        <span className="category-badge">
-          {row.category ? highlight(row.category) : 'Uncategorized'}
-        </span>
-      )
-    },
-    {
-      key: 'level',
-      label: 'Difficulty',
-      sortable: true,
-      filterable: true,
-      render: (row) => (
-        <span className={`level-tag ${row.level?.toLowerCase()}`}>
-          {row.level}
-        </span>
-      )
-    },
-    {
-      key: 'price',
-      label: 'Price',
-      sortable: true,
-      render: (row) => (
-        <div className="price-tag">
-          {row.price === "0.00" || row.price === 0 ? (
-            <span className="text-success-color font-bold">Free</span>
-          ) : (
-            <span className="flex items-center gap-0.5">
-              <IndianRupee size={16} />{row.price}
-            </span>
-          )}
-        </div>
-      )
-    }
-  ];
-
-  const bulkActions = [
-    {
-      label: 'Delete Selected',
-      icon: <Trash2 size={16} />,
-      type: 'delete',
-      onClick: (ids) => {
-        confirmAction(
-          `Are you sure you want to delete ${ids.length} courses?`,
-          async () => {
-            try {
-              const token = localStorage.getItem('token');
-              await axios.post('http://localhost:5001/api/courses/bulk-delete', { ids }, {
-                headers: { Authorization: `Bearer ${token}` }
-              });
-              setCourses(courses.filter(c => !ids.includes(c.id)));
-              toast.success(`Deleted ${ids.length} courses`);
-            } catch (err) {
-              toast.error('Failed to delete courses');
-            }
-          },
-          'Delete',
-          '#ef4444'
-        );
-      }
-    },
-    {
-      label: 'Export',
-      icon: <Download size={16} />,
-      onClick: async (ids) => {
-        try {
-          const token = localStorage.getItem('token');
-          const res = await axios.get('http://localhost:5001/api/courses/export/csv', {
-            headers: { Authorization: `Bearer ${token}` },
-            responseType: 'blob'
-          });
-          const url = window.URL.createObjectURL(new Blob([res.data]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', 'courses.csv');
-          document.body.appendChild(link);
-          link.click();
-          toast.success(`Exported courses successfully`);
-        } catch (err) {
-          toast.error('Failed to export courses');
-        }
-      }
-    },
-    {
-      label: 'Archive',
-      icon: <Archive size={16} />,
-      onClick: (ids) => toast.success(`Archived ${ids.length} courses`)
-    }
-  ];
-
-  const rowActions = [
-    {
-      label: 'View',
-      icon: <Eye size={16} />,
-      onClick: (row) => toast.success(`Viewing course: ${row.title}`)
-    },
-    {
-      label: 'Edit',
-      icon: <Edit2 size={16} />,
-      onClick: (row) => openEditModal(row)
-    },
-    {
-      label: 'Archive',
-      icon: <Archive size={16} />,
-      onClick: (row) => toast.success(`Course archived: ${row.title}`)
-    },
-    {
-      label: 'Delete',
-      icon: <Trash2 size={16} />,
-      type: 'delete',
-      onClick: (row) => handleDelete(row)
-    }
-  ];
-
   return (
     <div className="course-mgmt-page">
       <div className="admin-header-row mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Course Management</h1>
-<<<<<<< HEAD
-          <p className="text-secondary">Add, update or remove professional courses from UptoSkills</p>
-=======
-          <p className="text-gray-500">Add, update or remove professional courses from UptoSkills</p>
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
+          <h1 className="text-3xl font-bold mb-2">My Courses</h1>
+          <p className="text-gray-500">Create and manage your educational content on UptoSkills</p>
         </div>
         <button 
           onClick={() => { resetForm(); setEditingCourse(null); setShowModal(true); }}
           className="btn btn-primary flex items-center gap-2"
         >
-          <Plus size={20} /> Add New Course
+          <Plus size={20} /> Create New Course
         </button>
       </div>
 
-      <div className="admin-table-container card glass overflow-hidden" style={{ padding: 0 }}>
-        <DataTable 
-          data={courses}
-          columns={columns}
-          bulkActions={bulkActions}
-          rowActions={rowActions}
-          searchPlaceholder="Search courses by title, category, duration..."
-          isLoading={loading}
-          error={error}
-          errorConfig={{
-            title: "Unable to Load Courses",
-            message: error,
-            onRetry: fetchCourses,
-            supportLink: "#"
-          }}
-          emptyConfig={{
-            icon: <BookOpen size={32} />,
-            title: "No Courses Yet",
-            message: "Ready to create your first course?",
-            actionText: "+ Create Course",
-            onAction: () => { resetForm(); setEditingCourse(null); setShowModal(true); }
-          }}
-        />
+      <div className="search-toolbar card glass mb-8 p-4 flex items-center gap-4">
+        <div className="search-box-premium flex-1">
+          <Search size={20} className="text-gray-500" />
+          <input 
+            type="text" 
+            placeholder="Search your courses..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="admin-table-container card glass overflow-hidden">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Course Details</th>
+              <th>Category</th>
+              <th>Difficulty</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loading ? (
+              <tr>
+                <td colSpan="5" className="text-center py-20">
+                  <Loader2 className="animate-spin mx-auto mb-2 text-primary-color" />
+                  <span className="text-gray-400">Loading your courses...</span>
+                </td>
+              </tr>
+            ) : filteredCourses.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center py-20 text-gray-500">
+                  You haven't created any courses yet.
+                </td>
+              </tr>
+            ) : filteredCourses.map(course => (
+              <tr key={course.id}>
+                <td>
+                  <div className="flex items-center gap-4">
+                    <div className="table-img-wrapper">
+                      <img 
+                        src={course.thumbnail || 'https://via.placeholder.com/50'} 
+                        alt="" 
+                        className="course-table-img"
+                      />
+                    </div>
+                    <div>
+                      <div className="font-bold text-white">{course.title}</div>
+                      <div className="text-xs text-gray-500 flex items-center gap-1">
+                        <Clock size={12} /> {course.duration}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div className="flex flex-col gap-1 items-start">
+                    <span className="category-badge text-xs">
+                      {course.category || 'Uncategorized'}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <span className={`level-tag ${course.level?.toLowerCase()}`}>
+                    {course.level}
+                  </span>
+                </td>
+                <td>
+                  <div className="price-tag">
+                    {course.price === "0.00" ? (
+                      <span className="text-success-color font-bold">Free</span>
+                    ) : (
+                      <span className="flex items-center gap-0.5">
+                        <IndianRupee size={14} />{course.price}
+                      </span>
+                    )}
+                  </div>
+                </td>
+                <td>
+                  <div className="action-btns">
+                    <button onClick={() => openEditModal(course)} className="btn-icon" title="Edit">
+                      <Edit2 size={16} />
+                    </button>
+                    <button onClick={() => setCourseToDelete(course.id)} className="btn-icon delete" title="Delete">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {showModal && (
@@ -374,13 +279,8 @@ const CourseManagement = () => {
           <div className="course-form-card card glass animate-fade-in">
             <div className="flex justify-between items-center mb-8 border-bottom-white pb-4">
               <div>
-<<<<<<< HEAD
-                <h2 className="text-2xl font-bold text-primary">{editingCourse ? 'Update Course' : 'Create New Course'}</h2>
-                <p className="text-sm text-secondary">Fill in the details below to {editingCourse ? 'update' : 'publish'} the course</p>
-=======
                 <h2 className="text-2xl font-bold text-white">{editingCourse ? 'Update Course' : 'Create New Course'}</h2>
-                <p className="text-sm text-gray-500">Fill in the details below to {editingCourse ? 'update' : 'publish'} the course</p>
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
+                <p className="text-sm text-gray-500">Fill in the details below to {editingCourse ? 'update' : 'publish'} your course</p>
               </div>
               <button onClick={() => setShowModal(false)} className="close-btn-round">
                 <X size={20} />
@@ -423,15 +323,13 @@ const CourseManagement = () => {
                 </div>
               </div>
 
+
+
               <div className="grid grid-cols-2 gap-6">
                 <div className="form-group">
                   <label className="form-label">Price (₹)</label>
                   <div className="relative">
-<<<<<<< HEAD
-                    <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary" size={16} />
-=======
                     <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={16} />
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     <input 
                       type="number" 
                       min="0"
@@ -452,11 +350,7 @@ const CourseManagement = () => {
                 <div className="form-group">
                   <label className="form-label">Duration</label>
                   <div className="relative">
-<<<<<<< HEAD
-                    <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-secondary" size={16} />
-=======
                     <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={16} />
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     <input 
                       type="text" 
                       className="form-input-premium pl-10"
@@ -487,13 +381,8 @@ const CourseManagement = () => {
                       <div className="icon-circle">
                         <ImageIcon size={32} />
                       </div>
-<<<<<<< HEAD
-                      <p className="font-semibold text-primary">Click to upload image</p>
-                      <p className="text-xs text-secondary">JPG, PNG or WEBP (Max 2MB)</p>
-=======
                       <p className="font-semibold text-white">Click to upload image</p>
                       <p className="text-xs text-gray-500">JPG, PNG or WEBP (Max 2MB)</p>
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     </div>
                   )}
                   <input 
@@ -522,6 +411,37 @@ const CourseManagement = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {courseToDelete && (
+        <div className="course-form-modal">
+          <div className="course-form-card card glass animate-fade-in p-8 text-center" style={{maxWidth: '440px', background: 'rgba(26, 26, 46, 0.95)'}}>
+            <div className="mx-auto mb-6 w-16 h-16 flex items-center justify-center rounded-full" style={{background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', margin: '0 auto'}}>
+              <Trash2 size={32} />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">Delete Course?</h3>
+            <p className="text-gray-400 text-sm mb-8 leading-relaxed">Are you sure you want to delete this course? This action cannot be undone and all associated lectures will be permanently removed.</p>
+            <div className="flex gap-4">
+              <button 
+                onClick={() => setCourseToDelete(null)} 
+                className="btn py-3 px-6 rounded-xl font-bold transition-all text-sm flex-1"
+                style={{background: 'var(--surface-color-light)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', cursor: 'pointer'}}
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  handleDelete(courseToDelete);
+                  setCourseToDelete(null);
+                }} 
+                className="btn py-3 px-6 rounded-xl font-bold transition-all text-sm flex-1"
+                style={{background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: 'white', border: 'none', cursor: 'pointer'}}
+              >
+                Yes, Delete
+              </button>
+            </div>
           </div>
         </div>
       )}

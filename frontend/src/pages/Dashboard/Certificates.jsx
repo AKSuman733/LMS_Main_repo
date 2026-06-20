@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -82,6 +86,17 @@ const Certificates = () => {
       alert("Sharing is not supported natively on this browser. You can download the certificate and share the image!");
     }
   };
+<<<<<<< HEAD
+=======
+=======
+import { Award, Download, ExternalLink, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const Certificates = () => {
+  // Currently mock data, could be fetched from backend if certificates are implemented
+  const certificates = [];
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   return (
     <div className="certificates-page container pb-20">
@@ -95,26 +110,57 @@ const Certificates = () => {
             <Award size={24} />
           </div>
           <div>
+<<<<<<< HEAD
             <p className="text-sm text-secondary">Total Earned</p>
             <p className="text-xl font-bold text-primary">{loading ? '-' : certificates.length}</p>
+=======
+            <p className="text-sm text-gray-400">Total Earned</p>
+<<<<<<< HEAD
+            <p className="text-xl font-bold text-white">{loading ? '-' : certificates.length}</p>
+=======
+            <p className="text-xl font-bold text-white">{certificates.length}</p>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       {loading ? (
         <div className="py-24 flex justify-center items-center">
           <Loader2 className="animate-spin text-primary-color" size={48} />
         </div>
       ) : certificates.length === 0 ? (
+<<<<<<< HEAD
         <div className="empty-state py-24 glass">
           <Award size={80} className="text-secondary mb-6 mx-auto" />
           <h2 className="text-3xl font-bold mb-4">No certificates yet</h2>
           <p className="text-secondary max-w-md mx-auto mb-10 text-lg">
+=======
+=======
+      {certificates.length === 0 ? (
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+        <div className="empty-state py-24 glass">
+          <Award size={80} className="text-gray-700 mb-6 mx-auto" />
+          <h2 className="text-3xl font-bold mb-4">No certificates yet</h2>
+          <p className="text-gray-500 max-w-md mx-auto mb-10 text-lg">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             Complete a course with 100% progress to unlock your verified certificate and showcase your skills to the world.
           </p>
           <div className="flex gap-4 justify-center">
             <Link to="/my-learning" className="btn btn-primary px-8">Continue Learning</Link>
+<<<<<<< HEAD
             <Link to="/courses" className="btn glass px-8">Explore New Courses</Link>
+=======
+<<<<<<< HEAD
+            <Link to="/courses" className="btn glass px-8">Explore New Courses</Link>
+=======
+            <Link to="/student/explore" className="btn glass px-8">Explore New Courses</Link>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
           
           <div className="mt-16 pt-12 border-t border-white/5 max-w-3xl mx-auto">
@@ -125,26 +171,42 @@ const Certificates = () => {
                   <ShieldCheck size={24} />
                 </div>
                 <h4 className="font-bold mb-2">Verified</h4>
+<<<<<<< HEAD
                 <p className="text-sm text-secondary">Blockchain-verified authenticity</p>
+=======
+                <p className="text-sm text-gray-500">Blockchain-verified authenticity</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
               <div className="feature-item text-center">
                 <div className="bg-white/5 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-color">
                   <Download size={24} />
                 </div>
                 <h4 className="font-bold mb-2">Shareable</h4>
+<<<<<<< HEAD
                 <p className="text-sm text-secondary">One-click LinkedIn sharing</p>
+=======
+                <p className="text-sm text-gray-500">One-click LinkedIn sharing</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
               <div className="feature-item text-center">
                 <div className="bg-white/5 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-color">
                   <ExternalLink size={24} />
                 </div>
                 <h4 className="font-bold mb-2">Professional</h4>
+<<<<<<< HEAD
                 <p className="text-sm text-secondary">Industry-recognized standards</p>
+=======
+                <p className="text-sm text-gray-500">Industry-recognized standards</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
             </div>
           </div>
         </div>
       ) : (
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         <div className="admin-table-container card glass overflow-hidden">
           <table className="admin-table">
             <thead>
@@ -173,15 +235,25 @@ const Certificates = () => {
                           />
                         </div>
                         <div>
+<<<<<<< HEAD
                           <div className="font-bold text-primary">{cert.title}</div>
                           <div className="text-xs text-secondary mt-1 flex items-center gap-1">
                             <span>Student:</span> <span className="text-secondary font-medium">{user?.name}</span>
+=======
+                          <div className="font-bold text-white">{cert.title}</div>
+                          <div className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                            <span>Student:</span> <span className="text-gray-200 font-medium">{user?.name}</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                           </div>
                         </div>
                       </div>
                     </td>
                     <td>
+<<<<<<< HEAD
                       <div className="text-sm font-medium text-primary">{dateStr}</div>
+=======
+                      <div className="text-sm font-medium text-white">{dateStr}</div>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     </td>
                     <td>
                       <span className="level-tag beginner flex items-center gap-1 w-max" style={{ backgroundColor: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
@@ -357,7 +429,11 @@ const Certificates = () => {
                               <div style={{ position: 'absolute', bottom: '-2.5em', left: '1em', width: '2em', height: '4em', background: '#2d1b4e', zIndex: -1, transform: 'skewY(-30deg)' }}></div>
                               <div style={{ position: 'absolute', bottom: '-2.5em', right: '1em', width: '2em', height: '4em', background: '#2d1b4e', zIndex: -1, transform: 'skewY(30deg)' }}></div>
                               
+<<<<<<< HEAD
                               <span style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '3em', fontFamily: 'sans-serif' }}>U</span>
+=======
+                              <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '3em', fontFamily: 'sans-serif' }}>U</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                             </div>
 
                             {/* Signature / Completed */}
@@ -532,7 +608,11 @@ const Certificates = () => {
                     <div style={{ position: 'absolute', bottom: '-2.5em', left: '1em', width: '2em', height: '4em', background: '#2d1b4e', zIndex: -1, transform: 'skewY(-30deg)' }}></div>
                     <div style={{ position: 'absolute', bottom: '-2.5em', right: '1em', width: '2em', height: '4em', background: '#2d1b4e', zIndex: -1, transform: 'skewY(30deg)' }}></div>
                     
+<<<<<<< HEAD
                     <span style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '3em', fontFamily: 'sans-serif' }}>U</span>
+=======
+                    <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '3em', fontFamily: 'sans-serif' }}>U</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   </div>
 
                   {/* Signature / Completed */}
@@ -546,6 +626,13 @@ const Certificates = () => {
               </div>
             </div>
           </div>
+<<<<<<< HEAD
+=======
+=======
+        <div className="certificates-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Mapping would go here if data existed */}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
       )}
     </div>

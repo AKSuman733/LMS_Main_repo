@@ -52,7 +52,10 @@ const CourseList = () => {
   const [durationFilter, setDurationFilter] = useState('All');
   const [selectedLevels, setSelectedLevels] = useState([]);
   const [userEnrollments, setUserEnrollments] = useState(new Set());
+<<<<<<< HEAD
   const [viewMode, setViewMode] = useState('grid');
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   const user = JSON.parse(localStorage.getItem('user'));
 
   const handleLevelChange = (level) => {
@@ -132,7 +135,15 @@ const CourseList = () => {
         <aside className="filters-sidebar">
           <div className="filter-card">
             <div className="filter-group">
+<<<<<<< HEAD
               <h2>Categories</h2>
+=======
+<<<<<<< HEAD
+              <h2>Categories</h2>
+=======
+              <h3>Categories</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <div className="category-list">
                 {categories.map(cat => (
                   <label key={cat} className={`category-item ${selectedCategory === cat ? 'active' : ''}`}>
@@ -149,7 +160,15 @@ const CourseList = () => {
             </div>
 
             <div className="filter-group border-t pt-6">
+<<<<<<< HEAD
               <h2>Difficulty Level</h2>
+=======
+<<<<<<< HEAD
+              <h2>Difficulty Level</h2>
+=======
+              <h3>Difficulty Level</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <div className="checkbox-list">
                 <label className={`checkbox-item ${selectedLevels.includes('Beginner') ? 'active' : ''}`}>
                   <input 
@@ -179,7 +198,15 @@ const CourseList = () => {
             </div>
 
             <div className="filter-group border-t pt-6">
+<<<<<<< HEAD
               <h2>Course Duration</h2>
+=======
+<<<<<<< HEAD
+              <h2>Course Duration</h2>
+=======
+              <h3>Course Duration</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <div className="checkbox-list">
                 <label className={`checkbox-item ${durationFilter === 'All' ? 'active' : ''}`}>
                   <input
@@ -229,6 +256,7 @@ const CourseList = () => {
           <div className="results-toolbar">
             <span className="results-count">Showing <strong>{courses.length}</strong> courses</span>
             <div className="view-toggle">
+<<<<<<< HEAD
               <button 
                 className={viewMode === 'grid' ? 'active' : ''} 
                 onClick={() => setViewMode('grid')}
@@ -245,6 +273,15 @@ const CourseList = () => {
               >
                 <List size={18} aria-hidden="true" />
               </button>
+=======
+<<<<<<< HEAD
+              <button className="active" title="Grid View" aria-label="Grid View"><Grid size={18} aria-hidden="true" /></button>
+              <button title="List View" aria-label="List View"><List size={18} aria-hidden="true" /></button>
+=======
+              <button className="active" title="Grid View"><Grid size={18} /></button>
+              <button title="List View"><List size={18} /></button>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             </div>
           </div>
 
@@ -255,12 +292,26 @@ const CourseList = () => {
             </div>
           ) : courses.length === 0 ? (
             <div className="empty-state">
+<<<<<<< HEAD
               <BookOpen size={48} aria-hidden="true" />
               <h2>No courses found</h2>
               <p>Try adjusting your filters or search terms</p>
             </div>
           ) : (
             <div className={viewMode === 'grid' ? "course-grid animate-fade-in" : "course-list-view animate-fade-in"}>
+=======
+<<<<<<< HEAD
+              <BookOpen size={48} aria-hidden="true" />
+              <h2>No courses found</h2>
+=======
+              <BookOpen size={48} />
+              <h3>No courses found</h3>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+              <p>Try adjusting your filters or search terms</p>
+            </div>
+          ) : (
+            <div className="course-grid animate-fade-in">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               {courses.map((course) => {
                 // Determine the correct detail link based on the current path
                 const isStudentPath = window.location.pathname.startsWith('/student');
@@ -272,7 +323,15 @@ const CourseList = () => {
                 return (
                   <Link to={detailLink} key={course.id} className="course-card card">
                     <div className="course-thumbnail">
+<<<<<<< HEAD
                       <img src={formatImageUrl(course.thumbnail)} alt={course.title || 'Course thumbnail'} />
+=======
+<<<<<<< HEAD
+                      <img src={formatImageUrl(course.thumbnail)} alt={course.title || 'Course thumbnail'} />
+=======
+                      <img src={formatImageUrl(course.thumbnail)} alt={course.title} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                       <div className="course-badge">{course.category}</div>
                       {(() => {
                         const celeb = localStorage.getItem(`course_${course.id}_celebrity`);
@@ -300,7 +359,15 @@ const CourseList = () => {
                             {getCelebrityImage(celeb) && (
                               <img
                                 src={getCelebrityImage(celeb)}
+<<<<<<< HEAD
                                 alt={`Presenter ${celeb}`}
+=======
+<<<<<<< HEAD
+                                alt={`Presenter ${celeb}`}
+=======
+                                alt={celeb}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                                 style={{
                                   width: '22px',
                                   height: '22px',
@@ -309,12 +376,20 @@ const CourseList = () => {
                                   border: (celeb?.toLowerCase().includes('shahrukh') || celeb?.toLowerCase().includes('srk')) ? '1.5px solid #fbbf24' :
                                           celeb?.toLowerCase().includes('salman') ? '1.5px solid #3b82f6' :
                                           (celeb?.toLowerCase().includes('amir') || celeb?.toLowerCase().includes('aamir')) ? '1.5px solid #10b981' :
+<<<<<<< HEAD
                                           (celeb?.toLowerCase().includes('amitabh') || celeb?.toLowerCase().includes('bachan')) ? '1.5px solid #FF6B35' :
+=======
+                                          (celeb?.toLowerCase().includes('amitabh') || celeb?.toLowerCase().includes('bachan')) ? '1.5px solid #8b5cf6' :
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                                           '1.5px solid #000',
                                   boxShadow: (celeb?.toLowerCase().includes('shahrukh') || celeb?.toLowerCase().includes('srk')) ? '0 0 8px #fbbf24' :
                                              celeb?.toLowerCase().includes('salman') ? '0 0 8px #3b82f6' :
                                              (celeb?.toLowerCase().includes('amir') || celeb?.toLowerCase().includes('aamir')) ? '0 0 8px #10b981' :
+<<<<<<< HEAD
                                              (celeb?.toLowerCase().includes('amitabh') || celeb?.toLowerCase().includes('bachan')) ? '0 0 8px #FF6B35' :
+=======
+                                             (celeb?.toLowerCase().includes('amitabh') || celeb?.toLowerCase().includes('bachan')) ? '0 0 8px #8b5cf6' :
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                                              'none'
                                 }}
                               />

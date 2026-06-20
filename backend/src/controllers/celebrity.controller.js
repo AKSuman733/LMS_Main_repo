@@ -1,5 +1,8 @@
 const db = require('../config/db');
+<<<<<<< HEAD
 const notificationUtil = require('../utils/notification.util');
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
 exports.getAllCelebrities = async (req, res) => {
   const { status } = req.query; // active, archive, deleted
@@ -40,9 +43,12 @@ exports.createCelebrity = async (req, res) => {
       RETURNING *
     `;
     const result = await db.query(query, [name, bio, image_url, role, quote, topic, description, badge, color, stats ? JSON.stringify(stats) : null]);
+<<<<<<< HEAD
     
     await notificationUtil.notifyAllAdmins('Celebrity Added', `A new celebrity/expert "${name}" has been added.`, 'info');
     
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     res.status(201).json({ message: 'Celebrity created successfully', celebrity: result.rows[0] });
   } catch (error) {
     console.error('Error creating celebrity:', error);

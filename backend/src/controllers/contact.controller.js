@@ -2,7 +2,10 @@ const db = require('../config/db');
 const path = require('path');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
+<<<<<<< HEAD
 const notificationUtil = require('../utils/notification.util');
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
 exports.submitContactQuery = async (req, res) => {
   try {
@@ -24,8 +27,11 @@ exports.submitContactQuery = async (req, res) => {
       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
       [fullName, email, phoneNumber, queryType, subject, message, attachmentUrl]
     );
+<<<<<<< HEAD
     
     await notificationUtil.notifyAllAdmins('New Support Query', `A new support query regarding "${subject}" was submitted by ${fullName}.`, 'warning');
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
     res.status(201).json({ 
       success: true, 
@@ -84,6 +90,7 @@ exports.replyToQuery = async (req, res) => {
       [reply, id]
     );
 
+<<<<<<< HEAD
     // Notify the user if they exist in the system
     const userResult = await db.query('SELECT id FROM users WHERE email = $1', [queryInfo.email]);
     if (userResult.rows.length > 0) {
@@ -115,6 +122,30 @@ exports.replyToQuery = async (req, res) => {
     transporter.sendMail(mailOptions).catch(mailErr => {
       console.error('Error sending email:', mailErr);
     });
+=======
+    // Send email using nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    const mailOptions = {
+      from: '"UptoSkills Support" <support@uptoskills.com>',
+      to: queryInfo.email,
+      subject: `Re: ${queryInfo.subject} (UptoSkills Support)`,
+      text: `Hello ${queryInfo.full_name},\n\nRegarding your query:\n"${queryInfo.message}"\n\nAdmin Reply:\n${reply}\n\nBest regards,\nUptoSkills Support Team`
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (mailErr) {
+      console.error('Error sending email:', mailErr);
+      // Proceed even if email fails in dev
+    }
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
     res.status(200).json({ success: true, data: result.rows[0] });
   } catch (error) {

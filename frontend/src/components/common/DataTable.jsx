@@ -211,7 +211,11 @@ const DataTable = ({
         )}
       </div>
 
+<<<<<<< HEAD
       <div className="datatable-wrapper table-responsive">
+=======
+      <div className="datatable-wrapper">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         <table className="datatable">
           <thead>
             <tr>
@@ -244,7 +248,11 @@ const DataTable = ({
                       <div style={{ position: 'relative' }}>
                         <Filter 
                           size={14} 
+<<<<<<< HEAD
                           style={{ cursor: 'pointer', color: (filters[col.key] && filters[col.key].length > 0) ? '#FF6B35' : '#9ca3af' }}
+=======
+                          style={{ cursor: 'pointer', color: (filters[col.key] && filters[col.key].length > 0) ? '#8b5cf6' : '#9ca3af' }}
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                           onClick={(e) => {
                             e.stopPropagation();
                             setOpenFilterKey(openFilterKey === col.key ? null : col.key);

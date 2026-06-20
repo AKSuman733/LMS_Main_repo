@@ -9,6 +9,7 @@ const Navbar = () => {
   const location = useLocation();
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+<<<<<<< HEAD
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
 
   useEffect(() => {
@@ -18,6 +19,9 @@ const Navbar = () => {
     window.addEventListener('profileUpdated', handleProfileUpdate);
     return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
   }, []);
+=======
+  const user = JSON.parse(localStorage.getItem('user'));
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -60,13 +64,21 @@ const Navbar = () => {
             style={{
               padding: '6px 14px',
               borderRadius: '8px',
+<<<<<<< HEAD
               background: 'var(--primary-gradient)',
+=======
+              background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               border: 'none',
               color: '#fff',
               fontSize: '0.75rem',
               fontWeight: 800,
               cursor: 'pointer',
+<<<<<<< HEAD
               boxShadow: '0 4px 6px rgba(255, 107, 53, 0.2)'
+=======
+              boxShadow: '0 4px 6px rgba(139, 92, 246, 0.2)'
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             }}
           >
             Logout
@@ -103,19 +115,37 @@ const Navbar = () => {
             <Link to="/courses" className="nav-link">Explore</Link>
             <Link to="/celebrities" className="nav-link">Celebrities</Link>
             <Link to="/about" className="nav-link">About Us</Link>
+<<<<<<< HEAD
             <Link to="/contact" className="nav-link">Contact</Link>
+=======
+<<<<<<< HEAD
+            <Link to="/contact" className="nav-link">Contact</Link>
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
         )}
 
         <div className="nav-actions" style={user?.role === 'admin' ? { marginLeft: 'auto' } : {}}>
+<<<<<<< HEAD
           <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme" aria-label="Toggle Theme">
             {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
+=======
+<<<<<<< HEAD
+          <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme" aria-label="Toggle Theme">
+            {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
+=======
+          <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme">
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </button>
           
           {user ? (
             <div className="desktop-only-auth">
               {user.role !== 'admin' && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
               <div className="user-profile">
+<<<<<<< HEAD
                 {user.profileImage ? (
                   <img src={user.profileImage} alt={user.name} style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--primary-color)' }} />
                 ) : (
@@ -124,6 +154,17 @@ const Navbar = () => {
                 <span className="user-name">{user.name}</span>
                 <button onClick={handleLogout} className="logout-btn" aria-label="Logout">
                   <LogOut size={18} aria-hidden="true" />
+=======
+                <User size={20} />
+                <span className="user-name">{user.name}</span>
+<<<<<<< HEAD
+                <button onClick={handleLogout} className="logout-btn" aria-label="Logout">
+                  <LogOut size={18} aria-hidden="true" />
+=======
+                <button onClick={handleLogout} className="logout-btn">
+                  <LogOut size={18} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 </button>
               </div>
             </div>
@@ -138,11 +179,23 @@ const Navbar = () => {
           <button 
             className="mobile-nav-toggle" 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu-content"
           >
             <Menu size={24} aria-hidden="true" />
+<<<<<<< HEAD
+=======
+=======
+            aria-label="Toggle Menu"
+          >
+            <Menu size={24} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </button>
         </div>
       </div>
@@ -150,14 +203,29 @@ const Navbar = () => {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div className="mobile-menu-overlay">
+<<<<<<< HEAD
           <div id="mobile-menu-content" className="mobile-menu-content">
+=======
+<<<<<<< HEAD
+          <div id="mobile-menu-content" className="mobile-menu-content">
+=======
+          <div className="mobile-menu-content">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             {(!user || user.role !== 'admin') && (
               <div className="mobile-nav-links">
                 <Link to="/" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
                 <Link to="/courses" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Explore</Link>
                 <Link to="/celebrities" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Celebrities</Link>
                 <Link to="/about" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+<<<<<<< HEAD
                 <Link to="/contact" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+=======
+<<<<<<< HEAD
+                <Link to="/contact" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
             )}
             
@@ -165,6 +233,7 @@ const Navbar = () => {
               <div className="mobile-user-actions">
                 {user.role !== 'admin' && <Link to="/dashboard" className="nav-link" onClick={() => setIsMobileMenuOpen(false)}>Dashboard</Link>}
                 <div className="user-profile mobile-profile">
+<<<<<<< HEAD
                   {user.profileImage ? (
                     <img src={user.profileImage} alt={user.name} style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--primary-color)' }} />
                   ) : (
@@ -173,6 +242,16 @@ const Navbar = () => {
                   <span className="user-name">{user.name}</span>
                   <button onClick={handleLogout} className="logout-btn">
                     <LogOut size={18} aria-hidden="true" />
+=======
+                  <User size={20} />
+                  <span className="user-name">{user.name}</span>
+                  <button onClick={handleLogout} className="logout-btn">
+<<<<<<< HEAD
+                    <LogOut size={18} aria-hidden="true" />
+=======
+                    <LogOut size={18} />
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     Logout
                   </button>
                 </div>

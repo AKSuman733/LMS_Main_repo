@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Globe, Eye, EyeOff, ArrowLeft, GraduationCap, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Globe, Eye, EyeOff, ArrowLeft, Presentation, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import axios from 'axios';
-<<<<<<< HEAD
-import { validateEmail } from '../../utils/validation';
-=======
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 import toast from 'react-hot-toast';
 import '../../styles/Auth.css';
-import studentSideImg from '../../assets/roles/student.png';
+import instructorSideImg from '../../assets/roles/instructor.png';
 
-const StudentLogin = () => {
+const InstructorLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -25,9 +21,6 @@ const StudentLogin = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
-<<<<<<< HEAD
-  const [emailErrorMsg, setEmailErrorMsg] = useState('');
-=======
   const validateEmail = (email) => {
 <<<<<<< HEAD
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -36,24 +29,14 @@ const StudentLogin = () => {
 >>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
     return re.test(email);
   };
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   const handleEmailChange = (e) => {
     const val = e.target.value;
     setEmail(val);
     if (val.length > 0) {
-<<<<<<< HEAD
-      const res = validateEmail(val);
-      setEmailValid(res.isValid);
-      setEmailErrorMsg(res.message);
-    } else {
-      setEmailValid(null);
-      setEmailErrorMsg('');
-=======
       setEmailValid(validateEmail(val));
     } else {
       setEmailValid(null);
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     }
   };
 
@@ -61,12 +44,6 @@ const StudentLogin = () => {
     if (location.state?.message) {
       toast.success(location.state.message);
       setMessage(location.state.message);
-    }
-    // Read ?error= query param set by Axios interceptor on session expiry
-    const urlError = searchParams.get('error');
-    if (urlError) {
-      setError(urlError);
-      toast.error(urlError);
     }
   }, [location]);
 
@@ -82,22 +59,11 @@ const StudentLogin = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5001/api/auth/google';
-  };
-
   const handleSendOTP = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    const valRes = validateEmail(email);
-    if (!valRes.isValid) {
-      setError(valRes.message);
-      toast.error(valRes.message);
-=======
     if (emailValid === false || !email) {
       setError('Please enter a valid email first');
       toast.error('Please enter a valid email first');
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return;
     }
     setLoading(true);
@@ -119,14 +85,8 @@ const StudentLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    const valRes = validateEmail(email);
-    if (!valRes.isValid) {
-      toast.error(valRes.message);
-=======
     if (emailValid === false) {
       toast.error('Please enter a valid email address');
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return;
     }
     setLoading(true);
@@ -139,19 +99,17 @@ const StudentLogin = () => {
         response = await axios.post('http://localhost:5001/api/auth/login', { email, password });
       }
 
-      if (response.data.user.role !== 'student') {
-        const errorMsg = 'Access denied. This login is for students only.';
+      if (response.data.user.role !== 'instructor') {
+        const errorMsg = 'Access denied. This login is for instructors only.';
         toast.error(errorMsg);
         throw new Error(errorMsg);
       }
 
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
-      navigate('/dashboard');
+      navigate('/instructor/dashboard');
     } catch (err) {
-      // err.response?.data?.error covers Axios HTTP errors
-      // err.message covers manually thrown errors (e.g. role mismatch)
-      const errMsg = err.response?.data?.error || err.message || 'Login failed';
+      const errMsg = err.response?.data?.error || 'Login failed';
       setError(errMsg);
       toast.error(errMsg);
     } finally {
@@ -167,13 +125,13 @@ const StudentLogin = () => {
 
   return (
     <div className="split-login-container">
-      <div className="login-image-side student-theme">
-        <img src={studentSideImg} alt="Student Portal" className="side-img" />
+      <div className="login-image-side instructor-theme">
+        <img src={instructorSideImg} alt="Instructor Portal" className="side-img" />
         <div className="side-overlay">
           <div className="side-content">
-            <GraduationCap size={48} className="side-icon" />
-            <h1>Student Hub</h1>
-            <p>Access your personalized learning dashboard, tracks your courses, and achieve your certification goals.</p>
+            <Presentation size={48} className="side-icon" />
+            <h1>Instructor Portal</h1>
+            <p>Create impactful courses, manage your curriculum, and inspire students across the globe.</p>
           </div>
         </div>
       </div>
@@ -184,14 +142,14 @@ const StudentLogin = () => {
             <Link to="/">
               <img src="/logo.png" alt="UptoSkills Logo" style={{ height: '36px', objectFit: 'contain' }} />
             </Link>
-            <Link to="/" className="back-btn-simple" style={{ marginBottom: 0 }}>
-              <ArrowLeft size={18} /> Back to Home
+            <Link to="/login" className="back-btn-simple" style={{ marginBottom: 0 }}>
+              <ArrowLeft size={18} /> Back to selection
             </Link>
           </div>
 
           <div className="login-header-premium">
-            <h2>Welcome Back!</h2>
-            <p>{showOTP ? 'Check your email for the code' : 'Enter your details to start learning'}</p>
+            <h2>Welcome Back, Educator!</h2>
+            <p>{showOTP ? 'Check your email for the code' : 'Enter your credentials to access your portal'}</p>
           </div>
 
           {error && <div className="auth-error-premium">{error}</div>}
@@ -203,30 +161,22 @@ const StudentLogin = () => {
 <<<<<<< HEAD
               <div className="input-with-icon">
 =======
-<<<<<<< HEAD
-              <div className="input-with-icon">
-=======
               <div className="input-premium-wrapper">
 >>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 <Mail size={18} />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   className={emailValid === true ? 'input-success' : emailValid === false ? 'input-error' : ''}
-                  placeholder="you@example.com" 
+                  placeholder="instructor@example.com"
                   value={email}
                   onChange={handleEmailChange}
-                  required 
+                  required
                   disabled={showOTP}
                 />
                 {emailValid === true && <CheckCircle2 className="validation-icon success" size={18} />}
                 {emailValid === false && <XCircle className="validation-icon error" size={18} />}
               </div>
-<<<<<<< HEAD
-              {emailValid === false && <span className="field-error-text">{emailErrorMsg}</span>}
-=======
               {emailValid === false && <span className="field-error-text">Please enter a valid email</span>}
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             </div>
 
             {!showOTP ? (
@@ -238,31 +188,23 @@ const StudentLogin = () => {
 <<<<<<< HEAD
                 <div className="input-with-icon password-field">
 =======
-<<<<<<< HEAD
-                <div className="input-with-icon password-field">
-=======
                 <div className="input-premium-wrapper password-field">
 >>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   <Lock size={18} />
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="••••••••" 
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required 
+                    required
                   />
-                  <button 
-                    type="button" 
-<<<<<<< HEAD
-                    className="password-toggle"
-=======
+                  <button
+                    type="button"
 <<<<<<< HEAD
                     className="password-toggle"
 =======
                     className="password-toggle-premium"
 >>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -280,20 +222,16 @@ const StudentLogin = () => {
 <<<<<<< HEAD
                 <div className="input-with-icon">
 =======
-<<<<<<< HEAD
-                <div className="input-with-icon">
-=======
                 <div className="input-premium-wrapper">
 >>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   <Lock size={18} />
-                  <input 
-                    type="text" 
-                    placeholder="6-digit code" 
+                  <input
+                    type="text"
+                    placeholder="6-digit code"
                     maxLength="6"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
-                    required 
+                    required
                   />
                 </div>
                 {timer === 0 && (
@@ -304,7 +242,7 @@ const StudentLogin = () => {
               </div>
             )}
 
-            <button type="submit" className="submit-btn-premium student-btn" disabled={loading || (showOTP && timer === 0)}>
+            <button type="submit" className="submit-btn-premium instructor-btn" disabled={loading || (showOTP && timer === 0)}>
               {loading ? (
                 <><Loader2 className="spinner" size={18} /> Loading...</>
               ) : (
@@ -314,13 +252,13 @@ const StudentLogin = () => {
 
             {!showOTP && (
               <button type="button" className="secondary-btn-premium" onClick={handleSendOTP} disabled={loading}>
-                Sign In with OTP
+                Login with OTP
               </button>
             )}
           </form>
 
           <div className="auth-divider-premium">
-            <span>Or continue with</span>
+            <span>Professional Access</span>
           </div>
 
           <div className="social-auth-premium">
@@ -328,12 +266,12 @@ const StudentLogin = () => {
               <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="Google" /> Google
             </button>
             <button className="social-btn-premium">
-              <Globe size={18} /> GitHub
+              <Globe size={18} /> LinkedIn
             </button>
           </div>
 
           <p className="auth-footer-premium">
-            New to UptoSkills? <Link to="/register">Create an account</Link>
+            Want to teach with us? <Link to="/register?role=instructor">Apply Now</Link>
           </p>
         </div>
       </div>
@@ -364,18 +302,10 @@ const StudentLogin = () => {
         .side-overlay {
           position: absolute;
           inset: 0;
-<<<<<<< HEAD
-          background: linear-gradient(to right, rgba(0,0,0,0.6), rgba(0, 181, 165, 0.1));
-=======
-          background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(236, 72, 153, 0.3));
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
+          background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(139, 92, 246, 0.3));
           display: flex;
           align-items: center;
           padding: 80px;
-        }
-
-        .student-theme .side-overlay {
-          background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(99, 102, 241, 0.3));
         }
 
         .side-content {
@@ -385,16 +315,8 @@ const StudentLogin = () => {
         }
 
         .side-icon {
-<<<<<<< HEAD
-          color: #00B5A5;
-=======
-          color: #ec4899;
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
+          color: var(--primary-color);
           margin-bottom: 24px;
-        }
-
-        .student-theme .side-icon {
-          color: #6366f1;
         }
 
         .side-content h1 {
@@ -522,11 +444,7 @@ const StudentLogin = () => {
         .input-premium-wrapper input:focus {
           border-color: var(--primary-color);
           background: var(--surface-color);
-<<<<<<< HEAD
-          box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
-=======
-          box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
+          box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
 
         .input-premium-wrapper input.input-error { border-color: #ef4444; }
@@ -553,11 +471,7 @@ const StudentLogin = () => {
 <<<<<<< HEAD
           z-index: 10;
 =======
-<<<<<<< HEAD
-          z-index: 10;
-=======
 >>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         }
 
         .label-row-premium {
@@ -584,20 +498,12 @@ const StudentLogin = () => {
           gap: 10px;
           transition: all 0.3s;
           margin-top: 5px;
-<<<<<<< HEAD
-          box-shadow: 0 8px 16px rgba(255, 107, 53, 0.2);
-=======
           box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2);
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         }
 
         .submit-btn-premium:hover:not(:disabled) {
           transform: translateY(-2px);
-<<<<<<< HEAD
-          box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
-=======
           box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         }
 
         .secondary-btn-premium {
@@ -692,4 +598,4 @@ const StudentLogin = () => {
   );
 };
 
-export default StudentLogin;
+export default InstructorLogin;

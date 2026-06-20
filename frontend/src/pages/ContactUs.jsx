@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+<<<<<<< HEAD
 import { validateEmail, validatePhone } from '../utils/validation';
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 import { User, Mail, Phone, MessageSquare, Paperclip, Send, Tag, AlertCircle } from 'lucide-react';
 import '../styles/ContactUs.css';
 
@@ -28,9 +31,15 @@ const ContactUs = () => {
     }
 
     // Email validation: proper format, not a dummy domain
+<<<<<<< HEAD
     const emailVal = validateEmail(formData.email);
     if (!emailVal.isValid) {
       toast.error(emailVal.message);
+=======
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error('Please enter a valid email address.');
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return false;
     }
 
@@ -49,14 +58,30 @@ const ContactUs = () => {
       return false;
     }
 
+<<<<<<< HEAD
     const phoneVal = validatePhone(formData.phoneNumber);
     if (!phoneVal.isValid) {
+=======
+    // Phone validation: exactly 10 digits
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(formData.phoneNumber)) {
+      toast.error('Phone number must be exactly 10 digits.');
+      return false;
+    }
+    
+    // Dummy phone check (all same digits or starting with 000)
+    if (/^(\d)\1{9}$/.test(formData.phoneNumber) || formData.phoneNumber.startsWith('000')) {
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       toast.error(
         <div className="flex items-start gap-2">
           <AlertCircle size={20} color="#dc2626" style={{flexShrink:0, marginTop:'2px'}}/>
           <div>
             <strong>Invalid Phone Number!</strong>
+<<<<<<< HEAD
             <p style={{fontSize:'0.85rem', marginTop:'4px'}}>{phoneVal.message}</p>
+=======
+            <p style={{fontSize:'0.85rem', marginTop:'4px'}}>Please provide a real phone number.</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
         </div>,
         { duration: 5000 }
@@ -193,6 +218,7 @@ const ContactUs = () => {
                   value={formData.phoneNumber}
                   onChange={(e) => {
                     const val = e.target.value;
+<<<<<<< HEAD
                     const filtered = val.replace(/[^\d\s\-+]/g, '');
                     if (val !== filtered) {
                       toast.error('Phone number can only contain digits, spaces, +, and -');
@@ -200,6 +226,15 @@ const ContactUs = () => {
                     setFormData({...formData, phoneNumber: filtered});
                   }}
                   maxLength="15"
+=======
+                    const filtered = val.replace(/\D/g, '');
+                    if (val !== filtered) {
+                      toast.error('Phone number can only contain digits');
+                    }
+                    setFormData({...formData, phoneNumber: filtered});
+                  }}
+                  maxLength="10"
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   required 
                 />
               </div>

@@ -2,33 +2,17 @@ import { Link, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import {
   LayoutDashboard,
-  Users,
   BookOpen,
   User,
   LogOut,
-  Settings,
-  PlusCircle,
   ChevronLeft,
   ChevronRight,
   Compass,
-  UserCheck,
-  GraduationCap,
-<<<<<<< HEAD
-  Star,
-  MessageCircle,
+  PlusCircle,
   FileText
-=======
-<<<<<<< HEAD
-  Star,
-  MessageCircle,
-  FileText
-=======
-  Star
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 } from 'lucide-react';
 
-const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
+const InstructorSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
   const location = useLocation();
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -66,21 +50,13 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
             style={{
               padding: '6px 14px',
               borderRadius: '8px',
-<<<<<<< HEAD
-              background: 'var(--primary-gradient)',
-=======
               background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               border: 'none',
               color: '#fff',
               fontSize: '0.75rem',
               fontWeight: 800,
               cursor: 'pointer',
-<<<<<<< HEAD
-              boxShadow: '0 4px 6px rgba(255, 107, 53, 0.2)'
-=======
               boxShadow: '0 4px 6px rgba(139, 92, 246, 0.2)'
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             }}
           >
             Logout
@@ -107,20 +83,13 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
       <button
         className="collapse-toggle"
         onClick={() => setIsCollapsed(!isCollapsed)}
-<<<<<<< HEAD
-        aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-        aria-expanded={!isCollapsed}
-      >
-        {isCollapsed ? <ChevronRight size={16} aria-hidden="true" /> : <ChevronLeft size={16} aria-hidden="true" />}
-=======
       >
         {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       </button>
 
       <div className="sidebar-header">
         {isCollapsed ? (
-          <h2>S</h2>
+          <h2>I</h2>
         ) : (
           <img src="/logo.png" alt="UptoSkills Logo" style={{ height: '32px', objectFit: 'contain', margin: '0 auto' }} />
         )}
@@ -128,104 +97,39 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
 
       <nav className="sidebar-nav">
         <Link
-          to="/admin/dashboard"
+          to="/instructor/dashboard"
           title="Dashboard"
-          className={`sidebar-link ${isActive('/admin/dashboard') ? 'active' : ''}`}
+          className={`sidebar-link ${isActive('/instructor/dashboard') ? 'active' : ''}`}
         >
           <LayoutDashboard size={20} />
           {!isCollapsed && <span>Dashboard</span>}
         </Link>
 
         <Link
-          to="/admin/approvals"
-          title="Approvals"
-          className={`sidebar-link ${isActive('/admin/approvals') ? 'active' : ''}`}
-        >
-          <UserCheck size={20} />
-          {!isCollapsed && <span>Approvals</span>}
-        </Link>
-
-        <Link
-          to="/admin/users"
-          title="Manage Users"
-          className={`sidebar-link ${isActive('/admin/users') ? 'active' : ''}`}
-        >
-          <Users size={20} />
-          {!isCollapsed && <span>Manage Users</span>}
-        </Link>
-
-        <Link
-          to="/admin/celebrities"
-          title="Manage Celebrities"
-          className={`sidebar-link ${isActive('/admin/celebrities') ? 'active' : ''}`}
-        >
-          <Star size={20} />
-          {!isCollapsed && <span>Manage Celebrities</span>}
-        </Link>
-
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
-        <Link
-          to="/admin/queries"
-          title="Support Queries"
-          className={`sidebar-link ${isActive('/admin/queries') ? 'active' : ''}`}
-        >
-          <MessageCircle size={20} />
-          {!isCollapsed && <span>Support Queries</span>}
-        </Link>        <Link
-<<<<<<< HEAD
-=======
-=======
-
-
-        <Link
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
-          to="/admin/courses"
+          to="/instructor/courses"
           title="Course Management"
-          className={`sidebar-link ${isActive('/admin/courses') ? 'active' : ''}`}
+          className={`sidebar-link ${isActive('/instructor/courses') ? 'active' : ''}`}
         >
           <BookOpen size={20} />
           {!isCollapsed && <span>Course Management</span>}
         </Link>
 
         <Link
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
-          to="/admin/reports"
-          title="Reports"
-          className={`sidebar-link ${isActive('/admin/reports') ? 'active' : ''}`}
-        >
-          <FileText size={20} />
-          {!isCollapsed && <span>Reports</span>}
-        </Link>
-
-<<<<<<< HEAD
-
-=======
-        <Link
-=======
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
-          to="/admin/explore"
-          title="Explore Platform"
-          className={`sidebar-link ${isActive('/admin/explore') ? 'active' : ''}`}
-        >
-          <Compass size={20} />
-          {!isCollapsed && <span>Explore Platform</span>}
-        </Link>
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
-
-        <Link
-          to="/admin/profile"
+          to="/instructor/profile"
           title="Profile"
-          className={`sidebar-link ${isActive('/admin/profile') ? 'active' : ''}`}
+          className={`sidebar-link ${isActive('/instructor/profile') ? 'active' : ''}`}
         >
           <User size={20} />
           {!isCollapsed && <span>Profile</span>}
+        </Link>
+
+        <Link
+          to="/"
+          title="Go to Home"
+          className={`sidebar-link`}
+        >
+          <Compass size={20} />
+          {!isCollapsed && <span>Public View</span>}
         </Link>
       </nav>
 
@@ -233,7 +137,7 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
         {!isCollapsed ? (
           <div className="admin-info px-4 mb-4">
             <p className="text-sm font-semibold text-white">{user?.name}</p>
-            <p className="text-xs text-gray-500">Administrator</p>
+            <p className="text-xs text-gray-500">Instructor</p>
           </div>
         ) : (
           <div className="mb-4"></div>
@@ -252,4 +156,4 @@ const AdminSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOp
   );
 };
 
-export default AdminSidebar;
+export default InstructorSidebar;

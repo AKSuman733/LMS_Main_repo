@@ -40,15 +40,26 @@
   display: flex;
   align-items: center;
   gap: 12px;
+<<<<<<< HEAD
   background: rgba(255, 107, 53, 0.1);
   padding: 8px 16px;
   border-radius: 8px;
   border: 1px solid rgba(255, 107, 53, 0.2);
+=======
+  background: rgba(139, 92, 246, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .datatable-bulk-actions span {
   font-weight: 600;
+<<<<<<< HEAD
   color: #FF6B35;
+=======
+  color: #8b5cf6;
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   font-size: 14px;
 }
 
@@ -125,7 +136,11 @@
 
 .sort-icon.active {
   opacity: 1;
+<<<<<<< HEAD
   color: #FF6B35;
+=======
+  color: #8b5cf6;
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .datatable td {
@@ -170,7 +185,11 @@
   width: 18px;
   height: 18px;
   cursor: pointer;
+<<<<<<< HEAD
   accent-color: #FF6B35;
+=======
+  accent-color: #8b5cf6;
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .highlight {
@@ -379,7 +398,11 @@
 }
 
 .btn-filter-apply {
+<<<<<<< HEAD
   background: #FF6B35;
+=======
+  background: #8b5cf6;
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   color: white;
   border: none;
   border-radius: 4px;

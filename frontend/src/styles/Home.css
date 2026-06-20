@@ -124,8 +124,13 @@
   left: 0;
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   background: radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 20% 80%, rgba(0, 181, 165, 0.1) 0%, transparent 50%);
+=======
+  background: radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   z-index: -1;
   pointer-events: none;
 }
@@ -433,6 +438,16 @@
 .marquee-section::after {
   right: 0;
   background: linear-gradient(to left, var(--bg-color), transparent);
+<<<<<<< HEAD
 }
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+=======
+<<<<<<< HEAD
+}
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+=======
+}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383

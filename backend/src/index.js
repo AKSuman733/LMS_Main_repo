@@ -6,10 +6,19 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth.routes');
 const courseRoutes = require('./routes/course.routes');
 const celebrityRoutes = require('./routes/celebrity.routes');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 const contactRoutes = require('./routes/contact.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const chatRoutes = require('./routes/chat.routes');
 const reportRoutes = require('./routes/report.routes');
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
 const session = require('express-session');
 const passport = require('./config/passport');
@@ -55,10 +64,19 @@ app.use(passport.session());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/celebrities', celebrityRoutes);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 app.use('/api/contact', contactRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/reports', reportRoutes);
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 app.use('/api/upload', require('./routes/upload.routes'));
 
 // Static folder for uploads

@@ -55,7 +55,11 @@ const AdminDashboard = () => {
     { name: 'No Data', value: 1 }
   ];
 
+<<<<<<< HEAD
   const COLORS = ['#FF6B35', '#10b981', '#3b82f6', '#00B5A5', '#f59e0b', '#ef4444', '#06b6d4'];
+=======
+  const COLORS = ['#8b5cf6', '#10b981', '#3b82f6', '#ec4899', '#f59e0b', '#ef4444', '#06b6d4'];
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   useEffect(() => {
     fetchStats();
@@ -87,14 +91,22 @@ const AdminDashboard = () => {
     { name: 'Admins', value: stats.admins || 0 },
   ];
 
+<<<<<<< HEAD
   const USER_COLORS = ['#FF6B35', '#00B5A5'];
+=======
+  const USER_COLORS = ['#8b5cf6', '#ec4899'];
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   return (
     <div className="admin-dashboard">
       <div className="admin-header-row">
         <div>
           <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
+<<<<<<< HEAD
           <p className="text-secondary">Welcome to UptoSkills administrative control center</p>
+=======
+          <p className="text-gray-500">Welcome to UptoSkills administrative control center</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
       </div>
 
@@ -200,7 +212,15 @@ const AdminDashboard = () => {
         <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/approvals')}>
           <CheckCircle size={18} /> Approve Pending
         </button>
+<<<<<<< HEAD
         <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/reports')}>
+=======
+<<<<<<< HEAD
+        <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/reports')}>
+=======
+        <button className="qa-btn qa-btn-secondary" onClick={() => navigate('/admin/dashboard')}>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           <BarChart2 size={18} /> View Reports
         </button>
       </div>
@@ -224,7 +244,11 @@ const AdminDashboard = () => {
                 />
                 <Bar 
                   dataKey="enrollments" 
+<<<<<<< HEAD
                   fill="#FF6B35" 
+=======
+                  fill="#8b5cf6" 
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   radius={[6, 6, 0, 0]} 
                   barSize={40}
                 />
@@ -270,9 +294,15 @@ const AdminDashboard = () => {
               <div key={index} className="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full" style={{background: COLORS[index]}}></div>
+<<<<<<< HEAD
                   <span className="text-xs font-medium text-secondary">{entry.name}</span>
                 </div>
                 <span className="text-xs font-bold text-primary">{entry.value}</span>
+=======
+                  <span className="text-xs font-medium text-gray-400">{entry.name}</span>
+                </div>
+                <span className="text-xs font-bold text-white">{entry.value}</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
             ))}
           </div>
@@ -311,9 +341,15 @@ const AdminDashboard = () => {
               <div key={index} className="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full" style={{background: USER_COLORS[index]}}></div>
+<<<<<<< HEAD
                   <span className="text-xs font-medium text-secondary">{entry.name}</span>
                 </div>
                 <span className="text-xs font-bold text-primary">{entry.value}</span>
+=======
+                  <span className="text-xs font-medium text-gray-400">{entry.name}</span>
+                </div>
+                <span className="text-xs font-bold text-white">{entry.value}</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
             ))}
           </div>
@@ -375,7 +411,11 @@ const AdminDashboard = () => {
               </div>
             ))
           ) : (
+<<<<<<< HEAD
             <div className="col-span-full card glass p-8 text-center text-secondary flex flex-col items-center justify-center">
+=======
+            <div className="col-span-full card glass p-8 text-center text-gray-400 flex flex-col items-center justify-center">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <BookOpen size={40} className="mx-auto mb-3 opacity-30" />
               <p>No new enrollments this week.</p>
             </div>

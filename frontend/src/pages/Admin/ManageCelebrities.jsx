@@ -203,7 +203,11 @@ const ManageCelebrities = () => {
       key: 'bio',
       label: 'Bio',
       render: (row) => (
+<<<<<<< HEAD
         <div className="text-secondary text-sm truncate max-w-xs">
+=======
+        <div className="text-gray-400 text-sm truncate max-w-xs">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           {row.description || row.bio || 'No bio available'}
         </div>
       )
@@ -355,7 +359,11 @@ const ManageCelebrities = () => {
       <div className="admin-header-row">
         <div>
           <h1 className="text-3xl font-bold mb-2">Celebrities</h1>
+<<<<<<< HEAD
           <p className="text-secondary">Manage platform celebrities</p>
+=======
+          <p className="text-gray-500">Manage platform celebrities</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
         <button className="btn btn-primary flex items-center gap-2" onClick={openAddModal}>
           <PlusCircle size={20} />
@@ -417,8 +425,13 @@ const ManageCelebrities = () => {
           <div className="course-form-card card glass animate-fade-in">
             <div className="flex justify-between items-center mb-8 border-bottom-white pb-4">
               <div>
+<<<<<<< HEAD
                 <h2 className="text-2xl font-bold text-primary">{editingId ? 'Update Celebrity' : 'Add New Celebrity'}</h2>
                 <p className="text-sm text-secondary">Fill in the details below</p>
+=======
+                <h2 className="text-2xl font-bold text-white">{editingId ? 'Update Celebrity' : 'Add New Celebrity'}</h2>
+                <p className="text-sm text-gray-500">Fill in the details below</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
               <button onClick={() => setIsModalOpen(false)} className="close-btn-round">
                 <X size={20} />
@@ -456,7 +469,11 @@ const ManageCelebrities = () => {
                         <div className="icon-circle" style={{ width: '32px', height: '32px' }}>
                           <ImageIcon size={16} />
                         </div>
+<<<<<<< HEAD
                         <p className="font-semibold text-primary text-sm" style={{ margin: 0 }}>Upload image</p>
+=======
+                        <p className="font-semibold text-white text-sm" style={{ margin: 0 }}>Upload image</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                       </div>
                     )}
                     <input 

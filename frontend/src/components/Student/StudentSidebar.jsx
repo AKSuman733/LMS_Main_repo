@@ -9,9 +9,19 @@ import {
   ChevronLeft,
   ChevronRight,
   Trophy,
+<<<<<<< HEAD
   Search,
   MessageCircle,
   FileText
+=======
+<<<<<<< HEAD
+  Search,
+  MessageCircle,
+  FileText
+=======
+  Search
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 } from 'lucide-react';
 
 const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen }) => {
@@ -52,13 +62,21 @@ const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobile
             style={{
               padding: '6px 14px',
               borderRadius: '8px',
+<<<<<<< HEAD
               background: 'var(--primary-gradient)',
+=======
+              background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               border: 'none',
               color: '#fff',
               fontSize: '0.75rem',
               fontWeight: 800,
               cursor: 'pointer',
+<<<<<<< HEAD
               boxShadow: '0 4px 6px rgba(255, 107, 53, 0.2)'
+=======
+              boxShadow: '0 4px 6px rgba(139, 92, 246, 0.2)'
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             }}
           >
             Logout
@@ -85,10 +103,15 @@ const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobile
       <button
         className="collapse-toggle"
         onClick={() => setIsCollapsed(!isCollapsed)}
+<<<<<<< HEAD
         aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         aria-expanded={!isCollapsed}
       >
         {isCollapsed ? <ChevronRight size={16} aria-hidden="true" /> : <ChevronLeft size={16} aria-hidden="true" />}
+=======
+      >
+        {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       </button>
 
       <div className="sidebar-header">
@@ -137,6 +160,10 @@ const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobile
         </Link>
 
         <Link
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           to="/my-queries"
           title="Queries by me"
           className={`sidebar-link ${isActive('/my-queries') ? 'active' : ''}`}
@@ -155,6 +182,11 @@ const StudentSidebar = ({ isCollapsed, setIsCollapsed, isMobileOpen, setIsMobile
         </Link>
 
         <Link
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           to="/student/profile"
           title="Profile"
           className={`sidebar-link ${isActive('/student/profile') ? 'active' : ''}`}

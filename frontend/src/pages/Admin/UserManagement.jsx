@@ -80,7 +80,11 @@ const UserManagement = () => {
       sortable: true,
       render: (row, highlight) => (
         <div className="email-cell">
+<<<<<<< HEAD
           <Mail size={16} className="text-secondary mr-2" />
+=======
+          <Mail size={16} className="text-gray-500 mr-2" />
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           {highlight(row.email)}
         </div>
       )
@@ -107,10 +111,17 @@ const UserManagement = () => {
             <div className="progress-bar-bg">
               <div 
                 className="progress-bar-fill" 
+<<<<<<< HEAD
                 style={{ width: `${prog}%`, background: prog > 80 ? '#10b981' : prog > 40 ? '#FF6B35' : '#f59e0b' }}
               ></div>
             </div>
             <span className="text-xs font-bold text-secondary">{Math.round(prog)}%</span>
+=======
+                style={{ width: `${prog}%`, background: prog > 80 ? '#10b981' : prog > 40 ? '#8b5cf6' : '#f59e0b' }}
+              ></div>
+            </div>
+            <span className="text-xs font-bold text-gray-400">{Math.round(prog)}%</span>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
         );
       }
@@ -311,7 +322,11 @@ const UserManagement = () => {
       <div className="admin-header-row">
         <div>
           <h1 className="text-3xl font-bold mb-2">Users</h1>
+<<<<<<< HEAD
           <p className="text-secondary">Manage and monitor student performance across the platform</p>
+=======
+          <p className="text-gray-500">Manage and monitor student performance across the platform</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
       </div>
 

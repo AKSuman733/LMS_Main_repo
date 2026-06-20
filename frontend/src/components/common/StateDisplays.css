@@ -69,7 +69,11 @@
 }
 
 .state-action-link {
+<<<<<<< HEAD
   color: #FF6B35;
+=======
+  color: #8b5cf6;
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;

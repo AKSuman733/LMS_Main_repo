@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Mail, Lock, ArrowRight, Shield, Eye, EyeOff, ArrowLeft, Loader2, CheckCircle2, XCircle, ShieldCheck } from 'lucide-react';
 import axios from 'axios';
+<<<<<<< HEAD
 import { validateEmail } from '../../utils/validation';
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 import toast from 'react-hot-toast';
 import '../../styles/Auth.css';
 import adminSideImg from '../../assets/roles/admin.png';
@@ -22,18 +25,35 @@ const AdminLogin = () => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
 
+<<<<<<< HEAD
   const [emailErrorMsg, setEmailErrorMsg] = useState('');
+=======
+  const validateEmail = (email) => {
+<<<<<<< HEAD
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+=======
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+    return re.test(email);
+  };
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   const handleEmailChange = (e) => {
     const val = e.target.value;
     setEmail(val);
     if (val.length > 0) {
+<<<<<<< HEAD
       const res = validateEmail(val);
       setEmailValid(res.isValid);
       setEmailErrorMsg(res.message);
     } else {
       setEmailValid(null);
       setEmailErrorMsg('');
+=======
+      setEmailValid(validateEmail(val));
+    } else {
+      setEmailValid(null);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     }
   };
 
@@ -64,10 +84,16 @@ const AdminLogin = () => {
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     const valRes = validateEmail(email);
     if (!valRes.isValid) {
       setError(valRes.message);
       toast.error(valRes.message);
+=======
+    if (emailValid === false || !email) {
+      setError('Please enter a valid email first');
+      toast.error('Please enter a valid email first');
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return;
     }
     setLoading(true);
@@ -89,9 +115,14 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     const valRes = validateEmail(email);
     if (!valRes.isValid) {
       toast.error(valRes.message);
+=======
+    if (emailValid === false) {
+      toast.error('Please enter a valid email address');
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return;
     }
     setLoading(true);
@@ -165,7 +196,15 @@ const AdminLogin = () => {
           <form onSubmit={handleSubmit} className="auth-form-premium">
             <div className="form-group-premium">
               <label>Email Address <span className="required-asterisk">*</span></label>
+<<<<<<< HEAD
               <div className="input-with-icon">
+=======
+<<<<<<< HEAD
+              <div className="input-with-icon">
+=======
+              <div className="input-premium-wrapper">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 <Mail size={18} />
                 <input 
                   type="email" 
@@ -179,7 +218,11 @@ const AdminLogin = () => {
                 {emailValid === true && <CheckCircle2 className="validation-icon success" size={18} />}
                 {emailValid === false && <XCircle className="validation-icon error" size={18} />}
               </div>
+<<<<<<< HEAD
               {emailValid === false && <span className="field-error-text">{emailErrorMsg}</span>}
+=======
+              {emailValid === false && <span className="field-error-text">Please enter a valid email</span>}
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             </div>
 
             {!showOTP ? (
@@ -188,7 +231,15 @@ const AdminLogin = () => {
                   <label>Password <span className="required-asterisk">*</span></label>
                   <Link to="/forgot-password">Forgot password?</Link>
                 </div>
+<<<<<<< HEAD
                 <div className="input-with-icon password-field">
+=======
+<<<<<<< HEAD
+                <div className="input-with-icon password-field">
+=======
+                <div className="input-premium-wrapper password-field">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   <Lock size={18} />
                   <input 
                     type={showPassword ? "text" : "password"} 
@@ -199,7 +250,15 @@ const AdminLogin = () => {
                   />
                   <button 
                     type="button" 
+<<<<<<< HEAD
                     className="password-toggle"
+=======
+<<<<<<< HEAD
+                    className="password-toggle"
+=======
+                    className="password-toggle-premium"
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -214,7 +273,15 @@ const AdminLogin = () => {
                     {timer > 0 ? `Expires in ${formatTime(timer)}` : 'Expired'}
                   </span>
                 </div>
+<<<<<<< HEAD
                 <div className="input-with-icon">
+=======
+<<<<<<< HEAD
+                <div className="input-with-icon">
+=======
+                <div className="input-premium-wrapper">
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   <Lock size={18} />
                   <input 
                     type="text" 
@@ -276,7 +343,11 @@ const AdminLogin = () => {
         .side-overlay {
           position: absolute;
           inset: 0;
+<<<<<<< HEAD
           background: linear-gradient(to right, rgba(0,0,0,0.6), rgba(255, 107, 53, 0.1));
+=======
+          background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(139, 92, 246, 0.4));
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           display: flex;
           align-items: center;
           padding: 80px;
@@ -289,7 +360,11 @@ const AdminLogin = () => {
         }
 
         .side-icon {
+<<<<<<< HEAD
           color: #FF6B35;
+=======
+          color: #8b5cf6;
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           margin-bottom: 24px;
         }
 
@@ -442,7 +517,14 @@ const AdminLogin = () => {
           border: none;
           color: var(--text-secondary);
           cursor: pointer;
+<<<<<<< HEAD
           z-index: 10;
+=======
+<<<<<<< HEAD
+          z-index: 10;
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         }
 
         .label-row-premium {
@@ -469,12 +551,20 @@ const AdminLogin = () => {
           gap: 10px;
           transition: all 0.3s;
           margin-top: 5px;
+<<<<<<< HEAD
           box-shadow: 0 8px 16px rgba(255, 107, 53, 0.2);
+=======
+          box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         }
 
         .submit-btn-premium:hover:not(:disabled) {
           transform: translateY(-2px);
+<<<<<<< HEAD
           box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
+=======
+          box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         }
 
         .secondary-btn-premium {

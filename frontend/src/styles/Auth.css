@@ -151,7 +151,11 @@
 
 .password-toggle:hover {
   color: var(--primary-color);
+<<<<<<< HEAD
   background: rgba(255, 107, 53, 0.1);
+=======
+  background: rgba(139, 92, 246, 0.1);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 /* Admin Dashboard Stats */

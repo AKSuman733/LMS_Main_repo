@@ -4,7 +4,11 @@ import { UserCog, GraduationCap, Presentation, ArrowRight, ArrowLeft } from 'luc
 import '../../styles/Auth.css';
 import adminImg from '../../assets/roles/admin.png';
 import studentImg from '../../assets/roles/student.png';
+<<<<<<< HEAD
 
+=======
+import instructorImg from '../../assets/roles/instructor.png';
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
 const LoginSelection = () => {
   const navigate = useNavigate();
@@ -88,7 +92,11 @@ const LoginSelection = () => {
           font-size: 3rem;
           font-weight: 800;
           margin-bottom: 16px;
+<<<<<<< HEAD
           background: var(--primary-gradient);
+=======
+          background: linear-gradient(90deg, #8b5cf6, #ec4899);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
@@ -154,7 +162,11 @@ const LoginSelection = () => {
           align-items: center;
           justify-content: center;
           color: white;
+<<<<<<< HEAD
           box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+=======
+          box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           border: 4px solid var(--surface-color);
         }
 

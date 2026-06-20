@@ -81,7 +81,11 @@
 .btn-primary-small:hover {
   background: var(--primary-color-dark);
   transform: translateY(-2px);
+<<<<<<< HEAD
   box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+=======
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 @media (max-width: 1200px) {
@@ -93,7 +97,11 @@
 /* Original Styles Backup */
 .dashboard-header {
   margin-bottom: 40px;
+<<<<<<< HEAD
   background: linear-gradient(to right, rgba(255, 107, 53, 0.1), transparent);
+=======
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.1), transparent);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   padding: 30px;
   border-radius: 16px;
   border-left: 4px solid var(--primary-color);

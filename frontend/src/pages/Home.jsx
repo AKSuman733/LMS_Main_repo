@@ -3,7 +3,14 @@ import { ArrowRight, Play, Star, Users, BookOpen, ShieldCheck, Zap, Globe } from
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Home.css';
+<<<<<<< HEAD
 import Chatbot from '../components/common/Chatbot';
+=======
+<<<<<<< HEAD
+import Chatbot from '../components/common/Chatbot';
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 import heroImage from '../assets/online_learning_path.png';
 import featuresImage from '../assets/features.png';
 
@@ -18,7 +25,14 @@ const formatImageUrl = (url) => {
 const Home = () => {
   const navigate = useNavigate();
   const [freeCourses, setFreeCourses] = useState([]);
+<<<<<<< HEAD
   const [celebrities, setCelebrities] = useState([]);
+=======
+<<<<<<< HEAD
+  const [celebrities, setCelebrities] = useState([]);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   useEffect(() => {
     const fetchFreeCourses = async () => {
@@ -30,6 +44,10 @@ const Home = () => {
         console.error('Error fetching free courses', err);
       }
     };
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
     const fetchCelebrities = async () => {
       try {
@@ -42,6 +60,12 @@ const Home = () => {
 
     fetchFreeCourses();
     fetchCelebrities();
+<<<<<<< HEAD
+=======
+=======
+    fetchFreeCourses();
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   }, []);
 
   const displayCourses = freeCourses.length > 0 ? freeCourses : [
@@ -140,13 +164,22 @@ const Home = () => {
         <div className="container">
           <div className="section-header text-center mb-16" style={{textAlign: 'center', marginBottom: '60px'}}>
             <span className="text-primary-color font-bold tracking-wider text-sm uppercase block mb-3" style={{color: 'var(--primary-color)', fontWeight: 'bold', letterSpacing: '2px', display: 'block', marginBottom: '12px'}}>⭐ Masterclass Presenters ⭐</span>
+<<<<<<< HEAD
             <h2 className="section-title text-4xl font-extrabold text-primary" style={{fontSize: '2.5rem', fontWeight: '800', color: 'var(--text-primary)'}}>Learn from the Legends</h2>
             <p className="section-subtitle text-secondary max-w-2xl mx-auto mt-4" style={{color: 'var(--text-secondary)', maxWidth: '650px', margin: '16px auto 0'}}>
+=======
+            <h2 className="section-title text-4xl font-extrabold text-white" style={{fontSize: '2.5rem', fontWeight: '800', color: 'var(--text-primary)'}}>Learn from the Legends</h2>
+            <p className="section-subtitle text-gray-400 max-w-2xl mx-auto mt-4" style={{color: 'var(--text-secondary)', maxWidth: '650px', margin: '16px auto 0'}}>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               Get inspired by exclusive, cinematic masterclasses presenting foundational programming and technology tracks, explained in the signature style of your favorite icons!
             </p>
           </div>
 
           <div className="celebrity-grid" style={{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             display: 'flex',
             overflowX: 'auto',
             scrollBehavior: 'smooth',
@@ -156,6 +189,17 @@ const Home = () => {
             paddingBottom: '20px'
           }}>
             {(celebrities.length > 0 ? celebrities : [
+<<<<<<< HEAD
+=======
+=======
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '30px',
+            marginTop: '40px'
+          }}>
+            {[
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               {
                 name: 'Shahrukh Khan',
                 avatar: '/srk_avatar.jpg',
@@ -186,15 +230,26 @@ const Home = () => {
                 role: 'Big B Legendary Guidance',
                 quote: '"Build persistent foundations and rule the modern software universe!"',
                 topic: 'C & Systems Engineering',
+<<<<<<< HEAD
                 color: 'var(--primary-gradient)'
               }
+=======
+                color: 'linear-gradient(135deg, #8b5cf6, #6d28d9)'
+              }
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             ]).map((celeb, idx) => {
               const themes = [
                 { border: '#fbbf24', shadow: 'rgba(245, 158, 11, 0.6)', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)' }, // Orange
                 { border: '#3b82f6', shadow: 'rgba(59, 130, 246, 0.6)', gradient: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }, // Blue
                 { border: '#10b981', shadow: 'rgba(16, 185, 129, 0.6)', gradient: 'linear-gradient(135deg, #10b981, #047857)' }, // Green
+<<<<<<< HEAD
                 { border: '#FF6B35', shadow: 'rgba(255, 107, 53, 0.6)', gradient: 'var(--primary-gradient)' }, // Purple
                 { border: '#00B5A5', shadow: 'rgba(0, 181, 165, 0.6)', gradient: 'var(--secondary-color)' }, // Pink
+=======
+                { border: '#8b5cf6', shadow: 'rgba(139, 92, 246, 0.6)', gradient: 'linear-gradient(135deg, #8b5cf6, #6d28d9)' }, // Purple
+                { border: '#ec4899', shadow: 'rgba(236, 72, 153, 0.6)', gradient: 'linear-gradient(135deg, #ec4899, #be185d)' }, // Pink
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 { border: '#06b6d4', shadow: 'rgba(6, 182, 212, 0.6)', gradient: 'linear-gradient(135deg, #06b6d4, #0e7490)' }, // Cyan
               ];
               const theme = themes[idx % themes.length];
@@ -223,7 +278,11 @@ const Home = () => {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-10px)';
                     e.currentTarget.style.borderColor = 'var(--primary-color)';
+<<<<<<< HEAD
                     e.currentTarget.style.boxShadow = '0 20px 40px rgba(255, 107, 53, 0.15)';
+=======
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(139, 92, 246, 0.15)';
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)';
@@ -246,7 +305,11 @@ const Home = () => {
                         transition: 'all 0.3s ease'
                       }}
                     />
+<<<<<<< HEAD
                     <div className="absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center text-primary" style={{
+=======
+                    <div className="absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center text-white" style={{
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                       background: celeb.color || theme.gradient, 
                       position: 'absolute', 
                       bottom: '0', 
@@ -263,10 +326,93 @@ const Home = () => {
                       ⭐
                     </div>
                   </div>
+<<<<<<< HEAD
                 
                 <h3 className="text-xl font-bold text-primary mb-2" style={{fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '8px'}}>{celeb.name}</h3>
                 <span className="text-sm font-semibold mb-4 px-3 py-1 rounded-full" style={{
                   background: 'rgba(255, 107, 53, 0.1)', 
+=======
+=======
+            ].map((celeb, idx) => (
+              <div 
+                key={idx} 
+                className="celebrity-card card glass p-6 text-center animate-fade-in"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  borderRadius: '24px',
+                  border: '1px solid var(--border-color)',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  background: 'var(--surface-color)',
+                  padding: '30px 24px',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.08)'
+                }}
+                onClick={() => navigate(`/courses?celebrity=${encodeURIComponent(celeb.name)}`)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-10px)';
+                  e.currentTarget.style.borderColor = 'var(--primary-color)';
+                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(139, 92, 246, 0.15)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = 'var(--border-color)';
+                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08)';
+                }}
+              >
+                <div className="avatar-wrapper mb-6" style={{position: 'relative', marginBottom: '24px'}}>
+                  <img 
+                    src={celeb.avatar} 
+                    alt={celeb.name} 
+                    style={{
+                      width: '110px',
+                      height: '110px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: celeb.name === 'Shahrukh Khan' ? '3px solid #fbbf24' :
+                              celeb.name === 'Salman Khan' ? '3px solid #3b82f6' :
+                              celeb.name === 'Amir Khan' ? '3px solid #10b981' :
+                              (celeb.name.includes('Amitabh') || celeb.name.includes('Bachan')) ? '3px solid #8b5cf6' :
+                              '3px solid var(--border-color)',
+                      boxShadow: celeb.name === 'Shahrukh Khan' ? '0 0 20px rgba(245, 158, 11, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 celeb.name === 'Salman Khan' ? '0 0 20px rgba(59, 130, 246, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 celeb.name === 'Amir Khan' ? '0 0 20px rgba(16, 185, 129, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 (celeb.name.includes('Amitabh') || celeb.name.includes('Bachan')) ? '0 0 20px rgba(139, 92, 246, 0.6), 0 8px 24px rgba(0,0,0,0.2)' :
+                                 '0 8px 24px rgba(0,0,0,0.2)',
+                      filter: celeb.name === 'Shahrukh Khan' ? 'contrast(1.08) brightness(1.03) saturate(1.05)' :
+                              celeb.name === 'Salman Khan' ? 'contrast(1.06) brightness(1.03) saturate(1.05)' :
+                              celeb.name === 'Amir Khan' ? 'contrast(1.08) brightness(1.02) saturate(1.03)' :
+                              (celeb.name.includes('Amitabh') || celeb.name.includes('Bachan')) ? 'contrast(1.08) brightness(1.03) saturate(1.05)' :
+                              'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                  />
+                  <div className="absolute bottom-0 right-0 w-8 h-8 rounded-full flex items-center justify-center text-white" style={{
+                    background: celeb.color, 
+                    position: 'absolute', 
+                    bottom: '0', 
+                    right: '8px', 
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.9rem'
+                  }}>
+                    ⭐
+                  </div>
+                </div>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+                
+                <h3 className="text-xl font-bold text-white mb-2" style={{fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '8px'}}>{celeb.name}</h3>
+                <span className="text-sm font-semibold mb-4 px-3 py-1 rounded-full" style={{
+                  background: 'rgba(139, 92, 246, 0.1)', 
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   color: 'var(--primary-color)', 
                   fontSize: '0.75rem',
                   fontWeight: '600',
@@ -278,11 +424,26 @@ const Home = () => {
                   {celeb.role}
                 </span>
                 
+<<<<<<< HEAD
                 <p className="text-secondary italic text-xs leading-relaxed mb-6" style={{color: 'var(--text-secondary)', fontSize: '0.75rem', fontStyle: 'italic', lineHeight: '1.6', marginBottom: '24px', minHeight: '36px'}}>{celeb.quote}</p>
                 
 
               </div>
             );})}
+=======
+                <p className="text-gray-400 italic text-xs leading-relaxed mb-6" style={{color: 'var(--text-secondary)', fontSize: '0.75rem', fontStyle: 'italic', lineHeight: '1.6', marginBottom: '24px', minHeight: '36px'}}>{celeb.quote}</p>
+                
+                <div className="w-full pt-4 mt-auto" style={{borderTop: '1px solid var(--border-color)', width: '100%', paddingTop: '16px'}}>
+                  <span className="text-xs text-gray-500 uppercase block mb-1" style={{fontSize: '0.65rem', color: 'var(--text-secondary)', textTransform: 'uppercase', display: 'block', marginBottom: '4px', letterSpacing: '1px'}}>Featured Topic</span>
+                  <span className="text-sm font-bold text-white block" style={{fontSize: '0.9rem', fontWeight: '700', color: 'var(--text-primary)'}}>{celeb.topic}</span>
+                </div>
+              </div>
+<<<<<<< HEAD
+            );})}
+=======
+            ))}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
         </div>
       </section>
@@ -363,7 +524,11 @@ const Home = () => {
                     alt={course.title} 
                     style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }} 
                   />
+<<<<<<< HEAD
                   <span className="badge" style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(255, 107, 53, 0.95)', color: 'white', padding: '4px 12px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+=======
+                  <span className="badge" style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(139, 92, 246, 0.95)', color: 'white', padding: '4px 12px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                     {course.category || 'AI'}
                   </span>
                 </div>
@@ -395,9 +560,18 @@ const Home = () => {
           </div>
         </div>
       </section>
+<<<<<<< HEAD
 
       {/* Render Chatbot only on Home page */}
       <Chatbot />
+=======
+<<<<<<< HEAD
+
+      {/* Render Chatbot only on Home page */}
+      <Chatbot />
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     </div>
   );
 };

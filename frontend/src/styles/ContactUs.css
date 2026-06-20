@@ -123,8 +123,13 @@
 .input-premium-wrapper select:focus,
 .textarea-premium-wrapper textarea:focus {
   outline: none;
+<<<<<<< HEAD
   border-color: #FF6B35;
   box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+=======
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .file-upload-group {
@@ -161,9 +166,15 @@
 }
 
 .file-upload-btn:hover {
+<<<<<<< HEAD
   border-color: #FF6B35;
   color: #FF6B35;
   background: rgba(255, 107, 53, 0.05);
+=======
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.05);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .submit-btn {
@@ -172,15 +183,25 @@
   font-size: 1.1rem;
   font-weight: 700;
   border-radius: 12px;
+<<<<<<< HEAD
   background: var(--primary-gradient);
   border: none;
   box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+=======
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  border: none;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
+<<<<<<< HEAD
   box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+=======
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .submit-btn:disabled {

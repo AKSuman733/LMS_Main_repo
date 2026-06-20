@@ -28,11 +28,15 @@ const MyReceipts = () => {
       const response = await axios.get('http://localhost:5001/api/reports/my-payments', {
         headers: { Authorization: `Bearer ${token}` }
       });
+<<<<<<< HEAD
       const successfulPayments = response.data.filter(p => {
         const s = p.status?.toLowerCase();
         return s === 'done' || s === 'successful' || s === 'success';
       });
       setPayments(successfulPayments);
+=======
+      setPayments(response.data);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     } catch (err) {
       console.error('Error fetching payments:', err);
       setError('Failed to fetch your payment history.');
@@ -66,7 +70,11 @@ const MyReceipts = () => {
       sortable: true,
       filterable: true,
       render: (row, highlight) => (
+<<<<<<< HEAD
         <div className="font-semibold text-primary">{highlight(row.courseName)}</div>
+=======
+        <div className="font-semibold text-white">{highlight(row.courseName)}</div>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       )
     },
     {
@@ -76,7 +84,11 @@ const MyReceipts = () => {
       render: (row) => {
         const d = new Date(row.date);
         return (
+<<<<<<< HEAD
           <div className="flex items-center gap-2 text-secondary text-sm">
+=======
+          <div className="flex items-center gap-2 text-gray-400 text-sm">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             <Calendar size={14} />
             {d.toLocaleDateString()}
           </div>
@@ -88,7 +100,11 @@ const MyReceipts = () => {
       label: 'Amount Paid',
       sortable: true,
       render: (row) => (
+<<<<<<< HEAD
         <div className="flex items-center gap-1 font-bold text-primary">
+=======
+        <div className="flex items-center gap-1 font-bold text-white">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           <IndianRupee size={14} />{row.amount}
         </div>
       )
@@ -124,7 +140,11 @@ const MyReceipts = () => {
       <div className="admin-header-row mb-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">My Receipts</h1>
+<<<<<<< HEAD
           <p className="text-secondary">View and download receipts for your enrolled courses.</p>
+=======
+          <p className="text-gray-500">View and download receipts for your enrolled courses.</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
       </div>
 
@@ -158,7 +178,11 @@ const MyReceipts = () => {
           <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto flex flex-col print-modal-content">
             
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10 no-print rounded-t-2xl">
+<<<<<<< HEAD
               <h2 className="text-xl font-bold text-secondary">Preview Receipt</h2>
+=======
+              <h2 className="text-xl font-bold text-gray-800">Preview Receipt</h2>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               <div className="flex gap-3">
                 <button 
                   onClick={() => handleDownloadPDF(selectedPayment)}
@@ -168,7 +192,11 @@ const MyReceipts = () => {
                 </button>
                 <button 
                   onClick={() => setSelectedPayment(null)}
+<<<<<<< HEAD
                   className="p-2 text-secondary hover:text-secondary hover:bg-gray-100 rounded-lg transition-colors"
+=======
+                  className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 >
                   <X size={24} />
                 </button>

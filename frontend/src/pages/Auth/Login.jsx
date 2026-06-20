@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Lock, ArrowRight, Globe, Eye, EyeOff, ArrowLeft, Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import axios from 'axios';
+<<<<<<< HEAD
 import { validateEmail } from '../../utils/validation';
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 import toast from 'react-hot-toast';
 import Home from '../Home';
 import '../../styles/Auth.css';
@@ -22,18 +25,35 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+<<<<<<< HEAD
   const [emailErrorMsg, setEmailErrorMsg] = useState('');
+=======
+  const validateEmail = (email) => {
+<<<<<<< HEAD
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+=======
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+    return re.test(email);
+  };
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
   const handleEmailChange = (e) => {
     const val = e.target.value;
     setEmail(val);
     if (val.length > 0) {
+<<<<<<< HEAD
       const res = validateEmail(val);
       setEmailValid(res.isValid);
       setEmailErrorMsg(res.message);
     } else {
       setEmailValid(null);
       setEmailErrorMsg('');
+=======
+      setEmailValid(validateEmail(val));
+    } else {
+      setEmailValid(null);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     }
   };
 
@@ -79,10 +99,16 @@ const Login = () => {
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     const valRes = validateEmail(email);
     if (!valRes.isValid) {
       setError(valRes.message);
       toast.error(valRes.message);
+=======
+    if (emailValid === false || !email) {
+      setError('Please enter a valid email first');
+      toast.error('Please enter a valid email first');
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return;
     }
     setLoading(true);
@@ -104,9 +130,14 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     const valRes = validateEmail(email);
     if (!valRes.isValid) {
       toast.error(valRes.message);
+=======
+    if (emailValid === false) {
+      toast.error('Please enter a valid email address');
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       return;
     }
     setLoading(true);
@@ -167,11 +198,24 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             <label htmlFor="email">Email Address <span className="required-asterisk" aria-hidden="true">*</span></label>
             <div className="input-with-icon">
               <Mail size={18} aria-hidden="true" />
               <input 
                 id="email"
+<<<<<<< HEAD
+=======
+=======
+            <label>Email Address <span className="required-asterisk">*</span></label>
+            <div className="input-with-icon">
+              <Mail size={18} />
+              <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 type="email" 
                 className={emailValid === true ? 'input-success' : emailValid === false ? 'input-error' : ''}
                 placeholder="name@company.com" 
@@ -179,18 +223,37 @@ const Login = () => {
                 onChange={handleEmailChange}
                 required 
                 disabled={showOTP}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 aria-invalid={emailValid === false}
                 aria-describedby={emailValid === false ? "email-error" : undefined}
               />
               {emailValid === true && <CheckCircle2 className="validation-icon success" size={18} aria-hidden="true" />}
               {emailValid === false && <XCircle className="validation-icon error" size={18} aria-hidden="true" />}
             </div>
+<<<<<<< HEAD
             {emailValid === false && <span id="email-error" className="field-error-text">{emailErrorMsg}</span>}
+=======
+            {emailValid === false && <span id="email-error" className="field-error-text">Please enter a valid email</span>}
+=======
+              />
+              {emailValid === true && <CheckCircle2 className="validation-icon success" size={18} />}
+              {emailValid === false && <XCircle className="validation-icon error" size={18} />}
+            </div>
+            {emailValid === false && <span className="field-error-text">Please enter a valid email</span>}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </div>
 
           {!showOTP ? (
             <div className="form-group">
               <div className="label-row">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 <label htmlFor="password">Password <span className="required-asterisk" aria-hidden="true">*</span></label>
                 <Link to="/forgot-password">Forgot password?</Link>
               </div>
@@ -198,6 +261,17 @@ const Login = () => {
                 <Lock size={18} aria-hidden="true" />
                 <input 
                   id="password"
+<<<<<<< HEAD
+=======
+=======
+                <label>Password <span className="required-asterisk">*</span></label>
+                <Link to="/forgot-password">Forgot password?</Link>
+              </div>
+              <div className="input-with-icon password-field">
+                <Lock size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   type={showPassword ? "text" : "password"} 
                   placeholder="••••••••" 
                   value={password}
@@ -208,24 +282,54 @@ const Login = () => {
                   type="button" 
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
+<<<<<<< HEAD
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+=======
+<<<<<<< HEAD
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+=======
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 </button>
               </div>
             </div>
           ) : (
             <div className="form-group">
               <div className="label-row">
+<<<<<<< HEAD
                 <label htmlFor="otp">One-Time Password (OTP)</label>
+=======
+<<<<<<< HEAD
+                <label htmlFor="otp">One-Time Password (OTP)</label>
+=======
+                <label>One-Time Password (OTP)</label>
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 <span style={{fontSize: '0.8rem', color: timer > 0 ? '#4A90E2' : '#dc2626'}}>
                   {timer > 0 ? `Expires in ${formatTime(timer)}` : 'OTP Expired'}
                 </span>
               </div>
               <div className="input-with-icon">
+<<<<<<< HEAD
                 <Lock size={18} aria-hidden="true" />
                 <input 
                   id="otp"
+=======
+<<<<<<< HEAD
+                <Lock size={18} aria-hidden="true" />
+                <input 
+                  id="otp"
+=======
+                <Lock size={18} />
+                <input 
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   type="text" 
                   placeholder="123456" 
                   maxLength="6"
@@ -268,11 +372,25 @@ const Login = () => {
         </div>
 
         <div className="social-auth">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           <button className="btn btn-outline w-full" aria-label="Login with GitHub">
             <Globe size={18} aria-hidden="true" /> GitHub
           </button>
           <button className="btn btn-outline w-full" onClick={handleGoogleLogin} aria-label="Login with Google">
             <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="" aria-hidden="true" /> Google
+<<<<<<< HEAD
+=======
+=======
+          <button className="btn btn-outline w-full">
+            <Globe size={18} /> GitHub
+          </button>
+          <button className="btn btn-outline w-full" onClick={handleGoogleLogin}>
+            <img src="https://www.svgrepo.com/show/355037/google.svg" width="18" alt="Google" /> Google
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           </button>
         </div>
 

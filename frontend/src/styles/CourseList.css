@@ -167,7 +167,11 @@
 
 .category-item.active {
   background: var(--primary-color);
+<<<<<<< HEAD
   box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
+=======
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 }
 
 .category-item.active span {
@@ -285,7 +289,11 @@
 .spinner {
   width: 40px;
   height: 40px;
+<<<<<<< HEAD
   border: 4px solid rgba(255, 107, 53, 0.1);
+=======
+  border: 4px solid rgba(139, 92, 246, 0.1);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   border-top-color: var(--primary-color);
   border-radius: 50%;
   margin: 0 auto 16px;
@@ -338,6 +346,7 @@
   font-size: 1.2rem;
 }
 
+<<<<<<< HEAD
 /* List View Styles */
 .course-list-view {
   display: flex;
@@ -379,6 +388,8 @@
   }
 }
 
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 /* My Learning Specific Styles */
 .completed-badge {
   position: absolute;

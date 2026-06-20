@@ -2,32 +2,12 @@ import { useState, useEffect } from 'react';
 import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { Sun, Moon, User, LogOut, Menu } from 'lucide-react';
 import toast from 'react-hot-toast';
-import AdminSidebar from '../components/Admin/AdminSidebar';
-<<<<<<< HEAD
-import NotificationsDropdown from '../components/common/NotificationsDropdown';
-=======
-<<<<<<< HEAD
-import NotificationsDropdown from '../components/common/NotificationsDropdown';
-=======
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
+import InstructorSidebar from '../components/Instructor/InstructorSidebar';
 import '../styles/AdminLayout.css';
 
-const AdminLayout = () => {
+const InstructorLayout = () => {
   const navigate = useNavigate();
-<<<<<<< HEAD
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
-
-  useEffect(() => {
-    const handleProfileUpdate = () => {
-      setUser(JSON.parse(localStorage.getItem('user')));
-    };
-    window.addEventListener('profileUpdated', handleProfileUpdate);
-    return () => window.removeEventListener('profileUpdated', handleProfileUpdate);
-  }, []);
-=======
   const user = JSON.parse(localStorage.getItem('user'));
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
@@ -73,21 +53,13 @@ const AdminLayout = () => {
             style={{
               padding: '6px 14px',
               borderRadius: '8px',
-<<<<<<< HEAD
-              background: 'var(--primary-gradient)',
-=======
               background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               border: 'none',
               color: '#fff',
               fontSize: '0.75rem',
               fontWeight: 800,
               cursor: 'pointer',
-<<<<<<< HEAD
-              boxShadow: '0 4px 6px rgba(255, 107, 53, 0.2)'
-=======
               boxShadow: '0 4px 6px rgba(139, 92, 246, 0.2)'
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             }}
           >
             Logout
@@ -109,90 +81,45 @@ const AdminLayout = () => {
     });
   };
 
-  // Protection: Ensure only approved admins can access
-  if (!user || user.role !== 'admin') {
+  // Protection: Ensure only approved instructors can access
+  if (!user || user.role !== 'instructor') {
     return <Navigate to="/login" replace />;
   }
 
   return (
     <div className={`admin-layout ${isCollapsed ? 'collapsed' : ''}`}>
-<<<<<<< HEAD
-      <a href="#main-content" className="skip-to-main-content">Skip to Main Content</a>
-=======
-<<<<<<< HEAD
-      <a href="#main-content" className="skip-to-main-content">Skip to Main Content</a>
-=======
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       <div 
         className={`sidebar-overlay ${isMobileOpen ? 'active' : ''}`} 
         onClick={() => setIsMobileOpen(false)}
       ></div>
-      <AdminSidebar 
+      <InstructorSidebar 
         isCollapsed={isCollapsed} 
         setIsCollapsed={setIsCollapsed} 
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
       />
-<<<<<<< HEAD
-      <main id="main-content" className="admin-main-content">
-=======
-<<<<<<< HEAD
-      <main id="main-content" className="admin-main-content">
-=======
       <main className="admin-main-content">
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         <header className="admin-top-header">
           <button 
             className="mobile-menu-btn"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-<<<<<<< HEAD
-            aria-label="Toggle Mobile Menu"
-            aria-expanded={isMobileOpen}
-          >
-            <Menu size={24} aria-hidden="true" />
-          </button>
-          <div className="header-actions">
-            <NotificationsDropdown />
-            <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme" aria-label="Toggle Theme">
-              {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
-            </button>
-            <div className="admin-profile-badge">
-              <div className="profile-icon" style={{ padding: user.profileImage ? '2px' : '' }}>
-                {user.profileImage ? (
-                  <img src={user.profileImage} alt={user.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                ) : (
-                  <User size={20} />
-                )}
-=======
           >
             <Menu size={24} />
           </button>
           <div className="header-actions">
-<<<<<<< HEAD
-            <NotificationsDropdown />
-=======
->>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
             <button onClick={toggleTheme} className="theme-toggle" title="Toggle Theme">
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <div className="admin-profile-badge">
               <div className="profile-icon">
                 <User size={20} />
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </div>
               <div className="profile-info">
                 <span className="admin-name">{user.name}</span>
-                <span className="admin-role">Administrator</span>
+                <span className="admin-role">Instructor</span>
               </div>
-<<<<<<< HEAD
-              <button onClick={handleLogout} className="admin-logout-icon" title="Logout" aria-label="Logout">
-                <LogOut size={18} aria-hidden="true" />
-=======
               <button onClick={handleLogout} className="admin-logout-icon" title="Logout">
                 <LogOut size={18} />
->>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </button>
             </div>
           </div>
@@ -205,4 +132,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default InstructorLayout;

@@ -28,7 +28,10 @@ const NotificationsDropdown = () => {
       const res = await axios.get('http://localhost:5001/api/notifications/my-notifications', {
         headers: { Authorization: `Bearer ${token}` }
       });
+<<<<<<< HEAD
       
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       setNotifications(res.data);
       setUnreadCount(res.data.filter(n => !n.is_read).length);
     } catch (err) {
@@ -152,7 +155,11 @@ const NotificationsDropdown = () => {
             <div>
               <h3 style={{ margin: 0, color: 'white', fontSize: '18px', fontWeight: 'bold' }}>Notifications</h3>
               <p style={{ margin: '4px 0 0 0', color: '#94a3b8', fontSize: '12px' }}>
+<<<<<<< HEAD
                 You have <span style={{ color: '#FF6B35', fontWeight: 'bold' }}>{unreadCount}</span> unread
+=======
+                You have <span style={{ color: '#8b5cf6', fontWeight: 'bold' }}>{unreadCount}</span> unread
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
               </p>
             </div>
             {unreadCount > 0 && activeTab === 'unread' && (
@@ -161,7 +168,11 @@ const NotificationsDropdown = () => {
                 style={{
                   background: 'transparent',
                   border: 'none',
+<<<<<<< HEAD
                   color: '#FF6B35',
+=======
+                  color: '#8b5cf6',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                   fontSize: '12px',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -169,7 +180,11 @@ const NotificationsDropdown = () => {
                   borderRadius: '6px',
                   transition: 'all 0.2s'
                 }}
+<<<<<<< HEAD
                 onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)'}
+=======
+                onMouseOver={(e) => e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)'}
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                 onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
               >
                 Mark all read
@@ -261,9 +276,15 @@ const NotificationsDropdown = () => {
                       gap: '12px',
                       padding: '16px',
                       borderRadius: '16px',
+<<<<<<< HEAD
                       background: !notification.is_read ? 'rgba(255, 107, 53, 0.05)' : 'transparent',
                       border: '1px solid',
                       borderColor: !notification.is_read ? 'rgba(255, 107, 53, 0.2)' : 'rgba(255,255,255,0.05)',
+=======
+                      background: !notification.is_read ? 'rgba(139, 92, 246, 0.05)' : 'transparent',
+                      border: '1px solid',
+                      borderColor: !notification.is_read ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255,255,255,0.05)',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       position: 'relative',
@@ -274,7 +295,11 @@ const NotificationsDropdown = () => {
                       if (btn) btn.style.opacity = '1';
                     }}
                     onMouseOut={(e) => {
+<<<<<<< HEAD
                       e.currentTarget.style.background = !notification.is_read ? 'rgba(255, 107, 53, 0.05)' : 'transparent';
+=======
+                      e.currentTarget.style.background = !notification.is_read ? 'rgba(139, 92, 246, 0.05)' : 'transparent';
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                       const btn = e.currentTarget.querySelector('.mark-read-btn');
                       if (btn) btn.style.opacity = '0';
                     }}
@@ -287,9 +312,15 @@ const NotificationsDropdown = () => {
                         transform: 'translateY(-50%)',
                         width: '3px',
                         height: '24px',
+<<<<<<< HEAD
                         background: '#FF6B35',
                         borderRadius: '0 4px 4px 0',
                         boxShadow: '0 0 10px rgba(255, 107, 53, 0.5)'
+=======
+                        background: '#8b5cf6',
+                        borderRadius: '0 4px 4px 0',
+                        boxShadow: '0 0 10px rgba(139, 92, 246, 0.5)'
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                       }}></div>
                     )}
                     
@@ -359,8 +390,13 @@ const NotificationsDropdown = () => {
                             width: '32px',
                             height: '32px',
                             borderRadius: '50%',
+<<<<<<< HEAD
                             background: 'rgba(255, 107, 53, 0.1)',
                             border: '1px solid rgba(255, 107, 53, 0.3)',
+=======
+                            background: 'rgba(139, 92, 246, 0.1)',
+                            border: '1px solid rgba(139, 92, 246, 0.3)',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                             color: '#a78bfa',
                             display: 'flex',
                             alignItems: 'center',
@@ -370,11 +406,19 @@ const NotificationsDropdown = () => {
                             transition: 'all 0.2s ease',
                           }}
                           onMouseOver={(e) => {
+<<<<<<< HEAD
                             e.currentTarget.style.background = '#FF6B35';
                             e.currentTarget.style.color = 'white';
                           }}
                           onMouseOut={(e) => {
                             e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)';
+=======
+                            e.currentTarget.style.background = '#8b5cf6';
+                            e.currentTarget.style.color = 'white';
+                          }}
+                          onMouseOut={(e) => {
+                            e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
                             e.currentTarget.style.color = '#a78bfa';
                           }}
                         >

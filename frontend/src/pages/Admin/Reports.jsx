@@ -20,11 +20,15 @@ const Reports = () => {
       const response = await axios.get('http://localhost:5001/api/reports/payments', {
         headers: { Authorization: `Bearer ${token}` }
       });
+<<<<<<< HEAD
       const successfulPayments = response.data.filter(payment => 
         (payment.status === 'done' || payment.status === 'succeeded') &&
         payment.userName !== 'Unknown User'
       );
       setPayments(successfulPayments);
+=======
+      setPayments(response.data);
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     } catch (err) {
       console.error('Error fetching payments:', err);
       setError('Failed to fetch payment reports.');
@@ -40,7 +44,11 @@ const Reports = () => {
       sortable: true,
       filterable: true,
       render: (row, highlight) => (
+<<<<<<< HEAD
         <div className="font-semibold text-primary">{highlight(row.userName)}</div>
+=======
+        <div className="font-semibold text-white">{highlight(row.userName)}</div>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       )
     },
     {
@@ -49,7 +57,11 @@ const Reports = () => {
       sortable: true,
       filterable: true,
       render: (row, highlight) => (
+<<<<<<< HEAD
         <div className="text-secondary">{highlight(row.courseName)}</div>
+=======
+        <div className="text-gray-300">{highlight(row.courseName)}</div>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       )
     },
     {
@@ -57,7 +69,11 @@ const Reports = () => {
       label: 'Amount (₹)',
       sortable: true,
       render: (row) => (
+<<<<<<< HEAD
         <div className="flex items-center gap-1 font-bold text-primary">
+=======
+        <div className="flex items-center gap-1 font-bold text-white">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
           <IndianRupee size={14} />{row.amount}
         </div>
       )
@@ -69,7 +85,11 @@ const Reports = () => {
       render: (row) => {
         const d = new Date(row.date);
         return (
+<<<<<<< HEAD
           <div className="flex items-center gap-2 text-secondary text-sm">
+=======
+          <div className="flex items-center gap-2 text-gray-400 text-sm">
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             <Calendar size={14} />
             {d.toLocaleDateString()} {d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
@@ -111,7 +131,11 @@ const Reports = () => {
       <div className="admin-header-row mb-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">Payment Reports</h1>
+<<<<<<< HEAD
           <p className="text-secondary">View recent transactions and payment statuses from Stripe</p>
+=======
+          <p className="text-gray-500">View recent transactions and payment statuses from Stripe</p>
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         </div>
       </div>
 

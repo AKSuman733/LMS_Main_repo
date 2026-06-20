@@ -1,6 +1,13 @@
 const db = require('../config/db');
+<<<<<<< HEAD
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const notificationUtil = require('../utils/notification.util');
+=======
+<<<<<<< HEAD
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
 exports.getAllCourses = async (req, res) => {
   const { search, category, celebrity } = req.query;
@@ -186,6 +193,7 @@ exports.enrollInCourse = async (req, res) => {
       [user_id, course_id]
     );
 
+<<<<<<< HEAD
     const courseInfo = await db.query('SELECT title, price FROM courses WHERE id = $1', [course_id]);
     const course = courseInfo.rows[0];
     const courseTitle = course?.title || 'a course';
@@ -205,6 +213,8 @@ exports.enrollInCourse = async (req, res) => {
       await notificationUtil.createNotification(user_id, 'Receipt Generated', `Your payment receipt for ${courseTitle} (₹${coursePrice}) is available.`, 'success');
     }
 
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     res.status(201).json({ message: 'Enrolled successfully' });
   } catch (error) {
     console.error(error);
@@ -221,11 +231,14 @@ exports.updateProgress = async (req, res) => {
       'INSERT INTO progress (user_id, lesson_id, status) VALUES ($1, $2, $3) ON CONFLICT (user_id, lesson_id) DO UPDATE SET status = $3, updated_at = CURRENT_TIMESTAMP',
       [user_id, lesson_id, status || 'completed']
     );
+<<<<<<< HEAD
     
     if (status === 'completed' || !status) {
       await notificationUtil.createNotification(user_id, 'Lesson Completed', 'You have successfully completed a lesson. Keep up the good work!', 'success');
     }
 
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     res.status(200).json({ message: 'Progress updated' });
   } catch (error) {
     console.error(error);
@@ -275,9 +288,12 @@ exports.createCourse = async (req, res) => {
       'INSERT INTO courses (title, description, thumbnail, instructor_id, price, level, category, duration, celebrity) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
       [title, description, thumbnail, instructor_id, price || 0, level || 'Beginner', category, duration, celebrity]
     );
+<<<<<<< HEAD
     
     await notificationUtil.notifyAllStudents('New Course Added!', `Check out our new course: ${title}.`, 'info');
     
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
     res.status(201).json(newCourse.rows[0]);
   } catch (error) {
     console.error(error);
@@ -335,7 +351,15 @@ exports.getUserEnrollments = async (req, res) => {
     const results = await Promise.all(enrollments.rows.map(async (course) => {
       const totalLessons = await db.query('SELECT COUNT(*) FROM lessons WHERE course_id = $1', [course.id]);
       const completedLessons = await db.query(
+<<<<<<< HEAD
         'SELECT COUNT(*), MAX(p.updated_at) as completed_at FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = $1 AND l.course_id = $2 AND p.status = $3',
+=======
+<<<<<<< HEAD
+        'SELECT COUNT(*), MAX(p.updated_at) as completed_at FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = $1 AND l.course_id = $2 AND p.status = $3',
+=======
+        'SELECT COUNT(*) FROM progress p JOIN lessons l ON p.lesson_id = l.id WHERE p.user_id = $1 AND l.course_id = $2 AND p.status = $3',
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         [user_id, course.id, 'completed']
       );
 
@@ -345,8 +369,17 @@ exports.getUserEnrollments = async (req, res) => {
 
       return {
         ...course,
+<<<<<<< HEAD
         progress: percentage,
         completed_at: percentage === 100 ? completedLessons.rows[0].completed_at : null
+=======
+<<<<<<< HEAD
+        progress: percentage,
+        completed_at: percentage === 100 ? completedLessons.rows[0].completed_at : null
+=======
+        progress: percentage
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       };
     }));
 
@@ -357,6 +390,7 @@ exports.getUserEnrollments = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 exports.getUserDashboardStats = async (req, res) => {
   const user_id = req.user.id;
   try {
@@ -422,6 +456,8 @@ exports.getUserDashboardStats = async (req, res) => {
   }
 };
 
+=======
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 exports.getInstructorCourses = async (req, res) => {
   try {
     const courses = await db.query('SELECT * FROM courses ORDER BY created_at DESC');
@@ -472,6 +508,10 @@ exports.bulkDeleteCourses = async (req, res) => {
     res.status(500).json({ error: 'Error deleting courses' });
   }
 };
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
 
 exports.createCheckoutSession = async (req, res) => {
   const { course_id } = req.body;
@@ -586,3 +626,8 @@ exports.createPaymentIntent = async (req, res) => {
     res.status(500).json({ error: 'Server error while creating payment intent' });
   }
 };
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ea7d4c330ef821eaa42c835b4f6fb8675e70f7fe
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383

@@ -53,7 +53,11 @@ const CheckoutForm = ({ clientSecret, course, user, onSuccess, onCancel }) => {
         '::placeholder': {
           color: '#aab7c4',
         },
+<<<<<<< HEAD
         iconColor: '#FF6B35',
+=======
+        iconColor: '#8b5cf6',
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
       },
       invalid: {
         color: '#ef4444',
@@ -95,7 +99,11 @@ const CheckoutForm = ({ clientSecret, course, user, onSuccess, onCancel }) => {
         <button
           type="submit"
           disabled={!stripe || isProcessing}
+<<<<<<< HEAD
           style={{ flex: 1, padding: '12px', background: 'var(--primary-gradient)', border: 'none', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(255, 107, 53, 0.4)' }}
+=======
+          style={{ flex: 1, padding: '12px', background: 'linear-gradient(135deg, #8b5cf6, #ec4899)', border: 'none', color: '#fff', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)' }}
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
         >
           {isProcessing ? <><Loader size={18} className="animate-spin" /> Processing...</> : `Pay ₹${course.price}`}
         </button>
@@ -142,7 +150,11 @@ const PaymentModal = ({ isOpen, onClose, clientSecret, course, user, onSuccess }
           </Elements>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 0' }}>
+<<<<<<< HEAD
             <Loader className="animate-spin" style={{ color: '#FF6B35', marginBottom: '16px' }} size={32} />
+=======
+            <Loader className="animate-spin" style={{ color: '#8b5cf6', marginBottom: '16px' }} size={32} />
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             <p style={{ color: '#94a3b8', margin: 0 }}>Initializing secure payment...</p>
           </div>
         )}

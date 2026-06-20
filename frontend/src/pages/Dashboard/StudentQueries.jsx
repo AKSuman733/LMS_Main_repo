@@ -63,7 +63,11 @@ const StudentQueries = () => {
           
           {/* Search Box */}
           <div className="search-box-premium" style={{ width: '100%', borderRadius: '16px', background: 'var(--surface-color)', padding: '14px 20px', boxShadow: 'var(--shadow-sm)' }}>
+<<<<<<< HEAD
             <Search size={20} className="text-secondary" />
+=======
+            <Search size={20} className="text-gray-400" />
+>>>>>>> 9e1de81cd6878b26aed245c1ff99ddd4ff053383
             <input
               type="text"
               placeholder="Search..."
