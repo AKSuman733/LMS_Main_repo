@@ -78,9 +78,10 @@ const Login = () => {
                 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Email Address</label>
+                        <label htmlFor="login-email">Email Address</label>
                         <input 
                             type="email" 
+                            id="login-email"
                             className={isEmailTouched ? (isValidEmail(email) ? "input-valid" : "input-invalid") : ""}
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
@@ -90,9 +91,10 @@ const Login = () => {
                         {isEmailTouched && !isValidEmail(email) && <span className="inline-error">Please enter a valid email format.</span>}
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label htmlFor="login-password">Password</label>
                         <input 
                             type="password" 
+                            id="login-password"
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             required 

@@ -83,9 +83,10 @@ const Register = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Full Name <span className="required-asterisk">*</span></label>
+                        <label htmlFor="admin-reg-fullname">Full Name <span className="required-asterisk">*</span></label>
                         <input
                             type="text"
+                            id="admin-reg-fullname"
                             placeholder="Full Name"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
@@ -93,9 +94,10 @@ const Register = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Admin Email <span className="required-asterisk">*</span></label>
+                        <label htmlFor="admin-reg-email">Admin Email <span className="required-asterisk">*</span></label>
                         <input
                             type="email"
+                            id="admin-reg-email"
                             className={isEmailTouched ? (isValidEmail(email) ? "input-valid" : "input-invalid") : ""}
                             placeholder="admin@uptoskills.ai"
                             value={email}
@@ -105,9 +107,10 @@ const Register = () => {
                     </div>
                     {isEmailTouched && !isValidEmail(email) && <span className="inline-error register-inline-error">Please enter a valid email format.</span>}
                     <div className="form-group">
-                        <label>Master Password <span className="required-asterisk">*</span></label>
+                        <label htmlFor="admin-reg-password">Master Password <span className="required-asterisk">*</span></label>
                         <input
                             type="password"
+                            id="admin-reg-password"
                             placeholder="••••••••"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}

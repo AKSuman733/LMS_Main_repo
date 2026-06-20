@@ -84,9 +84,10 @@ const Login = () => {
                 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Email Address</label>
+                        <label htmlFor="admin-login-email">Email Address</label>
                         <input 
                             type="email" 
+                            id="admin-login-email"
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
                             required 
@@ -94,9 +95,10 @@ const Login = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label htmlFor="admin-login-password">Password</label>
                         <input 
                             type="password" 
+                            id="admin-login-password"
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             required 

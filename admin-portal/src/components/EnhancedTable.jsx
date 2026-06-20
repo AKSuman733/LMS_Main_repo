@@ -447,7 +447,15 @@ const EnhancedTable = ({
                                     exit={{ opacity: 0 }}
                                 >
                                     <td colSpan={columns.length + 2} className="no-data-placeholder">
-                                        No records found matching filters or search terms.
+                                        <div className="table-empty-container">
+                                            <p>No records found matching filters or search terms.</p>
+                                            <button 
+                                                className="table-reset-btn" 
+                                                onClick={() => { setSearchQuery(""); setFilters({}); }}
+                                            >
+                                                Reset Filters
+                                            </button>
+                                        </div>
                                     </td>
                                 </motion.tr>
                             ) : (

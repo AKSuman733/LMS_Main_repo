@@ -1,5 +1,5 @@
 .admin-reports-page {
-  animation: reportsFadeIn 0.5s ease-out;
+  animation: reportsFadeIn 0.3s ease-out;
 }
 
 @keyframes reportsFadeIn {
@@ -676,20 +676,39 @@
   }
 }
 
+@media (max-width: 768px) {
+  .popular-course-name {
+    max-width: 70% !important;
+    white-space: normal !important;
+    word-break: break-word;
+    text-overflow: clip !important;
+  }
+}
+
 @media (max-width: 576px) {
   .admin-reports-chart-container {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible !important;
     width: 100%;
   }
 
   .admin-reports-svg-chart {
-    min-width: 500px !important;
-    height: 220px !important;
+    min-width: 100% !important;
+    height: auto !important;
   }
 
   .admin-reports-chart-labels-row {
-    min-width: 500px !important;
+    min-width: 100% !important;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+  }
+
+  .admin-reports-chart-label-item {
+    font-size: 0.65rem !important;
+    width: auto !important;
+    flex: 1;
+    white-space: normal !important;
+    word-break: break-word;
   }
 }
 

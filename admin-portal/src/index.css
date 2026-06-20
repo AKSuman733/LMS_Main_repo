@@ -22,6 +22,13 @@ body {
   min-width: 320px;
   min-height: 100vh;
   width: 100%;
+  font-size: var(--font-size-body, 14px);
+  font-weight: var(--font-weight-body, 400);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: var(--font-size-headings, 24px);
+  font-weight: var(--font-weight-headings, 500);
 }
 
 #root {
@@ -477,6 +484,19 @@ body.reduce-motion ::after {
     scroll-behavior: auto !important;
     transition-duration: 0s !important;
     transition-delay: 0s !important;
+}
+
+@media (max-width: 768px) {
+    button, 
+    a.btn, 
+    a.admin-nav-btn,
+    .auth-btn,
+    .oauth-btn-premium,
+    input, 
+    select, 
+    textarea {
+        min-height: 44px;
+    }
 }
 
 

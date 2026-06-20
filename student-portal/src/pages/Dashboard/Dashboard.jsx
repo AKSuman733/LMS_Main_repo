@@ -253,6 +253,16 @@ const Dashboard = () => {
         return `http://localhost:5000/${cleanPath}`;
     };
 
+    const highlightText = (text, search) => {
+        if (!search || !text) return text;
+        const strText = String(text);
+        const regex = new RegExp(`(${search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+        const parts = strText.split(regex);
+        return parts.map((part, index) => 
+            regex.test(part) ? <mark key={index} className="dashboard-search-highlight">{part}</mark> : part
+        );
+    };
+
     if (!user) return <div className="error-screen"><h2>Please log in to access your dashboard.</h2></div>;
     if (loading) return (
         <div className="premium-page-loader skeleton-pulse">
@@ -520,14 +530,20 @@ const Dashboard = () => {
                                         <div className="pane-empty">
                                             <Icons.ClipboardList />
                                             <p>No tasks found matching current filters.</p>
+                                            <button 
+                                                className="dashboard-empty-action-btn"
+                                                onClick={() => { setTaskSearchQuery(""); setTaskStatusFilter("all"); setTaskSortBy("newest"); }}
+                                            >
+                                                Reset Search & Filters
+                                            </button>
                                         </div>
                                     ) : (
                                         filteredTasks.map(task => (
                                             <div key={task.id} className="dashboard-task-card">
                                                 <div className="dashboard-task-card-header">
                                                     <div>
-                                                        <h4 className="dashboard-task-title">{task.title}</h4>
-                                                        <p className="dashboard-task-desc">{task.description}</p>
+                                                        <h4 className="dashboard-task-title">{highlightText(task.title, taskSearchQuery)}</h4>
+                                                        <p className="dashboard-task-desc">{highlightText(task.description, taskSearchQuery)}</p>
                                                     </div>
                                                     {(() => {
                                                         const isLate = task.due_date && task.submitted_at && new Date(task.submitted_at) > new Date(task.due_date);
@@ -897,6 +913,13 @@ const Dashboard = () => {
                                             <div className="empty-icon">💬</div>
                                             <h3>No Queries Found</h3>
                                             <p>Try adjusting your search or filter settings, or submit a new query.</p>
+                                            <button 
+                                                className="dashboard-empty-action-btn"
+                                                onClick={() => { setQuerySearchQuery(""); setQueryStatusFilter("all"); setQuerySortBy("newest"); }}
+                                                style={{ marginTop: "15px" }}
+                                            >
+                                                Reset Search & Filters
+                                            </button>
                                         </div>
                                     ) : (
                                         filteredQueries.map(query => (
@@ -904,8 +927,8 @@ const Dashboard = () => {
                                                 <div className="dashboard-query-card-header">
                                                     <div>
                                                         <span className="dashboard-query-subject-label">Subject</span>
-                                                        <h4 className="dashboard-query-subject-val">{query.subject}</h4>
-                                                        <p className="dashboard-query-message">{query.message}</p>
+                                                        <h4 className="dashboard-query-subject-val">{highlightText(query.subject, querySearchQuery)}</h4>
+                                                        <p className="dashboard-query-message">{highlightText(query.message, querySearchQuery)}</p>
                                                     </div>
                                                     <div className="dashboard-query-actions-col">
                                                         <span className={`dashboard-query-status ${query.reply ? 'replied' : 'pending'}`}>
@@ -917,7 +940,7 @@ const Dashboard = () => {
                                                 {query.reply && (
                                                     <div className="dashboard-query-response">
                                                         <span className="dashboard-query-response-label">Admin Response</span>
-                                                        <p className="dashboard-query-response-text">{query.reply}</p>
+                                                        <p className="dashboard-query-response-text">{highlightText(query.reply, querySearchQuery)}</p>
                                                         {query.replied_at && <span className="dashboard-query-response-time">Replied at: {new Date(query.replied_at).toLocaleString()}</span>}
                                                     </div>
                                                 )}

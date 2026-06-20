@@ -768,4 +768,39 @@
     }
 }
 
+.table-empty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10px;
+    gap: 15px;
+}
+
+.table-empty-container p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.95rem;
+}
+
+.table-reset-btn {
+    background: var(--color-primary, #FF6B35);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.table-reset-btn:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+}
+
+.table-reset-btn:active {
+    transform: translateY(0);
+}
+
 

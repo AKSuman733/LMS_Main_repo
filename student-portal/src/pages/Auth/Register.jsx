@@ -91,9 +91,10 @@ const Register = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label>Full Name <span className="required-asterisk">*</span></label>
+                        <label htmlFor="reg-fullname">Full Name <span className="required-asterisk">*</span></label>
                         <input
                             type="text"
+                            id="reg-fullname"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             required
@@ -101,9 +102,10 @@ const Register = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Email Address <span className="required-asterisk">*</span></label>
+                        <label htmlFor="reg-email">Email Address <span className="required-asterisk">*</span></label>
                         <input
                             type="email"
+                            id="reg-email"
                             className={isEmailTouched ? (isValidEmail(email) ? "input-valid" : "input-invalid") : ""}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -113,9 +115,10 @@ const Register = () => {
                         {isEmailTouched && !isValidEmail(email) && <span className="inline-error">Please enter a valid email format.</span>}
                     </div>
                     <div className="form-group">
-                        <label>Password <span className="required-asterisk">*</span></label>
+                        <label htmlFor="reg-password">Password <span className="required-asterisk">*</span></label>
                         <input
                             type="password"
+                            id="reg-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -141,9 +144,10 @@ const Register = () => {
                         )}
                     </div>
                     <div className="form-group">
-                        <label>Confirm Password <span className="required-asterisk">*</span></label>
+                        <label htmlFor="reg-confirm-password">Confirm Password <span className="required-asterisk">*</span></label>
                         <input
                             type="password"
+                            id="reg-confirm-password"
                             className={confirmPassword.length > 0 && password !== confirmPassword ? "input-invalid" : ""}
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
