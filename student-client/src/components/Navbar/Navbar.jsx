@@ -9,9 +9,12 @@ import {
   LogIn,
   Sparkles,
   X,
+  Settings,
 } from "lucide-react";
 
 import allMentors from "../../data/allMentors";
+
+
 
 import {
   colors,
@@ -615,7 +618,7 @@ const filteredMentors =
           >
             Dashboard
           </Link>
-
+         
           {/* LOGIN BUTTON */}
 
           <Link
@@ -694,7 +697,7 @@ const filteredMentors =
               >
                 Dashboard
               </Link>
-
+               
               <Link
                 to="/login"
 
