@@ -7,42 +7,31 @@ import {
   Rocket,
   BrainCircuit,
   GraduationCap,
-  PlayCircle,
   Star,
   ArrowRight,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-
-import {
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 /* ====================================================== */
 /* STYLES */
 /* ====================================================== */
 
-const glass =
-  `
-    border border-[var(--color-border)]
+const glass = `
+  border border-white/10
+  bg-white/[0.03]
+  backdrop-blur-md
+`;
 
-    bg-[var(--color-card)]
-
-    backdrop-blur-xl
-  `;
-
-const gradientText =
-  `
-    bg-gradient-to-r
-
-    from-[var(--color-primary)]
-    via-pink-500
-    to-[var(--color-secondary)]
-
-    bg-clip-text
-
-    text-transparent
-  `;
+const gradientText = `
+  bg-gradient-to-r
+  from-[var(--color-primary)]
+  via-purple-500
+  to-[var(--color-secondary)]
+  bg-clip-text
+  text-transparent
+`;
 
 /* ====================================================== */
 /* FEATURE CARD */
@@ -55,107 +44,42 @@ function FeatureCard({
   gradient,
   glow,
 }) {
-
   return (
-
     <motion.div
-      whileHover={{
-        y: -5,
-      }}
-
+      whileHover={{ y: -4 }}
       className={`
         ${glass}
-
-        group
-
-        relative overflow-hidden
-
-        rounded-[30px]
-
-        p-6
-
-        transition-all
-        duration-500
+        group relative overflow-hidden
+        rounded-2xl
+        p-5
+        transition-all duration-300
       `}
     >
-
-      {/* GLOW */}
-
       <div
         className={`
-          absolute
-          right-0 top-0
-
-          h-24 w-24
-
-          rounded-full
-
-          blur-3xl
-
+          absolute right-0 top-0
+          h-20 w-20 rounded-full
+          blur-[60px]
           ${glow}
         `}
       />
 
-      {/* ICON */}
-
       <div
         className={`
-          mb-5
-
-          flex h-14 w-14
-          items-center
-          justify-center
-
-          rounded-2xl
-
-          bg-gradient-to-r
-
-          ${gradient}
+          mb-4 flex h-12 w-12 items-center justify-center
+          rounded-xl bg-gradient-to-r ${gradient}
         `}
       >
-
-        <Icon
-          size={24}
-
-          className="
-            text-white
-          "
-        />
-
+        <Icon size={20} className="text-white" />
       </div>
 
-      {/* TITLE */}
-
-      <h3
-        className="
-          mb-3
-
-          text-xl
-          font-black
-
-          text-white
-        "
-      >
-
+      <h3 className="mb-2 text-lg font-bold text-white">
         {title}
-
       </h3>
 
-      {/* DESC */}
-
-      <p
-        className="
-          text-sm
-          leading-8
-
-          text-slate-400
-        "
-      >
-
+      <p className="text-sm leading-6 text-slate-400">
         {desc}
-
       </p>
-
     </motion.div>
   );
 }
@@ -170,93 +94,32 @@ function TestimonialCard({
   role,
   text,
 }) {
-
   return (
-
     <motion.div
-      whileHover={{
-        y: -5,
-      }}
-
-      className={`
-        ${glass}
-
-        rounded-[28px]
-
-        p-6
-      `}
+      whileHover={{ y: -4 }}
+      className={`${glass} rounded-2xl p-5`}
     >
-
-      {/* TEXT */}
-
-      <p
-        className="
-          mb-6
-
-          text-sm
-          leading-8
-
-          text-slate-300
-        "
-      >
-
+      <p className="mb-5 text-sm leading-6 text-slate-300">
         "{text}"
-
       </p>
 
-      {/* USER */}
-
-      <div
-        className="
-          flex items-center
-          gap-4
-        "
-      >
-
+      <div className="flex items-center gap-3">
         <img
           src={image}
-
           alt={name}
-
-          className="
-            h-12 w-12
-
-            rounded-full
-
-            object-cover
-          "
+          className="h-10 w-10 rounded-full object-cover"
         />
 
         <div>
-
-          <h4
-            className="
-              font-bold
-
-              text-white
-            "
-          >
-
+          <h4 className="text-sm font-semibold text-white">
             {name}
-
           </h4>
 
-          <p
-            className="
-              text-xs
-
-              text-[var(--color-secondary)]
-            "
-          >
-
+          <p className="text-xs text-[var(--color-secondary)]">
             {role}
-
           </p>
-
         </div>
-
       </div>
-
     </motion.div>
   );
 }
@@ -266,650 +129,167 @@ function TestimonialCard({
 /* ====================================================== */
 
 function HomePage() {
-
-  const navigate =
-    useNavigate();
+  const navigate = useNavigate();
 
   return (
-
-    <div
-      className="
-        overflow-hidden
-
-        bg-[var(--color-background)]
-      "
-    >
-
-      {/* ====================================================== */}
-      {/* HERO */}
-      {/* ====================================================== */}
-
+    <div className="overflow-hidden bg-[var(--color-background)]">
       <HeroBanner />
-
-      {/* ====================================================== */}
-      {/* COURSE GRID */}
-      {/* ====================================================== */}
 
       <CourseGrid />
 
-      {/* ====================================================== */}
-      {/* WHY CHOOSE US */}
-      {/* ====================================================== */}
+      <section className="relative overflow-hidden py-14 lg:py-16">
+        <div className="absolute left-0 top-0 h-[180px] w-[180px] rounded-full bg-[var(--color-secondary)]/10 blur-[60px]" />
 
-      <section
-        className="
-          relative
+        <div className="absolute bottom-0 right-0 h-[180px] w-[180px] rounded-full bg-[var(--color-primary)]/10 blur-[60px]" />
 
-          overflow-hidden
-
-          py-20
-        "
-      >
-
-        {/* GLOWS */}
-
-        <div
-          className="
-            absolute
-            left-0 top-0
-
-            h-[280px]
-            w-[280px]
-
-            rounded-full
-
-            bg-[var(--color-secondary)]/10
-
-            blur-[120px]
-          "
-        />
-
-        <div
-          className="
-            absolute
-            bottom-0 right-0
-
-            h-[280px]
-            w-[280px]
-
-            rounded-full
-
-            bg-[var(--color-primary)]/10
-
-            blur-[120px]
-          "
-        />
-
-        {/* CONTENT */}
-
-        <div
-          className="
-            relative z-10
-
-            mx-auto
-
-            max-w-7xl
-
-            px-5
-
-            lg:px-8
-          "
-        >
-
-          {/* ====================================================== */}
-          {/* HEADING */}
-          {/* ====================================================== */}
-
-          <div
-            className="
-              mx-auto
-
-              mb-12
-
-              max-w-3xl
-
-              text-center
-            "
-          >
-
-            {/* BADGE */}
-
+        <div className="relative z-10 mx-auto max-w-6xl px-4 lg:px-6">
+          <div className="mx-auto mb-10 max-w-2xl text-center">
             <div
-              className={`
-                ${glass}
-
-                mb-5
-
-                inline-flex
-                items-center
-                gap-2
-
-                rounded-full
-
-                px-4 py-2
-              `}
+              className={`${glass} mb-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5`}
             >
-
               <Sparkles
-                size={14}
-
-                className="
-                  text-[var(--color-secondary)]
-                "
+                size={12}
+                className="text-[var(--color-secondary)]"
               />
 
-              <span
-                className="
-                  text-xs
-                  font-medium
-
-                  text-[var(--color-secondary)]
-                "
-              >
+              <span className="text-xs font-medium text-[var(--color-secondary)]">
                 Why Students Choose LearnSphere
               </span>
-
             </div>
 
-            {/* TITLE */}
-
-            <h2
-              className="
-                text-4xl
-                font-black
-                leading-tight
-
-                text-white
-
-                md:text-5xl
-              "
-            >
-
+            <h2 className="text-3xl font-bold leading-tight text-white md:text-4xl">
               Learn AI With{" "}
-
-              <span
-                className={
-                  gradientText
-                }
-              >
+              <span className={gradientText}>
                 Real-World Experience
               </span>
-
             </h2>
 
-            {/* DESC */}
-
-            <p
-              className="
-                mt-5
-
-                text-sm
-                leading-8
-
-                text-slate-400
-
-                md:text-base
-              "
-            >
-
+            <p className="mt-4 text-sm leading-6 text-slate-400 md:text-base">
               Build production-ready AI projects,
-              learn from experts, and become
-              job-ready through immersive
-              learning experiences.
-
+              learn from experts, and become job-ready
+              through immersive learning experiences.
             </p>
-
           </div>
 
-          {/* ====================================================== */}
-          {/* FEATURE GRID */}
-          {/* ====================================================== */}
-
-          <div
-            className="
-              grid gap-5
-
-              md:grid-cols-2
-              xl:grid-cols-3
-            "
-          >
-
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             <FeatureCard
               icon={Rocket}
-
               title="Real AI Projects"
-
-              desc="
-                Build practical AI applications
-                used in startups, enterprise systems,
-                and futuristic automation workflows.
-              "
-
-              gradient="
-                from-[var(--color-secondary)]
-                to-blue-500
-              "
-
-              glow="
-                bg-[var(--color-secondary)]/10
-              "
+              desc="Build practical AI applications used in startups, enterprise systems, and automation workflows."
+              gradient="from-[var(--color-secondary)] to-blue-500"
+              glow="bg-[var(--color-secondary)]/10"
             />
 
             <FeatureCard
               icon={BrainCircuit}
-
               title="AI Mentorship"
-
-              desc="
-                Learn directly from experienced
-                AI engineers, industry mentors,
-                and machine learning experts.
-              "
-
-              gradient="
-                from-purple-500
-                to-pink-500
-              "
-
-              glow="
-                bg-purple-500/10
-              "
+              desc="Learn directly from experienced AI engineers, industry mentors, and machine learning experts."
+              gradient="from-purple-500 to-pink-500"
+              glow="bg-purple-500/10"
             />
 
             <FeatureCard
               icon={GraduationCap}
-
               title="Career Growth"
-
-              desc="
-                Resume reviews, portfolio guidance,
-                placement support, and interview
-                preparation for AI careers.
-              "
-
-              gradient="
-                from-pink-500
-                to-orange-500
-              "
-
-              glow="
-                bg-pink-500/10
-              "
+              desc="Resume reviews, portfolio guidance, placement support, and interview preparation."
+              gradient="from-pink-500 to-orange-500"
+              glow="bg-pink-500/10"
             />
-
           </div>
-
         </div>
-
       </section>
 
-      {/* ====================================================== */}
-      {/* TESTIMONIALS */}
-      {/* ====================================================== */}
-
-      <section
-        className="
-          relative
-
-          bg-[#071120]
-
-          py-20
-        "
-      >
-
-        <div
-          className="
-            mx-auto
-
-            max-w-7xl
-
-            px-5
-
-            lg:px-8
-          "
-        >
-
-          {/* ====================================================== */}
-          {/* HEADING */}
-          {/* ====================================================== */}
-
-          <div
-            className="
-              mb-12
-
-              text-center
-            "
-          >
-
-            {/* BADGE */}
-
+      <section className="bg-[#071120] py-14 lg:py-16">
+        <div className="mx-auto max-w-6xl px-4 lg:px-6">
+          <div className="mb-10 text-center">
             <div
-              className={`
-                ${glass}
-
-                mb-5
-
-                inline-flex
-                items-center
-                gap-2
-
-                rounded-full
-
-                px-4 py-2
-              `}
+              className={`${glass} mb-4 inline-flex items-center gap-2 rounded-full px-3 py-1.5`}
             >
-
               <Star
-                size={14}
-
-                className="
-                  fill-yellow-400
-
-                  text-yellow-400
-                "
+                size={12}
+                className="fill-yellow-400 text-yellow-400"
               />
 
-              <span
-                className="
-                  text-xs
-
-                  text-slate-300
-                "
-              >
+              <span className="text-xs text-slate-300">
                 Student Testimonials
               </span>
-
             </div>
 
-            {/* TITLE */}
-
-            <h2
-              className="
-                text-4xl
-                font-black
-
-                text-white
-
-                md:text-5xl
-              "
-            >
-
+            <h2 className="text-3xl font-bold text-white md:text-4xl">
               Success Stories
-
             </h2>
 
-            {/* DESC */}
-
-            <p
-              className="
-                mt-4
-
-                text-sm
-
-                text-slate-400
-              "
-            >
-
+            <p className="mt-3 text-sm text-slate-400">
               Thousands of learners transformed their careers.
-
             </p>
-
           </div>
 
-          {/* GRID */}
-
-          <div
-            className="
-              grid gap-5
-
-              md:grid-cols-2
-              xl:grid-cols-3
-            "
-          >
-
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             <TestimonialCard
               image="https://i.pravatar.cc/100?img=12"
               name="Priya Sharma"
               role="AI Engineer"
-              text="
-                The projects and mentorship
-                helped me become an AI engineer
-                in under 6 months.
-              "
+              text="The projects and mentorship helped me become an AI engineer in under 6 months."
             />
 
             <TestimonialCard
               image="https://i.pravatar.cc/100?img=15"
               name="Rahul Verma"
               role="Data Scientist"
-              text="
-                Hands-on learning made AI concepts
-                incredibly practical and exciting.
-              "
+              text="Hands-on learning made AI concepts incredibly practical and exciting."
             />
 
             <TestimonialCard
               image="https://i.pravatar.cc/100?img=32"
               name="Sneha Kapoor"
               role="ML Engineer"
-              text="
-                One of the best AI learning platforms
-                for beginners and professionals alike.
-              "
+              text="One of the best AI learning platforms for beginners and professionals alike."
             />
-
           </div>
-
         </div>
-
       </section>
 
-      {/* ====================================================== */}
-      {/* CTA */}
-      {/* ====================================================== */}
+      <section className="relative overflow-hidden py-16 lg:py-20">
+        <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-primary)]/10 blur-[80px]" />
 
-      <section
-        className="
-          relative
-
-          overflow-hidden
-
-          py-24
-        "
-      >
-
-        {/* GLOW */}
-
-        <div
-          className="
-            absolute
-            left-1/2 top-1/2
-
-            h-[380px]
-            w-[380px]
-
-            -translate-x-1/2
-            -translate-y-1/2
-
-            rounded-full
-
-            bg-[var(--color-primary)]/10
-
-            blur-[150px]
-          "
-        />
-
-        {/* CONTENT */}
-
-        <div
-          className="
-            relative z-10
-
-            mx-auto
-
-            max-w-5xl
-
-            px-5
-
-            text-center
-          "
-        >
-
-          {/* BADGE */}
-
+        <div className="relative z-10 mx-auto max-w-5xl px-4 text-center">
           <div
-            className={`
-              ${glass}
-
-              mb-6
-
-              inline-flex
-              items-center
-              gap-2
-
-              rounded-full
-
-              px-5 py-2
-            `}
+            className={`${glass} mb-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5`}
           >
-
             <Sparkles
-              size={14}
-
-              className="
-                text-[var(--color-secondary)]
-              "
+              size={12}
+              className="text-[var(--color-secondary)]"
             />
 
-            <span
-              className="
-                text-xs
-                font-medium
-
-                text-[var(--color-secondary)]
-              "
-            >
-
+            <span className="text-xs font-medium text-[var(--color-secondary)]">
               Start Your AI Journey
-
             </span>
-
           </div>
 
-          {/* TITLE */}
-
-          <h2
-            className="
-              text-5xl
-              font-black
-              leading-tight
-
-              text-white
-
-              md:text-6xl
-            "
-          >
-
+          <h2 className="text-3xl font-bold leading-tight text-white md:text-4xl">
             Build The Future{" "}
-
-            <span
-              className={
-                gradientText
-              }
-            >
+            <span className={gradientText}>
               With AI
             </span>
-
           </h2>
 
-          {/* DESC */}
-
-          <p
-            className="
-              mx-auto mt-6
-
-              max-w-3xl
-
-              text-sm
-              leading-8
-
-              text-slate-400
-
-              md:text-lg
-            "
-          >
-
-            Join thousands of students mastering
-            Artificial Intelligence, Machine Learning,
-            Deep Learning, and Generative AI through
-            immersive learning experiences.
-
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-400 md:text-base">
+            Join thousands of students mastering Artificial Intelligence,
+            Machine Learning, Deep Learning, and Generative AI.
           </p>
 
-          {/* BUTTONS */}
-
-          <div
-            className="
-              mt-8
-
-              flex flex-wrap
-              items-center
-              justify-center
-              gap-4
-            "
-          >
-
-            {/* EXPLORE COURSES */}
-
+          <div className="mt-6 flex justify-center">
             <button
-
-              onClick={() =>
-                navigate("/courses")
-              }
-
-              className="
-                flex items-center
-                gap-2
-
-                rounded-2xl
-
-                bg-gradient-to-r
-
-                from-[var(--color-primary)]
-                to-pink-500
-
-                px-7 py-4
-
-                text-sm
-                font-semibold
-
-                text-white
-
-                shadow-[var(--shadow-orange)]
-
-                transition-all
-                duration-300
-
-                hover:scale-[1.03]
-              "
+              onClick={() => navigate("/courses")}
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-purple-500 px-5 py-3 text-xs font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
             >
-
               Explore Courses
 
-              <ArrowRight
-                size={18}
-              />
-
+              <ArrowRight size={16} />
             </button>
-
-           
-
           </div>
-
         </div>
-
       </section>
-
     </div>
   );
 }
