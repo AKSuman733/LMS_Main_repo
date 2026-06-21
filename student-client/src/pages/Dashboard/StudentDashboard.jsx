@@ -4,1131 +4,286 @@ import {
   BrainCircuit,
   ArrowRight,
   PlayCircle,
-  CheckCircle2,
   Sparkles,
   Flame,
-  BarChart3,
+  TrendingUp,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-
 import { Link } from "react-router-dom";
-
-import {
-  useEffect,
-  useState,
-} from "react";
-
-/* ====================================================== */
-/* IMPORT COURSES */
-/* ====================================================== */
+import { useEffect, useState } from "react";
 
 import allMentors from "../../data/allMentors";
 
-/* ====================================================== */
-/* STYLES */
-/* ====================================================== */
+/* ── shared tokens ── */
+const card =
+  "rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl";
 
-const glass =
-  `
-    border border-[var(--color-border)]
+const pill =
+  "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-medium tracking-wide text-slate-400";
 
-    bg-[var(--color-card)]
-
-    backdrop-blur-xl
-  `;
-
-const gradientText =
-  `
-    bg-gradient-to-r
-
-    from-[var(--color-primary)]
-    via-pink-500
-    to-[var(--color-secondary)]
-
-    bg-clip-text
-
-    text-transparent
-  `;
-
-/* ====================================================== */
-/* STAT CARD */
-/* ====================================================== */
-
+/* ── StatCard ── */
 function StatCard({ item }) {
-
   const Icon = item.icon;
-
   return (
-
     <motion.div
-      whileHover={{
-        y: -4,
-      }}
-
-      className={`
-        ${glass}
-
-        rounded-[28px]
-
-        p-5
-
-        transition-all
-        duration-300
-
-        hover:border-cyan-400/20
-      `}
+      whileHover={{ y: -3, transition: { duration: 0.2 } }}
+      className={`${card} flex flex-col gap-4 p-5 transition-colors duration-300 hover:border-white/10`}
     >
-
-      {/* TOP */}
-
       <div
-        className="
-          mb-4
-
-          flex items-center
-          justify-between
-        "
+        className={`flex h-10 w-10 items-center justify-center rounded-xl ${item.bg}`}
       >
-
-        {/* ICON */}
-
-        <div
-          className={`
-            flex h-12 w-12
-            items-center
-            justify-center
-
-            rounded-2xl
-
-            ${item.bg}
-          `}
-        >
-
-          <Icon
-            size={20}
-
-            className={
-              item.color
-            }
-          />
-
-        </div>
-
-        {/* MINI BAR */}
-
-        <BarChart3
-          size={18}
-
-          className="
-            text-slate-600
-          "
-        />
-
+        <Icon size={18} className={item.color} />
       </div>
-
-      {/* VALUE */}
-
-      <h3
-        className="
-          text-3xl
-          font-black
-
-          text-white
-        "
-      >
-
-        {item.value}
-
-      </h3>
-
-      {/* TITLE */}
-
-      <p
-        className="
-          mt-1
-
-          text-xs
-
-          text-slate-400
-        "
-      >
-
-        {item.title}
-
-      </p>
-
+      <div>
+        <p className="text-[11px] font-medium uppercase tracking-widest text-slate-500">
+          {item.title}
+        </p>
+        <h3 className="mt-1 text-3xl font-bold tabular-nums text-white">
+          {item.value}
+        </h3>
+        {item.delta && (
+          <span className="mt-1 flex items-center gap-1 text-[11px] text-emerald-400">
+            <TrendingUp size={10} /> {item.delta}
+          </span>
+        )}
+      </div>
     </motion.div>
   );
 }
 
-/* ====================================================== */
-/* COURSE CARD */
-/* ====================================================== */
-
+/* ── CourseCard ── */
 function CourseCard({ course }) {
-
+  const pct = course.progress ?? 0;
   return (
-
     <motion.div
-      whileHover={{
-        y: -5,
-      }}
-
-      className={`
-        ${glass}
-
-        group
-
-        overflow-hidden
-
-        rounded-[24px]
-
-        border border-white/10
-
-        bg-[#0b1120]
-
-        transition-all
-        duration-500
-
-        hover:border-cyan-400/20
-
-        hover:shadow-[0_0_30px_rgba(34,211,238,0.08)]
-      `}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      className={`${card} group overflow-hidden transition-all duration-300 hover:border-white/10 hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)]`}
     >
-
-      {/* ====================================================== */}
-      {/* IMAGE */}
-      {/* ====================================================== */}
-
-      <div
-        className="
-          relative
-
-          h-[220px]
-
-          overflow-hidden
-        "
-      >
-
-        {/* IMAGE */}
-
+      {/* image */}
+      <div className="relative h-48 overflow-hidden">
         <img
           src={course.image}
-
           alt={course.title}
-
-          className="
-            h-full
-            w-full
-
-            object-cover
-
-            object-top
-
-            transition-transform
-            duration-700
-
-            group-hover:scale-105
-          "
+          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
-
-        {/* LIGHT OVERLAY */}
-
-        <div
-          className="
-            absolute inset-0
-
-            bg-gradient-to-t
-
-            from-[#050816]/90
-            via-[#050816]/20
-            to-transparent
-          "
-        />
-
-        {/* PROGRESS */}
-
-        <div
-          className="
-            absolute
-            left-4 top-4
-
-            rounded-full
-
-            bg-black/40
-
-            px-3 py-1
-
-            text-[10px]
-            font-semibold
-
-            text-white
-
-            backdrop-blur-lg
-          "
-        >
-
-          {course.progress}% Completed
-
+        <div className="absolute inset-0 bg-gradient-to-t from-[#080c14] via-[#080c14]/30 to-transparent" />
+        <div className="absolute left-3 top-3 rounded-full bg-black/50 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-md">
+          {pct}% done
         </div>
-
       </div>
 
-      {/* ====================================================== */}
-      {/* CONTENT */}
-      {/* ====================================================== */}
-
+      {/* content */}
       <div className="p-5">
-
-        {/* MENTOR */}
-
-        <p
-          className="
-            text-xs
-            font-semibold
-
-            tracking-wide
-
-            text-cyan-400
-          "
-        >
-
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-indigo-400">
           {course.mentor}
-
         </p>
-
-        {/* TITLE */}
-
-        <h3
-          className="
-            mt-2
-
-            line-clamp-2
-
-            text-xl
-            font-black
-            leading-snug
-
-            text-white
-          "
-        >
-
+        <h3 className="mt-2 line-clamp-2 text-base font-semibold leading-snug text-white">
           {course.title}
-
         </h3>
 
-        {/* PROGRESS */}
-
-        <div className="mt-5">
-
-          <div
-            className="
-              mb-2
-
-              flex items-center
-              justify-between
-            "
-          >
-
-            <span
-              className="
-                text-xs
-
-                text-slate-400
-              "
-            >
-              Progress
-            </span>
-
-            <span
-              className="
-                text-xs
-                font-bold
-
-                text-cyan-400
-              "
-            >
-
-              {course.progress}%
-
-            </span>
-
+        {/* progress bar */}
+        <div className="mt-4">
+          <div className="mb-1.5 flex justify-between text-[11px] text-slate-500">
+            <span>Progress</span>
+            <span className="text-slate-300">{pct}%</span>
           </div>
-
-          {/* BAR */}
-
-          <div
-            className="
-              h-2
-
-              overflow-hidden
-
-              rounded-full
-
-              bg-white/10
-            "
-          >
-
+          <div className="h-1 overflow-hidden rounded-full bg-white/10">
             <div
-              className="
-                h-full
-
-                rounded-full
-
-                bg-gradient-to-r
-
-                from-orange-500
-                via-pink-500
-                to-cyan-400
-              "
-
-              style={{
-                width:
-                  `${course.progress}%`,
-              }}
+              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all duration-700"
+              style={{ width: `${pct}%` }}
             />
-
           </div>
-
         </div>
 
-        {/* BUTTON */}
-
-        <Link
-          to={`/courses/${course.id}`}
-        >
-
-          <button
-            className="
-              mt-5
-
-              flex w-full
-              items-center
-              justify-center
-              gap-2
-
-              rounded-xl
-
-              bg-gradient-to-r
-
-              from-orange-500
-              via-pink-500
-              to-cyan-500
-
-              px-4 py-3
-
-              text-sm
-              font-semibold
-
-              text-white
-
-              transition-all
-              duration-300
-
-              hover:scale-[1.02]
-            "
-          >
-
-            <PlayCircle
-              size={16}
-            />
-
-            Continue Learning
-
-            <ArrowRight
-              size={16}
-            />
-
+        {/* cta */}
+        <Link to={`/courses/${course.id}`}>
+          <button className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-white/10">
+            <PlayCircle size={14} className="text-indigo-400" />
+            Continue
+            <ArrowRight size={14} className="ml-auto text-slate-500" />
           </button>
-
         </Link>
-
       </div>
-
     </motion.div>
   );
 }
 
-/* ====================================================== */
-/* MAIN COMPONENT */
-/* ====================================================== */
-
+/* ── Dashboard ── */
 function StudentDashboard() {
-
-  const [recentCourses, setRecentCourses] =
-    useState([]);
-
-  const [stats, setStats] =
-    useState([]);
-
-  const [userName, setUserName] =
-    useState("Student");
-
-  /* ====================================================== */
-  /* LOAD DATA */
-  /* ====================================================== */
+  const [recentCourses, setRecentCourses] = useState([]);
+  const [stats, setStats] = useState([]);
+  const [userName, setUserName] = useState("Student");
 
   useEffect(() => {
+    const stored = localStorage.getItem("studentName");
+    if (stored) setUserName(stored);
 
-    /* ====================================================== */
-    /* USER */
-    /* ====================================================== */
+    const mentorsArray = Array.isArray(allMentors)
+      ? allMentors
+      : Object.keys(allMentors).map((k) => ({ id: Number(k), ...allMentors[k] }));
 
-    const currentUser =
-      JSON.parse(
-        localStorage.getItem(
-          "currentUser"
-        )
-      );
+    const enrolled =
+      JSON.parse(localStorage.getItem("enrolledCourses")) || [];
 
-    if (
-      currentUser?.name
-    ) {
-
-      setUserName(
-        currentUser.name
-      );
-    }
-
-    /* ====================================================== */
-    /* ENROLLED */
-    /* ====================================================== */
-
-    const enrolledCourses =
-      JSON.parse(
-        localStorage.getItem(
-          "enrolledCourses"
-        )
-      ) || [];
-
-    /* ====================================================== */
-    /* FIX ARRAY */
-    /* ====================================================== */
-
-    const mentorsArray =
-      Array.isArray(allMentors)
-
-        ? allMentors
-
-        : Object.keys(allMentors).map(
-            (key) => ({
-
-              id: Number(key),
-
-              ...allMentors[key],
-            })
-          );
-
-    /* ====================================================== */
-    /* FILTER */
-    /* ====================================================== */
-
-    const enrolledMentors =
-      mentorsArray.filter(
-        (course) =>
-
-          enrolledCourses.includes(
-            course.id
-          )
-      );
-
-    /* ====================================================== */
-    /* BUILD DATA */
-    /* ====================================================== */
-
-    const coursesData =
-      enrolledMentors.map(
-        (course) => {
-
-          const completedModules =
-            JSON.parse(
-              localStorage.getItem(
-                `course-progress-${course.id}`
-              )
-            ) || [];
-
-          const modules =
-            course.modules ||
-            [];
-
-          const progress =
-            modules.length > 0
-
-              ? Math.round(
-                  (
-                    completedModules.length /
-                    modules.length
-                  ) * 100
-                )
-
-              : 0;
-
-          return {
-
-            id: course.id,
-
-            title:
-              course.title ||
-              course.course,
-
-            mentor:
-              course.mentor,
-
-            image:
-              course.image ||
-              course.mentorImage,
-
-            progress,
-          };
-        }
-      );
-
-    setRecentCourses(
-      coursesData
+    const enrolled_courses = mentorsArray.filter((c) =>
+      enrolled.includes(c.id)
     );
 
-    /* ====================================================== */
-    /* COMPLETED */
-    /* ====================================================== */
+    const withProgress = enrolled_courses.map((c) => {
+      const done =
+        JSON.parse(localStorage.getItem(`course-progress-${c.id}`)) || [];
+      const mods = c.modules || [];
+      return {
+        ...c,
+        progress: mods.length ? Math.round((done.length / mods.length) * 100) : 0,
+      };
+    });
 
-    const completedCourses =
-      coursesData.filter(
-        (course) =>
-          course.progress ===
-          100
-      );
+    setRecentCourses(withProgress.slice(0, 6));
 
-    /* ====================================================== */
-    /* SCORE */
-    /* ====================================================== */
-
+    const completedCourses = withProgress.filter((c) => c.progress === 100);
     const overallScore =
-      coursesData.length > 0
-
+      withProgress.length
         ? Math.round(
-            coursesData.reduce(
-              (
-                acc,
-                course
-              ) =>
-
-                acc +
-                course.progress,
-
-              0
-            ) /
-              coursesData.length
+            withProgress.reduce((a, c) => a + c.progress, 0) /
+              withProgress.length
           )
-
         : 0;
-
-    /* ====================================================== */
-    /* STATS */
-    /* ====================================================== */
 
     setStats([
       {
         icon: BookOpen,
-
-        title:
-          "Enrolled Courses",
-
-        value:
-          enrolledMentors.length.toString(),
-
-        color:
-          "text-cyan-400",
-
-        bg:
-          "bg-cyan-500/10",
+        title: "Enrolled",
+        value: enrolled_courses.length,
+        color: "text-indigo-400",
+        bg: "bg-indigo-500/10",
+        delta: "+2 this month",
       },
-
       {
-        icon: CheckCircle2,
-
-        title:
-          "Completed",
-
-        value:
-          completedCourses.length.toString(),
-
-        color:
-          "text-green-400",
-
-        bg:
-          "bg-green-500/10",
+        icon: PlayCircle,
+        title: "In Progress",
+        value: withProgress.filter((c) => c.progress > 0 && c.progress < 100).length,
+        color: "text-cyan-400",
+        bg: "bg-cyan-500/10",
       },
-
       {
         icon: Trophy,
-
-        title:
-          "Certificates",
-
-        value:
-          completedCourses.length.toString(),
-
-        color:
-          "text-yellow-400",
-
-        bg:
-          "bg-yellow-500/10",
+        title: "Completed",
+        value: completedCourses.length,
+        color: "text-amber-400",
+        bg: "bg-amber-500/10",
       },
-
       {
         icon: BrainCircuit,
-
-        title:
-          "Skill Score",
-
-        value:
-          `${overallScore}%`,
-
-        color:
-          "text-pink-400",
-
-        bg:
-          "bg-pink-500/10",
+        title: "Skill Score",
+        value: `${overallScore}%`,
+        color: "text-violet-400",
+        bg: "bg-violet-500/10",
+        delta: "↑ 4pts",
       },
     ]);
-
   }, []);
 
-  /* ====================================================== */
-  /* COMPONENT */
-  /* ====================================================== */
+  const hour = new Date().getHours();
+  const greeting =
+    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
   return (
+    <div className="relative min-h-screen overflow-hidden bg-[#080c14] px-5 pb-20 pt-24 lg:px-8">
+      {/* subtle background glow */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-indigo-600/10 blur-[120px]" />
 
-    <div
-      className="
-        relative
+      <div className="relative z-10 mx-auto max-w-6xl">
 
-        min-h-screen
-
-        overflow-hidden
-
-        bg-[var(--color-background)]
-
-        px-5 pb-16 pt-24
-
-        lg:px-8
-      "
-    >
-
-      {/* GLOWS */}
-
-      <div
-        className="
-          absolute
-          -left-24
-          top-0
-
-          h-[260px]
-          w-[260px]
-
-          rounded-full
-
-          bg-cyan-500/10
-
-          blur-[120px]
-        "
-      />
-
-      <div
-        className="
-          absolute
-          -right-24
-          bottom-0
-
-          h-[260px]
-          w-[260px]
-
-          rounded-full
-
-          bg-pink-500/10
-
-          blur-[120px]
-        "
-      />
-
-      {/* MAIN */}
-
-      <div
-        className="
-          relative z-10
-
-          mx-auto
-
-          max-w-7xl
-        "
-      >
-
-        {/* HERO */}
-
-        <div
-          className="
-            mb-10
-
-            flex flex-col
-            gap-5
-
-            xl:flex-row
-            xl:items-center
-            xl:justify-between
-          "
-        >
-
-          {/* LEFT */}
-
+        {/* ── header ── */}
+        <div className="mb-10 flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
           <div>
-
-            {/* BADGE */}
-
-            <div
-              className={`
-                ${glass}
-
-                mb-4
-
-                inline-flex
-                items-center
-                gap-2
-
-                rounded-full
-
-                px-4 py-2
-              `}
-            >
-
-              <Sparkles
-                size={14}
-
-                className="
-                  text-cyan-400
-                "
-              />
-
-              <span
-                className="
-                  text-xs
-                  font-medium
-
-                  text-cyan-400
-                "
-              >
-                AI Learning Dashboard
-              </span>
-
-            </div>
-
-            {/* TITLE */}
-
-            <h1
-              className="
-                text-4xl
-                font-black
-                leading-tight
-
-                md:text-5xl
-              "
-            >
-
-              <span className="text-white">
-                Welcome Back,
-              </span>
-
-              <br />
-
-              <span
-                className={
-                  gradientText
-                }
-              >
-                {userName} 👋
-              </span>
-
+            <span className={pill}>
+              <Sparkles size={10} className="text-indigo-400" />
+              AI Learning Dashboard
+            </span>
+            <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl">
+              {greeting},<br />
+              <span className="text-slate-300">{userName}</span>
             </h1>
-
-            {/* DESC */}
-
-            <p
-              className="
-                mt-4
-
-                max-w-3xl
-
-                text-sm
-                leading-8
-
-                text-slate-400
-
-                md:text-base
-              "
-            >
-
-              Continue learning from
-              legendary mentors,
-              innovators, creators,
-              athletes, and AI pioneers.
-
+            <p className="mt-3 max-w-lg text-sm leading-7 text-slate-500">
+              Pick up where you left off. Your mentors are waiting.
             </p>
-
           </div>
 
-          {/* STREAK */}
-
-          <div
-            className={`
-              ${glass}
-
-              rounded-[28px]
-
-              p-5
-            `}
-          >
-
-            <div
-              className="
-                flex items-center
-                gap-4
-              "
-            >
-
-              <div
-                className="
-                  flex h-14 w-14
-                  items-center
-                  justify-center
-
-                  rounded-2xl
-
-                  bg-gradient-to-r
-
-                  from-orange-500
-                  to-pink-500
-                "
-              >
-
-                <Flame
-                  size={24}
-                />
-
-              </div>
-
-              <div>
-
-                <p
-                  className="
-                    text-xs
-
-                    text-slate-400
-                  "
-                >
-                  Learning Streak
-                </p>
-
-                <h3
-                  className="
-                    text-3xl
-                    font-black
-
-                    text-white
-                  "
-                >
-                  24 Days
-                </h3>
-
-              </div>
-
+          {/* streak chip */}
+          <div className={`${card} flex items-center gap-4 self-start rounded-2xl p-4 xl:mt-2`}>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-rose-500">
+              <Flame size={20} className="text-white" />
             </div>
-
-          </div>
-
-        </div>
-
-        {/* STATS */}
-
-        <div
-          className="
-            mb-10
-
-            grid gap-4
-
-            sm:grid-cols-2
-            xl:grid-cols-4
-          "
-        >
-
-          {stats.map(
-            (item) => (
-
-              <StatCard
-                key={item.title}
-
-                item={item}
-              />
-            )
-          )}
-
-        </div>
-
-        {/* COURSES */}
-
-        <div>
-
-          {/* HEADER */}
-
-          <div className="mb-6">
-
-            <h2
-              className="
-                text-3xl
-                font-black
-
-                text-white
-              "
-            >
-
-              Continue Learning
-
-            </h2>
-
-            <p
-              className="
-                mt-2
-
-                text-sm
-
-                text-slate-400
-              "
-            >
-
-              Resume your futuristic AI learning journey.
-
-            </p>
-
-          </div>
-
-          {/* EMPTY */}
-
-          {recentCourses.length ===
-          0 ? (
-
-            <div
-              className={`
-                ${glass}
-
-                rounded-[32px]
-
-                p-12
-
-                text-center
-              `}
-            >
-
-              <BookOpen
-                size={52}
-
-                className="
-                  mx-auto mb-5
-
-                  text-cyan-400
-                "
-              />
-
-              <h2
-                className="
-                  text-3xl
-                  font-black
-
-                  text-white
-                "
-              >
-
-                No Enrolled Courses
-
-              </h2>
-
-              <p
-                className="
-                  mx-auto mt-4
-
-                  max-w-xl
-
-                  text-sm
-                  leading-8
-
-                  text-slate-400
-                "
-              >
-
-                Enroll in courses to begin
-                your legendary AI learning journey 🚀
-
+            <div>
+              <p className="text-[11px] uppercase tracking-widest text-slate-500">
+                Learning Streak
               </p>
-
-              <Link to="/courses">
-
-                <button
-                  className="
-                    mt-6
-
-                    rounded-2xl
-
-                    bg-gradient-to-r
-
-                    from-orange-500
-                    to-pink-500
-
-                    px-6 py-3
-
-                    text-sm
-                    font-semibold
-
-                    text-white
-                  "
-                >
-
-                  Explore Courses
-
-                </button>
-
-              </Link>
-
+              <p className="mt-0.5 text-2xl font-bold text-white">24 Days 🔥</p>
             </div>
+          </div>
+        </div>
 
-          ) : (
+        {/* ── stats ── */}
+        <div className="mb-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {stats.map((s) => (
+            <StatCard key={s.title} item={s} />
+          ))}
+        </div>
 
-            <div
-              className="
-                grid gap-5
-
-                md:grid-cols-2
-                xl:grid-cols-3
-              "
+        {/* ── courses ── */}
+        <div>
+          <div className="mb-6 flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-white">
+                Continue Learning
+              </h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Resume your courses below
+              </p>
+            </div>
+            <Link
+              to="/courses"
+              className="flex items-center gap-1 text-sm text-indigo-400 transition-colors hover:text-indigo-300"
             >
+              View all <ArrowRight size={14} />
+            </Link>
+          </div>
 
-              {recentCourses.map(
-                (course) => (
-
-                  <CourseCard
-                    key={course.id}
-
-                    course={course}
-                  />
-                )
-              )}
-
+          {recentCourses.length === 0 ? (
+            <div className={`${card} flex flex-col items-center py-20 text-center`}>
+              <BookOpen size={40} className="mb-4 text-slate-600" />
+              <h2 className="text-xl font-semibold text-white">
+                No enrolled courses yet
+              </h2>
+              <p className="mt-2 max-w-sm text-sm text-slate-500">
+                Browse our catalog and enroll in your first course to get started.
+              </p>
+              <Link to="/courses">
+                <button className="mt-6 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
+                  Explore Courses
+                </button>
+              </Link>
             </div>
-
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {recentCourses.map((course, i) => (
+                <motion.div
+                  key={course.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.06 }}
+                >
+                  <CourseCard course={course} />
+                </motion.div>
+              ))}
+            </div>
           )}
-
         </div>
 
       </div>
-
     </div>
   );
 }
