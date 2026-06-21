@@ -15,1112 +15,229 @@ import {
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-
 import { useState } from "react";
 
-/* ====================================================== */
-/* ================= STATS ============================== */
-/* ====================================================== */
+/* ── tokens ── */
+const card =
+  "rounded-2xl border border-white/[0.06] bg-white/[0.04] backdrop-blur-xl";
+
+const pill =
+  "inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-medium tracking-wide text-slate-400";
+
+const inputBase =
+  "flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 transition-colors focus-within:border-indigo-500/50 focus-within:bg-white/[0.05]";
+
+const inputText =
+  "w-full bg-transparent text-sm text-white outline-none placeholder:text-slate-600";
+
+const label = "mb-2 block text-[11px] font-medium uppercase tracking-widest text-slate-500";
 
 const stats = [
-  {
-    icon: BookOpen,
-
-    value: "12",
-
-    label: "Courses",
-
-    color:
-      "text-[var(--color-secondary)]",
-  },
-
-  {
-    icon: Trophy,
-
-    value: "6",
-
-    label: "Awards",
-
-    color: "text-yellow-400",
-  },
-
-  {
-    icon: BrainCircuit,
-
-    value: "18",
-
-    label: "Skills",
-
-    color: "text-pink-400",
-  },
+  { icon: BookOpen, value: "12", label: "Courses", color: "text-indigo-400", bg: "bg-indigo-500/10" },
+  { icon: Trophy, value: "6", label: "Awards", color: "text-amber-400", bg: "bg-amber-500/10" },
+  { icon: BrainCircuit, value: "18", label: "Skills", color: "text-violet-400", bg: "bg-violet-500/10" },
 ];
 
-/* ====================================================== */
-/* ================= STYLES ============================= */
-/* ====================================================== */
-
-const glass =
-  `
-    border border-[var(--color-border)]
-
-    bg-[var(--color-card)]
-
-    backdrop-blur-xl
-  `;
-
-const inputStyle =
-  `
-    w-full
-
-    bg-transparent
-
-    text-sm
-    text-white
-
-    outline-none
-
-    placeholder:text-slate-500
-  `;
-
-const inputWrapper =
-  `
-    flex items-center
-    gap-3
-
-    rounded-2xl
-
-    border border-[var(--color-border)]
-
-    bg-black/10
-
-    px-4 py-3
-
-    transition-all
-    duration-300
-
-    focus-within:border-[var(--color-secondary)]
-  `;
-
-const gradientText =
-  `
-    bg-gradient-to-r
-
-    from-[var(--color-primary)]
-    via-pink-500
-    to-[var(--color-secondary)]
-
-    bg-clip-text
-
-    text-transparent
-  `;
-
-/* ====================================================== */
-/* ================= COMPONENT ========================== */
-/* ====================================================== */
-
 function Profile() {
-
-  const [saved, setSaved] =
-    useState(false);
-
-  /* ====================================================== */
-  /* SAVE */
-  /* ====================================================== */
+  const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
-
     setSaved(true);
-
-    setTimeout(() => {
-
-      setSaved(false);
-
-    }, 2000);
+    setTimeout(() => setSaved(false), 2500);
   };
 
-  /* ====================================================== */
-
   return (
+    <div className="relative min-h-screen overflow-hidden bg-[#080c14] px-5 pb-20 pt-24 lg:px-8">
+      {/* glow */}
+      <div className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-indigo-600/8 blur-[160px]" />
 
-    <div
-      className="
-        relative
+      <div className="relative z-10 mx-auto max-w-6xl">
 
-        min-h-screen
-
-        overflow-hidden
-
-        bg-[var(--color-background)]
-
-        px-5 pb-16 pt-24
-
-        lg:px-8
-      "
-    >
-
-      {/* ====================================================== */}
-      {/* GLOWS */}
-      {/* ====================================================== */}
-
-      <div
-        className="
-          absolute
-          -left-24
-          top-0
-
-          h-[280px]
-          w-[280px]
-
-          rounded-full
-
-          bg-[var(--color-secondary)]/10
-
-          blur-[120px]
-        "
-      />
-
-      <div
-        className="
-          absolute
-          -right-24
-          bottom-0
-
-          h-[280px]
-          w-[280px]
-
-          rounded-full
-
-          bg-[var(--color-primary)]/10
-
-          blur-[120px]
-        "
-      />
-
-      {/* ====================================================== */}
-
-      <div
-        className="
-          relative z-10
-
-          mx-auto
-
-          max-w-7xl
-        "
-      >
-
-        {/* ====================================================== */}
-        {/* HEADER */}
-        {/* ====================================================== */}
-
-        <div
-          className="
-            mb-8
-
-            flex flex-col
-            gap-5
-
-            lg:flex-row
-            lg:items-center
-            lg:justify-between
-          "
-        >
-
-          {/* LEFT */}
-
+        {/* ── page header ── */}
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-
-            {/* BADGE */}
-
-            <div
-              className={`
-                ${glass}
-
-                mb-4
-
-                inline-flex
-                items-center
-                gap-2
-
-                rounded-full
-
-                px-4 py-2
-              `}
-            >
-
-              <Sparkles
-                size={14}
-
-                className="
-                  text-[var(--color-secondary)]
-                "
-              />
-
-              <span
-                className="
-                  text-xs
-                  font-medium
-
-                  text-[var(--color-secondary)]
-                "
-              >
-                AI Learner Profile
-              </span>
-
-            </div>
-
-            {/* TITLE */}
-
-            <h1
-              className="
-                text-4xl
-                font-black
-                leading-tight
-
-                md:text-5xl
-              "
-            >
-
-              <span className="text-white">
-                My
-              </span>{" "}
-
-              <span
-                className={
-                  gradientText
-                }
-              >
-                Profile
-              </span>
-
+            <span className={pill}>
+              <Sparkles size={10} className="text-indigo-400" />
+              Profile settings
+            </span>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
+              My Profile
             </h1>
-
-            {/* DESCRIPTION */}
-
-            <p
-              className="
-                mt-4
-
-                max-w-3xl
-
-                text-sm
-                leading-8
-
-                text-slate-400
-
-                md:text-base
-              "
-            >
-
-              Manage your AI learning
-              identity, certifications,
-              skills, and futuristic
-              profile settings.
-
+            <p className="mt-3 text-sm text-slate-500">
+              Manage your identity, credentials, and account security.
             </p>
-
           </div>
 
-          {/* SAVE BUTTON */}
-
           <button
-            onClick={
-              handleSave
-            }
-
-            className="
-              flex items-center
-              gap-2
-
-              rounded-2xl
-
-              bg-gradient-to-r
-
-              from-[var(--color-primary)]
-              to-pink-500
-
-              px-6 py-3
-
-              text-sm
-              font-semibold
-
-              text-white
-
-              shadow-[var(--shadow-orange)]
-
-              transition-all
-              duration-300
-
-              hover:scale-[1.02]
-            "
+            onClick={handleSave}
+            className={`flex items-center gap-2 self-start rounded-xl px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 ${
+              saved
+                ? "bg-emerald-600 hover:bg-emerald-500"
+                : "bg-indigo-600 hover:bg-indigo-500"
+            }`}
           >
-
             {saved ? (
-
               <>
-                <CheckCircle2
-                  size={16}
-                />
-
-                Saved
+                <CheckCircle2 size={15} /> Saved
               </>
-
             ) : (
-
               <>
-                <Save
-                  size={16}
-                />
-
-                Save Changes
+                <Save size={15} /> Save changes
               </>
             )}
-
           </button>
-
         </div>
 
-        {/* ====================================================== */}
-        {/* GRID */}
-        {/* ====================================================== */}
+        {/* ── two-col layout ── */}
+        <div className="grid gap-5 xl:grid-cols-[280px_1fr]">
 
-        <div
-          className="
-            grid gap-5
-
-            xl:grid-cols-[320px_1fr]
-          "
-        >
-
-          {/* ====================================================== */}
-          {/* SIDEBAR */}
-          {/* ====================================================== */}
-
+          {/* ── sidebar ── */}
           <motion.div
-            initial={{
-              opacity: 0,
-              x: -20,
-            }}
-
-            animate={{
-              opacity: 1,
-              x: 0,
-            }}
-
-            className={`
-              ${glass}
-
-              overflow-hidden
-
-              rounded-[28px]
-
-              h-fit
-            `}
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            className={`${card} flex flex-col overflow-hidden`}
           >
-
-            {/* COVER */}
-
-            <div
-              className="
-                h-28
-
-                bg-gradient-to-r
-
-                from-[var(--color-primary)]
-                via-pink-500
-                to-[var(--color-secondary)]
-              "
-            />
-
-            {/* CONTENT */}
-
-            <div className="px-5 pb-6">
-
-              {/* AVATAR */}
-
-              <div
-                className="
-                  relative
-
-                  -mt-12
-
-                  mb-5
-                "
-              >
-
-                <img
-                  src="https://i.pravatar.cc/300"
-
-                  alt="profile"
-
-                  className="
-                    h-24 w-24
-
-                    rounded-[24px]
-
-                    border-[4px]
-
-                    border-[var(--color-background)]
-
-                    object-cover
-                  "
-                />
-
-                {/* CAMERA */}
-
-                <button
-                  className="
-                    absolute
-                    bottom-1
-                    right-1
-
-                    flex h-9 w-9
-                    items-center
-                    justify-center
-
-                    rounded-xl
-
-                    bg-gradient-to-r
-
-                    from-[var(--color-primary)]
-                    to-pink-500
-                  "
-                >
-
-                  <Camera
-                    size={14}
-                  />
-
+            {/* avatar area */}
+            <div className="flex flex-col items-center bg-gradient-to-b from-indigo-600/10 to-transparent px-6 py-10">
+              <div className="relative mb-4">
+                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 text-3xl font-bold text-white">
+                  JD
+                </div>
+                <button className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-[#0d1220] text-slate-400 transition-colors hover:text-white">
+                  <Camera size={14} />
                 </button>
-
               </div>
+              <h2 className="text-base font-semibold text-white">John Doe</h2>
+              <p className="mt-0.5 text-xs text-slate-500">john@gmail.com</p>
+            </div>
 
-              {/* USER */}
-
-              <h2
-                className="
-                  text-xl
-                  font-bold
-
-                  text-white
-                "
-              >
-                John Doe
-              </h2>
-
-              <p
-                className="
-                  mt-1
-
-                  text-sm
-
-                  text-[var(--color-secondary)]
-                "
-              >
-                AI Engineer & ML Researcher
-              </p>
-
-              {/* STATS */}
-
-              <div
-                className="
-                  mt-6
-
-                  grid grid-cols-3
-                  gap-3
-                "
-              >
-
-                {stats.map(
-                  (item) => {
-
-                    const Icon =
-                      item.icon;
-
-                    return (
-
-                      <div
-                        key={
-                          item.label
-                        }
-
-                        className={`
-                          ${glass}
-
-                          rounded-2xl
-
-                          p-3
-
-                          text-center
-                        `}
-                      >
-
-                        <Icon
-                          size={18}
-
-                          className={`
-                            mx-auto mb-2
-
-                            ${item.color}
-                          `}
-                        />
-
-                        <h4
-                          className="
-                            text-lg
-                            font-black
-
-                            text-white
-                          "
-                        >
-                          {
-                            item.value
-                          }
-                        </h4>
-
-                        <p
-                          className="
-                            text-[11px]
-
-                            text-slate-500
-                          "
-                        >
-                          {
-                            item.label
-                          }
-                        </p>
-
+            {/* stats */}
+            <div className="divide-y divide-white/[0.05] px-6 pb-6">
+              {stats.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <div
+                    key={s.label}
+                    className="flex items-center justify-between py-4"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${s.bg}`}>
+                        <Icon size={14} className={s.color} />
                       </div>
-                    );
-                  }
-                )}
-
-              </div>
-
+                      <span className="text-sm text-slate-400">{s.label}</span>
+                    </div>
+                    <span className="text-sm font-semibold text-white">
+                      {s.value}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
-
           </motion.div>
 
-          {/* ====================================================== */}
-          {/* FORM SECTION */}
-          {/* ====================================================== */}
-
+          {/* ── main form ── */}
           <motion.div
-            initial={{
-              opacity: 0,
-              x: 20,
-            }}
-
-            animate={{
-              opacity: 1,
-              x: 0,
-            }}
-
-            className={`
-              ${glass}
-
-              rounded-[28px]
-
-              p-5
-
-              lg:p-7
-            `}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col gap-5"
           >
-
-            {/* HEADER */}
-
-            <div className="mb-6">
-
-              <h3
-                className="
-                  text-2xl
-                  font-black
-
-                  text-white
-                "
-              >
-
+            {/* personal info */}
+            <div className={`${card} p-6`}>
+              <h3 className="mb-5 text-sm font-semibold text-white">
                 Personal Information
-
               </h3>
-
-              <p
-                className="
-                  mt-2
-
-                  text-sm
-
-                  text-slate-400
-                "
-              >
-
-                Update your account details and learner identity.
-
-              </p>
-
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <p className={label}>First name</p>
+                  <div className={inputBase}>
+                    <User size={15} className="shrink-0 text-indigo-400" />
+                    <input type="text" defaultValue="John" className={inputText} />
+                  </div>
+                </div>
+                <div>
+                  <p className={label}>Last name</p>
+                  <div className={inputBase}>
+                    <User size={15} className="shrink-0 text-indigo-400" />
+                    <input type="text" defaultValue="Doe" className={inputText} />
+                  </div>
+                </div>
+                <div>
+                  <p className={label}>Email address</p>
+                  <div className={inputBase}>
+                    <Mail size={15} className="shrink-0 text-indigo-400" />
+                    <input type="email" defaultValue="john@gmail.com" className={inputText} />
+                  </div>
+                </div>
+                <div>
+                  <p className={label}>Phone</p>
+                  <div className={inputBase}>
+                    <Phone size={15} className="shrink-0 text-indigo-400" />
+                    <input type="text" placeholder="+91 9876543210" className={inputText} />
+                  </div>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className={label}>Portfolio website</p>
+                  <div className={inputBase}>
+                    <Globe size={15} className="shrink-0 text-indigo-400" />
+                    <input type="text" placeholder="yourwebsite.com" className={inputText} />
+                  </div>
+                </div>
+                <div className="sm:col-span-2">
+                  <p className={label}>Bio</p>
+                  <textarea
+                    rows={4}
+                    placeholder="Tell us about yourself..."
+                    className="w-full resize-none rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-indigo-500/50 focus:bg-white/[0.05]"
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* FORM */}
-
-            <form className="space-y-5">
-
-              {/* ROW 1 */}
-
-              <div
-                className="
-                  grid gap-5
-
-                  md:grid-cols-2
-                "
-              >
-
-                {/* FULL NAME */}
-
+            {/* password */}
+            <div className={`${card} p-6`}>
+              <div className="mb-5 flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10">
+                  <Lock size={15} className="text-indigo-400" />
+                </div>
                 <div>
-
-                  <label
-                    className="
-                      mb-2
-
-                      block
-
-                      text-xs
-
-                      text-slate-400
-                    "
-                  >
-                    Full Name
-                  </label>
-
-                  <div
-                    className={
-                      inputWrapper
-                    }
-                  >
-
-                    <User
-                      size={16}
-
-                      className="
-                        text-[var(--color-secondary)]
-                      "
-                    />
-
-                    <input
-                      type="text"
-
-                      defaultValue="John Doe"
-
-                      className={
-                        inputStyle
-                      }
-                    />
-
-                  </div>
-
-                </div>
-
-                {/* EMAIL */}
-
-                <div>
-
-                  <label
-                    className="
-                      mb-2
-
-                      block
-
-                      text-xs
-
-                      text-slate-400
-                    "
-                  >
-                    Email Address
-                  </label>
-
-                  <div
-                    className={
-                      inputWrapper
-                    }
-                  >
-
-                    <Mail
-                      size={16}
-
-                      className="
-                        text-[var(--color-secondary)]
-                      "
-                    />
-
-                    <input
-                      type="email"
-
-                      defaultValue="john@gmail.com"
-
-                      className={
-                        inputStyle
-                      }
-                    />
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* ROW 2 */}
-
-              <div
-                className="
-                  grid gap-5
-
-                  md:grid-cols-2
-                "
-              >
-
-                {/* PHONE */}
-
-                <div>
-
-                  <label
-                    className="
-                      mb-2
-
-                      block
-
-                      text-xs
-
-                      text-slate-400
-                    "
-                  >
-                    Phone Number
-                  </label>
-
-                  <div
-                    className={
-                      inputWrapper
-                    }
-                  >
-
-                    <Phone
-                      size={16}
-
-                      className="
-                        text-[var(--color-secondary)]
-                      "
-                    />
-
-                    <input
-                      type="text"
-
-                      placeholder="+91 9876543210"
-
-                      className={
-                        inputStyle
-                      }
-                    />
-
-                  </div>
-
-                </div>
-
-                {/* WEBSITE */}
-
-                <div>
-
-                  <label
-                    className="
-                      mb-2
-
-                      block
-
-                      text-xs
-
-                      text-slate-400
-                    "
-                  >
-                    Portfolio Website
-                  </label>
-
-                  <div
-                    className={
-                      inputWrapper
-                    }
-                  >
-
-                    <Globe
-                      size={16}
-
-                      className="
-                        text-[var(--color-secondary)]
-                      "
-                    />
-
-                    <input
-                      type="text"
-
-                      placeholder="yourwebsite.com"
-
-                      className={
-                        inputStyle
-                      }
-                    />
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* BIO */}
-
-              <div>
-
-                <label
-                  className="
-                    mb-2
-
-                    block
-
-                    text-xs
-
-                    text-slate-400
-                  "
-                >
-                  Bio
-                </label>
-
-                <textarea
-                  rows="5"
-
-                  placeholder="Tell us about yourself..."
-
-                  className="
-                    w-full
-
-                    resize-none
-
-                    rounded-2xl
-
-                    border border-[var(--color-border)]
-
-                    bg-black/10
-
-                    px-4 py-4
-
-                    text-sm
-                    text-white
-
-                    outline-none
-
-                    placeholder:text-slate-500
-                  "
-                />
-
-              </div>
-
-              {/* PASSWORD */}
-
-              <div
-                className="
-                  rounded-[24px]
-
-                  border border-[var(--color-border)]
-
-                  bg-black/10
-
-                  p-5
-                "
-              >
-
-                {/* HEADER */}
-
-                <div
-                  className="
-                    mb-5
-
-                    flex items-center
-                    gap-3
-                  "
-                >
-
-                  <div
-                    className="
-                      flex h-11 w-11
-                      items-center
-                      justify-center
-
-                      rounded-2xl
-
-                      bg-[var(--color-secondary)]/10
-                    "
-                  >
-
-                    <Lock
-                      size={18}
-
-                      className="
-                        text-[var(--color-secondary)]
-                      "
-                    />
-
-                  </div>
-
-                  <div>
-
-                    <h3
-                      className="
-                        text-lg
-                        font-bold
-
-                        text-white
-                      "
-                    >
-                      Change Password
-                    </h3>
-
-                    <p
-                      className="
-                        text-xs
-
-                        text-slate-500
-                      "
-                    >
-                      Keep your account secure
-                    </p>
-
-                  </div>
-
-                </div>
-
-                {/* INPUTS */}
-
-                <div
-                  className="
-                    grid gap-4
-
-                    md:grid-cols-2
-                  "
-                >
-
-                  <input
-                    type="password"
-
-                    placeholder="New Password"
-
-                    className="
-                      rounded-2xl
-
-                      border border-[var(--color-border)]
-
-                      bg-black/10
-
-                      px-4 py-3
-
-                      text-sm
-                      text-white
-
-                      outline-none
-
-                      placeholder:text-slate-500
-                    "
-                  />
-
-                  <input
-                    type="password"
-
-                    placeholder="Confirm Password"
-
-                    className="
-                      rounded-2xl
-
-                      border border-[var(--color-border)]
-
-                      bg-black/10
-
-                      px-4 py-3
-
-                      text-sm
-                      text-white
-
-                      outline-none
-
-                      placeholder:text-slate-500
-                    "
-                  />
-
-                </div>
-
-              </div>
-
-              {/* SECURITY */}
-
-              <div
-                className="
-                  flex items-start
-                  gap-3
-
-                  rounded-2xl
-
-                  border border-green-500/20
-
-                  bg-green-500/10
-
-                  p-4
-                "
-              >
-
-                <ShieldCheck
-                  size={18}
-
-                  className="
-                    mt-0.5
-
-                    text-green-400
-                  "
-                />
-
-                <div>
-
-                  <h4
-                    className="
-                      mb-1
-
-                      text-sm
-                      font-semibold
-
-                      text-white
-                    "
-                  >
-
-                    Secure Profile Management
-
-                  </h4>
-
-                  <p
-                    className="
-                      text-xs
-                      leading-6
-
-                      text-slate-400
-                    "
-                  >
-
-                    Your profile information is encrypted and securely protected.
-
+                  <h3 className="text-sm font-semibold text-white">
+                    Change Password
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    Keep your account secure
                   </p>
-
                 </div>
-
               </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <input
+                  type="password"
+                  placeholder="New password"
+                  className="rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-indigo-500/50"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm password"
+                  className="rounded-xl border border-white/[0.07] bg-white/[0.03] px-4 py-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-indigo-500/50"
+                />
+              </div>
+            </div>
 
-            </form>
-
+            {/* security notice */}
+            <div className="flex items-start gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] p-4">
+              <ShieldCheck size={16} className="mt-0.5 shrink-0 text-emerald-400" />
+              <div>
+                <p className="text-sm font-medium text-white">
+                  Secure profile management
+                </p>
+                <p className="mt-0.5 text-xs text-slate-500">
+                  Your information is encrypted and securely stored.
+                </p>
+              </div>
+            </div>
           </motion.div>
-
         </div>
 
       </div>
-
     </div>
   );
 }
