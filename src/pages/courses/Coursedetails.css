@@ -1,46 +1,20 @@
-
 /* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-   NO UI CHANGE
+   PAGE LEVEL TOKENS
 ========================= */
 .course-page {
-  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
-  --bg-dark: #0f172a;
-  --bg-light: #ffffff;
-  --bg-muted: #f8fafc;
-  --bg-hover: #eef2ff;
-  --bg-success: #ecfdf5;
-
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --text-light: #ffffff;
-  --text-muted: #94a3b8;
-  --text-success: #16a34a;
-
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --secondary: #7c3aed;
 
-  --border-light: #f1f5f9;
+  
+  --bg-hover: var(--gray-200);
+  --bg-black: #000000;
+   --bg-muted: #e5e7eb;
+
   --border-accent: #2563eb;
   --border-success: #22c55e;
 
-  --radius-sm: 10px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 8px 18px rgba(0,0,0,0.08);
-  --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
-
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 16px;
-  --space-xl: 20px;
-  --space-xxl: 30px;
-
-  --transition: 0.3s ease;
+  --text-item: #334155;
 }
 
 /* =========================
@@ -56,17 +30,20 @@
    PAGE WRAPPER
 ========================= */
 .course-page {
-  background: var(--bg-page);
-  padding: 20px;
+  background: var(--bg-gradient-primary);
+  padding:var(--space-xl);
   min-height: 100vh;
-  font-family: "Poppins", sans-serif;
+  font-family:var( --font-family-base);
 }
 
 /* =========================
    HERO SECTION
 ========================= */
 .course-hero {
-  background: linear-gradient(135deg, var(--bg-dark), #1e293b);
+  background: var(--bg-gradient-primary);
+
+
+
   border-radius: var(--radius-md);
   margin-bottom: var(--space-xl);
   box-shadow: var(--shadow-lg);
@@ -78,24 +55,25 @@
 
 .course-badge {
   display: inline-block;
-  padding: 8px 18px;
+  padding:var(--space-sm) var(--space-lg);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var( --border-soft);
   color: var(--text-light);
-  font-size: 13px;
-  font-weight: 200;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   margin-bottom: 10px;
   backdrop-filter: blur(10px);
 }
 
 .course-info h1 {
-  font-weight: 400;
-  font-size: 2.8rem;
-  color: beige;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+  color: var(--text-primary);
 }
 
 .course-info p {
-  font-weight: 300;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   opacity: 0.9;
 }
 
@@ -108,8 +86,8 @@
 }
 
 .meta-card {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 10px;
+  background: var( --border-soft);
+  padding:var(--space-md);
   border-radius: 16px;
   backdrop-filter: blur(10px);
 }
@@ -117,12 +95,14 @@
 .meta-card span {
   display: block;
   color: var(--text-muted);
-  font-size: 8px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 .meta-card h3 {
   color: var(--text-light);
-  font-size: 18px;
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
 }
 
 /* =========================
@@ -132,19 +112,20 @@
 .enrolled-btn {
   border: none;
   border-radius: var(--radius-md);
-  padding: 14px 28px;
-  font-size: 15px;
-  font-weight: 600;
+  padding:var(--space-lg) var(--space-xxl);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   cursor: pointer;
 }
 
 .enroll-btn {
   background: var(--bg-light);
-  color: var(--text-primary);
+  color: var(--text-default);
+
 }
 
 .enrolled-btn {
-  background: #16a34a;
+  background: var(--color-success);
   color: var(--text-light);
 }
 
@@ -152,9 +133,9 @@
    CARD
 ========================= */
 .premium-card {
-  background: var(--bg-muted);
   border-radius: 5px;
   box-shadow: var(--shadow-sm), var(--shadow-md);
+  background: var(--bg-surface);
 }
 
 /* =========================
@@ -175,23 +156,23 @@
 }
 
 .progress-number {
-  font-size: 20px;
-  font-weight: 200;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   color: var(--primary);
 }
 
 /* =========================
    PROGRESS BAR
 ========================= */
-.progress-bar {
+.course-progress-bar {
   width: 100%;
   height: 15px;
-  background: #e2e8f0;
+  background:var( --bg-muted);
   border-radius: 100px;
   overflow: hidden;
 }
 
-.progress-fill {
+.course-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--primary), var(--secondary));
   border-radius: 100px;
@@ -203,7 +184,8 @@
   display: flex;
   justify-content: space-between;
   color: var(--text-secondary);
-  font-weight: 200;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -219,7 +201,7 @@
 .course-video {
   width: 100%;
   border-radius: var(--radius-md);
-  background: black;
+  background:var( --bg-black);
 }
 
 /* =========================
@@ -229,11 +211,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding:var(--space-md);
   border-radius: var(--radius-sm);
   background: var(--bg-muted);
   margin-bottom: 10px;
-  transition: var(--transition);
+  transition: var(--transition-normal);
 }
 
 .concept-item:hover {
@@ -248,19 +230,18 @@
 }
 
 .concept-item label {
-  font-size: 14px;
-  font-weight: 400;
-  color: #334155;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  color:var(  --text-dark);
 }
 
 .concept-item.completed {
-  background: var(--bg-success);
+  background: var(--bg-success-light);
   border-left: 3px solid var(--border-success);
 }
 
 .concept-item.completed label {
   color: var(--text-success);
-  text-decoration: line-through;
 }
 
 /* =========================
@@ -282,12 +263,12 @@
 }
 
 .mentor-card {
-  background: var(--bg-light);
+  background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 22px;
+  padding:var( --space-xl);
   text-align: center;
   box-shadow: var(--shadow-sm), var(--shadow-md);
-  transition: var(--transition);
+ transition: var(--transition-normal);
   border: 2px solid transparent;
 }
 
@@ -308,20 +289,22 @@
 }
 
 .mentor-card h3 {
-  color: var(--text-primary);
+  color: var(--text-dark);
   margin-bottom: 15px;
-  font-size: 18px;
+   font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 .mentor-card button {
   border: none;
   border-radius: 10px;
-  padding: 10px 18px;
+  padding: var(--space-md) var(--space-lg);
   background: var(--primary);
   color: var(--text-light);
   cursor: pointer;
-  font-weight: 600;
-  transition: var(--transition);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+transition: var(--transition-normal);
 }
 
 .mentor-card button:hover {
@@ -351,14 +334,17 @@
 }
 
 .mentor-profile h3 {
-  font-size: 24px;
-  color: var(--text-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  color: var(--text-dark);
 }
 
 .mentor-profile p {
   color: var(--text-secondary);
   max-width: 500px;
   line-height: 1.7;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -366,7 +352,8 @@
 ========================= */
 @media (max-width: 992px) {
   .course-info h1 {
-    font-size: 2.4rem;
+    font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   }
 
   .course-meta {
@@ -376,11 +363,12 @@
 
 @media (max-width: 768px) {
   .course-page {
-    padding: 15px;
+    padding:var( --space-lg);
   }
 
   .course-info h1 {
-    font-size: 2rem;
+    font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   }
 
   .course-meta {

@@ -1,106 +1,60 @@
-:root {
+/* =========================
+   PAGE LEVEL TOKENS
+========================= */
 
-  /* =========================
-     BACKGROUND SYSTEM
-  ========================= */
-
-  --bg-main: linear-gradient(135deg, #1e293b, #0f172a);
-  --bg-surface: #1e293b;
-  --bg-surface-2: #0f172a;
-
-  /* =========================
-     TEXT SYSTEM
-  ========================= */
-
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-muted: #cbd5e1;
-
-  /* =========================
-     BRAND SYSTEM
-  ========================= */
-
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --accent: #38bdf8;
-  --secondary: #7c3aed;
-  --highlight: #06b6d4;
-  --warning: #ff6b35;
-
-  /* =========================
-     BORDER SYSTEM
-  ========================= */
-
-  --border-soft: rgba(255,255,255,0.05);
-  --border-medium: rgba(255,255,255,0.08);
-
-  /* =========================
-     SHADOWS
-  ========================= */
-
-  --shadow-sm: 0 4px 14px rgba(0,0,0,0.05);
-  --shadow-md: 0 10px 25px rgba(0,0,0,0.25);
-
-  /* =========================
-     RADIUS
-  ========================= */
-
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 20px;
-  --radius-pill: 999px;
-
-  /* =========================
-     SPACING
-  ========================= */
-
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 25px;
-  --space-7: 30px;
-}   /* =========================
+.profile-container {
+  --banner-height: 100px;
+   --primary: #2563eb;
+  --avatar-size: 150px;
+  --avatar-border-width: 6px;
+  --avatar-edit-size: 38px;
+  --banner-circle-size: 350px;
+  --card-padding: 25px;
+  --meta-chip-padding-y: 12px;
+  --meta-chip-padding-x: 20px;
+  --tab-padding-y: 12px;
+  --tab-padding-x: 22px;
+  --button-padding-y: 14px;
+  --button-padding-x: 24px;
+  --list-item-padding: 14px;
+  --course-item-padding: 16px;
+}
+   /* =========================
    PROFILE CONTAINER
 ========================= */
 
 .profile-container {
-  background: var(--bg-main);
+  background: var(--bg-gradient-primary);
   color: var(--text-primary);
-  padding-bottom: 15px;
+  padding-bottom:var(--space-lg);
+  padding:var(--space-xl);
 }
 
 /* =========================
    BANNER
 ========================= */
 
+
 .profile-banner {
-  height: 100px;
+  height: var(--banner-height);
   border-radius: var(--radius-lg);
-  background: linear-gradient(
-    135deg,
-    var(--primary),
-    var(--secondary),
-    var(--highlight)
-  );
+
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-md);
 }
 
+
 .profile-banner::after {
   content: "";
   position: absolute;
-  width: 350px;
-  height: 350px;
-  background: rgba(255,255,255,0.08);
+  width: var(--banner-circle-size);
+  height: var(--banner-circle-size);
+  background: var(--border-medium);
   border-radius: 50%;
   top: -120px;
   right: -120px;
 }
-
 /* =========================
    USER SECTION
 ========================= */
@@ -126,23 +80,23 @@
   border-radius: 50%;
   border: 6px solid var(--bg-surface-2);
   object-fit: cover;
-  background: white;
+  background:var(--text-primary);
   box-shadow: var(--shadow-md);
 }
+
 
 .avatar-edit {
   position: absolute;
   bottom: 10px;
   right: 5px;
-  width: 38px;
-  height: 38px;
+  width: var(--avatar-edit-size);
+  height: var(--avatar-edit-size);
   border-radius: 50%;
   border: none;
   background: var(--primary);
-  color: white;
+  color: var(--text-primary);
   cursor: pointer;
 }
-
 /* =========================
    USER INFO
 ========================= */
@@ -152,15 +106,15 @@
 }
 
 .profile-user-info h1 {
-  font-size: 2rem;
   padding-top: 70px;
-  font-weight: 100;
-  margin-bottom: var(--space-2);
+    font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+  margin-bottom: var(--space-sm);
 }
 
 .profile-user-info p {
   color: var(--text-secondary);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-lg);
 }
 
 /* =========================
@@ -173,30 +127,32 @@
   flex-wrap: wrap;
 }
 
+
 .profile-meta span {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   background: var(--bg-surface);
-  padding: var(--space-3) var(--space-5);
+  padding:
+    var(--meta-chip-padding-y)
+    var(--meta-chip-padding-x);
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-medium);
   color: var(--text-muted);
 }
-
 /* =========================
    EDIT BUTTON
 ========================= */
-
-.edit-profile-btn {
-  background: linear-gradient(135deg, var(--primary), #3b82f6);
-  color: white;
+ .edit-profile-btn {
+  background: linear-gradient( 135deg,var(--primary), var(--color-indigo));
+  color: var(--text-primary);
   border: none;
-  padding: 14px 24px;
+  padding:var(--button-padding-y) var(--button-padding-x);
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  transition: var(--transition-fast);
 }
 
 .edit-profile-btn:hover {
@@ -215,22 +171,25 @@
   flex-wrap: wrap;
 }
 
+
+
 .profile-tabs button {
-  padding: 12px 22px;
+  padding:
+    var(--tab-padding-y)
+    var(--tab-padding-x);
   border: none;
   background: var(--bg-surface);
   color: var(--text-muted);
   border-radius: var(--radius-md);
   cursor: pointer;
 }
-
 .profile-tabs button:hover {
   background: var(--bg-surface-2);
 }
 
 .profile-tabs .active {
   background: var(--primary);
-  color: white;
+  color:var(--text-primary);
 }
 
 /* =========================
@@ -241,16 +200,18 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-5);
-  margin-bottom: var(--space-7);
+  margin-bottom: var(--space-xxl);
 }
+
+
 
 .stat-card {
   background: var(--bg-surface);
   border-radius: var(--radius-xl);
-  padding: 25px;
+  padding: var(--card-padding);
   text-align: center;
   border: 1px solid var(--border-soft);
-  transition: 0.3s;
+  transition: var(--transition-fast);
 }
 
 .stat-card:hover {
@@ -258,9 +219,10 @@
 }
 
 .stat-card h2 {
-  font-size: 2rem;
   color: var(--accent);
-  margin-bottom: var(--space-2);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+  margin-bottom: var(--space-sm);
 }
 
 .stat-card p {
@@ -273,9 +235,9 @@
 
 .profile-card {
   background: var(--bg-surface);
-  padding: 25px;
+  padding: var(--card-padding);
   border-radius: var(--radius-xl);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-xl);
   border: 1px solid var(--border-soft);
 }
 
@@ -292,7 +254,6 @@
 }
 
 .progress-bar div {
-  height: 100%;
   background: linear-gradient(90deg, var(--highlight), var(--primary));
 }
 
@@ -304,9 +265,11 @@
   list-style: none;
 }
 
+
+
 .profile-card ul li {
-  padding: 14px;
-  margin-bottom: 10px;
+  padding: var(--list-item-padding);
+  margin-bottom:var( --space-md);
   background: var(--bg-surface-2);
   border-radius: var(--radius-md);
   color: var(--text-muted);
@@ -315,15 +278,14 @@
 /* =========================
    ITEMS
 ========================= */
-
 .course-item,
 .certificate-item {
   background: var(--bg-surface-2);
-  padding: 16px;
+  padding: var(--course-item-padding);
   border-radius: var(--radius-md);
-  margin-bottom: 12px;
+  margin-bottom:var( --space-md);
   cursor: pointer;
-  transition: 0.3s;
+  transition: var(--transition-fast);
 }
 
 .course-item:hover,
@@ -338,14 +300,16 @@
 
 .profile-card button {
   width: 100%;
-  margin-bottom: 12px;
-  padding: 14px;
+  margin-bottom:var( --space-md);
+  padding:var(--space-lg);
   border: none;
   border-radius: var(--radius-md);
   background: var(--primary);
-  color: white;
-  font-weight: 600;
+  color: var(--text-primary);
+  /* font-weight: 600; */
   cursor: pointer;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   transition: 0.3s;
 }
 

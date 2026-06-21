@@ -1,19 +1,16 @@
 // components/Kpicard.jsx
+
 function Kpicard({ value, label, color, bg }) {
   return (
     <div
-      className="card"
+      className="card kpi-card"
       style={{
-        borderLeft: `4px solid ${color}`,
-        background: bg,
+        "--kpi-border": color,
+        "--kpi-bg": bg,
       }}
     >
-      <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
-        {value}
-      </h2>
-      <p style={{ fontSize: "11px" }}>
-        {label}
-      </p>
+      <h2 className="kpi-value">{value}</h2>
+      <p className="kpi-label">{label}</p>
     </div>
   );
 }

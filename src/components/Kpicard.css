@@ -1,0 +1,20 @@
+.kpi-card {
+  border-left: var(--radius-xs) solid var(--kpi-border);
+
+  padding: var(--space-lg, 16px);
+  border-radius: var(--radius-md, 10px);
+}
+
+/* VALUE */
+.kpi-value {
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+  margin: 0;
+}
+
+/* LABEL */
+.kpi-label {
+  font-size: var(--font-size-body);
+  margin: 0;
+  color: var(--text-muted);
+}

@@ -42,11 +42,6 @@ function Adashboard() {
             </div>
           ))}
         </div>
-
-        {/* <div className="section-title">
-          <h2>Quick Actions</h2>
-        </div> */}
-
         <div className="actions">
           {actions.map((btn, index) => (
             <button

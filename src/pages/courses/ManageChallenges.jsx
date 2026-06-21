@@ -87,7 +87,7 @@ function ManageChallenges() {
         <div className="mc-card">
           <h3>
             {
-              courseChallenges.filter((t) => t.level === "Easy")
+              courseChallenges.filter((t) => t.level === "easy")
                 .length
             }
           </h3>
@@ -97,7 +97,7 @@ function ManageChallenges() {
         <div className="mc-card">
           <h3>
             {
-              courseChallenges.filter((t) => t.level === "Medium")
+              courseChallenges.filter((t) => t.level === "medium")
                 .length
             }
           </h3>
@@ -107,7 +107,7 @@ function ManageChallenges() {
         <div className="mc-card">
           <h3>
             {
-              courseChallenges.filter((t) => t.level === "Hard")
+              courseChallenges.filter((t) => t.level === "hard")
                 .length
             }
           </h3>

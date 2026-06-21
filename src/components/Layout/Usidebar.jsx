@@ -66,6 +66,7 @@ function Usidebar({ sidebarOpen, setSidebarOpen }) {
 
         <button
           className="sidebar-toggle"
+           aria-label="Open Sidebar"
           onClick={() =>
             setSidebarOpen((prev) => !prev)
           }

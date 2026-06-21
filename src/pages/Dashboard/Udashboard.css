@@ -1,43 +1,37 @@
-:root {
-  /* Backgrounds */
-  --bg-main: linear-gradient(135deg, #1e293b, #0f172a);
-  --bg-dark: #0f172a;
-  --bg-card: #111827;
+/* =========================
+   PAGE LEVEL TOKENS
+   NO UI CHANGE
+========================= */
 
-  /* Borders */
-  --border-primary: #1e293b;
-  --border-hover: #334155;
-  --border-dark: #1f2937;
-
-  /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-muted: #cbd5e1;
-
-  /* Accent */
-  --accent-orange: #ea580c;
-  --accent-blue: #60a5fa;
-
-  /* Buttons */
-  --btn-gradient: linear-gradient(135deg, #6366f1, #7c3aed);
-  --progress-gradient: linear-gradient(90deg, #3b82f6, #8b5cf6);
-  --ai-gradient: linear-gradient(135deg, #312e81, #581c87);
-
-  /* Spacing */
-  --space-sm: 10px;
-  --space-md: 20px;
-  --space-lg: 25px;
-  --space-xl: 35px;
-
-  /* Radius */
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
-  --radius-xl: 20px;
-  --radius-pill: 999px;
-} 
 .main-content {
-  padding: var(--space-md);
+  --welcome-image-width: 260px;
+  --welcome-image-width-mobile: 180px;
+
+  --welcome-padding: 35px;
+  --section-margin: 25px;
+
+  --explore-btn-padding-y: 12px;
+  --explore-btn-padding-x: 22px;
+ 
+  --dashboard-card-padding: 24px;
+
+  --progress-height: 10px;
+
+  --mobile-padding: 15px;
+
+  --hover-lift-sm: -3px;
+  --hover-lift-md: -5px;
+
+  --ai-card-gradient:
+    linear-gradient(135deg, #312e81, #581c87);
+} 
+
+/* ==========================================
+   STUDENT DASHBOARD
+========================================== */
+
+.main-content {
+  padding: var(--space-lg);
   background: var(--bg-main);
 }
 
@@ -49,43 +43,67 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--bg-dark);
-  border: 1px solid var(--border-primary);
-  padding: var(--space-xl);
+
+  background: var(--bg-main);
+  border: 1px solid var(--border-dark);
+
+  padding: var(--welcome-padding);
   border-radius: var(--radius-xl);
-  margin-bottom: var(--space-lg);
+
+  margin-bottom: var(--section-margin);
 }
 
 .welcome-text {
-  font-size: 2rem;
-  color: var(--accent-orange);
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+
+  color: var(--color-primary);
+
   margin-bottom: var(--space-sm);
 }
 
 .sub-text {
-  color: var(--text-secondary);
-  font-size: 1rem;
+  color: var(--text-muted);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
   line-height: 1.6;
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .explore-btn {
-  padding: 12px 22px;
+  height: var(--button-height);
+
+  padding:
+    var(--explore-btn-padding-y)
+    var(--explore-btn-padding-x);
+
   border: none;
-  border-radius: var(--radius-sm);
-  background: var(--btn-gradient);
+  border-radius: var(--radius-md);
+
+  background: linear-gradient(
+    135deg,
+    var(--color-indigo),
+    var(--color-purple)
+  );
+
   color: var(--text-primary);
-  font-weight: 600;
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
   cursor: pointer;
-  transition: 0.3s;
+
+  transition: var(--transition-normal);
 }
 
 .explore-btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(var(--hover-lift-sm));
 }
 
 .group1 {
-  width: 260px;
+  width: var(--welcome-image-width);
 }
 
 /* =========================
@@ -95,33 +113,43 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+
   gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .stats-card {
-  background: var(--bg-dark);
-  border: 1px solid var(--border-primary);
-  padding: var(--space-md);
-  border-radius: var(--radius-lg);
+  background: var(--bg-main);
+  border: 1px solid var(--border-dark);
+
+  padding: var(--space-lg);
+
+  border-radius: var(--radius-xl);
+
   text-align: center;
-  transition: 0.3s;
+
+  transition: var(--transition-normal);
 }
 
 .stats-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--border-hover);
+  transform: translateY(var(--hover-lift-md));
+  border-color: var(--border-dark-light);
 }
 
 .stats-card h3 {
   color: var(--text-primary);
-  font-size: 20px !important;
-  font-weight: 400;
-  margin-bottom: 8px;
+
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+
+  margin-bottom: var(--space-sm);
 }
 
 .stats-card p {
-  color: var(--text-secondary);
+  color: var(--text-muted);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -129,17 +157,22 @@
 ========================= */
 
 .dashboard-card {
-  background: var(--bg-dark);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: var(--space-lg);
+  background: var(--bg-main);
+  border: 1px solid var(--border-dark);
+
+  border-radius: var(--radius-xl);
+
+  padding: var(--dashboard-card-padding);
+  margin-bottom: var(--section-margin);
 }
 
 .dashboard-card h2 {
   color: var(--text-primary);
+
   margin-bottom: var(--space-sm);
-  font-size: 1.2rem;
+
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
 }
 
 .card-header {
@@ -151,8 +184,13 @@
 .card-header button {
   background: transparent;
   border: none;
-  color: var(--accent-blue);
+
+  color: var(--color-secondary);
+
   cursor: pointer;
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -161,32 +199,53 @@
 
 .course-progress h3 {
   color: var(--text-primary);
+
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+
   margin-bottom: var(--space-sm);
 }
 
 .course-progress p {
-  color: var(--text-secondary);
-  margin-bottom: 15px;
+  color: var(--text-muted);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
+  margin-bottom: var(--mobile-padding);
 }
 
 .progress-bar {
   width: 100%;
-  height: 10px;
-  background: var(--border-primary);
+
+  height: var(--progress-height);
+
+  background: var(--border-dark);
+
   border-radius: var(--radius-pill);
+
   overflow: hidden;
+
   margin-bottom: var(--space-sm);
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--progress-gradient);
+
+  background: linear-gradient(
+    90deg,
+    var(--color-purple),
+    var(--color-violet)
+  );
+
   border-radius: var(--radius-pill);
 }
 
 .course-progress span {
-  color: var(--text-muted);
-  font-size: 14px;
+  color: var(--text-secondary);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -196,28 +255,40 @@
 .recommended-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md);
+
+  gap: var(--space-lg);
 }
 
 .recommend-card {
-  background: var(--bg-card);
+  background: var(--bg-surface);
+
   border: 1px solid var(--border-dark);
-  border-radius: var(--radius-md);
-  padding: var(--space-md);
-  transition: 0.3s;
+
+  border-radius: var(--radius-lg);
+
+  padding: var(--space-lg);
+
+  transition: var(--transition-normal);
 }
 
 .recommend-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(var(--hover-lift-md));
 }
 
 .recommend-card h3 {
   color: var(--text-primary);
+
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
+
   margin-bottom: var(--space-sm);
 }
 
 .recommend-card p {
-  color: var(--text-secondary);
+  color: var(--text-muted);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -225,12 +296,12 @@
 ========================= */
 
 .ai-card {
-  background: var(--ai-gradient);
+  background: var(--ai-card-gradient);
   border: none;
 }
 
 .ai-card p {
-  color: #e2e8f0;
+  color: var(--text-primary);
 }
 
 /* =========================
@@ -249,17 +320,18 @@
 
 @media (max-width: 768px) {
   .main-content {
-    padding: 15px;
+    padding: var(--mobile-padding);
   }
 
   .welcome-section {
     flex-direction: column;
     text-align: center;
-    gap: var(--space-lg);
+
+    gap: var(--section-margin);
   }
 
   .group1 {
-    width: 180px;
+    width: var(--welcome-image-width-mobile);
   }
 
   .stats-grid {

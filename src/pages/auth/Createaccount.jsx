@@ -159,11 +159,7 @@ function Createaccount() {
           <p className="bottom-text">
             Already have an account?{" "}
             <span
-              style={{
-                cursor: "pointer",
-                color: "#2563eb",
-                fontWeight: "600",
-              }}
+               className="createaccount-login-link"
               onClick={() => navigate("/user")}
             >
               Login

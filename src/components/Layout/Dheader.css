@@ -1,17 +1,22 @@
+/* ==========================================
+   HEADER BAR
+========================================== */
 
 /* ================= HEADER ================= */
-label{
-  color:#cbd5e1;
+
+label {
+  color: var(--text-secondary);
 }
+
 .headerbar {
-  height: 70px;
-  padding: 0 20px;
+  height: 70px; 
+  padding: 0 var(--space-xl);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  background: #0f172a;
+  background: var(--bg-main);
 }
 
 .header-left {
@@ -21,64 +26,90 @@ label{
 
 .header-nav {
   display: flex;
-  align-items:left;
+  align-items: flex-start;
+}
+ .nav-link {
+  margin: 0 50px;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+
+  color: var(--text-secondary);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
+  transition: var(--transition-fast);
 }
 
-.header-nav a {
-  margin: 0px 50px; /* Space between links */
-  cursor: pointer;
-  color: #cbd5e1;
-  text-decoration: none;
-  font-size: 15px;
+.nav-link:hover {
+  color: var(--text-primary);
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+
+  gap: var(--space-md);
 }
 
-/* ICON BUTTONS */
+/* ================= ICON BUTTON ================= */
+
 .icon-btn {
   background: transparent;
-  border: 1px solid #1e293b;
 
-  color:white;
-  padding: 8px 10px;
+  border: 1px solid var(--bg-surface-2);
 
-  border-radius: 10px;
+  color: var(--text-primary);
+
+  padding: var(--space-sm) var(--space-md);
+
+  border-radius: var(--radius-md);
+
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 .icon-btn:hover {
-  color: #fff;
+  color: var(--bg-card);
 }
 
 /* ================= DROPDOWN ================= */
 
-/* DROPDOWN WRAPPER */
 .dropdown {
   position: relative;
 }
 
-/* MAIN BUTTON */
+/* BUTTON */
+
 .dropdown-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
 
-  padding: 8px 14px;
-  border-radius: 10px;
+  gap: var(--space-sm);
+
+  padding: var(--space-sm) var(--space-lg);
 
   border: none;
+  border-radius: var(--radius-md);
+
   cursor: pointer;
 
-  background: linear-gradient(135deg, #6366f1, #7c3aed);
-  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--color-indigo),
+    var(--color-purple)
+  );
 
-  transition: 0.2s ease;
+  color: var(--text-primary);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
+  transition: var(--transition-fast);
 }
 
 .dropdown-btn:hover {
@@ -86,61 +117,89 @@ label{
 }
 
 /* ARROW */
+
 .arrow {
   margin-left: auto;
-  transition: transform 0.3s ease;
+  transition: var(--transition-normal);
 }
 
 .arrow.open {
   transform: rotate(180deg);
 }
 
-/* MENU (hidden by default) */
+/* MENU */
+
 .dropdown-menu {
   position: absolute;
+
   top: 48px;
   right: 0;
 
   width: 170px;
 
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  border-radius: 12px;
+  background: var(--bg-main);
+
+  border: 1px solid var(--bg-surface-2);
+  border-radius: var(--radius-lg);
 
   overflow: hidden;
 
   opacity: 0;
-  transform: translateY(-10px) scale(0.95);
   pointer-events: none;
 
-  transition: all 0.2s ease;
+  transform: translateY(-10px) scale(0.95);
 
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  transition: var(--transition-fast);
+
+  box-shadow: var(--shadow-lg);
 }
 
-/* SHOW (drop DOWN) */
+/* SHOW */
+
 .dropdown-menu.show {
   opacity: 1;
+
   transform: translateY(0) scale(1);
+
   pointer-events: auto;
 }
 
 /* ITEMS */
+
 .dropdown-menu button {
   width: 100%;
-  padding: 12px;
+
+  padding: var(--space-md);
 
   border: none;
+
   background: transparent;
 
   text-align: left;
-  color: #cbd5e1;
+
+  color: var(--text-secondary);
 
   cursor: pointer;
-  transition: 0.2s;
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
+  transition: var(--transition-fast);
 }
 
 .dropdown-menu button:hover {
-  background: #1e293b;
-  color: white;
+  background: var(--bg-surface-2);
+
+  color: var(--text-primary);
+}
+@media (max-width: 768px) {
+  .header-nav {
+    gap: var(--space-sm);
+    display: none !important;
+  }
+
+  .nav-link {
+    margin: 0;
+    font-size: 14px;
+  }
 }

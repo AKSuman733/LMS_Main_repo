@@ -39,43 +39,63 @@ function Dheader() {
           src={uptoskillsImg}
           alt="UptoSkills"
           className="logo"
+          fetchPriority="high"
         />
       </div>
 
       {/* CENTER NAVIGATION */}
+
       <nav className="header-nav">
-        
-        {/* <button> */}
+      <button
+  type="button"
+  className="nav-link"
+  onClick={() =>
+    document.getElementById("home")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+>
+  Home
+</button>
 
-        <a
-         onClick={() =>document.getElementById("home")
-              ?.scrollIntoView({ behavior: "smooth" })}>
-          Home
-        {/* </button> */}
-        </a>
-        <a onClick={() =>document.getElementById("courses")
-              ?.scrollIntoView({ behavior: "smooth" })}>
-          Courses
-        </a>
+<button
+  type="button"
+  className="nav-link"
+  onClick={() =>
+    document.getElementById("courses")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+>
+  Courses
+</button>
 
+<button
+  type="button"
+  className="nav-link"
+  onClick={() =>
+    document.getElementById("about")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+>
+  About
+</button>
 
-        <a  onClick={() =>document.getElementById("about")
-              ?.scrollIntoView({ behavior: "smooth" })}>
-          About
-        </a>
-
-        <a
-            onClick={() =>document.getElementById("contact")
-              ?.scrollIntoView({ behavior: "smooth" })}>
-          Contact
-        </a>
-    
-      </nav>
+<button
+  type="button"
+  className="nav-link"
+  onClick={() =>
+    document.getElementById("contact")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+>
+  Contact
+</button>
+</nav>
 
       {/* RIGHT */}
       <div className="header-right">
         {/* Notifications */}
-        <button className="icon-btn">
+        <button className="icon-btn"
+        aria-label="Notifications">
           <FaBell />
         </button>
 

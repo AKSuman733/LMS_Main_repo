@@ -6,7 +6,7 @@
   width: 320px;
   height: 80vh;
 
-  background: #fff;
+  background: var(--bg-card);
   border-radius: 12px;
 
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -30,7 +30,9 @@
 .close-btn {
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  
   cursor: pointer;
 }
 

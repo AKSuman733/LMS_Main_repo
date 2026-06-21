@@ -1,18 +1,9 @@
-
 /* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-   NO UI CHANGE
+   PAGE LEVEL TOKENS
 ========================= */
 .cert-page {
-  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
-  --bg-dark: #020617;
-
   --glass-bg: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.12);
-
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
 
   --primary-1: #6366f1;
   --primary-2: #7c3aed;
@@ -20,31 +11,17 @@
   --success-1: #22c55e;
   --success-2: #16a34a;
 
-  --shadow-sm: 0 10px 30px rgba(0,0,0,0.35);
   --shadow-hover: 0 18px 50px rgba(99, 102, 241, 0.25);
 
-  --radius-md: 14px;
-  --radius-lg: 18px;
   --radius-full: 999px;
-
-  --space-xs: 6px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 14px;
-  --space-xl: 18px;
-  --space-xxl: 20px;
-
-  --transition: 0.4s ease;
-  --transition-fast: 0.3s ease;
 }
-
 /* =========================
    PAGE WRAPPER
 ========================= */
 .cert-page {
-  padding: 45px;
-  font-family: "Poppins", sans-serif;
-  background: var(--bg-page);
+  padding: var(--space-xxl);
+  font-family: var( --font-family-base);
+  background: var(--bg-gradient-primary);
   color: var(--text-primary);
 }
 
@@ -52,18 +29,23 @@
    HERO
 ========================= */
 .cert-hero {
-  margin-bottom: 40px;
+  margin-bottom: var(--space-xxl);
 }
 
 .cert-hero h1 {
-  font-size: 30px;
-  font-weight: 50;
+  /* font-size: 30px;
+  font-weight: 50; */
+    font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
   margin: 0;
 }
 
 .cert-hero p {
   color: var(--text-secondary);
   margin-top: var(--space-sm);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
 }
 
 /* =========================
@@ -72,7 +54,7 @@
 .cert-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 28px;
+  gap: var(--space-xl);
 }
 
 /* =========================
@@ -85,7 +67,7 @@
   overflow: hidden;
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+ transition: var(--transition-normal);
   position: relative;
 }
 
@@ -101,7 +83,7 @@
   width: 100%;
   height: 180px;
   object-fit: cover;
-  transition: var(--transition);
+transition: var(--transition-normal);
 }
 
 .cert-card:hover img {
@@ -117,8 +99,11 @@
   right: 12px;
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  font-size: 12px;
-  font-weight: 700;
+  /* font-size: 12px;
+  font-weight: 700; */
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
   letter-spacing: 0.5px;
 }
 
@@ -136,13 +121,18 @@
 }
 
 .cert-content h3 {
-  font-size: 18px;
-  font-weight: 700;
+  /* font-size: 18px;
+  font-weight: 700; */
+  
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading); 
 }
 
 .cert-content p {
   color: var(--text-muted);
-  font-size: 14px;
+  /* font-size: 14px; */
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   margin: 8px 0 16px;
 }
 
@@ -156,12 +146,17 @@
   border-radius: var(--radius-md);
 
   background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
-  color: white;
+  /* color:var(--text-primary); */
 
-  font-weight: 600;
+  color: var(--bg-card);
+
+  /* font-weight: 600; */
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   cursor: pointer;
 
-  transition: var(--transition-fast);
+  transition: var(--transition-normal);
+  /* transition: var(--transition-fast); */
 }
 
 .download-btn:hover {
@@ -178,6 +173,8 @@
   }
 
   .cert-hero h1 {
-    font-size: 28px;
+    /* font-size: 28px; */
+      font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading); 
   }
 }

@@ -1,112 +1,3 @@
-// import { useNavigate } from "react-router-dom";
-// import "./Dashboard.css";
-// import group1Img from "../../assets/group1.png";
-
-// function Dashboard() {
-//   const navigate = useNavigate();
-
-//   return (
-//     <div className="main-content page-fade">
-
-//       {/* ================= HERO SECTION ================= */}
-//       <div className="hero-section">
-
-//         <div className="hero-left">
-//           {/* <h1>Welcome to UptoSkills 👋</h1> */}
-
-//           {/* <p>
-//             Learn industry-ready skills with structured courses,
-//             hands-on practice, and expert guidance.
-//           </p> */}
-//           <h1>
-//             Learn Skills That Build Careers
-//             Master industry-ready skills through practical learning,
-//             real projects, and expert mentorship.
-//             </h1> 
-//             <button className="primary-btn">
-//             Explore Courses 
-//             </button>
-//             <button className="primary-btn">
-//              Get Started 
-//           </button>
-
-//           {/* <button
-//             className="primary-btn"
-//             onClick={() => navigate("/course")}
-//           >
-//             Explore Courses
-//           </button> */}
-//         </div>
-
-//         <div className="hero-right">
-//           <img src={group1Img} alt="learning" />
-//         </div>
-
-//       </div>
-
-//       {/* ================= STATS ================= */}
-//       <div className="stats-grid">
-
-//         <div className="stats-card">
-//           <h3>10+</h3>
-//           <p>Courses</p>
-//         </div>
-
-//         <div className="stats-card">
-//           <h3>5+</h3>
-//           <p>Mentors</p>
-//         </div>
-
-//         <div className="stats-card">
-//           <h3>100%</h3>
-//           <p>Skill Learning</p>
-//         </div>
-
-//         <div className="stats-card">
-//           <h3>24/7</h3>
-//           <p>Support</p>
-//         </div>
-
-//       </div>
-
-//       {/* ================= CONTENT GRID ================= */}
-//       <div className="dashboard-grid">
-
-//         {/* ABOUT */}
-//         <div className="card about-card">
-//           <h2 id="about">About UptoSkills</h2>
-
-//           <p>
-//             UptoSkills is a modern learning platform designed to help students
-//             and professionals gain practical, industry-relevant skills through
-//             structured learning paths.
-//           </p>
-
-//           <p>
-//             Our mission is to make education practical, accessible, and
-//             career-focused so learners can confidently achieve their goals.
-//           </p>
-//         </div>
-
-//         {/* CONTACT */}
-//         <div className="card contact-card">
-//           <h2 id="contact">Contact Us</h2>
-
-//           <div className="contact-item">📧 support@uptoskills.com</div>
-//           <div className="contact-item">📞 +91 98765 43210</div>
-//           <div className="contact-item">🌐 www.uptoskills.com</div>
-//           <div className="contact-item">📍 Chennai, India</div>
-//         </div>
-
-//       </div>
-
-//     </div>
-//   );
-// }
-
-// export default Dashboard;
-
-
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import group1Img from "../../assets/group1.png";
@@ -129,13 +20,6 @@ function Dashboard() {
           </p>
 
           <div className="hero-buttons">
-            {/* <button
-              className="primary-btn"
-              onClick={() => navigate("/Courses")}
-            >
-              Explore Courses
-            </button> */}
-
             <button
               className="secondary-btn"
               onClick={() => navigate("/createaccount")}
@@ -146,7 +30,14 @@ function Dashboard() {
         </div>
 
         <div className="hero-right">
-          <img src={group1Img} alt="learning" />
+          <img src={group1Img}
+          alt="learning"
+           width="500"
+           height="333"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"/>
+    
         </div>
 
       </div>

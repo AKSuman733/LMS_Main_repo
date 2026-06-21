@@ -152,7 +152,7 @@ function Stud() {
               <th>Name</th>
               <th>Course</th>
               <th>Email</th>
-              <th>Action</th>
+             {/* <th>Action</th> */}
             </tr>
           </thead>
 
@@ -171,7 +171,7 @@ function Stud() {
                   <td>{student.course}</td>
                   <td>{student.email}</td>
 
-                  <td>
+                  {/* <td>
                     <button
                       className="view-btn"
                       onClick={() => {
@@ -181,7 +181,7 @@ function Stud() {
                     >
                       View
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))
             )}

@@ -37,6 +37,7 @@ function Header() {
           src={uptoskillsImg}
           alt="UptoSkills"
           className="logo"
+          fetchPriority="high"
         />
       </div>
 
@@ -44,7 +45,8 @@ function Header() {
       <div className="header-right">
 
         {/* 🔔 Notification */}
-        <button className="icon-btn">
+        <button className="icon-btn"
+        aria-label="Notifications">
           <div className="bell">
           <FaBell />
           </div>
@@ -52,7 +54,8 @@ function Header() {
 
         {/* 🌙 Theme Toggle */}
         <div>
-        <button className="mode" onClick={toggleTheme}>
+        <button className="mode" onClick={toggleTheme}
+        aria-label="Toggle Dark Mode">
           {theme === "light" ? <FaMoon /> : <FaSun />}
         </button>
         </div>

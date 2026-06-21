@@ -10,19 +10,9 @@ export default function Modal({
 
   return (
     <div className="modal-backdrop">
-      {/* <div className="modal-box"> */}
-        {/* <div className="modal-header"> */}
-          {/* <h2>{title}</h2> */}
-
-          {/* <button onClick={onClose}>
-            ✕
-          </button>
-        </div> */}
-
         <div className="modal-body">
           {children}
         </div>
       </div>
-    // </div>
   );
 }

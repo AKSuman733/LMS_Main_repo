@@ -37,6 +37,7 @@ function Uheader() {
           src={uptoskillsImg}
           alt="UptoSkills"
           className="logo"
+          fetchPriority="high"
         />
       </div>
 
@@ -45,14 +46,16 @@ function Uheader() {
 
         {/* 🔔 Notification */}
         <button className="icon-btn">
-          <div className="bell">
+          <div className="bell"
+          aria-label="Notifications">
           <FaBell />
           </div>
         </button>
 
         {/* 🌙 Theme Toggle */}
         <div>
-        <button className="mode" onClick={toggleTheme}>
+        <button className="mode" onClick={toggleTheme}
+        aria-label="Toggle Dark Mode">
           {theme === "light" ? <FaMoon /> : <FaSun />}
         </button>
         </div>

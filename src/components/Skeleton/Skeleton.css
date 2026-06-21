@@ -1,44 +1,57 @@
+:root {
+  /* Skeleton */
+  --skeleton-cell-height: 50px;
+  --skeleton-radius: var(--radius-sm);
+
+  --skeleton-gap: 10px;
+
+  --skeleton-animation-duration: 1.2s;
+
+  --skeleton-opacity-min: 0.5;
+  --skeleton-opacity-max: 1;
+
+  --skeleton-gradient: linear-gradient(
+    90deg,
+    #eeeeee,
+    #f5f5f5,
+    #eeeeee
+  );
+}
 .skeleton-wrapper {
   display: flex;
   flex-direction: column;
 
-  gap: 10px;
+  gap: var(--skeleton-gap);
 }
 
 .skeleton-row {
   display: grid;
 
-  grid-template-columns:
-    repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 
-  gap: 10px;
+  gap: var(--skeleton-gap);
 }
 
 .skeleton-cell {
-  height: 50px;
+  height: var(--skeleton-cell-height);
 
-  border-radius: 8px;
+  border-radius: var(--skeleton-radius);
 
-  background: linear-gradient(
-    90deg,
-    #eee,
-    #f5f5f5,
-    #eee
-  );
+  background: var(--skeleton-gradient);
 
-  animation: pulse 1.2s infinite;
+  animation: pulse var(--skeleton-animation-duration) infinite;
 }
 
 @keyframes pulse {
   0% {
-    opacity: 0.5;
+    opacity: var(--skeleton-opacity-min);
   }
 
   50% {
-    opacity: 1;
+    opacity: var(--skeleton-opacity-max);
   }
 
   100% {
-    opacity: 0.5;
+    opacity: var(--skeleton-opacity-min);
   }
 }

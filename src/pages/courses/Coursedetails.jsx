@@ -449,10 +449,10 @@ return (
 
           </div>
 
-          <div className="progress-bar">
+          <div className="course-progress-bar">
 
             <div
-              className="progress-fill"
+              className="course-progress-fill"
               style={{
                 width: `${progress}%`,
               }}

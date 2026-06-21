@@ -1,40 +1,10 @@
-
-/* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-========================= */
-.mentors-page {
-  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
-  --bg-card: #ffffff;
-
-  --primary: #5624d0;
-
-  --text-primary: #ffffff;
-  --text-muted: gray;
-  --text-dark: #000000;
-
-  --border: #ddd;
-
-  --radius-sm: 6px;
-  --radius-md: 10px;
-
-  --shadow-sm: 0 2px 10px rgba(0,0,0,0.08);
-
-  --space-sm: 10px;
-  --space-md: 15px;
-  --space-lg: 20px;
-  --space-xl: 30px;
-
-  --transition: 0.3s ease;
-
-  --font-base: "Poppins", sans-serif;
-}
-
 /* =========================
    PAGE WRAPPER
 ========================= */
 .mentors-page {
+   --primary: #5624d0;
   padding: var(--space-xl);
-  background: var(--bg-page);
+  background: var(--bg-gradient-primary);
 }
 
 /* =========================
@@ -43,7 +13,7 @@
 .mentors-header h2 {
   margin: 0;
   color: var(--text-primary);
-  font-family: var(--font-base);
+  font-family: var( --font-family-base);
 }
 
 .mentors-header p {
@@ -62,7 +32,7 @@
 
 .add-mentor-box input {
   padding: var(--space-sm);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
   flex: 1;
 }
@@ -70,11 +40,11 @@
 .add-mentor-box button {
   padding: var(--space-sm) var(--space-lg);
   background: var(--primary);
-  color: white;
+  color: var(--bg-card);
+transition: var(--transition-normal);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: var(--transition);
 }
 
 /* =========================
@@ -86,6 +56,11 @@
   gap: var(--space-lg);
 }
 
+
+.mentor-grid  h3{
+color:var(--text-dark);
+}
+
 /* =========================
    CARD
 ========================= */
@@ -94,8 +69,9 @@
   padding: var(--space-lg);
   border-radius: var(--radius-md);
   text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
+box-shadow: var(--shadow-sm);
+transition: var(--transition-normal);
+
 }
 
 .mentor-card:hover {
@@ -116,5 +92,5 @@
 .empty-state {
   text-align: center;
   padding: 50px;
-  color: var(--text-muted);
+  color: var(--text-muted); 
 }

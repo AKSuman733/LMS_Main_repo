@@ -1,43 +1,15 @@
-
-/* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-   NO UI CHANGE
-========================= */
-.course-page {
-  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
-
-  --bg-card: #ffffff;
-
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --text-light: #ffffff;
-
-  --border: transparent;
-
+ .course-page {
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 22px;
-
-  --shadow-sm: 0 10px 25px rgba(0, 0, 0, 0.08);
-
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 15px;
-  --space-xl: 20px;
-  --space-xxl: 30px;
 }
 
 /* =========================
    PAGE WRAPPER
 ========================= */
 .course-page {
-  padding: 40px;
-  background: var(--bg-page);
-  font-family: "Poppins", sans-serif;
+  padding: var(--space-xxl);
+  background: var(--bg-gradient-primary);
+  font-family:var( --font-family-base);
 }
 
 /* =========================
@@ -49,14 +21,15 @@
 }
 
 .course-header h1 {
-  font-size: 28px;
-  font-weight: 200;
-  color: var(--text-light);
+  font-size:var(--font-size-heading) ;
+  font-weight: var(--font-weight-heading);
+  color:var(--text-primary);
   margin-bottom: 5px;
 }
 
 .course-header p {
-  font-size: 18px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   color: var(--text-muted);
 }
 
@@ -73,11 +46,12 @@
 
 .filters input,
 .filters select {
-  padding: 12px 15px;
+  padding:var(--space-sm) var(--space-md);
   border-radius: var(--radius-sm);
   border: none;
   outline: none;
-  font-size: 14px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   min-width: 180px;
 }
 
@@ -98,7 +72,7 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: 0.3s ease;
+  transition:var(--transition-normal);
 }
 
 .course-card:hover {
@@ -114,17 +88,20 @@
 
 /* INFO */
 .course-info {
-  padding: 20px;
+  padding: var(--space-lg);
+
 }
 
 .course-info h3 {
-  font-size: 20px;
+  font-size: var(--font-size-heading);
+  font-weight:var(--font-weight-heading) ;
   color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .course-info p {
-  font-size: 14px;
+   font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   color: var(--text-secondary);
   margin: 4px 0;
 }
@@ -134,16 +111,16 @@
 ========================= */
 .enroll-btn {
   width: 100%;
-  margin-top: 12px;
-  padding: 12px;
+  margin-top: var( --space-md);
+  padding:var(--space-md);
   border: none;
   border-radius: var(--radius-sm);
-  background: linear-gradient(to right, var(--primary), #3b82f6);
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
+  background: linear-gradient(to right, var(--primary),var(--primary-hover));
+  color:var(--text-light);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: var(--transition-normal);
 }
 
 .enroll-btn:hover {
@@ -158,8 +135,9 @@
   grid-column: 1 / -1;
   text-align: center;
   color: var(--text-muted);
-  font-size: 18px;
-  padding: 40px;
+   font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  padding: var(--space-xxxl);
 }
 
 /* =========================
@@ -170,21 +148,22 @@
   justify-content: center;
   align-items: center;
   gap: var(--space-lg);
-  margin-top: 40px;
+  margin-top: var(--space-xxxl);
 }
 
 .pagination button {
-  padding: 10px 18px;
+  padding:var(--space-md) var(--space-lg);
   border: none;
   border-radius: var(--radius-sm);
-  background: #1e293b;
+  background:var(--bg-surface-2);
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: var(--transition-normal);
 }
 
 .pagination span {
   color: var(--text-light);
-  font-weight: 600;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
@@ -192,15 +171,18 @@
 ========================= */
 @media (max-width: 768px) {
   .course-page {
-    padding: 20px;
+    padding:var(--space-xl);
   }
 
   .course-header h1 {
-    font-size: 30px;
+    /* font-size: 30px; */
+      font-size: var(--font-size-heading);
+  font-weight:var(--font-weight-heading) ;
   }
 
   .course-header p {
-    font-size: 14px;
+     font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
   }
 
   .filters input,

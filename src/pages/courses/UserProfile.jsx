@@ -158,20 +158,6 @@ function UserProfile() {
 
           <div className="profile-card">
             <h3>Achievements</h3>
-
-            {/* <div className="badges">
-
-              <div className="badge">
-                <FaMedal />
-                Fast Learner
-              </div> */}
-
-              {/* <div className="badge">
-                <FaFire />
-                24 Day Streak
-              </div> */}
-
-            {/* </div> */}
           </div>
         </>
       )}

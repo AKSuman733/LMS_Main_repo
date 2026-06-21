@@ -1,26 +1,5 @@
-
-/* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-   NO UI CHANGE
-========================= */
 .analytics {
-  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
-
-  --bg-card: #0f172a;
   --bg-item: #f8fafc;
-
-  --text-primary: #ffffff;
-  --text-dark: #0f172a;
-
-  --shadow-sm: 0 8px 25px rgba(0,0,0,0.1);
-
-  --radius-md: 18px;
-  --radius-sm: 8px;
-
-  --space-sm: 10px;
-  --space-md: 12px;
-  --space-lg: 25px;
-  --space-xl: 30px;
 }
 
 /* =========================
@@ -28,7 +7,7 @@
 ========================= */
 .analytics {
   padding: var(--space-xl);
-  background: var(--bg-page);
+  background: var(--bg-gradient-primary);
 }
 
 /* =========================
@@ -37,6 +16,8 @@
 .analytics h2 {
   margin-bottom: var(--space-sm);
   color: var(--text-primary);
+  font-size: var(--font-size-heading);
+  font-weight: var( --font-weight-heading);
 }
 
 /* =========================
@@ -60,7 +41,9 @@
 
 .chart-card h3 {
   margin-bottom: var(--space-sm);
-  color: var(--text-primary);
+  color: var(--text-dark);
+   font-size: var(--font-size-heading);
+  font-weight: var( --font-weight-heading);
 }
 
 /* =========================
@@ -77,3 +60,6 @@
   background: var(--bg-item);
   border-radius: var(--radius-sm);
 }
+
+
+

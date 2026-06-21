@@ -4,12 +4,18 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
+
+
+
+import { lazy, Suspense } from "react";
+
+
 import "react-toastify/dist/ReactToastify.css";
 // import "./styles/design-tokens.css";
-
+import "./styles/tokens.css";
 import "./styles/interactions.css";
 import "./styles/animations.css";
-import "./styles/global.css";
+// import "./styles/global.css";
 
 /* PAGES */
 import User from "./pages/auth/User.jsx";
@@ -18,7 +24,7 @@ import Createaccount from "./pages/auth/Createaccount.jsx";
 
 import Course from "./pages/courses/Course.jsx";
 import Coursedetails from "./pages/courses/Coursedetails.jsx";
-import Analytics from "./pages/courses/Analytics.jsx";
+// import Analytics from "./pages/courses/Analytics.jsx";
 import Challenges from "./pages/courses/Challenges.jsx";
 import UserProfile from "./pages/courses/UserProfile.jsx";
 
@@ -30,7 +36,7 @@ import Stud from "./pages/Dashboard/Stud.jsx";
 import Acourse from "./pages/courses/Acourse.jsx";
 import Mentors from "./pages/courses/Mentors.jsx";
 import Mycourses from "./pages/courses/Mycourses.jsx";
-import Mycertificates from "./pages/courses/Mycertificates.jsx";
+// import Mycertificates from "./pages/courses/Mycertificates.jsx";
 import Addstudent from "./pages/courses/Addstudent.jsx";
 import ManageChallenges from "./pages/courses/ManageChallenges.jsx";
 import Reviews from "./pages/courses/Reviews.jsx";
@@ -40,10 +46,13 @@ import Layout from "./components/Layout/Layout.jsx";
 import Ulayout from "./components/Layout/Ulayout.jsx";
 import Dlayout from "./components/Layout/Dlayout.jsx";
 
+const Analytics = lazy(() => import("./pages/Courses/Analytics"));
+const Mycertificates = lazy(() => import("./pages/Courses/Mycertificates"));
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-
+      <Suspense fallback={<div>Loading...</div>}>
       <Routes>
 
         {/* PUBLIC */}
@@ -80,6 +89,7 @@ createRoot(document.getElementById("root")).render(
         </Route>
 
       </Routes>
+      </Suspense>
 
       <ToastContainer position="top-right" autoClose={2000} />
 

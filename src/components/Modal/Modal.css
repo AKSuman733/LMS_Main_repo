@@ -1,25 +1,20 @@
+:root {
+  /* Modal */
+  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --modal-z-index: 1000;
+}
 .modal-backdrop {
   position: fixed;
   inset: 0;
 
-  background: rgba(0,0,0,0.4);
+  background: var(--modal-overlay-bg);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  z-index: 1000;
+  z-index: var(--modal-z-index);
 }
-
-/* .modal-box {
-  width: 400px;
-
-  background: white;
-
-  border-radius: 8px;
-
-  padding: 16px;
-} */
 
 .modal-header {
   display: flex;
@@ -29,13 +24,12 @@
 
 .modal-header button {
   border: none;
-  background: none;
-
   cursor: pointer;
 
-  font-size: 18px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 .modal-body {
-  margin-top: 20px;
+  margin-top: var(--space-xl);
 }

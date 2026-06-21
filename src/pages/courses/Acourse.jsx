@@ -163,8 +163,6 @@ function Acourse() {
 
                 <div className="actions">
                   <button onClick={() => editCourse(course)}>Edit</button>
-
-                  {/* <button onClick={() => setSelectedCourse(course)}> */}
                   <button  onClick={() =>
                       navigate(`/Coursedetails`)}>
                     View

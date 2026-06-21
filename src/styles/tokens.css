@@ -1,0 +1,193 @@
+/* ==========================================
+   UPTOSKILLS DESIGN TOKENS
+   src/styles/tokens.css
+========================================== */
+
+:root {
+
+  /* =========================
+     BRAND COLORS
+  ========================= */
+
+  --color-primary: #FF6B35;
+  --color-primary-hover: #E85A28; 
+
+  --color-secondary: #00B5A5;
+
+  --color-indigo: #6366f1;
+  --color-purple: #7c3aed;
+  --color-violet: #8b5cf6;
+  --color-pink: #ec4899;
+
+  --color-warning: #f59e0b;
+  --color-warning-hover: #d97706;
+
+  --color-danger: #ef4444;
+  --color-success: #16a34a;
+
+  /* =========================
+     BACKGROUNDS
+  ========================= */
+
+  --bg-main: #0f172a;
+  --bg-surface: #111827;
+  --bg-surface-2: #1e293b;
+  --bg-surface-hover: #273549;
+  --bg-light:#ffffff;
+  --bg-light2: lightgray;
+
+
+  --bg-gradient-primary:
+    linear-gradient(135deg, #1e293b, #0f172a);
+
+  --bg-gradient-secondary:
+    radial-gradient(circle at top, #1e293b, #0b1220);
+
+  --bg-card: #ffffff;
+
+  --bg-success-light: #e7f6ea;
+  --bg-success-light2:gray;
+
+
+
+    /* =========================
+     GRAYS (FIXED - IMPORTANT)
+  ========================= */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* =========================
+     TEXT
+  ========================= */
+
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-default: var(--gray-900);
+  --text-dark: var(--gray-700);
+  --text-gray: #6b7280;
+  --text-light-gray: #9ca3af;
+
+  /* =========================
+     BORDERS
+  ========================= */
+ --border-primary: var(--color-primary);
+  --border-light: #eeeeee;
+  --border-medium: #dddddd;
+
+  --border-dark: #334155;
+  --border-dark-light: #475569;
+
+  --border-soft:
+    rgba(255,255,255,0.08);
+
+  /* =========================
+     BADGES
+  ========================= */
+
+  --badge-success-bg: #dcfce7;
+  --badge-success-text: #15803d;
+
+  /* =========================
+     TYPOGRAPHY
+  ========================= */
+
+  --font-family-base: "Poppins", sans-serif;
+
+  --font-size-body: 14px;
+  --font-weight-body: 400;
+  /* font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading); */
+
+  --font-size-heading: 24px;
+  --font-weight-heading: 500;
+
+  /* =========================
+     BORDER RADIUS
+  ========================= */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+
+  /* =========================
+     SPACING SCALE
+  ========================= */
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-xxxl:40px;
+  --space-4xl:45px;
+
+  /* =========================
+     SHADOWS
+  ========================= */
+  --shadow-xs:
+    0 2px 10px rgba(0,0,0,0.1);
+  --shadow-sm:
+    0 2px 10px rgba(0,0,0,0.08);
+
+  --shadow-md:
+    0 10px 24px rgba(0,0,0,0.08);
+
+  --shadow-lg:
+    0 10px 25px rgba(0,0,0,0.3);
+
+  /* =========================
+     EFFECTS
+  ========================= */
+
+  --blur-md: 10px;
+
+  /* =========================
+     ANIMATIONS
+  ========================= */
+
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+
+  /* =========================
+     LAYOUT
+  ========================= */
+
+  /* --header-height: 50px;
+  --sidebar-width: 200px;
+  --sidebar-collapsed: 80px; */
+
+  /* =========================
+     TOUCH TARGET
+  ========================= */
+
+  --button-height: 44px;
+
+
+
+
+
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible {
+  outline: 2px solid #00B5A5;
+  outline-offset: 2px;
+}
+}

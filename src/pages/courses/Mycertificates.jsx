@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+// import jsPDF from "jspdf";
+// import html2canvas from "html2canvas";
 
 import templateImg from "../../assets/template.png";
 import "./Mycertificates.css";
@@ -14,28 +14,54 @@ function Mycertificates() {
     { id: 3, title: "MERN Stack", image: templateImg, status: "Verified" },
   ];
 
+  // const downloadPDF = async (id, title) => {
+  //   const element = certRefs.current[id];
+
+  //   if (!element) return;
+
+  //   const canvas = await html2canvas(element, {
+  //     scale: 2,
+  //     useCORS: true,
+  //   });
+
+  //   const imgData = canvas.toDataURL("image/png");
+
+  //   const pdf = new jsPDF("landscape", "mm", "a4");
+
+  //   const pdfWidth = pdf.internal.pageSize.getWidth();
+  //   const pdfHeight = pdf.internal.pageSize.getHeight();
+
+  //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+  //   pdf.save(`${title}-certificate.pdf`);
+  // };
+
+
   const downloadPDF = async (id, title) => {
-    const element = certRefs.current[id];
+  const element = certRefs.current[id];
 
-    if (!element) return;
+  if (!element) return;
 
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-    });
+  // Load only when button is clicked
+  const { default: jsPDF } = await import("jspdf");
+  const { default: html2canvas } = await import("html2canvas");
 
-    const imgData = canvas.toDataURL("image/png");
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+  });
 
-    const pdf = new jsPDF("landscape", "mm", "a4");
+  const imgData = canvas.toDataURL("image/png");
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+  const pdf = new jsPDF("landscape", "mm", "a4");
 
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  const pdfWidth = pdf.internal.pageSize.getWidth();
+  const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    pdf.save(`${title}-certificate.pdf`);
-  };
+  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
+  pdf.save(`${title}-certificate.pdf`);
+};
   return (
     <div className="cert-page">
       <div className="cert-hero">

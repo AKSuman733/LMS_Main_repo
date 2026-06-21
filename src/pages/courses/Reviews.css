@@ -1,41 +1,25 @@
-
 /* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-   NO UI CHANGE
+   PAGE LEVEL TOKENS
 ========================= */
-.reviews-page {
-  --bg-page: #ffffff;
 
+.reviews-page {
   --bg-table: #1e293b;
   --bg-header: #0f172a;
 
-  --border: #334155;
+  --table-border: #334155;
 
-  --text-primary: #000000;
-  --text-light: #ffffff;
-  --text-muted: #e2e8f0;
+  --table-radius: 4px;
 
-  --gradient-primary: linear-gradient(135deg, #2563eb, #7c3aed);
+  --button-padding-y: 4px;
+  --button-padding-x: 10px;
 
-  --radius-sm: 4px;
-  --radius-md: 5px;
-
-  --space-sm: 5px;
-  --space-md: 10px;
-  --space-lg: 16px;
-  --space-xl: 20px;
-  --space-xxl: 25px;
-
-  --font-small: 11px;
-  --font-base: 14px;
-  --font-large: 16px;
-
-  --transition: 0.3s ease;
+  --review-column-width: 450px;
 }
 
 /* =========================
    PAGE WRAPPER
 ========================= */
+
 .reviews-page {
   padding: var(--space-xl);
 }
@@ -43,6 +27,7 @@
 /* =========================
    HEADER
 ========================= */
+
 .reviews-header {
   display: flex;
   justify-content: space-between;
@@ -53,47 +38,66 @@
 .reviews-header h2 {
   margin: 0;
   text-align: center;
-  color: var(--text-primary);
+  color: var(--text-dark);
+
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-heading);
 }
 
 .reviews-header p {
-  color: var(--text-primary);
+  color: var(--text-dark);
   margin-top: var(--space-sm);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* =========================
-   BUTTON
+   DOWNLOAD BUTTON
 ========================= */
+
 .reviewdownload-btn {
-  border: none !important;
-  padding: 4px 10px !important;
-  border-radius: var(--radius-sm) !important;
-  cursor: pointer !important;
-  font-size: var(--font-small) !important;
-  font-weight: 300 !important;
-  color: var(--text-light) !important;
-  background: var(--gradient-primary);
+  border: none;
+
+  padding:
+    var(--button-padding-y)
+    var(--button-padding-x);
+
+  border-radius: var(--table-radius);
+
+  cursor: pointer;
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+
+  color: var(--text-primary);
+  background: var(--bg-gradient-primary);
 }
 
 /* =========================
    TABLE WRAPPER
 ========================= */
+
 .reviews-table-wrapper {
   overflow-x: auto;
   background: var(--bg-table);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+
+  border-radius: var(--table-radius);
+
+  border: 1px solid var(--table-border);
 }
 
 /* =========================
    TABLE
 ========================= */
+
 .reviews-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 /* HEADER */
+
 .reviews-table thead {
   background: var(--bg-header);
 }
@@ -101,41 +105,54 @@
 .reviews-table th {
   padding: var(--space-lg);
   text-align: left;
-  color: var(--text-light);
-  font-weight: 600;
+
+  color: var(--text-primary);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* CELLS */
+
 .reviews-table td {
   padding: var(--space-lg);
-  border-bottom: 1px solid var(--border);
+
+  border-bottom: 1px solid var(--table-border);
+
   color: var(--text-muted);
+
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
 }
 
 /* HOVER */
+
 .reviews-table tr:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--border-soft);
 }
 
 /* =========================
    REVIEW COLUMN
 ========================= */
+
 .review-column {
-  max-width: 450px;
+  max-width: var(--review-column-width);
   line-height: 1.5;
 }
 
 /* =========================
    PAGINATION
 ========================= */
+
 .reviews-pagination button.active,
 .reviews-pagination .active {
-  color: var(--text-primary);
+  color: var(--text-default);
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
+
 @media (max-width: 768px) {
   .reviews-header {
     flex-direction: column;
@@ -143,7 +160,7 @@
     align-items: flex-start;
   }
 
-  .download-btn {
+  .reviewdownload-btn {
     width: 100%;
   }
 }

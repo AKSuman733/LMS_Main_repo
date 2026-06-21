@@ -15,26 +15,11 @@ function Layout() {
       {/* HEADER */}
       <Header />
 
-      {/* HAMBURGER */}
-      {/* <button
-        className="hamburger"
-        onClick={() => setSidebarOpen((prev) => !prev)}
-      >
-        ☰
-      </button> */}
-
       {/* SIDEBAR */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
-      {/* <button
-        className="hamburger"
-        onClick={() => setSidebarOpen((prev) => !prev)}
-      >
-        ☰
-      </button> */}
-
       {/* MOBILE OVERLAY */}
       {sidebarOpen && (
         <div

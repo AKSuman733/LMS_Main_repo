@@ -1,53 +1,27 @@
-
 /* =========================
-   DESIGN TOKENS (PAGE LEVEL)
-   NO UI CHANGE
+   PAGE LEVEL TOKENS
 ========================= */
 .challenges-page {
-  --bg-page: linear-gradient(135deg, #1e293b, #0f172a);
-
-  --bg-card: #ffffff;
   --bg-button: linear-gradient(135deg, #2563eb, #4f46e5);
   --bg-button-hover-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
 
-  --text-primary: #0f172a;
-  --text-light: #ffffff;
-  --text-success: #15803d;
-
   --border-accent: #2563eb;
   --border-success: #22c55e;
-
-  --bg-success-light: #dcfce7;
-
-  --radius-md: 10px;
-  --radius-lg: 18px;
-
-  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.04);
-  --shadow-hover: 0 12px 30px rgba(15, 23, 42, 0.10);
-
-  --space-sm: 5px;
-  --space-md: 10px;
-  --space-lg: 15px;
-  --space-xl: 20px;
-
-  --transition: 0.3s ease;
 }
-
 /* =========================
    PAGE WRAPPER
 ========================= */
 .challenges-page {
   padding: var(--space-xl);
-  background: var(--bg-page);
+  background: var(--bg-gradient-primary);
 }
 
 /* =========================
    TITLE
 ========================= */
 .challenges-page h1 {
-  font-size: 2rem;
-  font-weight: 200;
+   font-size: var(--font-size-heading);
+  font-weight: var( --font-weight-heading);
   color: var(--text-light);
   margin-bottom: var(--space-xl);
 }
@@ -90,8 +64,8 @@
 .challenge-card h3 {
   margin: 0;
   color: var(--text-primary);
-  font-size: 1.1rem;
-  font-weight: 200;
+   font-size: var(--font-size-heading);
+  font-weight: var( --font-weight-heading);
 }
 
 /* =========================
@@ -100,12 +74,10 @@
 .challenge-card button {
   min-width: 170px;
   padding: var(--space-md) 18px;
-
   border: none;
   border-radius: var(--radius-md);
-
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: var( --font-size-body);
+  font-weight: var(--font-weight-body);
 
   cursor: pointer;
   transition: var(--transition);
@@ -126,7 +98,7 @@
 .challenge-card button:disabled {
   background: var(--bg-success-light);
   color: var(--text-success);
-  font-weight: 200;
+  font-weight: var(--font-weight-body);
 }
 
 /* Completed card state */

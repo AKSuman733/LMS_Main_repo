@@ -152,38 +152,6 @@ useEffect(() => {
                 <p>{course.level}</p>
                 <p>{course.duration}</p>
 
-                {/* <button
-                  className="enroll-btn"
-                  onClick={() =>
-                    navigate("/Coursedetails", {
-                      state: {
-                        courseName: course.name,
-                        coursePrice: course.price,
-                      },
-                    })
-                  }
-                >
-                  Enroll Now
-                </button> */}
-                {/* <button
-  className="enroll-btn"
-  disabled={enrolledCourses.includes(course.name)}
-  onClick={() => {
-    setEnrolledCourses([...enrolledCourses, course.name]);
-
-    navigate("/Coursedetails", {
-      state: {
-        courseName: course.name,
-        coursePrice: course.price,
-      },
-    });
-  }}
->
-  {enrolledCourses.includes(course.name)
-    ? "Enrolled"
-    : "Enroll Now"}
-</button> */}
-
 <button
   className="enroll-btn"
   onClick={() => {
