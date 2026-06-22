@@ -6,13 +6,13 @@
 // --- COLORS ---
 export const colors = {
   // Brand
-  primary: '#FF6B35',        // UptoSkills Orange - CTAs, buttons, highlights
-  primaryLight: '#FFF0EB',   // Orange tint - backgrounds, hover states
+  primary: '#FF6B2B',        // UptoSkills Orange - CTAs, buttons, highlights
+  primaryLight: 'rgba(255, 107, 43, 0.15)',   // Orange tint - backgrounds, hover states
   primaryDark: '#E85520',    // Darker orange - pressed states
 
-  secondary: '#00B5A5',      // UptoSkills Teal - secondary actions, accents
-  secondaryLight: '#E6F7F6', // Teal tint - backgrounds
-  secondaryDark: '#008F82',  // Darker teal - pressed states
+  secondary: '#00C97B',      // UptoSkills Green - secondary actions, accents
+  secondaryLight: 'rgba(0, 201, 123, 0.15)', // Green tint - backgrounds
+  secondaryDark: '#00B36C',  // Darker green - pressed states
 
   // Neutral
   white: '#FFFFFF',
@@ -29,30 +29,29 @@ export const colors = {
   textDisabled: '#4B5563',   // Disabled state
 
   // Status
-  success: '#00B5A5',
-  successLight: 'rgba(0, 181, 165, 0.1)',
-  successDark: '#008F82',
+  success: '#00C97B',
+  successLight: 'rgba(0, 201, 123, 0.1)',
+  successDark: '#00B36C',
 
-  // Warning/Error/Info
-  warning: '#F59E0B',
-  warningLight: 'rgba(245, 158, 11, 0.1)',
-  warningDark: '#D97706',
+  warning: '#FF8C42',
+  warningLight: 'rgba(255, 140, 66, 0.1)',
+  warningDark: '#E87D34',
 
   error: '#EF4444',
   errorLight: 'rgba(239, 68, 68, 0.1)',
   errorDark: '#DC2626',
 
-  info: '#3B82F6',
-  infoLight: 'rgba(59, 130, 246, 0.1)',
+  info: '#4F8EF7',
+  infoLight: 'rgba(79, 142, 247, 0.1)',
   infoDark: '#2563EB',
 
   // Metric card accent borders
-  accentGreen: '#22C55E',
-  accentTeal: '#00B5A5',
-  accentOrange: '#FF6B35',
+  accentGreen: '#00C97B',
+  accentTeal: '#00C97B',
+  accentOrange: '#FF6B2B',
   accentRed: '#EF4444',
-  accentAmber: '#F59E0B',
-  accentBlue: '#3B82F6',
+  accentAmber: '#FF8C42',
+  accentBlue: '#4F8EF7',
 } as const
 
 // --- SPACING SCALE ---

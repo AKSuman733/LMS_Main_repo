@@ -103,7 +103,7 @@ export default function CourseForm() {
         backgroundColor: colors.white,
         borderRadius: radius.xl,
         boxShadow: shadows.lg,
-        padding: spacing.xl,
+        padding: '32px',
         fontFamily: typography.fontFamily,
         border: `1px solid ${colors.borderLight}`,
       }}
@@ -112,7 +112,7 @@ export default function CourseForm() {
       <ToastSystem toasts={toasts} dismissToast={dismissToast} />
 
       {/* Form Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md, marginBottom: spacing.lg }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
         <div
           style={{
             width: '40px',
@@ -142,7 +142,7 @@ export default function CourseForm() {
             style={{
               fontSize: typography.fontSize.sm,
               color: colors.textMuted,
-              margin: `${spacing.xs} 0 0 0`,
+              margin: '4px 0 0 0',
             }}
           >
             Provide the details below to publish a new learning course.
@@ -220,7 +220,7 @@ export default function CourseForm() {
 
         {/* Password Strength Indicator */}
         {values.password && (
-          <div style={{ marginTop: `-${spacing.sm}`, marginBottom: spacing.md }}>
+          <div style={{ marginTop: '-8px', marginBottom: '16px' }}>
             <PasswordStrengthMeter password={values.password} />
           </div>
         )}
@@ -286,8 +286,8 @@ export default function CourseForm() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: spacing.sm,
-            marginTop: spacing.lg,
+            gap: '8px',
+            marginTop: '24px',
           }}
         >
           {isSubmitting ? (

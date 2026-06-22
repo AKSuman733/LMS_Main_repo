@@ -7,7 +7,7 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'student' | 'admin'>('admin');
+  const [role, setRole] = useState<'student' | 'admin'>('student');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,79 +63,79 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#0A0F1E] text-white">
-      {/* Left Panel - 40% Width (Hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-[40%] bg-[#130D35] p-12 flex-col justify-between border-r border-[#1E2D45]">
+    <div className="min-h-screen flex">
+      {/* Left Panel - Indigo Gradient */}
+      <div className="hidden lg:flex lg:w-[45%] bg-gradient-to-br from-[#2D1B69] to-[#1A0F3C] p-12 flex-col justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-0 focus:outline-none">
-          <span className="text-[20px] font-bold text-white tracking-tight">Learnify</span>
-          <div className="w-[6px] h-[6px] rounded-full bg-[#FF6B2B] ml-[2px]"></div>
-        </Link>
+        <div className="flex items-center gap-0">
+          <span className="text-[20px] font-bold text-white">Learnify</span>
+          <div className="w-[6px] h-[6px] rounded-full bg-[#BBFF00] ml-[2px]"></div>
+        </div>
 
-        {/* Center Quote & Testimonial */}
+        {/* Center Quote */}
         <div className="max-w-md">
           <blockquote className="text-[26px] text-white italic font-light leading-[1.4] max-w-[320px] mb-8">
             "Your next breakthrough starts with one course."
           </blockquote>
 
-          {/* Social Proof Testimonial Card */}
-          <div className="bg-[#1A2540] border border-[#1E2D45] rounded-[12px] p-5 shadow-lg">
-            <div className="flex items-center gap-3 mb-3.5">
+          {/* Testimonial Card */}
+          <div className="bg-white/15 backdrop-blur-sm border border-white/20 rounded-[16px] p-4 shadow-lg">
+            <div className="flex items-center gap-3 mb-3">
               <div className="flex -space-x-2">
                 <img
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=32&h=32&q=80"
                   alt="Learner"
-                  className="w-8 h-8 rounded-full border border-[#1E2D45] object-cover"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
                 />
                 <img
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=32&h=32&q=80"
                   alt="Learner"
-                  className="w-8 h-8 rounded-full border border-[#1E2D45] object-cover"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
                 />
                 <img
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=32&h=32&q=80"
                   alt="Learner"
-                  className="w-8 h-8 rounded-full border border-[#1E2D45] object-cover"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
                 />
               </div>
               <span className="text-white font-bold text-[14px]">Join 1.3M+ learners</span>
             </div>
             
-            <div className="flex gap-0.5 mb-2.5">
+            <div className="flex gap-0.5 mb-2">
               {[...Array(5)].map((_, i) => (
-                <span key={i} className="text-[#FF8C42] text-[14px]">★</span>
+                <span key={i} className="text-[#F59E0B] text-[14px]">★</span>
               ))}
             </div>
             
-            <p className="text-[#9CA3AF] text-[13px] leading-relaxed">
+            <p className="text-white/80 text-[13px] leading-relaxed">
               "Learnify transformed my career. The courses are practical and the instructors are world-class."
             </p>
           </div>
         </div>
 
         {/* Bottom badges */}
-        <div className="flex gap-2.5 flex-wrap">
-          <div className="px-4 py-2 rounded-full border border-[#1E2D45] text-[#9CA3AF] text-[12px] font-medium bg-[#111827]">
+        <div className="flex gap-3 flex-wrap">
+          <div className="px-4 py-2 rounded-[8px] border border-white/40 text-white text-[12px] font-medium bg-white/5">
             120+ Free Courses
           </div>
-          <div className="px-4 py-2 rounded-full border border-[#1E2D45] text-[#9CA3AF] text-[12px] font-medium bg-[#111827]">
+          <div className="px-4 py-2 rounded-[8px] border border-white/40 text-white text-[12px] font-medium bg-white/5">
             Expert Instructors
           </div>
-          <div className="px-4 py-2 rounded-full border border-[#1E2D45] text-[#9CA3AF] text-[12px] font-medium bg-[#111827]">
+          <div className="px-4 py-2 rounded-[8px] border border-white/40 text-white text-[12px] font-medium bg-white/5">
             Get Certified Free
           </div>
         </div>
       </div>
 
-      {/* Right Panel - 60% Width */}
-      <div className="flex-1 bg-[#0A0F1E] flex items-center justify-center p-6 sm:p-12">
+      {/* Right Panel - Login Form */}
+      <div className="flex-1 bg-white flex items-center justify-center p-6">
         <div className="w-full max-w-[420px] flex flex-col justify-center py-8">
           {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-[32px] font-bold text-white mb-2 leading-tight">
+          <div className="mb-[24px]">
+            <h1 className="text-[32px] font-bold text-[#1A1A2E] mb-2 leading-tight">
               Welcome back
             </h1>
-            <p className="text-[15px] text-[#9CA3AF]">
+            <p className="text-[15px] text-[#6B6B80]">
               Continue your learning journey.
             </p>
           </div>
@@ -144,15 +144,15 @@ export function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Error Alert State */}
             {error && (
-              <div className="flex items-center justify-between p-3.5 bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-[8px] text-[#EF4444] text-[14px] animate-slide-down">
+              <div className="flex items-center justify-between p-3.5 bg-[#FEF2F2] border border-[#FCA5A5] rounded-[10px] text-[#DC2626] text-[14px] animate-slide-down">
                 <div className="flex items-center gap-2">
                   <AlertCircle size={18} className="flex-shrink-0" />
-                  <span className="font-semibold">{error}</span>
+                  <span className="font-medium">{error}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setError(null)}
-                  className="text-[#EF4444] hover:opacity-75 transition-opacity cursor-pointer border-none bg-transparent"
+                  className="text-[#DC2626] hover:opacity-75 transition-opacity cursor-pointer animate-none"
                 >
                   <X size={18} />
                 </button>
@@ -161,11 +161,11 @@ export function Login() {
 
             {/* Email field */}
             <div className="flex flex-col w-full">
-              <label className="text-[13px] text-[#9CA3AF] mb-2 font-medium">
+              <label className="text-[13px] text-[#6B6B80] mb-2 font-medium">
                 Email address
               </label>
-              <div className="relative flex items-center rounded-[8px] border border-[#1E2D45] bg-[#111827] transition-all focus-within:border-[#FF6B2B] focus-within:shadow-[0_0_10px_rgba(255,107,43,0.15)]">
-                <div className="absolute left-4 text-[#9CA3AF]">
+              <div className="relative flex items-center rounded-[10px] border border-[#E2E1F0] bg-white transition-all focus-within:border-[#2D1B69] focus-within:ring-3 focus-within:ring-[#2D1B69]/12">
+                <div className="absolute left-4 text-[#2D1B69]">
                   <Mail size={18} />
                 </div>
                 <input
@@ -173,7 +173,7 @@ export function Login() {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-[48px] pl-11 pr-4 bg-transparent outline-none text-[14px] text-white placeholder-[#9CA3AF] font-medium"
+                  className="w-full h-[48px] pl-11 pr-4 bg-transparent outline-none text-[14px] text-[#1A1A2E] placeholder-[#6B6B80] font-medium"
                   required
                 />
               </div>
@@ -181,11 +181,11 @@ export function Login() {
 
             {/* Password field */}
             <div className="flex flex-col w-full">
-              <label className="text-[13px] text-[#9CA3AF] mb-2 font-medium">
+              <label className="text-[13px] text-[#6B6B80] mb-2 font-medium">
                 Password
               </label>
-              <div className="relative flex items-center rounded-[8px] border border-[#1E2D45] bg-[#111827] transition-all focus-within:border-[#FF6B2B] focus-within:shadow-[0_0_10px_rgba(255,107,43,0.15)]">
-                <div className="absolute left-4 text-[#9CA3AF]">
+              <div className="relative flex items-center rounded-[10px] border border-[#E2E1F0] bg-white transition-all focus-within:border-[#2D1B69] focus-within:ring-3 focus-within:ring-[#2D1B69]/12">
+                <div className="absolute left-4 text-[#2D1B69]">
                   <Lock size={18} />
                 </div>
                 <input
@@ -193,13 +193,13 @@ export function Login() {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full h-[48px] pl-11 pr-12 bg-transparent outline-none text-[14px] text-white placeholder-[#9CA3AF] font-medium"
+                  className="w-full h-[48px] pl-11 pr-12 bg-transparent outline-none text-[14px] text-[#1A1A2E] placeholder-[#6B6B80] font-medium"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 text-[#9CA3AF] hover:text-white transition-colors focus:outline-none cursor-pointer border-none bg-transparent"
+                  className="absolute right-4 text-[#6B6B80] hover:text-[#2D1B69] transition-colors focus:outline-none cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -207,7 +207,7 @@ export function Login() {
               <div className="text-right mt-2">
                 <Link
                   to="/forgot-password"
-                  className="text-[13px] text-[#FF6B2B] font-semibold hover:underline"
+                  className="text-[13px] text-[#2D1B69] font-medium hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -216,33 +216,41 @@ export function Login() {
 
             {/* Role Selector UI */}
             <div className="flex flex-col gap-2 pt-1">
-              <label className="text-[13px] text-[#9CA3AF] font-medium">
+              <label className="text-[13px] text-[#6B6B80] font-medium">
                 Select your role
               </label>
-              <div className="flex gap-3">
+              <div style={{ display: 'flex', gap: 12 }}>
                 {/* Student Card */}
                 <div
                   onClick={() => setRole('student')}
-                  className={`flex-1 p-3 rounded-[8px] cursor-pointer flex items-center gap-3 transition-all duration-150 border ${
-                    role === 'student'
-                      ? 'border-[#FF6B2B] bg-[#FF6B2B]/10 text-white'
-                      : 'border-[#1E2D45] bg-[#111827] text-[#9CA3AF] hover:border-[#9CA3AF]/40'
-                  }`}
+                  style={{
+                    flex: 1, padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
+                    border: role === 'student' ? '2px solid #2D1B69' : '1px solid #E2E1F0',
+                    background: role === 'student' ? '#EDE9FF' : '#fff',
+                    display: 'flex', alignItems: 'center', gap: 10, transition: 'all 0.15s'
+                  }}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                      role === 'student' ? 'bg-[#FF6B2B] text-white' : 'bg-[#1A2540] text-[#9CA3AF]'
-                    }`}
+                    style={{
+                      width: 32, height: 32, borderRadius: '50%',
+                      background: role === 'student' ? '#2D1B69' : '#F7F6F3',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}
                   >
-                    <GraduationCap size={18} />
+                    <GraduationCap size={18} color={role === 'student' ? 'white' : '#6B6B80'} />
                   </div>
-                  <div className="flex-grow min-w-0">
-                    <div className="font-bold text-[13px] leading-tight">Student</div>
-                    <div className="text-[11px] text-[#9CA3AF] truncate">Access courses</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: 13, color: '#1A1A2E' }}>Student</div>
+                    <div style={{ fontSize: 11, color: '#6B6B80' }}>Access courses & learning</div>
                   </div>
                   {role === 'student' && (
-                    <div className="w-[18px] h-[18px] rounded-full bg-[#FF6B2B] flex items-center justify-center flex-shrink-0">
-                      <Check size={12} className="text-white" />
+                    <div
+                      style={{
+                        width: 18, height: 18, borderRadius: '50%', background: '#2D1B69',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                      }}
+                    >
+                      <Check size={12} color="white" />
                     </div>
                   )}
                 </div>
@@ -250,26 +258,34 @@ export function Login() {
                 {/* Admin Card */}
                 <div
                   onClick={() => setRole('admin')}
-                  className={`flex-1 p-3 rounded-[8px] cursor-pointer flex items-center gap-3 transition-all duration-150 border ${
-                    role === 'admin'
-                      ? 'border-[#FF6B2B] bg-[#FF6B2B]/10 text-white'
-                      : 'border-[#1E2D45] bg-[#111827] text-[#9CA3AF] hover:border-[#9CA3AF]/40'
-                  }`}
+                  style={{
+                    flex: 1, padding: '12px 16px', borderRadius: 10, cursor: 'pointer',
+                    border: role === 'admin' ? '2px solid #D97706' : '1px solid #E2E1F0',
+                    background: role === 'admin' ? '#FEF3C7' : '#fff',
+                    display: 'flex', alignItems: 'center', gap: 10, transition: 'all 0.15s'
+                  }}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                      role === 'admin' ? 'bg-[#FF6B2B] text-white' : 'bg-[#1A2540] text-[#9CA3AF]'
-                    }`}
+                    style={{
+                      width: 32, height: 32, borderRadius: '50%',
+                      background: role === 'admin' ? '#D97706' : '#F7F6F3',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}
                   >
-                    <Shield size={18} />
+                    <Shield size={18} color={role === 'admin' ? 'white' : '#6B6B80'} />
                   </div>
-                  <div className="flex-grow min-w-0">
-                    <div className="font-bold text-[13px] leading-tight">Admin</div>
-                    <div className="text-[11px] text-[#9CA3AF] truncate">Manage panel</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: 13, color: '#1A1A2E' }}>Admin</div>
+                    <div style={{ fontSize: 11, color: '#6B6B80' }}>Manage platform & users</div>
                   </div>
                   {role === 'admin' && (
-                    <div className="w-[18px] h-[18px] rounded-full bg-[#FF6B2B] flex items-center justify-center flex-shrink-0">
-                      <Check size={12} className="text-white" />
+                    <div
+                      style={{
+                        width: 18, height: 18, borderRadius: '50%', background: '#D97706',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                      }}
+                    >
+                      <Check size={12} color="white" />
                     </div>
                   )}
                 </div>
@@ -278,8 +294,20 @@ export function Login() {
 
             {/* Admin credentials hint */}
             {role === 'admin' && (
-              <div className="flex items-center gap-2 bg-[#1A2540] border border-[#1E2D45] rounded-[8px] p-3 text-[11px] text-[#9CA3AF]">
-                <Info size={14} className="text-[#4F8EF7] flex-shrink-0" />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  background: '#F7F6F3',
+                  border: '1px solid #E2E1F0',
+                  borderRadius: 8,
+                  padding: 10,
+                  fontSize: 11,
+                  color: '#6B6B80'
+                }}
+              >
+                <Info size={14} className="text-[#6B6B80] flex-shrink-0" />
                 <span>Demo admin: <strong>admin@learnify.com</strong> / <strong>admin123</strong></span>
               </div>
             )}
@@ -289,10 +317,14 @@ export function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full h-[48px] bg-[#FF6B2B] text-white font-bold text-[15px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#FF8C42] active:scale-[0.97] transition-all cursor-pointer border-none shadow-md disabled:opacity-50"
+                className={`w-full h-[48px] font-semibold text-[15px] rounded-[10px] border-0 flex items-center justify-center gap-2 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-85 ${
+                  role === 'admin'
+                    ? 'bg-[#D97706] text-white hover:bg-[#C2410C]'
+                    : 'bg-[#2D1B69] text-[#BBFF00] hover:bg-[#3D2B89]'
+                }`}
               >
                 {isLoading ? (
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -305,9 +337,9 @@ export function Login() {
             {/* Divider */}
             <div className="relative my-6 flex items-center justify-center">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#1E2D45]"></div>
+                <div className="w-full border-t border-[#E2E1F0]"></div>
               </div>
-              <div className="relative px-4 bg-[#0A0F1E] text-[13px] text-[#9CA3AF] font-medium">
+              <div className="relative px-4 bg-white text-[13px] text-[#6B6B80] font-medium">
                 or
               </div>
             </div>
@@ -315,7 +347,7 @@ export function Login() {
             {/* Google Button */}
             <button
               type="button"
-              className="w-full h-[48px] flex items-center justify-center gap-3 bg-transparent border border-[#1E2D45] hover:border-white rounded-[8px] text-[14px] text-white font-semibold hover:bg-[#111827] active:scale-[0.97] transition-all cursor-pointer"
+              className="w-full h-[48px] flex items-center justify-center gap-3 bg-white border border-[#E2E1F0] rounded-[10px] text-[14px] text-[#1A1A2E] font-medium hover:bg-[#F7F6F3] transition-colors cursor-pointer"
             >
               <svg width="18" height="18" viewBox="0 0 20 20" className="flex-shrink-0">
                 <path
@@ -340,9 +372,9 @@ export function Login() {
           </form>
 
           {/* Create Account link */}
-          <p className="mt-6 text-center text-[14px] text-[#9CA3AF]">
+          <p className="mt-6 text-center text-[14px] text-[#6B6B80]">
             New here?{' '}
-            <Link to="/register" className="text-[#FF6B2B] font-bold hover:underline">
+            <Link to="/register" className="text-[#2D1B69] font-bold hover:underline">
               Create a free account
             </Link>
           </p>

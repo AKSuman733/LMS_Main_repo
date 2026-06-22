@@ -1,4 +1,1896 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnify • Online Learning Community</title>
+    <!-- Google Fonts Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 🎨 DESIGN SYSTEM & VARIABLES */
+        :root {
+            --bg-main: #0d0f1e;          /* Deep navy dark */
+            --bg-card: #161a30;          /* Card background */
+            --bg-surface: #13162b;       /* Surface/secondary bg */
+            --border-color: #2a2f52;     /* Borders */
+            
+            --text-primary: #e8eaf6;     /* Text primary */
+            --text-muted: #8892b0;       /* Text muted */
+            
+            --accent-orange: #f97316;    /* Accent orange (primary CTA) */
+            --accent-orange-hover: #ea580c;
+            --accent-green: #22d3a5;     /* Accent green (stats, XP) */
+            --accent-blue: #60a5fa;      /* Accent blue (events, info) */
+            --accent-purple: #a855f7;    /* Accent purple (custom tags) */
+            
+            --font-main: 'Outfit', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --font-sub: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 📦 RESET & BASE STYLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        input, select, textarea, button {
+            font-family: inherit;
+            color: inherit;
+        }
+
+        /* 🚀 SCROLLBAR STYLING */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ⚓ UTILITIES & LAYOUTS */
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 2px solid transparent;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-orange);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-secondary {
+            border-color: var(--border-color);
+            background-color: transparent;
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background-color: rgba(249, 115, 22, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #f97316 0%, #ff8c3b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+
+        .tag-ai {
+            color: var(--accent-orange);
+            background-color: rgba(249, 115, 22, 0.1);
+            border-color: rgba(249, 115, 22, 0.25);
+        }
+
+        .tag-ops {
+            color: var(--accent-green);
+            background-color: rgba(34, 211, 165, 0.1);
+            border-color: rgba(34, 211, 165, 0.25);
+        }
+
+        .tag-rag {
+            color: var(--accent-blue);
+            background-color: rgba(96, 165, 250, 0.1);
+            border-color: rgba(96, 165, 250, 0.25);
+        }
+
+        .tag-ml {
+            color: var(--accent-purple);
+            background-color: rgba(168, 85, 247, 0.1);
+            border-color: rgba(168, 85, 247, 0.25);
+        }
+
+        /* 🧭 NAVIGATION BAR */
+        .navbar-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(13, 15, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 75px;
+        }
+
+        .logo {
+            font-family: var(--font-sub);
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--accent-orange);
+            font-size: 2rem;
+            line-height: 1;
+            margin-left: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            color: var(--accent-orange);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-orange);
+            border-radius: 2px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* 🔍 SEARCH CONTAINER */
+        .search-box {
+            position: relative;
+            width: 240px;
+            transition: var(--transition-smooth);
+        }
+
+        .search-box:focus-within {
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: var(--border-radius-sm);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .signin-link {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .signin-link:hover {
+            color: var(--accent-orange);
+        }
+
+        /* 🍔 HAMBURGER MENU */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* 🦸 HERO SECTION */
+        .hero {
+            position: relative;
+            padding: 6rem 0 5rem 0;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(249, 115, 22, 0.08) 0%, rgba(13, 15, 30, 0) 65%);
+        }
+
+        .hero h1 {
+            font-size: 3.75rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+            font-family: var(--font-sub);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 2.5rem auto;
+            line-height: 1.5;
+        }
+
+        .hero-ctas {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+            margin-bottom: 4.5rem;
+        }
+
+        /* 📊 STATS BAR */
+        .stats-bar {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 1.75rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 880px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 15%;
+            height: 70%;
+            width: 1px;
+            background-color: var(--border-color);
+        }
+
+        .stat-val {
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+            font-family: var(--font-sub);
+        }
+
+        .stat-val.orange { color: var(--accent-orange); }
+        .stat-val.green { color: var(--accent-green); }
+        .stat-val.blue { color: var(--accent-blue); }
+
+        .stat-lbl {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* 📋 MAIN LAYOUT */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2.5rem;
+            margin-top: 2rem;
+            padding-bottom: 6rem;
+            align-items: start;
+        }
+
+        /* 💬 LEFT COLUMN - DISCUSSIONS */
+        .discussions-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .discussions-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: var(--font-sub);
+            letter-spacing: -0.5px;
+        }
+
+        /* 🏷️ FILTER TABS */
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+
+        .filter-tab {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-tab:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+        }
+
+        .filter-tab.active {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background-color: rgba(249, 115, 22, 0.06);
+        }
+
+        /* 🃏 DISCUSSION CARDS */
+        .discussions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .discussion-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .discussion-card:hover {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* Fade/slide animation on filtering */
+        .discussion-card.fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+            position: absolute;
+            pointer-events: none;
+            width: 100%;
+            height: 0;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        .discussion-card.fade-in {
+            opacity: 1;
+            transform: scale(1);
+            position: relative;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .avatar-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #ffffff;
+            font-family: var(--font-sub);
+            text-transform: uppercase;
+        }
+
+        /* Dynamic Avatar Gradients */
+        .av-1 { background: linear-gradient(135deg, #f97316 0%, #f43f5e 100%); }
+        .av-2 { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); }
+        .av-3 { background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); }
+        .av-4 { background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); }
+        .av-custom { background: linear-gradient(135deg, #a855f7 0%, #e879f9 100%); }
+
+        .author-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .discussion-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.4;
+            margin-bottom: 1.25rem;
+            font-family: var(--font-sub);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .discussion-title:hover {
+            color: var(--accent-orange);
+        }
+
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .post-metrics {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .metric-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .metric-item:hover {
+            color: var(--text-primary);
+        }
+
+        .metric-item.liked {
+            color: #ef4444 !important;
+            font-weight: 600;
+        }
+
+        .metric-item.liked svg {
+            fill: #ef4444;
+            stroke: #ef4444;
+        }
+
+        .no-discussions-state {
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+            border: 1px dashed var(--border-color);
+            border-radius: var(--border-radius-md);
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .no-discussions-state svg {
+            color: var(--accent-orange);
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .no-discussions-state h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* 🧳 RIGHT SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            position: sticky;
+            top: 95px;
+        }
+
+        .sidebar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--font-sub);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        /* 🏆 TOP LEARNERS CARD */
+        .learners-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .learner-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .learner-rank {
+            width: 22px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .learner-row:nth-child(1) .learner-rank { color: #ffd700; font-size: 1.1rem; } /* Gold */
+        .learner-row:nth-child(2) .learner-rank { color: #c0c0c0; font-size: 1rem; }  /* Silver */
+        .learner-row:nth-child(3) .learner-rank { color: #cd7f32; font-size: 0.95rem; } /* Bronze */
+
+        .learner-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .learner-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .learner-courses {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .xp-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            background-color: rgba(34, 211, 165, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        /* 📅 UPCOMING EVENTS CARD */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .event-row {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .event-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .event-date-card {
+            width: 56px;
+            height: 58px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .event-date-card .month {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .event-date-card .day {
+            font-size: 1.25rem;
+            font-weight: 800;
+            line-height: 1.1;
+            font-family: var(--font-sub);
+        }
+
+        /* Event Date Accents */
+        .event-row.orange-theme .event-date-card { border-top: 3px solid var(--accent-orange); }
+        .event-row.orange-theme .day { color: var(--accent-orange); }
+        
+        .event-row.green-theme .event-date-card { border-top: 3px solid var(--accent-green); }
+        .event-row.green-theme .day { color: var(--accent-green); }
+        
+        .event-row.blue-theme .event-date-card { border-top: 3px solid var(--accent-blue); }
+        .event-row.blue-theme .day { color: var(--accent-blue); }
+
+        .event-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .event-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.35;
+            margin: 0.25rem 0 0.5rem 0;
+            font-family: var(--font-sub);
+        }
+
+        .btn-register {
+            padding: 0.3rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            transition: var(--transition-smooth);
+        }
+
+        .event-row.orange-theme .btn-register:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background-color: rgba(249, 115, 22, 0.05);
+        }
+
+        .event-row.green-theme .btn-register:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            background-color: rgba(34, 211, 165, 0.05);
+        }
+
+        .event-row.blue-theme .btn-register:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background-color: rgba(96, 165, 250, 0.05);
+        }
+
+        /* 🪟 MODALS (COMMON BACKDROP) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            background-color: rgba(8, 10, 22, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            width: 92%;
+            max-width: 520px;
+            padding: 2.25rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transform: translateY(-20px) scale(0.95);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem;
+            border-radius: 50%;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Modal Forms & Inputs */
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-family: var(--font-sub);
+            margin-bottom: 0.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .modal-header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        /* Modal Success States */
+        .modal-success-view {
+            display: none;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .success-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: rgba(34, 211, 165, 0.1);
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            font-size: 2.5rem;
+        }
+
+        .modal-success-view h4 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            font-family: var(--font-sub);
+        }
+
+        .modal-success-view p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 380px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.5;
+        }
+
+        /* 🔔 TOAST NOTIFICATION CONTAINER */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .toast {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-green);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            pointer-events: auto;
+            font-weight: 500;
+            font-size: 0.95rem;
+            min-width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: toastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .toast.hiding {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.9);
+        }
+
+        .toast-icon {
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes toastIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 📱 MOBILE RESPONSIVENESS */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .sidebar {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                height: 70px;
+            }
+            .nav-links {
+                display: none; /* Collapsed on mobile, expanded with class */
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-main);
+                border-bottom: 1px solid var(--border-color);
+                flex-direction: column;
+                padding: 1.5rem 0;
+                gap: 1.25rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
+            .nav-links.mobile-open {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-right .search-box, 
+            .nav-right .signin-link, 
+            .nav-right .btn {
+                display: none; /* Hide standard nav actions on small mobiles, keeping header tight */
+            }
+            .nav-right.mobile-open-actions {
+                display: flex;
+            }
+            .hero {
+                padding: 4rem 0 3rem 0;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.05rem;
+            }
+            .stats-bar {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            .stat-item:not(:last-child)::after {
+                display: none;
+            }
+            .hero-ctas {
+                flex-direction: column;
+                padding: 0 2rem;
+                gap: 0.75rem;
+            }
+            .hero-ctas .btn {
+                margin: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🧭 NAVIGATION BAR -->
+    <div class="navbar-wrapper">
+        <header class="container navbar">
+            <a href="#" class="logo">Learnify<span>•</span></a>
+            
+            <nav class="nav-links" id="navLinks">
+                <a href="#explore" class="nav-link">Explore</a>
+                <a href="#paths" class="nav-link">Paths</a>
+                <a href="#discussions-section" class="nav-link active">Community</a>
+                <a href="#teams" class="nav-link">For Teams</a>
+            </nav>
+
+            <div class="nav-right">
+                <!-- Search bar that works live! -->
+                <div class="search-box">
+                    <span class="search-icon">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                    </span>
+                    <input type="text" id="navbarSearch" placeholder="Search community discussions..." onkeyup="searchDiscussions()">
+                </div>
+                
+                <a href="#" class="signin-link" onclick="alert('Demo sign in triggered!')">Sign in</a>
+                <button class="btn btn-primary" onclick="openModal('join')">For Enterprise</button>
+            </div>
+
+            <!-- Hamburger Button for Mobile -->
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu" onclick="toggleMobileMenu()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>
+            </button>
+        </header>
+    </div>
+
+    <!-- 🦸 HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <h1>Learn together. <span class="gradient-text">Grow faster.</span></h1>
+            <p>Join 1.3M+ learners sharing knowledge, asking questions, and celebrating wins in our modern tech community.</p>
+            
+            <div class="hero-ctas">
+                <button class="btn btn-primary" onclick="openModal('join')">Join Community</button>
+                <button class="btn btn-secondary" onclick="scrollToDiscussions()">Browse Discussions</button>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-val orange">1.3M</div>
+                    <div class="stat-lbl">Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val green">50K+</div>
+                    <div class="stat-lbl">Posts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-val blue">200+</div>
+                    <div class="stat-lbl">Events/Year</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📋 MAIN LAYOUT (CSS Grid: discussions left, sidebar right) -->
+    <main class="container main-layout" id="discussions-section">
+        
+        <!-- LEFT — RECENT DISCUSSIONS -->
+        <section class="discussions-container">
+            
+            <div class="discussions-header">
+                <h2>Recent Discussions</h2>
+                <button class="btn btn-primary" onclick="openModal('post')">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+                    Start a Discussion
+                </button>
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterDisc(this, 'all')">All</button>
+                <button class="filter-tab" onclick="filterDisc(this, 'ai-agents')">AI Agents</button>
+                <button class="filter-tab" onclick="filterDisc(this, 'llmops')">LLMOps</button>
+                <button class="filter-tab" onclick="filterDisc(this, 'graph-rag')">Graph RAG</button>
+                <button class="filter-tab" onclick="filterDisc(this, 'ml-ops')">ML Ops</button>
+            </div>
+
+            <!-- Dynamic & Interactive Discussion Feed -->
+            <div class="discussions-list" id="discussionsList">
+                
+                <!-- Discussion 1: AI AGENTS -->
+                <article class="discussion-card fade-in" data-cat="ai-agents">
+                    <div class="card-top">
+                        <div class="author-info">
+                            <div class="avatar-circle av-1">SC</div>
+                            <div class="author-meta">
+                                <span class="author-name">Sarah Chen</span>
+                                <span class="post-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <span class="tag-pill tag-ai">AI Agents</span>
+                    </div>
+                    <h3 class="discussion-title" onclick="alert('Opening conversation thread...')">How to build multi-agent flows using LangGraph and vector stores?</h3>
+                    <div class="card-bottom">
+                        <div class="post-metrics">
+                            <div class="metric-item" onclick="toggleLike(this, 42)">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="count">42</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <span>18</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span>1.2k</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Discussion 2: LLMOPS -->
+                <article class="discussion-card fade-in" data-cat="llmops">
+                    <div class="card-top">
+                        <div class="author-info">
+                            <div class="avatar-circle av-2">MB</div>
+                            <div class="author-meta">
+                                <span class="author-name">Marcus Brody</span>
+                                <span class="post-time">5 hours ago</span>
+                            </div>
+                        </div>
+                        <span class="tag-pill tag-ops">LLMOps</span>
+                    </div>
+                    <h3 class="discussion-title" onclick="alert('Opening conversation thread...')">Best tools for evaluation of prompt variants in production?</h3>
+                    <div class="card-bottom">
+                        <div class="post-metrics">
+                            <div class="metric-item" onclick="toggleLike(this, 28)">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="count">28</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <span>12</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span>840</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Discussion 3: GRAPH RAG -->
+                <article class="discussion-card fade-in" data-cat="graph-rag">
+                    <div class="card-top">
+                        <div class="author-info">
+                            <div class="avatar-circle av-3">ER</div>
+                            <div class="author-meta">
+                                <span class="author-name">Elena Rostova</span>
+                                <span class="post-time">1 day ago</span>
+                            </div>
+                        </div>
+                        <span class="tag-pill tag-rag">Graph RAG</span>
+                    </div>
+                    <h3 class="discussion-title" onclick="alert('Opening conversation thread...')">GraphRAG vs Vector RAG: Performance benchmarks for complex queries</h3>
+                    <div class="card-bottom">
+                        <div class="post-metrics">
+                            <div class="metric-item" onclick="toggleLike(this, 67)">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="count">67</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <span>31</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span>3.4k</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Discussion 4: ML OPS -->
+                <article class="discussion-card fade-in" data-cat="ml-ops">
+                    <div class="card-top">
+                        <div class="author-info">
+                            <div class="avatar-circle av-4">DP</div>
+                            <div class="author-meta">
+                                <span class="author-name">Devon Patel</span>
+                                <span class="post-time">2 days ago</span>
+                            </div>
+                        </div>
+                        <span class="tag-pill tag-ml">ML Ops</span>
+                    </div>
+                    <h3 class="discussion-title" onclick="alert('Opening conversation thread...')">Automating model drift detection with Evidently AI and Airflow</h3>
+                    <div class="card-bottom">
+                        <div class="post-metrics">
+                            <div class="metric-item" onclick="toggleLike(this, 54)">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                <span class="count">54</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                <span>22</span>
+                            </div>
+                            <div class="metric-item">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span>2.1k</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Empty State for Live Searching -->
+            <div class="no-discussions-state" id="noDiscussions">
+                <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9.813 15.904L9 21l5-2.4 5 2.4-.813-5.096M21 10.5c0 4.142-4.03 7.5-9 7.5s-9-3.358-9-7.5S7.03 3 12 3s9 3.358 9 7.5z"></path></svg>
+                <h3>No matching discussions found</h3>
+                <p>Try searching for other tech terms like "LangGraph", "RAG", or check another filter category.</p>
+            </div>
+        </section>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="sidebar">
+            
+            <!-- Top Learners Card -->
+            <div class="card">
+                <h3 class="sidebar-title">
+                    Top Learners This Week
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: #ffd700;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                </h3>
+                <div class="learners-list">
+                    
+                    <div class="learner-row">
+                        <div class="learner-rank">1</div>
+                        <div class="avatar-circle av-1">SC</div>
+                        <div class="learner-details">
+                            <span class="learner-name">Sarah Chen</span>
+                            <span class="learner-courses">15 courses completed</span>
+                        </div>
+                        <span class="xp-badge">4850 XP</span>
+                    </div>
+
+                    <div class="learner-row">
+                        <div class="learner-rank">2</div>
+                        <div class="avatar-circle av-custom">AR</div>
+                        <div class="learner-details">
+                            <span class="learner-name">Alex Rivera</span>
+                            <span class="learner-courses">12 courses completed</span>
+                        </div>
+                        <span class="xp-badge">4200 XP</span>
+                    </div>
+
+                    <div class="learner-row">
+                        <div class="learner-rank">3</div>
+                        <div class="avatar-circle av-3">ER</div>
+                        <div class="learner-details">
+                            <span class="learner-name">Elena Rostova</span>
+                            <span class="learner-courses">11 courses completed</span>
+                        </div>
+                        <span class="xp-badge">3950 XP</span>
+                    </div>
+
+                    <div class="learner-row">
+                        <div class="learner-rank">4</div>
+                        <div class="avatar-circle av-2">MB</div>
+                        <div class="learner-details">
+                            <span class="learner-name">Marcus Brody</span>
+                            <span class="learner-courses">9 courses completed</span>
+                        </div>
+                        <span class="xp-badge">3500 XP</span>
+                    </div>
+
+                    <div class="learner-row">
+                        <div class="learner-rank">5</div>
+                        <div class="avatar-circle av-4">DP</div>
+                        <div class="learner-details">
+                            <span class="learner-name">Devon Patel</span>
+                            <span class="learner-courses">8 courses completed</span>
+                        </div>
+                        <span class="xp-badge">3100 XP</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Upcoming Events Card -->
+            <div class="card">
+                <h3 class="sidebar-title">
+                    Upcoming Events
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--accent-blue);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </h3>
+                <div class="events-list">
+                    
+                    <!-- Event 1 (Orange theme) -->
+                    <div class="event-row orange-theme">
+                        <div class="event-date-card">
+                            <span class="month">May</span>
+                            <span class="day">24</span>
+                        </div>
+                        <div class="event-info">
+                            <span class="tag-pill tag-ai" style="padding: 0.1rem 0.5rem; font-size: 0.65rem;">Workshop</span>
+                            <h4 class="event-title">Live Workshop: Designing Vector Stores at Scale</h4>
+                            <button class="btn-register" onclick="openModal('event', 'Live Workshop: Designing Vector Stores at Scale', 'May 24, 2026')">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Event 2 (Green theme) -->
+                    <div class="event-row green-theme">
+                        <div class="event-date-card">
+                            <span class="month">May</span>
+                            <span class="day">28</span>
+                        </div>
+                        <div class="event-info">
+                            <span class="tag-pill tag-ops" style="padding: 0.1rem 0.5rem; font-size: 0.65rem;">Live Q&A</span>
+                            <h4 class="event-title">LLMOps Expert Panel Q&A Session</h4>
+                            <button class="btn-register" onclick="openModal('event', 'LLMOps Expert Panel Q&A Session', 'May 28, 2026')">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Event 3 (Blue theme) -->
+                    <div class="event-row blue-theme">
+                        <div class="event-date-card">
+                            <span class="month">Jun</span>
+                            <span class="day">4</span>
+                        </div>
+                        <div class="event-info">
+                            <span class="tag-pill tag-rag" style="padding: 0.1rem 0.5rem; font-size: 0.65rem;">Live Event</span>
+                            <h4 class="event-title">RAG Hackathon 2026 Orientation</h4>
+                            <button class="btn-register" onclick="openModal('event', 'RAG Hackathon 2026 Orientation', 'June 4, 2026')">Register</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </aside>
+    </main>
+
+    <!-- 🪟 MODAL 1: JOIN COMMUNITY MODAL -->
+    <div class="modal-overlay" id="joinModal" onclick="handleBackdropClick(event, 'join')">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeModal('join')" aria-label="Close modal">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- Main Form View -->
+            <div id="joinModalForm">
+                <div class="modal-header">
+                    <h3>Join the Learnify Community</h3>
+                    <p>Unlock structured paths, exclusive expert panels, events, and collaborative forums.</p>
+                </div>
+                <form onsubmit="submitJoin(event)">
+                    <div class="form-group">
+                        <label for="joinName">Full Name</label>
+                        <input type="text" id="joinName" class="form-input" placeholder="e.g. Elena Rostova" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="joinEmail">Email Address</label>
+                        <input type="email" id="joinEmail" class="form-input" placeholder="elena@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="joinInterest">Primary Interest</label>
+                        <select id="joinInterest" class="form-select" required>
+                            <option value="" disabled selected>Select your tech interest...</option>
+                            <option value="ai-ml">AI & ML Engineering</option>
+                            <option value="llmops">LLMOps & Tooling</option>
+                            <option value="graphrag">Graph RAG</option>
+                            <option value="data-eng">Data Engineering</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('join')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Join Now 🚀</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success State View -->
+            <div id="joinModalSuccess" class="modal-success-view">
+                <div class="success-icon-wrapper">
+                    <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3"></path></svg>
+                </div>
+                <h4>Welcome aboard! 🎉</h4>
+                <p>Your application is approved. Join discussions, complete paths, earn XP, and register for workshops immediately!</p>
+                <button class="btn btn-primary" style="min-width: 150px;" onclick="closeModal('join')">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🪟 MODAL 2: START A DISCUSSION MODAL -->
+    <div class="modal-overlay" id="postModal" onclick="handleBackdropClick(event, 'post')">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeModal('post')" aria-label="Close modal">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- Main Form View -->
+            <div id="postModalForm">
+                <div class="modal-header">
+                    <h3>Start a New Discussion</h3>
+                    <p>Pose a question, post a tutorial, or share your latest findings with 1.3M+ members.</p>
+                </div>
+                <form onsubmit="submitPost(event)">
+                    <div class="form-group">
+                        <label for="postTitle">Discussion Title</label>
+                        <input type="text" id="postTitle" class="form-input" placeholder="e.g. Tips for fine-tuning small language models on budget GPUs" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postCategory">Category</label>
+                        <select id="postCategory" class="form-select" required>
+                            <option value="" disabled selected>Choose a category...</option>
+                            <option value="ai-agents">AI Agents</option>
+                            <option value="llmops">LLMOps</option>
+                            <option value="graph-rag">Graph RAG</option>
+                            <option value="ml-ops">ML Ops</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postDesc">Description</label>
+                        <textarea id="postDesc" class="form-textarea" placeholder="Detail your thoughts, include code blocks, benchmarks, or specific questions..." required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('post')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Post Discussion</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success State View -->
+            <div id="postModalSuccess" class="modal-success-view">
+                <div class="success-icon-wrapper">
+                    <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg>
+                </div>
+                <h4>Discussion Posted! ✅</h4>
+                <p>Your discussion has been published directly to the feed. Keep an eye out for comments and engagement from other members!</p>
+                <button class="btn btn-primary" style="min-width: 150px;" onclick="closeModal('post')">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🪟 MODAL 3: EVENT REGISTER MODAL -->
+    <div class="modal-overlay" id="eventModal" onclick="handleBackdropClick(event, 'event')">
+        <div class="modal-container">
+            <button class="modal-close-btn" onclick="closeModal('event')" aria-label="Close modal">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- Main Form View -->
+            <div id="eventModalForm">
+                <div class="modal-header">
+                    <h3 id="eventRegisterTitle">Register for Event</h3>
+                    <p id="eventRegisterDesc">Fill in your information to reserve a spot. Calendar invites will be emailed instantly.</p>
+                </div>
+                <form onsubmit="submitEvent(event)">
+                    <!-- Hidden field to capture specific event metadata -->
+                    <input type="hidden" id="eventMetaName">
+                    <input type="hidden" id="eventMetaDate">
+
+                    <div class="form-group">
+                        <label for="eventUserName">Full Name</label>
+                        <input type="text" id="eventUserName" class="form-input" placeholder="e.g. Alex Rivera" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventUserEmail">Email Address</label>
+                        <input type="email" id="eventUserEmail" class="form-input" placeholder="alex.rivera@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventUserRole">Role / Occupation</label>
+                        <input type="text" id="eventUserRole" class="form-input" placeholder="e.g. Senior Machine Learning Engineer" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('event')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Confirm Registration</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Success State View -->
+            <div id="eventModalSuccess" class="modal-success-view">
+                <div class="success-icon-wrapper">
+                    <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                </div>
+                <h4>You're registered! 🎟️</h4>
+                <p>We've sent a calendar invite and link to your email. See you at the live session!</p>
+                <button class="btn btn-primary" style="min-width: 150px;" onclick="closeModal('event')">Awesome</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔔 TOAST NOTIFICATIONS HOLDER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ⚙️ JAVASCRIPT LOGIC -->
+    <script>
+        /* 📱 MOBILE NAVIGATION DRAWER */
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('menuToggle');
+            navLinks.classList.toggle('mobile-open');
+            
+            // Adjust hamburger icon representation
+            if (navLinks.classList.contains('mobile-open')) {
+                menuToggle.innerHTML = `<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"></path></svg>`;
+            } else {
+                menuToggle.innerHTML = `<svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>`;
+            }
+        }
+
+        /* ⚓ SMOOTH SCROLL TO DISCUSSIONS SECTION */
+        function scrollToDiscussions() {
+            const discussionsSec = document.getElementById('discussions-section');
+            if (discussionsSec) {
+                const headerOffset = 85;
+                const elementPosition = discussionsSec.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        /* 🏷️ CATEGORY FILTERING */
+        function filterDisc(btn, category) {
+            // Remove active style from all sibling tabs
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Set active class on clicked tab
+            btn.classList.add('active');
+
+            // Apply filter logic to discussion card feeds
+            const cards = document.querySelectorAll('.discussion-card');
+            let hasVisibleCards = false;
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-cat');
+                
+                if (category === 'all' || cardCat === category) {
+                    card.classList.remove('fade-out');
+                    card.classList.add('fade-in');
+                    hasVisibleCards = true;
+                } else {
+                    card.classList.remove('fade-in');
+                    card.classList.add('fade-out');
+                }
+            });
+
+            // Adjust search results visual empty state
+            const noDiscussions = document.getElementById('noDiscussions');
+            if (hasVisibleCards) {
+                noDiscussions.style.display = 'none';
+            } else {
+                noDiscussions.style.display = 'block';
+            }
+        }
+
+        /* 🔍 REAL-TIME DISCUSSIONS FILTER SEARCH */
+        function searchDiscussions() {
+            const searchInput = document.getElementById('navbarSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.discussion-card');
+            const activeTab = document.querySelector('.filter-tab.active').textContent.trim().toLowerCase();
+            let hasVisibleCards = false;
+
+            cards.forEach(card => {
+                const titleText = card.querySelector('.discussion-title').textContent.toLowerCase();
+                const tagText = card.querySelector('.tag-pill').textContent.toLowerCase();
+                const cardCat = card.getAttribute('data-cat');
+                
+                // Match search term AND category tab
+                const matchesSearch = titleText.includes(searchInput) || tagText.includes(searchInput);
+                
+                // Translate filter tab title to actual categories
+                let matchesCategory = false;
+                if (activeTab === 'all') {
+                    matchesCategory = true;
+                } else if (activeTab === 'ai agents' && cardCat === 'ai-agents') {
+                    matchesCategory = true;
+                } else if (activeTab === 'llmops' && cardCat === 'llmops') {
+                    matchesCategory = true;
+                } else if (activeTab === 'graph rag' && cardCat === 'graph-rag') {
+                    matchesCategory = true;
+                } else if (activeTab === 'ml ops' && cardCat === 'ml-ops') {
+                    matchesCategory = true;
+                }
+
+                if (matchesSearch && matchesCategory) {
+                    card.classList.remove('fade-out');
+                    card.classList.add('fade-in');
+                    hasVisibleCards = true;
+                } else {
+                    card.classList.remove('fade-in');
+                    card.classList.add('fade-out');
+                }
+            });
+
+            const noDiscussions = document.getElementById('noDiscussions');
+            if (hasVisibleCards) {
+                noDiscussions.style.display = 'none';
+            } else {
+                noDiscussions.style.display = 'block';
+            }
+        }
+
+        /* 🤍 INTERACTIVE CARD LIKE TOGGLE */
+        function toggleLike(element, initialCount) {
+            const countSpan = element.querySelector('.count');
+            const isLiked = element.classList.contains('liked');
+
+            if (isLiked) {
+                element.classList.remove('liked');
+                countSpan.textContent = initialCount;
+            } else {
+                element.classList.add('liked');
+                countSpan.textContent = initialCount + 1;
+                showToast("Discussion liked! ❤️");
+            }
+        }
+
+        /* 🪟 MODAL TRIGGERS */
+        function openModal(type, eventName = '', eventDate = '') {
+            const body = document.body;
+            let targetOverlay;
+
+            if (type === 'join') {
+                targetOverlay = document.getElementById('joinModal');
+                // Reset views
+                document.getElementById('joinModalForm').style.display = 'block';
+                document.getElementById('joinModalSuccess').style.display = 'none';
+                document.getElementById('joinName').value = '';
+                document.getElementById('joinEmail').value = '';
+                document.getElementById('joinInterest').value = '';
+            } else if (type === 'post') {
+                targetOverlay = document.getElementById('postModal');
+                // Reset views
+                document.getElementById('postModalForm').style.display = 'block';
+                document.getElementById('postModalSuccess').style.display = 'none';
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postCategory').value = '';
+                document.getElementById('postDesc').value = '';
+            } else if (type === 'event') {
+                targetOverlay = document.getElementById('eventModal');
+                
+                // Prefill dynamic event details
+                document.getElementById('eventRegisterTitle').innerText = `Register: ${eventName}`;
+                document.getElementById('eventRegisterDesc').innerText = `Reserve your spot for ${eventName} on ${eventDate}. Calendar invite details sent instantly on confirmation.`;
+                document.getElementById('eventMetaName').value = eventName;
+                document.getElementById('eventMetaDate').value = eventDate;
+                
+                // Reset views
+                document.getElementById('eventModalForm').style.display = 'block';
+                document.getElementById('eventModalSuccess').style.display = 'none';
+                document.getElementById('eventUserName').value = '';
+                document.getElementById('eventUserEmail').value = '';
+                document.getElementById('eventUserRole').value = '';
+            }
+
+            if (targetOverlay) {
+                targetOverlay.classList.add('active');
+                body.style.overflow = 'hidden'; // Stop page scrolling under modals
+            }
+        }
+
+        function closeModal(type) {
+            const body = document.body;
+            let targetOverlay;
+
+            if (type === 'join') {
+                targetOverlay = document.getElementById('joinModal');
+            } else if (type === 'post') {
+                targetOverlay = document.getElementById('postModal');
+            } else if (type === 'event') {
+                targetOverlay = document.getElementById('eventModal');
+            }
+
+            if (targetOverlay) {
+                targetOverlay.classList.remove('active');
+                body.style.overflow = 'auto'; // Re-enable background scrolls
+            }
+        }
+
+        /* ❌ BACKDROP CLICK CLOSE TRIGGER */
+        function handleBackdropClick(event, type) {
+            // Check if user clicked directly on overlay backdrop rather than internal containers
+            if (event.target.classList.contains('modal-overlay')) {
+                closeModal(type);
+            }
+        }
+
+        /* Escape key closes any active modals */
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal('join');
+                closeModal('post');
+                closeModal('event');
+            }
+        });
+
+        /* 🔔 TOAST NOTIFICATIONS CREATION */
+        function showToast(message) {
+            const container = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <span class="toast-icon">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4 12 14.01l-3-3"></path></svg>
+                </span>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Trigger hiding process after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                // Remove from DOM after transition completes
+                toast.addEventListener('transitionend', () => {
+                    toast.remove();
+                });
+            }, 3000);
+        }
+
+        /* 📨 SUBMIT HANDLERS WITH TRANSITIONS */
+        function submitJoin(event) {
+            event.preventDefault();
+            
+            // Switch views
+            document.getElementById('joinModalForm').style.display = 'none';
+            document.getElementById('joinModalSuccess').style.display = 'block';
+            
+            // Trigger toast
+            showToast("Welcome to Learnify Community! 🎉");
+        }
+
+        function submitPost(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('postTitle').value;
+            const category = document.getElementById('postCategory').value;
+            const description = document.getElementById('postDesc').value;
+
+            // Get category display label & styles
+            let catLabel = 'AI Agents';
+            let catClass = 'tag-ai';
+            if (category === 'llmops') {
+                catLabel = 'LLMOps';
+                catClass = 'tag-ops';
+            } else if (category === 'graph-rag') {
+                catLabel = 'Graph RAG';
+                catClass = 'tag-rag';
+            } else if (category === 'ml-ops') {
+                catLabel = 'ML Ops';
+                catClass = 'tag-ml';
+            }
+
+            // Create discussion card dynamically and prepend to feed
+            const discussionsList = document.getElementById('discussionsList');
+            const newCard = document.createElement('article');
+            newCard.className = 'discussion-card fade-in';
+            newCard.setAttribute('data-cat', category);
+            newCard.innerHTML = `
+                <div class="card-top">
+                    <div class="author-info">
+                        <div class="avatar-circle av-custom">YOU</div>
+                        <div class="author-meta">
+                            <span class="author-name">You (Member)</span>
+                            <span class="post-time">Just now</span>
+                        </div>
+                    </div>
+                    <span class="tag-pill ${catClass}">${catLabel}</span>
+                </div>
+                <h3 class="discussion-title" onclick="alert('Opening conversation thread...')">${title}</h3>
+                <div class="card-bottom">
+                    <div class="post-metrics">
+                        <div class="metric-item" onclick="toggleLike(this, 0)">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            <span class="count">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            <span>0</span>
+                        </div>
+                        <div class="metric-item">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <span>1</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Prepend new card so it goes to top of feed
+            discussionsList.insertBefore(newCard, discussionsList.firstChild);
+
+            // Switch modal view
+            document.getElementById('postModalForm').style.display = 'none';
+            document.getElementById('postModalSuccess').style.display = 'block';
+
+            // Trigger toast
+            showToast("Discussion posted successfully! ✅");
+        }
+
+        function submitEvent(event) {
+            event.preventDefault();
+            
+            // Switch views
+            document.getElementById('eventModalForm').style.display = 'none';
+            document.getElementById('eventModalSuccess').style.display = 'block';
+            
+            // Trigger toast
+            showToast("Registration confirmed! 🎟️");
+        }
+    </script>
+</body>
+</html>
+=======
+
+  <!DOCTYPE html>
   <html lang="en">
     <head>
       <meta charset="UTF-8" />
@@ -12,3 +1904,5 @@
       <script type="module" src="/src/main.tsx"></script>
     </body>
   </html>
+  
+>>>>>>> 824ac13b518530060f0e15e6076467fdc9e772e4

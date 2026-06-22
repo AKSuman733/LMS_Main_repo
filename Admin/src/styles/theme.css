@@ -1,12 +1,12 @@
 :root {
   /* Brand Colors */
-  --brand-indigo-900: #FF6B35;
-  --brand-indigo-800: #E85520;
-  --brand-indigo-100: #FFF0EB;
-  --brand-indigo-50: rgba(255, 107, 43, 0.1);
+  --brand-indigo-900: #0A0F1E;
+  --brand-indigo-800: #111827;
+  --brand-indigo-100: rgba(255, 107, 43, 0.15);
+  --brand-indigo-50: rgba(255, 107, 43, 0.08);
 
   /* Action Color */
-  --action-lime: #00B5A5;
+  --action-lime: #00C97B;
 
   /* Neutral Colors */
   --neutral-900: #FFFFFF;
@@ -99,72 +99,31 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4,
-  [class*="text-[56px]"],
-  [class*="text-[40px]"],
-  [class*="text-[32px]"],
-  [class*="text-[28px]"] {
-    font-size: 24px !important;
-    font-weight: 500 !important;
-    line-height: 1.25 !important;
+  h1 {
+    font-size: var(--text-h1);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
   }
 
-  body, p,
-  [class*="text-[20px]"]:not(.font-bold):not(.font-extrabold),
-  [class*="text-[18px]"],
-  [class*="text-[16px]"],
-  [class*="text-[15px]"] {
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    line-height: 1.55 !important;
+  h2 {
+    font-size: var(--text-h2);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
   }
-}
 
-/* Central overrides for hardcoded indigo styles */
-[class*="bg-[#2D1B69]"], [class*="bg-[#2d1b69]"] {
-  background-color: #FF6B35 !important;
-}
-[class*="text-[#2D1B69]"], [class*="text-[#2d1b69]"] {
-  color: #FF6B35 !important;
-}
-[class*="border-[#2D1B69]"], [class*="border-[#2d1b69]"] {
-  border-color: #FF6B35 !important;
-}
-[class*="bg-[#2D1B69]/8"] {
-  background-color: rgba(255, 107, 53, 0.08) !important;
-}
-[class*="bg-[#2D1B69]/10"] {
-  background-color: rgba(255, 107, 53, 0.1) !important;
-}
-[class*="bg-[#EDE9FF]"] {
-  background-color: #FFF0EB !important;
-}
-[class*="hover:bg-[#3D2879]"]:hover, [class*="hover:bg-[#3D2B89]"]:hover {
-  background-color: #E85520 !important;
-}
-[class*="hover:text-[#2D1B69]"]:hover {
-  color: #FF6B35 !important;
-}
+  h3 {
+    font-size: var(--text-h3);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+  }
 
-/* Central overrides for hardcoded lime styles */
-[class*="bg-[#BBFF00]"], [class*="bg-[#bbff00]"] {
-  background-color: #00B5A5 !important;
-}
-[class*="text-[#BBFF00]"], [class*="text-[#bbff00]"] {
-  color: #00B5A5 !important;
-}
-[class*="border-[#BBFF00]"], [class*="border-[#bbff00]"] {
-  border-color: #00B5A5 !important;
-}
-[class*="bg-[#BBFF00]/10"] {
-  background-color: rgba(0, 181, 165, 0.1) !important;
-}
-[class*="bg-[#BBFF00]/20"] {
-  background-color: rgba(0, 181, 165, 0.2) !important;
-}
-[class*="hover:bg-[#BBFF00]"]:hover {
-  background-color: #008F82 !important;
-}
-[class*="text-[#BBFF00]"]:hover {
-  color: #00B5A5 !important;
+  h4 {
+    font-size: var(--text-h4);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+  }
+
+  p {
+    line-height: var(--line-height-body);
+  }
 }

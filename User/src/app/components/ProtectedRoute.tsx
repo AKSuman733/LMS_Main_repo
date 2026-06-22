@@ -35,7 +35,7 @@ export function StudentRoute({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (user && user.role === 'admin') {
       setRedirecting(true);
-      window.location.href = 'http://localhost:5174/admin?autologin=admin';
+      window.location.href = 'http://localhost:5174/admin';
     }
   }, [user]);
 
@@ -57,7 +57,7 @@ export function GuestRoute({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (user?.role === 'admin') {
       setRedirecting(true);
-      window.location.href = 'http://localhost:5174/admin?autologin=admin';
+      window.location.href = 'http://localhost:5174/admin';
     }
   }, [user]);
 

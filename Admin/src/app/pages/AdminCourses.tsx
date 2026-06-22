@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { mockCourses } from '../../utils/mockCourses';
 import { CourseFormModal, DeleteConfirmModal } from '../components/CourseFormModal';
-import { Search, Plus, Download, Users, BookOpen, Star, Edit, Eye, Trash2, ArrowLeft, ArrowRight, X, ArrowUpDown } from 'lucide-react';
-import { EmptyState } from '../../components/States/EmptyState';
+import { Search, Plus, Download, Users, BookOpen, Star, Edit, Eye, Trash2, ArrowLeft, ArrowRight, X } from 'lucide-react';
 
 interface Mentor {
   id: string;
@@ -79,20 +78,6 @@ export function AdminCourses() {
   const [showModal, setShowModal] = useState(false);
   const [editingCourse, setEditingCourse] = useState<any | null>(null);
 
-  // Sorting state
-  const [sortField, setSortField] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
-  // Handle header sort triggers
-  const handleSort = (field: string) => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortOrder('asc');
-    }
-  };
-
   const [isMentorModalOpen, setIsMentorModalOpen] = useState(false);
   const [mentorsList, setMentorsList] = useState<Mentor[]>(() => {
     const saved = localStorage.getItem('learnify_mentors');
@@ -159,32 +144,16 @@ export function AdminCourses() {
     .filter((c) => filters.level === 'all' || c.level === filters.level)
     .filter((c) => filters.status === 'all' || c.status === filters.status);
 
-  // Sort logic
-  let sortedFiltered = [...filtered];
-  if (sortField) {
-    sortedFiltered.sort((a, b) => {
-      let aVal = a[sortField];
-      let bVal = b[sortField];
-
-      if (typeof aVal === 'string') {
-        return sortOrder === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-      } else {
-        return sortOrder === 'asc' ? (aVal as number) - (bVal as number) : (bVal as number) - (aVal as number);
-      }
-    });
-  }
-
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-    setSelected([]);
   }, [search, filters]);
 
   // Pagination calculation
-  const totalItems = sortedFiltered.length;
+  const totalItems = filtered.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedCourses = sortedFiltered.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedCourses = filtered.slice(startIndex, startIndex + itemsPerPage);
 
   // Stats calculation
   const totalCoursesCount = courses.length;
@@ -209,7 +178,6 @@ export function AdminCourses() {
       setSelected((prev) => prev.filter((item) => item !== id));
     }
   };
-
 
   // Toggle single status
   const handleToggleStatus = (id: string, currentStatus: string) => {
@@ -459,10 +427,10 @@ export function AdminCourses() {
       </div>
 
       {/* TOOLBAR */}
-      <div className="bg-[#111827] border border-[#1E2D45] rounded-[14px] p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center flex-wrap gap-3 w-full lg:w-auto">
-          {/* Search (44px target) */}
-          <div className="relative w-full sm:w-[240px]">
+      <div className="bg-[#111827] border border-[#1E2D45] rounded-[14px] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Search */}
+          <div className="relative w-full md:w-[240px]">
             <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-[#9CA3AF] pointer-events-none">
               <Search size={16} />
             </span>
@@ -471,26 +439,26 @@ export function AdminCourses() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search courses..."
-              className="w-full h-11 pl-10 pr-4 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-medium rounded-lg outline-none focus:border-[#FF6B2B] transition-colors"
+              className="w-full h-[40px] pl-10 pr-4 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-medium rounded-lg outline-none focus:border-[#FF6B2B] transition-colors"
             />
           </div>
 
-          {/* Type dropdown (44px target) */}
+          {/* Type dropdown */}
           <select
             value={filters.type}
             onChange={(e) => setFilters((prev) => ({ ...prev, type: e.target.value }))}
-            className="w-full sm:w-auto h-11 px-3 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-semibold rounded-lg outline-none cursor-pointer focus:border-[#FF6B2B]"
+            className="h-[40px] px-3 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-semibold rounded-lg outline-none cursor-pointer focus:border-[#FF6B2B]"
           >
             <option value="all">All Types</option>
             <option value="course">Courses only</option>
             <option value="learning-path">Learning Paths only</option>
           </select>
 
-          {/* Level dropdown (44px target) */}
+          {/* Level dropdown */}
           <select
             value={filters.level}
             onChange={(e) => setFilters((prev) => ({ ...prev, level: e.target.value }))}
-            className="w-full sm:w-auto h-11 px-3 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-semibold rounded-lg outline-none cursor-pointer focus:border-[#FF6B2B]"
+            className="h-[40px] px-3 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-semibold rounded-lg outline-none cursor-pointer focus:border-[#FF6B2B]"
           >
             <option value="all">All Levels</option>
             <option value="Beginner">Beginner</option>
@@ -498,11 +466,11 @@ export function AdminCourses() {
             <option value="Advanced">Advanced</option>
           </select>
 
-          {/* Status dropdown (44px target) */}
+          {/* Status dropdown */}
           <select
             value={filters.status}
             onChange={(e) => setFilters((prev) => ({ ...prev, status: e.target.value }))}
-            className="w-full sm:w-auto h-11 px-3 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-semibold rounded-lg outline-none cursor-pointer focus:border-[#FF6B2B]"
+            className="h-[40px] px-3 bg-[#1A2540] border border-[#1E2D45] text-white text-[13px] font-semibold rounded-lg outline-none cursor-pointer focus:border-[#FF6B2B]"
           >
             <option value="all">All Status</option>
             <option value="published">Published</option>
@@ -514,7 +482,7 @@ export function AdminCourses() {
         {isFiltersActive && (
           <button
             onClick={clearFilters}
-            className="text-[13px] font-bold text-[#FF6B2B] hover:text-[#FF8C42] hover:underline cursor-pointer border-none bg-transparent outline-none flex items-center gap-1.5 self-start lg:self-auto font-sans"
+            className="text-[13px] font-bold text-[#FF6B2B] hover:text-[#FF8C42] hover:underline cursor-pointer border-none bg-transparent outline-none flex items-center gap-1.5 self-start md:self-auto font-sans"
           >
             <X size={14} />
             Clear filters
@@ -543,7 +511,7 @@ export function AdminCourses() {
             </button>
             <button
               onClick={handleBulkDelete}
-              className="h-8 px-3.5 bg-[#EF4444] text-white hover:bg-[#B91C1C] text-[12px] font-bold rounded-md transition-colors cursor-pointer border-none focus:outline-none"
+              className="h-8 px-3.5 bg-[#EF4444] text-white hover:bg-[#DC2626] text-[12px] font-bold rounded-md transition-colors cursor-pointer border-none focus:outline-none"
             >
               Delete Selected
             </button>
@@ -557,285 +525,219 @@ export function AdminCourses() {
         </div>
       )}
 
-      {/* Helper highlighter */}
-      {(() => {
-        const highlightText = (text: string, searchQuery: string) => {
-          if (!searchQuery) return text;
-          const parts = text.split(new RegExp(`(${searchQuery.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'));
-          return (
-            <>
-              {parts.map((part, i) =>
-                part.toLowerCase() === searchQuery.toLowerCase() ? (
-                  <mark key={i} style={{ backgroundColor: 'rgba(255, 107, 43, 0.25)', color: '#FF6B2B', borderRadius: '2px', padding: '0 2px', fontWeight: 'bold' }}>
-                    {part}
-                  </mark>
-                ) : (
-                  part
-                )
-              )}
-            </>
-          );
-        };
-
-        const getLevelBadgeClass = (level: string) => {
-          switch (level) {
-            case 'Beginner':
-              return 'bg-[#00C97B]/10 text-[#00E88A] border border-[#00C97B]/20';
-            case 'Intermediate':
-              return 'bg-[#FF8C42]/10 text-[#FF8C42] border border-[#FF8C42]/20';
-            case 'Advanced':
-              return 'bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/20';
-            default:
-              return 'bg-[#1A2540] text-[#9CA3AF] border border-[#1E2D45]';
-          }
-        };
-
-        return paginatedCourses.length === 0 ? (
-          <div className="p-8 bg-[#111827] border border-[#1E2D45] rounded-[12px]">
-            <EmptyState
-              icon="🔍"
-              title="No Courses Found"
-              message="No courses match your active search terms or selected filters."
-              actionLabel="Clear All Filters"
-              onAction={clearFilters}
-            />
-          </div>
-        ) : (
-          <div className="bg-[#111827] border border-[#1E2D45] rounded-[12px] shadow-sm overflow-hidden flex flex-col">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[900px]">
-                <thead>
-                  <tr className="bg-[#1A2540]/30 border-b border-[#1E2D45] text-[12px] text-[#9CA3AF] font-bold uppercase tracking-wider h-[46px]">
-                    <th className="px-5 w-[46px]">
+      {/* COURSES TABLE */}
+      <div className="bg-[#111827] border border-[#1E2D45] rounded-[12px] shadow-sm overflow-hidden flex flex-col">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[900px]">
+            <thead>
+              <tr className="bg-[#1A2540]/30 border-b border-[#1E2D45] text-[12px] text-[#9CA3AF] font-bold uppercase tracking-wider h-[46px]">
+                <th className="px-5 w-[46px]">
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={
+                        paginatedCourses.length > 0 &&
+                        paginatedCourses.every((c) => selected.includes(c.id))
+                      }
+                      onChange={handleSelectAll}
+                      className="w-4 h-4 rounded border-[#1E2D45] bg-[#1A2540] accent-[#FF6B2B] cursor-pointer"
+                    />
+                  </label>
+                </th>
+                <th className="px-5 py-3.5 w-[380px]">Course</th>
+                <th className="px-5 py-3.5">Instructor</th>
+                <th className="px-5 py-3.5">Level</th>
+                <th className="px-5 py-3.5">Enrolled</th>
+                <th className="px-5 py-3.5">Rating</th>
+                <th className="px-5 py-3.5">Status</th>
+                <th className="px-5 py-3.5 text-right pr-6">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1E2D45] text-[14px]">
+              {paginatedCourses.length > 0 ? (
+                paginatedCourses.map((course) => (
+                  <tr
+                    key={course.id}
+                    className={`hover:bg-[#1A2540]/20 transition-colors h-[72px] ${
+                      selected.includes(course.id) ? 'bg-[#FF6B2B]/5' : ''
+                    }`}
+                  >
+                    {/* Checkbox */}
+                    <td className="px-5">
                       <label className="flex items-center cursor-pointer">
                         <input
                           type="checkbox"
-                          checked={
-                            paginatedCourses.length > 0 &&
-                            paginatedCourses.every((c) => selected.includes(c.id))
-                          }
-                          onChange={handleSelectAll}
+                          checked={selected.includes(course.id)}
+                          onChange={(e) => handleSelectRow(course.id, e.target.checked)}
                           className="w-4 h-4 rounded border-[#1E2D45] bg-[#1A2540] accent-[#FF6B2B] cursor-pointer"
                         />
                       </label>
-                    </th>
-                    <th onClick={() => handleSort('title')} className="px-5 py-3.5 w-[380px] cursor-pointer hover:text-white transition-colors">
-                      <div className="flex items-center gap-1.5 select-none">
-                        Course
-                        <ArrowUpDown size={14} className="text-[#6B7280]" />
-                      </div>
-                    </th>
-                    <th onClick={() => handleSort('instructor')} className="px-5 py-3.5 cursor-pointer hover:text-white transition-colors">
-                      <div className="flex items-center gap-1.5 select-none">
-                        Instructor
-                        <ArrowUpDown size={14} className="text-[#6B7280]" />
-                      </div>
-                    </th>
-                    <th onClick={() => handleSort('level')} className="px-5 py-3.5 cursor-pointer hover:text-white transition-colors">
-                      <div className="flex items-center gap-1.5 select-none">
-                        Level
-                        <ArrowUpDown size={14} className="text-[#6B7280]" />
-                      </div>
-                    </th>
-                    <th onClick={() => handleSort('enrolled')} className="px-5 py-3.5 cursor-pointer hover:text-white transition-colors">
-                      <div className="flex items-center gap-1.5 select-none">
-                        Enrolled
-                        <ArrowUpDown size={14} className="text-[#6B7280]" />
-                      </div>
-                    </th>
-                    <th onClick={() => handleSort('rating')} className="px-5 py-3.5 cursor-pointer hover:text-white transition-colors">
-                      <div className="flex items-center gap-1.5 select-none">
-                        Rating
-                        <ArrowUpDown size={14} className="text-[#6B7280]" />
-                      </div>
-                    </th>
-                    <th onClick={() => handleSort('status')} className="px-5 py-3.5 cursor-pointer hover:text-white transition-colors">
-                      <div className="flex items-center gap-1.5 select-none">
-                        Status
-                        <ArrowUpDown size={14} className="text-[#6B7280]" />
-                      </div>
-                    </th>
-                    <th className="px-5 py-3.5 text-right pr-6">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1E2D45] text-[14px]">
-                  {paginatedCourses.map((course) => (
-                    <tr
-                      key={course.id}
-                      className={`hover:bg-[#1A2540]/20 transition-colors h-[72px] ${
-                        selected.includes(course.id) ? 'bg-[#FF6B2B]/5' : ''
-                      }`}
-                    >
-                      {/* Checkbox */}
-                      <td className="px-5">
-                        <label className="flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={selected.includes(course.id)}
-                            onChange={(e) => handleSelectRow(course.id, e.target.checked)}
-                            className="w-4 h-4 rounded border-[#1E2D45] bg-[#1A2540] accent-[#FF6B2B] cursor-pointer"
-                          />
-                        </label>
-                      </td>
+                    </td>
 
-                      {/* Course */}
-                      <td className="px-5 py-3 flex items-center gap-3">
-                        <img
-                          src={course.thumbnail}
-                          alt={course.title}
-                          className="w-[56px] h-[36px] rounded-md object-cover border border-[#1E2D45]"
-                        />
-                        <div className="min-w-0">
-                          <div className="font-bold text-white truncate max-w-[280px]" title={course.title}>
-                            {highlightText(course.title, search)}
-                          </div>
-                          <span
-                            className={`inline-block text-[10px] font-bold uppercase rounded px-1.5 py-0.5 mt-1 ${
-                              course.type === 'learning-path'
-                                ? 'bg-[#00C97B]/10 text-[#00E88A] border border-[#00C97B]/20'
-                                : 'bg-[#4F8EF7]/10 text-[#4F8EF7] border border-[#4F8EF7]/20'
-                            }`}
-                          >
-                            {course.type === 'learning-path' ? 'Learning Path' : 'Course'}
-                          </span>
+                    {/* Course */}
+                    <td className="px-5 py-3 flex items-center gap-3">
+                      <img
+                        src={course.thumbnail}
+                        alt={course.title}
+                        className="w-[56px] h-[36px] rounded-md object-cover border border-[#1E2D45]"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-bold text-white truncate max-w-[280px]" title={course.title}>
+                          {course.title}
                         </div>
-                      </td>
-
-                      {/* Instructor */}
-                      <td className="px-5 py-3 text-[#9CA3AF] font-medium">
-                        {highlightText(course.instructor, search)}
-                      </td>
-
-                      {/* Level */}
-                      <td className="px-5 py-3">
                         <span
-                          className={`inline-block text-[10px] font-bold uppercase rounded-full px-2.5 py-0.5 ${getLevelBadgeClass(
-                            course.level
-                          )}`}
-                        >
-                          {course.level}
-                        </span>
-                      </td>
-
-                      {/* Enrolled */}
-                      <td className="px-5 py-3 text-white font-semibold">
-                        <div className="flex items-center gap-1.5">
-                          <Users size={14} className="text-[#9CA3AF]" />
-                          {course.enrolled?.toLocaleString()}
-                        </div>
-                      </td>
-
-                      {/* Rating */}
-                      <td className="px-5 py-3 font-semibold text-white">
-                        <div className="flex items-center gap-1">
-                          <Star size={14} fill="#FF8C42" stroke="#FF8C42" />
-                          <span>{course.rating || 'N/A'}</span>
-                        </div>
-                      </td>
-
-                      {/* Status Switch */}
-                      <td className="px-5 py-3">
-                        <button
-                          onClick={() => handleToggleStatus(course.id, course.status)}
-                          className={`relative w-10 h-[22px] rounded-full transition-colors focus:outline-none cursor-pointer border-none ${
-                            course.status === 'published' ? 'bg-[#FF6B2B]' : 'bg-[#1A2540]'
+                          className={`inline-block text-[10px] font-bold uppercase rounded px-1.5 py-0.5 mt-1 ${
+                            course.type === 'learning-path'
+                              ? 'bg-[#00C97B]/10 text-[#00E88A] border border-[#00C97B]/20'
+                              : 'bg-[#4F8EF7]/10 text-[#4F8EF7] border border-[#4F8EF7]/20'
                           }`}
                         >
-                          <div
-                            className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full transition-transform ${
-                              course.status === 'published' ? 'translate-x-[20px]' : 'translate-x-[2px]'
-                            }`}
-                          />
-                        </button>
-                      </td>
+                          {course.type === 'learning-path' ? 'Learning Path' : 'Course'}
+                        </span>
+                      </div>
+                    </td>
 
-                      {/* Actions */}
-                      <td className="px-5 py-3 text-right pr-6">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <button
-                            onClick={() => {
-                              setEditingCourse(course);
-                              setShowModal(true);
-                            }}
-                            className="w-8 h-8 rounded-md bg-transparent hover:bg-[#1A2540] text-[#9CA3AF] hover:text-[#FF6B2B] flex items-center justify-center transition-all cursor-pointer border-none focus:outline-none active:scale-[0.97]"
-                            title="Edit Course"
-                            aria-label="Edit Course"
-                          >
-                            <Edit size={15} />
-                          </button>
+                    {/* Instructor */}
+                    <td className="px-5 py-3 text-[#9CA3AF] font-medium">
+                      {course.instructor}
+                    </td>
 
-                          <button
-                            onClick={() => window.open('/courses/' + course.id, '_blank')}
-                            className="w-8 h-8 rounded-md bg-transparent hover:bg-[#1A2540] text-[#9CA3AF] hover:text-[#4F8EF7] flex items-center justify-center transition-all cursor-pointer border-none focus:outline-none active:scale-[0.97]"
-                            title="View Course"
-                            aria-label="View Course"
-                          >
-                            <Eye size={15} />
-                          </button>
+                    {/* Level */}
+                    <td className="px-5 py-3">
+                      <span
+                        className={`inline-block text-[10px] font-bold uppercase rounded-full px-2.5 py-0.5 ${getLevelBadgeClass(
+                          course.level
+                        )}`}
+                      >
+                        {course.level}
+                      </span>
+                    </td>
 
-                          <button
-                            onClick={() => handleDeleteTrigger(course.id)}
-                            className="w-8 h-8 rounded-md bg-transparent hover:bg-[#1A2540] text-[#9CA3AF] hover:text-[#EF4444] flex items-center justify-center transition-all cursor-pointer border-none focus:outline-none active:scale-[0.97]"
-                            title="Delete Course"
-                            aria-label="Delete Course"
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {/* PAGINATION PANEL */}
-            {totalPages > 1 && (
-              <div className="px-6 py-4 bg-[#1A2540]/20 border-t border-[#1E2D45] flex items-center justify-between flex-wrap gap-4 text-[13px] text-[#9CA3AF]">
-                <div>
-                  Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, totalItems)} of{' '}
-                  {totalItems} courses
-                </div>
-                <div className="flex items-center gap-3">
-                  {/* Prev */}
-                  <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                    className="w-8 h-8 rounded-lg bg-[#111827] border border-[#1E2D45] text-white hover:bg-[#1A2540] flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer focus:outline-none"
-                  >
-                    <ArrowLeft size={14} />
-                  </button>
+                    {/* Enrolled */}
+                    <td className="px-5 py-3 text-white font-semibold">
+                      <div className="flex items-center gap-1.5">
+                        <Users size={14} className="text-[#9CA3AF]" />
+                        {course.enrolled?.toLocaleString()}
+                      </div>
+                    </td>
 
-                  {/* Page numbers */}
-                  <div className="flex gap-1">
-                    {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
+                    {/* Rating */}
+                    <td className="px-5 py-3 font-semibold text-white">
+                      <div className="flex items-center gap-1">
+                        <Star size={14} fill="#FF8C42" stroke="#FF8C42" />
+                        <span>{course.rating || 'N/A'}</span>
+                      </div>
+                    </td>
+
+                    {/* Status Switch */}
+                    <td className="px-5 py-3">
                       <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-8 h-8 rounded-lg font-bold transition-colors cursor-pointer border-none focus:outline-none ${
-                          currentPage === page
-                            ? 'bg-[#FF6B2B] text-white shadow-sm'
-                            : 'bg-transparent text-[#9CA3AF] hover:bg-[#1A2540] hover:text-white'
+                        onClick={() => handleToggleStatus(course.id, course.status)}
+                        className={`relative w-10 h-[22px] rounded-full transition-colors focus:outline-none cursor-pointer border-none ${
+                          course.status === 'published' ? 'bg-[#FF6B2B]' : 'bg-[#1A2540]'
                         }`}
                       >
-                        {page}
+                        <div
+                          className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full transition-transform ${
+                            course.status === 'published' ? 'translate-x-[20px]' : 'translate-x-[2px]'
+                          }`}
+                        />
                       </button>
-                    ))}
-                  </div>
+                    </td>
 
-                  {/* Next */}
+                    {/* Actions */}
+                    <td className="px-5 py-3 text-right pr-6">
+                      <div className="flex items-center justify-end gap-1.5">
+                        {/* Edit Button */}
+                        <button
+                          onClick={() => {
+                            setEditingCourse(course);
+                            setShowModal(true);
+                          }}
+                          className="w-8 h-8 rounded-md bg-transparent hover:bg-[#1A2540] text-[#9CA3AF] hover:text-[#FF6B2B] flex items-center justify-center transition-all cursor-pointer border-none focus:outline-none active:scale-[0.97]"
+                          title="Edit Course"
+                        >
+                          <Edit size={15} />
+                        </button>
+
+                        {/* View Button */}
+                        <button
+                          onClick={() => window.open('/courses/' + course.id, '_blank')}
+                          className="w-8 h-8 rounded-md bg-transparent hover:bg-[#1A2540] text-[#9CA3AF] hover:text-[#4F8EF7] flex items-center justify-center transition-all cursor-pointer border-none focus:outline-none active:scale-[0.97]"
+                          title="View Course"
+                        >
+                          <Eye size={15} />
+                        </button>
+
+                        {/* Delete Button */}
+                        <button
+                          onClick={() => handleDeleteTrigger(course.id)}
+                          className="w-8 h-8 rounded-md bg-transparent hover:bg-[#1A2540] text-[#9CA3AF] hover:text-[#EF4444] flex items-center justify-center transition-all cursor-pointer border-none focus:outline-none active:scale-[0.97]"
+                          title="Delete Course"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={8} className="text-center py-10 text-[#9CA3AF] font-medium bg-[#111827]">
+                    No courses matching filters.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* PAGINATION PANEL */}
+        {totalPages > 1 && (
+          <div className="px-6 py-4 bg-[#1A2540]/20 border-t border-[#1E2D45] flex items-center justify-between flex-wrap gap-4 text-[13px] text-[#9CA3AF]">
+            <div>
+              Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, totalItems)} of{' '}
+              {totalItems} courses
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Prev */}
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                className="w-8 h-8 rounded-lg bg-[#111827] border border-[#1E2D45] text-white hover:bg-[#1A2540] flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer focus:outline-none"
+              >
+                <ArrowLeft size={14} />
+              </button>
+
+              {/* Page numbers */}
+              <div className="flex gap-1">
+                {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((page) => (
                   <button
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-                    className="w-8 h-8 rounded-lg bg-[#111827] border border-[#1E2D45] text-white hover:bg-[#1A2540] flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer focus:outline-none"
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-8 h-8 rounded-lg font-bold transition-colors cursor-pointer border-none focus:outline-none ${
+                      currentPage === page
+                        ? 'bg-[#FF6B2B] text-white shadow-sm'
+                        : 'bg-transparent text-[#9CA3AF] hover:bg-[#1A2540] hover:text-white'
+                    }`}
                   >
-                    <ArrowRight size={14} />
+                    {page}
                   </button>
-                </div>
+                ))}
               </div>
-            )}
+
+              {/* Next */}
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                className="w-8 h-8 rounded-lg bg-[#111827] border border-[#1E2D45] text-white hover:bg-[#1A2540] flex items-center justify-center disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer focus:outline-none"
+              >
+                <ArrowRight size={14} />
+              </button>
+            </div>
           </div>
-        );
-      })()}
+        )}
+      </div>
 
       {/* Slide-over form modal container */}
       {showModal && (
@@ -917,9 +819,8 @@ export function AdminCourses() {
                                   setMentorsList(prev => prev.filter(m => m.id !== mentor.id));
                                   showToast(`Mentor "${mentor.name}" deleted successfully.`, 'danger');
                                 }}
-                                className="text-[#EF4444] hover:text-[#B91C1C] bg-transparent border-none cursor-pointer p-1 rounded hover:bg-[#EF4444]/10 transition-colors"
+                                className="text-[#EF4444] hover:text-[#DC2626] bg-transparent border-none cursor-pointer p-1 rounded hover:bg-[#EF4444]/10 transition-colors"
                                 title="Delete Mentor"
-                                aria-label="Delete Mentor"
                               >
                                 <Trash2 size={14} />
                               </button>

@@ -26,7 +26,7 @@ export function Login() {
         if (email === 'admin@learnify.com' && password === 'admin123') {
           login({ name: 'Admin', email, role: 'admin' });
           setIsLoading(false);
-          window.location.href = 'http://localhost:5174/admin?autologin=admin';
+          window.location.href = 'http://localhost:5174/admin';
         } else {
           setError("These credentials don't match the selected role.");
           setIsLoading(false);
