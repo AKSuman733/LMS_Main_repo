@@ -1,0 +1,65 @@
+[
+  {
+    "id": "admin_1",
+    "name": "Sarah Johnson",
+    "email": "admin@learnify.com",
+    "role": "admin",
+    "provider": "credentials",
+    "profile_image": "https://i.pravatar.cc/150?img=8",
+    "created_at": "2026-06-01T09:36:57.732Z",
+    "updated_at": "2026-06-01T09:36:57.736Z"
+  },
+  {
+    "id": "admin_2",
+    "name": "Emma Davis",
+    "email": "emma.d@example.com",
+    "role": "admin",
+    "provider": "credentials",
+    "profile_image": "https://i.pravatar.cc/150?img=3",
+    "created_at": "2026-06-01T09:36:57.736Z",
+    "updated_at": "2026-06-01T09:36:57.736Z"
+  },
+  {
+    "id": "usr_1780306952587",
+    "name": "SIM",
+    "email": "sim",
+    "profile_image": "https://i.pravatar.cc/150?img=12",
+    "provider": "google",
+    "role": "student",
+    "google_id": "sim_1780306952586",
+    "created_at": "2026-06-01T09:42:32.587Z",
+    "updated_at": "2026-06-01T09:42:32.587Z"
+  },
+  {
+    "id": "usr_1780829979550",
+    "name": "abc",
+    "email": "abc@gmail.com",
+    "role": "student",
+    "preferences": [
+      "AI",
+      "ML",
+      "LLMOps"
+    ],
+    "notifications": {
+      "courseUpdates": true,
+      "newCertificates": true,
+      "weeklyReport": false
+    }
+  },
+  {
+    "id": "usr_1781013512018",
+    "name": "krunali17",
+    "email": "krunali17@gmail.com",
+    "role": "student",
+    "preferences": [
+      "AI",
+      "ML",
+      "LLMOps"
+    ],
+    "notifications": {
+      "courseUpdates": true,
+      "newCertificates": true,
+      "weeklyReport": false
+    }
+  }
+]

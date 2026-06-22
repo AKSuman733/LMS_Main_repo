@@ -1,0 +1,170 @@
+:root {
+  /* Brand Colors */
+  --brand-indigo-900: #FF6B35;
+  --brand-indigo-800: #E85520;
+  --brand-indigo-100: #FFF0EB;
+  --brand-indigo-50: rgba(255, 107, 43, 0.1);
+
+  /* Action Color */
+  --action-lime: #00B5A5;
+
+  /* Neutral Colors */
+  --neutral-900: #1A1A2E;
+  --neutral-600: #6B6B80;
+  --neutral-200: #E2E1F0;
+  --neutral-50: #F7F6F3;
+  --neutral-white: #FFFFFF;
+
+  /* Feedback Colors */
+  --feedback-success: #22C55E;
+  --feedback-warning: #F59E0B;
+  --feedback-error: #EF4444;
+
+  /* Background */
+  --background: #FFFFFF;
+  --background-off-white: #F7F6F3;
+  --background-tinted: #F0EFF8;
+
+  /* Typography Scale */
+  --text-h1: 3.5rem;
+  --text-h2: 2.5rem;
+  --text-h3: 1.75rem;
+  --text-h4: 1.25rem;
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-small: 0.875rem;
+  --text-label: 0.8125rem;
+  --text-caption: 0.75rem;
+
+  /* Font Weights */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+
+  /* Line Heights */
+  --line-height-heading: 1.15;
+  --line-height-body: 1.65;
+
+  /* Spacing (8px base unit) */
+  --spacing-1: 0.5rem;
+  --spacing-2: 1rem;
+  --spacing-3: 1.5rem;
+  --spacing-4: 2rem;
+  --spacing-6: 3rem;
+  --spacing-10: 5rem;
+  --spacing-12: 6rem;
+
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-pill: 1.75rem;
+
+  /* Shadows */
+  --shadow-card: 0 2px 16px rgba(45, 27, 105, 0.06);
+  --shadow-hover: 0 4px 24px rgba(45, 27, 105, 0.12);
+}
+
+@theme inline {
+  --color-brand-indigo-900: var(--brand-indigo-900);
+  --color-brand-indigo-800: var(--brand-indigo-800);
+  --color-brand-indigo-100: var(--brand-indigo-100);
+  --color-brand-indigo-50: var(--brand-indigo-50);
+  --color-action-lime: var(--action-lime);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-white: var(--neutral-white);
+  --color-feedback-success: var(--feedback-success);
+  --color-feedback-warning: var(--feedback-warning);
+  --color-feedback-error: var(--feedback-error);
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: var(--neutral-900);
+    background: var(--background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4,
+  [class*="text-[56px]"],
+  [class*="text-[40px]"],
+  [class*="text-[32px]"],
+  [class*="text-[28px]"] {
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    line-height: 1.25 !important;
+  }
+
+  body, p,
+  [class*="text-[20px]"]:not(.font-bold):not(.font-extrabold),
+  [class*="text-[18px]"],
+  [class*="text-[16px]"],
+  [class*="text-[15px]"] {
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+  }
+}
+
+/* Central overrides for hardcoded indigo styles */
+[class*="bg-[#2D1B69]"], [class*="bg-[#2d1b69]"] {
+  background-color: #FF6B35 !important;
+}
+[class*="text-[#2D1B69]"], [class*="text-[#2d1b69]"] {
+  color: #FF6B35 !important;
+}
+[class*="border-[#2D1B69]"], [class*="border-[#2d1b69]"] {
+  border-color: #FF6B35 !important;
+}
+[class*="bg-[#2D1B69]/8"] {
+  background-color: rgba(255, 107, 53, 0.08) !important;
+}
+[class*="bg-[#2D1B69]/10"] {
+  background-color: rgba(255, 107, 53, 0.1) !important;
+}
+[class*="bg-[#EDE9FF]"] {
+  background-color: #FFF0EB !important;
+}
+[class*="hover:bg-[#3D2879]"]:hover, [class*="hover:bg-[#3D2B89]"]:hover {
+  background-color: #E85520 !important;
+}
+[class*="hover:text-[#2D1B69]"]:hover {
+  color: #FF6B35 !important;
+}
+
+/* Central overrides for hardcoded lime styles */
+[class*="bg-[#BBFF00]"], [class*="bg-[#bbff00]"] {
+  background-color: #00B5A5 !important;
+}
+[class*="text-[#BBFF00]"], [class*="text-[#bbff00]"] {
+  color: #00B5A5 !important;
+}
+[class*="border-[#BBFF00]"], [class*="border-[#bbff00]"] {
+  border-color: #00B5A5 !important;
+}
+[class*="bg-[#BBFF00]/10"] {
+  background-color: rgba(0, 181, 165, 0.1) !important;
+}
+[class*="bg-[#BBFF00]/20"] {
+  background-color: rgba(0, 181, 165, 0.2) !important;
+}
+[class*="hover:bg-[#BBFF00]"]:hover {
+  background-color: #008F82 !important;
+}
+[class*="text-[#BBFF00]"]:hover {
+  color: #00B5A5 !important;
+}
