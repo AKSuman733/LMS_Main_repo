@@ -30,7 +30,7 @@ const CourseCatalog = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             </div>
             <div className="p-6 flex-grow flex flex-col">
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-2">
+              <span className="text-xs font-semibold text-brand-orange dark:text-brand-orange-light uppercase tracking-wider mb-2">
                 {course.category}
               </span>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{course.title}</h3>
@@ -43,7 +43,7 @@ const CourseCatalog = () => {
               
               <Link 
                 to={`/student/course/${course.id}`}
-                className="w-full text-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition"
+                className="w-full text-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-orange hover:bg-brand-orange-dark transition"
               >
                 View Course
               </Link>

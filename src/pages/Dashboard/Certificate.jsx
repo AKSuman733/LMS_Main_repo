@@ -36,7 +36,7 @@ const Certificate = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="bg-white dark:bg-gray-800 p-12 rounded-xl shadow-lg text-center border border-gray-100 dark:border-gray-700">
-        <div className="mb-6 flex justify-center text-blue-600 dark:text-blue-400">
+        <div className="mb-6 flex justify-center text-brand-orange dark:text-brand-orange-light">
           <Award size={64} />
         </div>
         
@@ -51,7 +51,7 @@ const Certificate = () => {
         </p>
 
         <button 
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg opacity-50 cursor-not-allowed"
+          className="px-6 py-3 bg-brand-orange text-white font-medium rounded-lg opacity-50 cursor-not-allowed"
           disabled
         >
           Download Certificate

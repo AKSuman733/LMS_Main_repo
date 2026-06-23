@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { X, AlertTriangle } from 'lucide-react';
+import { Button } from './ui/Button';
 
 const Modal = ({ 
   isOpen, 
@@ -83,7 +84,7 @@ const Modal = ({
           </div>
           <button
             onClick={onClose}
-            className="rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="rounded p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-brand-orange"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -99,26 +100,22 @@ const Modal = ({
         {(type === 'confirm' || type === 'alert') && (
           <div className="p-5 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex justify-end space-x-3 shrink-0">
             {type === 'confirm' && (
-              <button
+              <Button
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                variant="outline"
               >
                 {cancelText}
-              </button>
+              </Button>
             )}
-            <button
+            <Button
               onClick={() => {
                 if (onConfirm) onConfirm();
                 else onClose();
               }}
-              className={`px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                isDestructive 
-                  ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500' 
-                  : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
-              }`}
+              variant={isDestructive ? 'destructive' : 'primary'}
             >
               {confirmText}
-            </button>
+            </Button>
           </div>
         )}
       </div>

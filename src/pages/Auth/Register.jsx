@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
+import { Input } from '../../components/ui/Input';
+import { Button } from '../../components/ui/Button';
 
 
 const Register = ({ forcedRole }) => {
@@ -45,6 +47,21 @@ const Register = ({ forcedRole }) => {
     }, 800);
   };
 
+  const getPasswordStrength = (pass) => {
+    if (!pass) return { score: 0, label: '', color: 'bg-gray-200' };
+    let score = 0;
+    if (pass.length >= 6) score += 1;
+    if (pass.length >= 10) score += 1;
+    if (/[A-Z]/.test(pass)) score += 1;
+    if (/[0-9]/.test(pass)) score += 1;
+    if (/[^A-Za-z0-9]/.test(pass)) score += 1;
+    
+    if (score <= 1) return { score, label: 'Weak', color: 'bg-red-500' };
+    if (score <= 3) return { score, label: 'Fair', color: 'bg-yellow-500' };
+    return { score, label: 'Strong', color: 'bg-green-500' };
+  };
+  const strength = getPasswordStrength(password);
+
   return (
     <div>
       <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-6 capitalize text-center">
@@ -52,60 +69,36 @@ const Register = ({ forcedRole }) => {
       </h3>
 
       <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Full Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            required
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              if (errors.name) setErrors({ ...errors, name: '' });
-            }}
-            aria-invalid={!!errors.name}
-            aria-describedby={errors.name ? "name-error" : undefined}
-            className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.name ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
-          />
-          {errors.name && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="name-error" role="alert">
-              {errors.name}
-            </p>
-          )}
-        </div>
+        <Input
+          id="name"
+          label="Full Name"
+          type="text"
+          required
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            if (errors.name) setErrors({ ...errors, name: '' });
+          }}
+          error={errors.name}
+        />
+
+        <Input
+          id="email"
+          label="Email address"
+          type="email"
+          required
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (errors.email) setErrors({ ...errors, email: '' });
+          }}
+          error={errors.email}
+        />
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (errors.email) setErrors({ ...errors, email: '' });
-            }}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? "email-error" : undefined}
-            className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.email ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
-          />
-          {errors.email && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="email-error" role="alert">
-              {errors.email}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Password
-          </label>
-          <input
+          <Input
             id="password"
+            label="Password"
             type="password"
             required
             value={password}
@@ -113,21 +106,30 @@ const Register = ({ forcedRole }) => {
               setPassword(e.target.value);
               if (errors.password) setErrors({ ...errors, password: '' });
             }}
-            aria-invalid={!!errors.password}
-            aria-describedby={errors.password ? "password-error" : undefined}
-            className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 ${errors.password ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+            error={errors.password}
           />
-          {errors.password && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400" id="password-error" role="alert">
-              {errors.password}
-            </p>
+          {password && (
+            <div className="mt-2">
+              <div className="flex items-center justify-between text-xs mb-1">
+                <span className="text-gray-500">Password strength:</span>
+                <span className="font-medium text-gray-700">{strength.label}</span>
+              </div>
+              <div className="flex gap-1 h-1">
+                {[1, 2, 3, 4, 5].map((level) => (
+                  <div 
+                    key={level} 
+                    className={`flex-1 rounded-full ${level <= strength.score ? strength.color : 'bg-gray-200'}`} 
+                  />
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
+          className="w-full"
         >
           {loading ? (
             <span className="flex items-center gap-2">
@@ -137,12 +139,12 @@ const Register = ({ forcedRole }) => {
           ) : (
             'Register'
           )}
-        </button>
+        </Button>
       </form>
 
       <div className="mt-6 text-center text-sm">
         <span className="text-gray-600 dark:text-gray-400">Already have an account? </span>
-        <Link to={`/login/${role}`} className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+        <Link to={`/login/${role}`} className="font-medium text-brand-orange hover:text-brand-orange transition-colors">
           Sign in here
         </Link>
       </div>

@@ -1,11 +1,14 @@
 @import "tailwindcss";
+@import "./styles/designTokens.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 @theme {
   --color-dark-bg: #f9fafb;
   --color-dark-card: #ffffff;
-  --color-brand-primary: #6366f1;
-  --color-brand-secondary: #ec4899;
+  --color-brand-primary: var(--color-brand-orange);
+  --color-brand-secondary: var(--color-brand-teal);
+  --color-brand-orange: var(--color-brand-orange);
+  --color-brand-teal: var(--color-brand-teal);
 }
 
 body {
@@ -43,8 +46,8 @@ button, input, select, textarea {
 
 /* Focus States */
 *:focus-visible {
-  outline: 2px solid #FF6B35 !important;
-  outline-offset: 2px !important;
+  outline: var(--focus-ring-width) solid var(--focus-ring-color) !important;
+  outline-offset: var(--focus-ring-offset) !important;
 }
 
 /* Active States */

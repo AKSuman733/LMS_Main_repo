@@ -10,9 +10,9 @@ const MainLayout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col transition-colors duration-200">
       <header className="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-blue-600 dark:text-blue-400">Uptoskills AI Learning</h1>
+        <h1 className="text-xl font-bold text-brand-orange dark:text-brand-orange-light">Uptoskills AI Learning</h1>
         <nav className="space-x-4">
-          <Link to={loginPath} className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Log In</Link>
+          <Link to={loginPath} className="text-gray-600 dark:text-gray-300 hover:text-brand-orange dark:hover:text-brand-orange-light font-medium">Log In</Link>
         </nav>
       </header>
       

@@ -32,7 +32,7 @@ const HeroSelectionModal = ({ isOpen, onClose, onSelectHero, currentHeroId }) =>
       <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl mx-auto overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800">
+        <div className="flex items-center justify-between p-6 border-b dark:border-gray-700 bg-gradient-to-r from-orange-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800">
           <div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Choose Your Hero</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Select an instructor style for this course.</p>
@@ -57,8 +57,8 @@ const HeroSelectionModal = ({ isOpen, onClose, onSelectHero, currentHeroId }) =>
                   className={`
                     relative group cursor-pointer rounded-xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl
                     ${isSelected 
-                      ? 'ring-4 ring-blue-500 shadow-lg bg-blue-50 dark:bg-blue-900/20' 
-                      : 'bg-white dark:bg-gray-800 shadow border border-gray-100 dark:border-gray-700 hover:border-blue-300'
+                      ? 'ring-4 ring-brand-orange shadow-lg bg-orange-50 dark:bg-orange-900/20' 
+                      : 'bg-white dark:bg-gray-800 shadow border border-gray-100 dark:border-gray-700 hover:border-brand-orange-light'
                     }
                   `}
                 >
@@ -79,7 +79,7 @@ const HeroSelectionModal = ({ isOpen, onClose, onSelectHero, currentHeroId }) =>
                     
                     {/* Selected Badge */}
                     {isSelected && (
-                      <div className="absolute top-3 right-3 bg-blue-500 text-white p-1.5 rounded-full shadow-lg transform scale-110 animate-bounce">
+                      <div className="absolute top-3 right-3 bg-brand-orange text-white p-1.5 rounded-full shadow-lg transform scale-110 animate-bounce">
                         <Check className="w-5 h-5" />
                       </div>
                     )}
@@ -126,7 +126,7 @@ const HeroSelectionModal = ({ isOpen, onClose, onSelectHero, currentHeroId }) =>
           <button
             onClick={handleConfirm}
             disabled={!selectedId}
-            className="px-5 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+            className="px-5 py-2.5 text-sm font-medium text-white bg-brand-orange rounded-lg hover:bg-brand-orange-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
           >
             Confirm Selection
           </button>

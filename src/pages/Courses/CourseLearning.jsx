@@ -116,7 +116,7 @@ const CourseLearning = () => {
               <span className="font-medium">{currentPercentage}%</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
-              <div className="bg-blue-600 h-1.5 rounded-full transition-all duration-500" style={{ width: `${currentPercentage}%` }}></div>
+              <div className="bg-brand-orange h-1.5 rounded-full transition-all duration-500" style={{ width: `${currentPercentage}%` }}></div>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ const CourseLearning = () => {
                 onClick={() => setActiveLesson(lesson)}
                 className={`w-full text-left p-3 rounded-lg mb-1 flex items-start space-x-3 transition-colors ${
                   isActive 
-                    ? 'bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800' 
+                    ? 'bg-orange-50 dark:bg-orange-900/30 border border-blue-200 dark:border-orange-800' 
                     : 'hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent'
                 }`}
               >
@@ -145,7 +145,7 @@ const CourseLearning = () => {
                 </div>
                 <div>
                   <div className="text-xs text-gray-500 mb-0.5">Lesson {idx + 1}</div>
-                  <div className={`text-sm font-medium ${isActive ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                  <div className={`text-sm font-medium ${isActive ? 'text-brand-orange-dark dark:text-brand-orange-light' : 'text-gray-700 dark:text-gray-300'}`}>
                     {lesson.title}
                   </div>
                 </div>
@@ -199,7 +199,7 @@ const CourseLearning = () => {
                   </div>
                   <button 
                     onClick={() => setIsHeroModalOpen(true)}
-                    className="ml-2 p-1.5 bg-white dark:bg-gray-800 rounded-full text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-600 border dark:border-gray-600 shadow-sm transition-colors"
+                    className="ml-2 p-1.5 bg-white dark:bg-gray-800 rounded-full text-brand-orange dark:text-brand-orange-light hover:bg-orange-50 dark:hover:bg-gray-600 border dark:border-gray-600 shadow-sm transition-colors"
                     title="Change Hero"
                   >
                     <UserCog size={16} />
@@ -217,7 +217,7 @@ const CourseLearning = () => {
                   <img src={activeHero.image} alt="Video Background" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay filter blur-sm" />
                 )}
 
-                <div className="w-20 h-20 bg-blue-600/90 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(37,99,235,0.5)] z-20">
+                <div className="w-20 h-20 bg-brand-orange/90 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(37,99,235,0.5)] z-20">
                   <Play size={40} className="text-white ml-2" fill="currentColor" />
                 </div>
                 <p className="text-white mt-4 font-medium tracking-wide z-20 text-sm bg-black/50 px-4 py-1 rounded-full">
@@ -225,8 +225,8 @@ const CourseLearning = () => {
                 </p>
               </div>
               
-              <div className="bg-blue-50 dark:bg-blue-900/10 p-6 rounded-xl border border-blue-100 dark:border-blue-900/50">
-                <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2">Lesson Overview</h3>
+              <div className="bg-orange-50 dark:bg-orange-900/10 p-6 rounded-xl border border-orange-100 dark:border-orange-900/50">
+                <h3 className="text-lg font-semibold text-orange-900 dark:text-brand-orange-light mb-2">Lesson Overview</h3>
                 <p className="whitespace-pre-wrap leading-relaxed text-gray-700 dark:text-gray-300">{activeLesson.content}</p>
               </div>
             </div>
@@ -246,7 +246,7 @@ const CourseLearning = () => {
               <button 
                 onClick={markComplete}
                 disabled={enrollment.completed_lessons?.includes(activeLesson.id)}
-                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 disabled:shadow-none disabled:opacity-80 disabled:bg-green-600 disabled:cursor-not-allowed flex items-center space-x-2 font-medium"
+                className="px-6 py-3 bg-brand-orange text-white rounded-lg hover:bg-brand-orange-dark transition shadow-lg shadow-brand-orange/30 disabled:shadow-none disabled:opacity-80 disabled:bg-green-600 disabled:cursor-not-allowed flex items-center space-x-2 font-medium"
               >
                 {enrollment.completed_lessons?.includes(activeLesson.id) ? (
                   <>

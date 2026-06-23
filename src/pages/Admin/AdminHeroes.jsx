@@ -139,7 +139,7 @@ const AdminHeroes = () => {
       render: (row) => (
         <div className="flex flex-wrap gap-1">
           {row.tags && row.tags.map((tag, i) => (
-            <span key={i} className="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full">
+            <span key={i} className="px-2 py-1 text-xs bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-brand-orange-light rounded-full">
               {tag}
             </span>
           ))}
@@ -198,7 +198,7 @@ const AdminHeroes = () => {
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+          className="flex items-center space-x-2 bg-brand-orange text-white px-4 py-2 rounded-lg hover:bg-brand-orange-dark transition-colors shadow-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Add Hero</span>
@@ -235,7 +235,7 @@ const AdminHeroes = () => {
               }}
               aria-invalid={!!errors.name}
               aria-describedby={errors.name ? "name-error" : undefined}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${errors.name ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-orange dark:bg-gray-700 dark:text-white ${errors.name ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
               placeholder="e.g. Mass Hero Style (Mahesh Babu)"
             />
             {errors.name && <p className="mt-1 text-xs text-red-500" id="name-error" role="alert">{errors.name}</p>}
@@ -252,7 +252,7 @@ const AdminHeroes = () => {
               }}
               aria-invalid={!!errors.title}
               aria-describedby={errors.title ? "title-error" : undefined}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white ${errors.title ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-orange dark:bg-gray-700 dark:text-white ${errors.title ? 'border-red-500 dark:border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
               placeholder="e.g. Action Star"
             />
             {errors.title && <p className="mt-1 text-xs text-red-500" id="title-error" role="alert">{errors.title}</p>}
@@ -263,7 +263,7 @@ const AdminHeroes = () => {
               type="text" 
               value={formData.tags}
               onChange={(e) => setFormData({...formData, tags: e.target.value})}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-orange dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               placeholder="e.g. Action, Mass, Telugu"
             />
           </div>
@@ -272,7 +272,7 @@ const AdminHeroes = () => {
             <textarea 
               value={formData.bio}
               onChange={(e) => setFormData({...formData, bio: e.target.value})}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-orange dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               rows={3}
               placeholder="Short description..."
             />
@@ -289,7 +289,7 @@ const AdminHeroes = () => {
                 type="file" 
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-700 dark:file:text-gray-300"
+                className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-brand-orange-dark hover:file:bg-orange-100 dark:file:bg-gray-700 dark:file:text-gray-300"
               />
             </div>
             <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
@@ -298,7 +298,7 @@ const AdminHeroes = () => {
                 type="text" 
                 value={formData.image && formData.image.startsWith('http') ? formData.image : ''}
                 onChange={(e) => setFormData({...formData, image: e.target.value})}
-                className="w-full mt-1 px-2 py-1 border rounded focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="w-full mt-1 px-2 py-1 border rounded focus:ring-2 focus:ring-brand-orange dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -308,7 +308,7 @@ const AdminHeroes = () => {
             <select 
               value={formData.status}
               onChange={(e) => setFormData({...formData, status: e.target.value})}
-              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-brand-orange dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             >
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>

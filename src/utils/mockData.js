@@ -504,10 +504,10 @@ export const getCourseStatusAndAction = (course) => {
   } else if (progress > 0) {
     return {
       statusBadge: 'In Progress',
-      badgeColor: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400',
+      badgeColor: 'bg-orange-100 text-brand-orange-dark dark:bg-orange-900/50 dark:text-brand-orange-light',
       actionLabel: 'Continue',
       actionLink: `/student/learn/${course.id}`,
-      actionColor: 'bg-blue-600 text-white hover:bg-blue-700',
+      actionColor: 'bg-brand-orange text-white hover:bg-brand-orange-dark',
       actionVariant: 'primary'
     };
   } else {
@@ -516,7 +516,7 @@ export const getCourseStatusAndAction = (course) => {
       badgeColor: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
       actionLabel: 'Start Course',
       actionLink: `/student/learn/${course.id}`,
-      actionColor: 'bg-blue-600 text-white hover:bg-blue-700',
+      actionColor: 'bg-brand-orange text-white hover:bg-brand-orange-dark',
       actionVariant: 'primary'
     };
   }
@@ -531,6 +531,6 @@ export const MOCK_STUDENT_METRICS = {
 export const MOCK_ACHIEVEMENTS = [
   { id: 1, title: 'Fast Learner', description: 'Completed a course in under 3 days.', icon: 'Zap', color: 'text-yellow-500 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400' },
   { id: 2, title: 'Dedicated Student', description: 'Maintained a 10-day learning streak.', icon: 'Flame', color: 'text-orange-500 bg-orange-100 dark:bg-orange-900/30 dark:text-orange-400' },
-  { id: 3, title: 'Hero Follower', description: 'Tried 3 different Celebrity Instructors.', icon: 'Star', color: 'text-purple-500 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-400' },
+  { id: 3, title: 'Hero Follower', description: 'Tried 3 different Celebrity Instructors.', icon: 'Star', color: 'text-brand-teal bg-teal-100 dark:bg-purple-900/30 dark:text-brand-teal-light' },
 ];
 

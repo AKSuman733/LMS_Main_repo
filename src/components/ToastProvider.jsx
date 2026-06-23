@@ -26,7 +26,7 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={{ addToast }}>
       {children}
-      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
+      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none" aria-live="assertive">
         {toasts.map((toast) => (
           <div
             key={toast.id}
@@ -34,7 +34,7 @@ export const ToastProvider = ({ children }) => {
               ${toast.type === 'success' ? 'border-green-500' : ''}
               ${toast.type === 'error' ? 'border-red-500' : ''}
               ${toast.type === 'warning' ? 'border-amber-500' : ''}
-              ${toast.type === 'info' ? 'border-blue-500' : ''}
+              ${toast.type === 'info' ? 'border-brand-orange' : ''}
             `}
             role="alert"
           >
@@ -42,7 +42,7 @@ export const ToastProvider = ({ children }) => {
               {toast.type === 'success' && <CheckCircle className="w-5 h-5 text-green-500" />}
               {toast.type === 'error' && <AlertCircle className="w-5 h-5 text-red-500" />}
               {toast.type === 'warning' && <AlertTriangle className="w-5 h-5 text-amber-500" />}
-              {toast.type === 'info' && <Info className="w-5 h-5 text-blue-500" />}
+              {toast.type === 'info' && <Info className="w-5 h-5 text-brand-orange" />}
             </div>
             <div className="flex-1 text-sm font-medium text-gray-900 dark:text-gray-100">
               {toast.message}

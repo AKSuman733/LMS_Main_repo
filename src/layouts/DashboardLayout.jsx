@@ -48,7 +48,7 @@ const DashboardLayout = ({ role }) => {
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-md flex flex-col transform transition-transform duration-300 md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">Uptoskills AI Learning</h1>
+            <h1 className="text-2xl font-bold text-brand-orange dark:text-brand-orange-light">Uptoskills AI Learning</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{role} Panel</p>
           </div>
           <button 

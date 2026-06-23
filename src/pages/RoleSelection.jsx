@@ -29,10 +29,10 @@ const RoleSelection = () => {
         <div className="grid md:grid-cols-2 gap-8">
           <button
             onClick={() => navigate('/login/student')}
-            className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-blue-500 group"
+            className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-brand-orange group"
           >
-            <div className="w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <User size={48} className="text-blue-600 dark:text-blue-400" />
+            <div className="w-24 h-24 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <User size={48} className="text-brand-orange dark:text-brand-orange-light" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Student</h3>
             <p className="text-gray-500 dark:text-gray-400 text-center">
@@ -42,10 +42,10 @@ const RoleSelection = () => {
 
           <button
             onClick={() => navigate('/login/admin')}
-            className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-purple-500 group"
+            className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border-2 border-transparent hover:border-brand-teal group"
           >
-            <div className="w-24 h-24 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Shield size={48} className="text-purple-600 dark:text-purple-400" />
+            <div className="w-24 h-24 bg-teal-100 dark:bg-purple-900 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Shield size={48} className="text-brand-teal dark:text-brand-teal-light" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Administrator</h3>
             <p className="text-gray-500 dark:text-gray-400 text-center">

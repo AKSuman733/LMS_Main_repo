@@ -192,14 +192,14 @@ const DataTable = ({
                   setGlobalSearch(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                className="w-full pl-9 pr-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange dark:bg-gray-800 dark:border-gray-700 dark:text-white"
               />
             </div>
           )}
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
-              className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 flex items-center whitespace-nowrap"
+              className="text-sm text-brand-orange hover:text-orange-800 dark:text-brand-orange-light dark:hover:text-brand-orange-light flex items-center whitespace-nowrap"
             >
               Clear filters
             </button>
@@ -207,11 +207,11 @@ const DataTable = ({
         </div>
 
         {selectedRowIds.size > 0 && bulkActions && bulkActions.length > 0 && (
-          <div className="flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-lg border border-blue-100 dark:border-blue-800">
-            <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+          <div className="flex items-center space-x-2 bg-orange-50 dark:bg-orange-900/30 px-4 py-2 rounded-lg border border-orange-100 dark:border-orange-800">
+            <span className="text-sm font-medium text-orange-800 dark:text-blue-200">
               {selectedRowIds.size} selected
             </span>
-            <div className="h-4 w-px bg-blue-200 dark:bg-blue-700 mx-2"></div>
+            <div className="h-4 w-px bg-blue-200 dark:bg-brand-orange-dark mx-2"></div>
             {bulkActions.map((action, idx) => (
               <button
                 key={idx}
@@ -222,7 +222,7 @@ const DataTable = ({
                 className={`text-sm font-medium px-2 py-1 rounded transition-colors ${
                   action.destructive 
                   ? 'text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/50' 
-                  : 'text-blue-600 hover:bg-blue-100 dark:text-blue-400 dark:hover:bg-blue-800/50'
+                  : 'text-brand-orange hover:bg-orange-100 dark:text-brand-orange-light dark:hover:bg-orange-800/50'
                 }`}
               >
                 {action.label}
@@ -247,7 +247,7 @@ const DataTable = ({
                         if (input) input.indeterminate = isIndeterminate;
                       }}
                       onChange={() => toggleSelectAll(isAllSelected, currentPageRowIds)}
-                      className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                      className="w-4 h-4 text-brand-orange bg-white border-gray-300 rounded focus:ring-brand-orange focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                       aria-label="Select all rows"
                     />
                   </div>
@@ -266,7 +266,7 @@ const DataTable = ({
                         {col.sortable !== false && (
                           <span className="text-gray-400 flex flex-col -space-y-2">
                             {sortConfig?.key === col.key ? (
-                              sortConfig.direction === 'asc' ? <ChevronUp className="w-3 h-3 text-blue-600" /> : <ChevronDown className="w-3 h-3 text-blue-600" />
+                              sortConfig.direction === 'asc' ? <ChevronUp className="w-3 h-3 text-brand-orange" /> : <ChevronDown className="w-3 h-3 text-brand-orange" />
                             ) : (
                               <ChevronsUpDown className="w-3 h-3" />
                             )}
@@ -281,7 +281,7 @@ const DataTable = ({
                               e.stopPropagation();
                               setActiveFilterCol(activeFilterCol === col.key ? null : col.key);
                             }}
-                            className={`p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${filters[col.key]?.size > 0 ? 'text-blue-600' : 'text-gray-400'}`}
+                            className={`p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${filters[col.key]?.size > 0 ? 'text-brand-orange' : 'text-gray-400'}`}
                           >
                             <Filter className="w-3 h-3" />
                           </button>
@@ -298,7 +298,7 @@ const DataTable = ({
                                       type="checkbox"
                                       checked={filters[col.key]?.has(val) || false}
                                       onChange={() => toggleFilter(col.key, val)}
-                                      className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 mr-2"
+                                      className="w-4 h-4 text-brand-orange rounded border-gray-300 focus:ring-brand-orange dark:border-gray-600 dark:bg-gray-700 mr-2"
                                     />
                                     <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{val}</span>
                                   </label>
@@ -367,7 +367,7 @@ const DataTable = ({
                           type="checkbox"
                           checked={selectedRowIds.has(row.id)}
                           onChange={() => toggleSelectRow(row.id)}
-                          className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
+                          className="w-4 h-4 text-brand-orange bg-white border-gray-300 rounded focus:ring-brand-orange focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer"
                         />
                       </div>
                     </td>
@@ -405,7 +405,7 @@ const DataTable = ({
                     setRowsPerPage(Number(e.target.value));
                     setCurrentPage(1);
                   }}
-                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded text-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded text-sm focus:ring-brand-orange focus:border-brand-orange"
                 >
                   <option value={5}>5</option>
                   <option value={10}>10</option>
@@ -442,7 +442,7 @@ const DataTable = ({
                   value={jumpPage}
                   onChange={(e) => setJumpPage(e.target.value)}
                   placeholder="Go to"
-                  className="w-16 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
+                  className="w-16 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-brand-orange focus:border-brand-orange dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white"
                 />
                 <button type="submit" className="px-2 py-1 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300">
                   Go
@@ -492,7 +492,7 @@ const RowActionMenu = ({ row, actions }) => {
         aria-expanded={isOpen}
         aria-label="Row actions"
         onClick={() => setIsOpen(!isOpen)}
-        className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-orange"
       >
         <MoreVertical className="w-5 h-5" />
       </button>

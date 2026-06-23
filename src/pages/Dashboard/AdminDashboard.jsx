@@ -91,10 +91,10 @@ const AdminDashboard = () => {
 
   const getColorClasses = (colorName) => {
     const colors = {
-      blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400 border-blue-200 dark:border-blue-800',
-      purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900/40 dark:text-purple-400 border-purple-200 dark:border-purple-800',
-      pink: 'bg-pink-100 text-pink-600 dark:bg-pink-900/40 dark:text-pink-400 border-pink-200 dark:border-pink-800',
-      indigo: 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800',
+      blue: 'bg-orange-100 text-brand-orange dark:bg-orange-900/40 dark:text-brand-orange-light border-blue-200 dark:border-orange-800',
+      purple: 'bg-teal-100 text-brand-teal dark:bg-purple-900/40 dark:text-brand-teal-light border-purple-200 dark:border-purple-800',
+      pink: 'bg-pink-100 text-brand-teal dark:bg-pink-900/40 dark:text-pink-400 border-pink-200 dark:border-pink-800',
+      indigo: 'bg-indigo-100 text-brand-orange dark:bg-indigo-900/40 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800',
       green: 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400 border-green-200 dark:border-green-800',
       orange: 'bg-orange-100 text-orange-600 dark:bg-orange-900/40 dark:text-orange-400 border-orange-200 dark:border-orange-800',
     };
@@ -141,7 +141,7 @@ const AdminDashboard = () => {
           <div className="relative">
             <button 
               onClick={() => setShowControls(!showControls)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm text-sm font-medium transition"
+              className="flex items-center gap-2 px-4 py-2 bg-brand-orange hover:bg-brand-orange-dark text-white rounded-lg shadow-sm text-sm font-medium transition"
             >
               <Settings size={16} /> Controls
             </button>
@@ -235,7 +235,7 @@ const AdminDashboard = () => {
                     </div>
                     {/* Bar */}
                     <div 
-                      className="w-full max-w-[40px] bg-gradient-to-t from-blue-600 to-blue-400 dark:from-blue-700 dark:to-blue-500 rounded-t-md group-hover:opacity-80 transition-opacity shadow-sm"
+                      className="w-full max-w-[40px] bg-gradient-to-t from-brand-orange to-brand-orange-light dark:from-brand-orange-dark dark:to-brand-orange rounded-t-md group-hover:opacity-80 transition-opacity shadow-sm"
                       style={{ height }}
                     ></div>
                   </div>
@@ -257,11 +257,11 @@ const AdminDashboard = () => {
                     {hero.image ? (
                       <img src={hero.image} alt={hero.name} className="w-10 h-10 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800" />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300 font-bold flex items-center justify-center border-2 border-indigo-200 dark:border-indigo-800">
+                      <div className="w-10 h-10 rounded-full bg-indigo-100 text-brand-orange-dark dark:bg-indigo-900/50 dark:text-indigo-300 font-bold flex items-center justify-center border-2 border-indigo-200 dark:border-indigo-800">
                         {hero.name.charAt(0)}
                       </div>
                     )}
-                    <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center border border-white dark:border-gray-800 shadow-sm">
+                    <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-brand-orange text-white text-[10px] font-bold flex items-center justify-center border border-white dark:border-gray-800 shadow-sm">
                       #{idx + 1}
                     </div>
                   </div>
@@ -271,13 +271,13 @@ const AdminDashboard = () => {
                       <span className="text-sm font-medium text-gray-500">{hero.count} chosen</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full" style={{ width: `${(hero.count / MOCK_TOP_HEROES[0].count) * 100}%` }}></div>
+                      <div className="bg-gradient-to-r from-brand-orange to-brand-teal h-2 rounded-full" style={{ width: `${(hero.count / MOCK_TOP_HEROES[0].count) * 100}%` }}></div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-            <button onClick={() => navigate('/admin/heroes')} className="mt-6 w-full py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition">
+            <button onClick={() => navigate('/admin/heroes')} className="mt-6 w-full py-2 text-sm font-medium text-brand-orange dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/40 transition">
               Manage Heroes
             </button>
           </div>
@@ -320,7 +320,7 @@ const AdminDashboard = () => {
                   </button>
                   <button 
                     onClick={() => handleReviewTask(task.text)}
-                    className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                    className="text-xs px-3 py-1.5 bg-brand-orange text-white rounded hover:bg-brand-orange-dark transition"
                   >
                     Review
                   </button>
@@ -339,7 +339,7 @@ const AdminDashboard = () => {
         {/* Recent Activity Feed */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 flex flex-col">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <Clock size={20} className="text-blue-500" /> Recent Activity
+            <Clock size={20} className="text-brand-orange" /> Recent Activity
           </h3>
           <div className="flex-1 overflow-y-auto pr-2 space-y-6">
             {MOCK_ACTIVITY_FEED.map((feed, idx) => (
@@ -351,8 +351,8 @@ const AdminDashboard = () => {
                 
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border-2 border-white dark:border-gray-800 z-10 ${
                   feed.type === 'enrollment' ? 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400' :
-                  feed.type === 'hero' ? 'bg-purple-100 text-purple-600 dark:bg-purple-900/40 dark:text-purple-400' :
-                  feed.type === 'course' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' :
+                  feed.type === 'hero' ? 'bg-teal-100 text-brand-teal dark:bg-purple-900/40 dark:text-brand-teal-light' :
+                  feed.type === 'course' ? 'bg-orange-100 text-brand-orange dark:bg-orange-900/40 dark:text-brand-orange-light' :
                   'bg-gray-100 text-gray-600 dark:bg-gray-700/40 dark:text-gray-300'
                 }`}>
                   {feed.type === 'enrollment' ? <UserPlus size={18}/> :
@@ -381,7 +381,7 @@ const AdminDashboard = () => {
                   <span className="text-sm text-gray-500 font-medium">{course.progress}% Completion</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mb-2">
-                  <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${course.progress}%` }}></div>
+                  <div className="bg-brand-orange h-2.5 rounded-full" style={{ width: `${course.progress}%` }}></div>
                 </div>
                 <p className="text-xs text-gray-500">{course.students} total students enrolled</p>
               </div>

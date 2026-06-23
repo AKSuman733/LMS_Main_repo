@@ -49,8 +49,8 @@ const CourseDetails = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-        <div className="h-48 bg-gradient-to-r from-blue-600 to-indigo-700 p-8 flex flex-col justify-end">
-          <span className="text-blue-100 font-semibold mb-2">{course.category}</span>
+        <div className="h-48 bg-gradient-to-r from-brand-orange to-brand-orange-dark p-8 flex flex-col justify-end">
+          <span className="text-orange-100 font-semibold mb-2">{course.category}</span>
           <h1 className="text-3xl font-bold text-white">{course.title}</h1>
         </div>
         
@@ -79,8 +79,8 @@ const CourseDetails = () => {
                   onClick={() => setSelectedStyle(avatar.id)}
                   className={`p-4 rounded-lg border-2 text-left transition-all flex flex-col items-center sm:items-start sm:flex-row gap-4 ${
                     selectedStyle === avatar.id 
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 ring-2 ring-blue-500 ring-opacity-50' 
-                      : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 text-gray-700 dark:text-gray-300'
+                      ? 'border-brand-orange bg-orange-50 dark:bg-orange-900/20 text-brand-orange-dark dark:text-brand-orange-light ring-2 ring-brand-orange ring-opacity-50' 
+                      : 'border-gray-200 dark:border-gray-700 hover:border-brand-orange-light dark:hover:border-brand-orange text-gray-700 dark:text-gray-300'
                   }`}
                 >
                   {avatar.image ? (
@@ -91,7 +91,7 @@ const CourseDetails = () => {
                   <div className="flex flex-col flex-1 justify-center w-full">
                     <div className="flex justify-between items-center w-full">
                       <span className="font-bold line-clamp-1">{avatar.name}</span>
-                      {selectedStyle === avatar.id && <CheckCircle size={20} className="text-blue-500 shrink-0" />}
+                      {selectedStyle === avatar.id && <CheckCircle size={20} className="text-brand-orange shrink-0" />}
                     </div>
                     <span className="text-xs opacity-75 line-clamp-1">{avatar.title}</span>
                   </div>
@@ -104,7 +104,7 @@ const CourseDetails = () => {
             <button
               onClick={handleEnroll}
               disabled={enrolling || !selectedStyle}
-              className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3 px-4 bg-brand-orange text-white rounded-lg font-medium hover:bg-brand-orange-dark transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {enrolling ? 'Enrolling...' : 'Enroll Now'}
             </button>

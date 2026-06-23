@@ -19,7 +19,7 @@ const AuthLayout = () => {
         </h2>
         {(!import.meta.env.MODE || import.meta.env.MODE === 'development') && (
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            <Link to="/roles" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link to="/roles" className="font-medium text-brand-orange hover:text-brand-orange">
               &larr; Back to Role Selection
             </Link>
           </p>

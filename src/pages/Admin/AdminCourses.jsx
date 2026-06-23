@@ -120,7 +120,7 @@ const AdminCourses = () => {
       sortable: true,
       filterable: true,
       render: (row) => (
-        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-blue-200">
           {row.level}
         </span>
       )
@@ -250,7 +250,7 @@ const AdminCourses = () => {
         <div className="flex space-x-2">
           <button 
             onClick={() => setViewMode('active')}
-            className={`px-4 py-2 rounded-lg font-medium transition ${viewMode === 'active' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'}`}
+            className={`px-4 py-2 rounded-lg font-medium transition ${viewMode === 'active' ? 'bg-orange-100 text-brand-orange-dark dark:bg-orange-900/40 dark:text-brand-orange-light' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'}`}
           >
             Active
           </button>
@@ -272,7 +272,7 @@ const AdminCourses = () => {
             setForm(emptyForm);
             setIsModalOpen(true);
           }}
-          className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          className="flex items-center space-x-2 px-4 py-2 bg-brand-orange text-white rounded hover:bg-brand-orange-dark transition"
         >
           <Plus size={18} />
           <span>Add Course</span>
@@ -294,7 +294,7 @@ const AdminCourses = () => {
           action: (
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="px-4 py-2 bg-brand-orange text-white rounded-md hover:bg-brand-orange-dark transition"
             >
               + Create Course
             </button>
@@ -327,7 +327,7 @@ const AdminCourses = () => {
               name="title"
               value={form.title}
               onChange={handleChange}
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-brand-orange focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
               placeholder="React Basics"
             />
           </div>
@@ -339,7 +339,7 @@ const AdminCourses = () => {
               value={form.description}
               onChange={handleChange}
               rows="3"
-              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+              className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-brand-orange focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
               placeholder="Short course description"
             />
           </div>
@@ -351,7 +351,7 @@ const AdminCourses = () => {
                 name="category"
                 value={form.category}
                 onChange={handleChange}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-brand-orange focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                 placeholder="Frontend"
               />
             </div>
@@ -362,7 +362,7 @@ const AdminCourses = () => {
                 name="level"
                 value={form.level}
                 onChange={handleChange}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-brand-orange focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
               >
                 <option>Beginner</option>
                 <option>Intermediate</option>
@@ -376,7 +376,7 @@ const AdminCourses = () => {
                 name="duration"
                 value={form.duration}
                 onChange={handleChange}
-                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                className="w-full rounded border border-gray-300 px-3 py-2 text-gray-900 focus:border-brand-orange focus:outline-none dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                 placeholder="10 hours"
               />
             </div>
@@ -397,7 +397,7 @@ const AdminCourses = () => {
             </button>
             <button
               type="submit"
-              className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              className="rounded bg-brand-orange px-4 py-2 text-sm font-medium text-white hover:bg-brand-orange-dark"
             >
               Save Course
             </button>

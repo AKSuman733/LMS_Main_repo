@@ -84,12 +84,12 @@ const StudentDashboard = () => {
 
   const getColorClasses = (colorName) => {
     const colors = {
-      blue: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+      blue: 'bg-orange-50 text-brand-orange dark:bg-orange-900/30 dark:text-brand-orange-light',
       green: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400',
-      purple: 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+      purple: 'bg-teal-50 text-brand-teal dark:bg-purple-900/30 dark:text-brand-teal-light',
       yellow: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
       orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
-      indigo: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400',
+      indigo: 'bg-indigo-50 text-brand-orange dark:bg-indigo-900/30 dark:text-indigo-400',
     };
     return colors[colorName] || colors.blue;
   };
@@ -113,7 +113,7 @@ const StudentDashboard = () => {
           
           {/* Quick Actions Row directly below header */}
           <div className="flex flex-wrap items-center gap-3 mt-6">
-            <button onClick={() => navigate('/student/courses')} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+            <button onClick={() => navigate('/student/courses')} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange hover:bg-brand-orange-dark text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
               <BookOpen size={16} /> Browse Catalog
             </button>
             <button onClick={() => navigate('/student/enrolled?tab=Certificates')} className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors shadow-sm">
@@ -126,7 +126,7 @@ const StudentDashboard = () => {
         </div>
         
         {newHero && (
-          <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-md p-1 xl:w-96 shrink-0">
+          <div className="bg-gradient-to-r from-brand-orange via-brand-teal to-brand-teal rounded-xl shadow-md p-1 xl:w-96 shrink-0">
             <div className="bg-white/10 backdrop-blur-md rounded-lg p-4 flex items-center justify-between text-white h-full">
               <div className="flex items-center space-x-4">
                 <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/50 shrink-0 shadow-inner">
@@ -149,7 +149,7 @@ const StudentDashboard = () => {
                   addToast({ type: 'info', message: 'Navigating to select a new hero...' });
                   navigate('/student/enrolled');
                 }}
-                className="text-xs font-bold bg-white text-indigo-600 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition shrink-0 ml-2 shadow-sm"
+                className="text-xs font-bold bg-white text-brand-orange px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition shrink-0 ml-2 shadow-sm"
               >
                 Change
               </button>
@@ -183,9 +183,9 @@ const StudentDashboard = () => {
           <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <PlayCircle size={20} className="text-blue-500" /> Continue Learning
+                <PlayCircle size={20} className="text-brand-orange" /> Continue Learning
               </h3>
-              <Link to="/student/enrolled" className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">See All</Link>
+              <Link to="/student/enrolled" className="text-sm font-medium text-brand-orange hover:text-brand-orange-dark dark:text-brand-orange-light">See All</Link>
             </div>
             
             {continueLearning.length > 0 ? (
@@ -193,7 +193,7 @@ const StudentDashboard = () => {
                 {continueLearning.map(course => {
                   const { actionLabel, actionLink, actionColor } = getCourseStatusAndAction(course);
                   return (
-                    <div key={course.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-800 bg-gray-50/50 dark:bg-gray-800/50 transition-colors">
+                    <div key={course.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-orange-800 bg-gray-50/50 dark:bg-gray-800/50 transition-colors">
                       <div className="w-16 h-16 rounded-lg bg-gray-200 dark:bg-gray-700 overflow-hidden shrink-0">
                         {course.image ? (
                           <img src={course.image} alt="course" className="w-full h-full object-cover" />
@@ -205,7 +205,7 @@ const StudentDashboard = () => {
                         <h4 className="font-semibold text-gray-900 dark:text-white">{course.title}</h4>
                         <div className="flex items-center gap-3 mt-2">
                           <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                            <div className="bg-blue-500 h-full rounded-full transition-all" style={{ width: `${course.progress_percentage}%` }}></div>
+                            <div className="bg-brand-orange h-full rounded-full transition-all" style={{ width: `${course.progress_percentage}%` }}></div>
                           </div>
                           <span className="text-xs font-semibold text-gray-600 dark:text-gray-300 w-8">{course.progress_percentage}%</span>
                         </div>
@@ -223,7 +223,7 @@ const StudentDashboard = () => {
             ) : (
               <div className="text-center py-8">
                 <p className="text-gray-500 dark:text-gray-400 mb-4">No courses in progress.</p>
-                <button onClick={() => navigate('/student/courses')} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">Start a new course</button>
+                <button onClick={() => navigate('/student/courses')} className="px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-brand-orange-dark text-sm font-medium">Start a new course</button>
               </div>
             )}
           </section>
@@ -234,7 +234,7 @@ const StudentDashboard = () => {
             {/* Upcoming Lessons */}
             <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
               <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                <Target size={18} className="text-indigo-500" /> Upcoming Lessons
+                <Target size={18} className="text-brand-orange" /> Upcoming Lessons
               </h3>
               {upcomingLessons.length > 0 ? (
                 <div className="space-y-4">
@@ -248,7 +248,7 @@ const StudentDashboard = () => {
                         <span className="text-xs font-medium text-gray-500 flex items-center gap-1">
                           <Clock size={12} /> {lesson.duration}
                         </span>
-                        <Link to={lesson.link} className="p-1.5 bg-white dark:bg-gray-800 rounded-full text-blue-600 shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-gray-700 transition">
+                        <Link to={lesson.link} className="p-1.5 bg-white dark:bg-gray-800 rounded-full text-brand-orange shadow-sm border border-gray-200 dark:border-gray-600 hover:bg-orange-50 dark:hover:bg-gray-700 transition">
                           <PlayCircle size={16} />
                         </Link>
                       </div>
@@ -271,7 +271,7 @@ const StudentDashboard = () => {
                 {MOCK_ACTIVITY_FEED.slice(0, 4).map((activity) => (
                   <div key={activity.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                     <div className="flex items-center justify-center w-6 h-6 rounded-full border border-white dark:border-gray-800 bg-gray-100 dark:bg-gray-700 text-gray-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-                      <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                      <div className="w-2 h-2 rounded-full bg-brand-orange"></div>
                     </div>
                     <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-1.5rem)] p-3 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 shadow-sm">
                       <div className="flex items-center justify-between mb-1">
@@ -292,7 +292,7 @@ const StudentDashboard = () => {
             <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
                <div className="flex justify-between items-center mb-6">
                  <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                   <Sparkles size={18} className="text-pink-500" /> Recommended For You
+                   <Sparkles size={18} className="text-brand-teal" /> Recommended For You
                  </h3>
                </div>
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -308,7 +308,7 @@ const StudentDashboard = () => {
                        )}
                      </div>
                      <div className="flex flex-col justify-center mt-1">
-                       <h4 className="text-sm font-bold text-gray-900 dark:text-white line-clamp-2 group-hover:text-blue-600 transition-colors">{course.title}</h4>
+                       <h4 className="text-sm font-bold text-gray-900 dark:text-white line-clamp-2 group-hover:text-brand-orange transition-colors">{course.title}</h4>
                        <p className="text-[10px] font-bold text-gray-500 uppercase mt-2">{course.category}</p>
                      </div>
                    </Link>
@@ -351,7 +351,7 @@ const StudentDashboard = () => {
           <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <BarChart2 size={18} className="text-blue-500" /> Weekly Analytics
+                <BarChart2 size={18} className="text-brand-orange" /> Weekly Analytics
               </h3>
             </div>
             <div className="flex gap-2 h-32 mb-4 mt-2">
@@ -361,7 +361,7 @@ const StudentDashboard = () => {
                   <div key={idx} className="flex flex-col items-center flex-1 gap-1 group cursor-pointer relative h-full">
                     <div className="w-full flex-1 bg-gray-100 dark:bg-gray-700 rounded-t-md relative flex items-end overflow-hidden">
                        <div 
-                         className="w-full bg-blue-500 rounded-t-md group-hover:bg-blue-400 transition-all duration-1000 ease-out"
+                         className="w-full bg-brand-orange rounded-t-md group-hover:bg-brand-orange-light transition-all duration-1000 ease-out"
                          style={{ height: mounted ? `${targetHeights[idx]}%` : '0%' }}
                        ></div>
                     </div>
@@ -369,7 +369,7 @@ const StudentDashboard = () => {
                     <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-gray-700 text-white text-[10px] py-1 px-2 rounded transition-opacity whitespace-nowrap pointer-events-none z-10 shadow-lg">
                       {targetHeights[idx] * 2} mins
                     </div>
-                    <span className="text-[10px] font-bold text-gray-400 group-hover:text-blue-500 transition-colors shrink-0">{day}</span>
+                    <span className="text-[10px] font-bold text-gray-400 group-hover:text-brand-orange transition-colors shrink-0">{day}</span>
                   </div>
                 )
               })}
@@ -409,7 +409,7 @@ const StudentDashboard = () => {
           {/* Trending Instructors */}
           <section className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-               <Star size={18} className="text-purple-500" /> Trending Instructors
+               <Star size={18} className="text-brand-teal" /> Trending Instructors
              </h3>
              <div className="space-y-4">
                {MOCK_TOP_HEROES.slice(0, 3).map(hero => (

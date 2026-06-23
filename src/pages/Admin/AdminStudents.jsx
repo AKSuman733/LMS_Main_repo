@@ -54,7 +54,7 @@ const AdminStudents = () => {
       sortable: true,
       filterable: true,
       render: (row) => (
-        <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+        <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-blue-200">
           {row.enrolled_count}
         </span>
       )
@@ -198,7 +198,7 @@ const AdminStudents = () => {
                   <h4 className="text-lg font-bold text-gray-900 dark:text-white">{course.title}</h4>
                   <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center mt-1">
                     {course.status === 'Completed' ? <CheckCircle className="w-4 h-4 mr-1 text-green-500" /> : 
-                     course.status === 'In Progress' ? <Clock className="w-4 h-4 mr-1 text-blue-500" /> :
+                     course.status === 'In Progress' ? <Clock className="w-4 h-4 mr-1 text-brand-orange" /> :
                      <AlertCircle className="w-4 h-4 mr-1 text-gray-500" />}
                     {course.status}
                   </p>
@@ -218,7 +218,7 @@ const AdminStudents = () => {
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
                   <div 
-                    className={`h-2.5 rounded-full ${course.progress === 100 ? 'bg-green-600' : 'bg-blue-600'}`} 
+                    className={`h-2.5 rounded-full ${course.progress === 100 ? 'bg-green-600' : 'bg-brand-orange'}`} 
                     style={{ width: `${course.progress}%` }}
                   ></div>
                 </div>

@@ -119,7 +119,7 @@ const EnrolledCourses = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">My Learning</h2>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your courses, track progress, and choose your Celebrity Heroes.</p>
         </div>
-        <Link to="/student/courses" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-sm text-sm font-semibold flex items-center justify-center gap-2">
+        <Link to="/student/courses" className="px-4 py-2 bg-brand-orange text-white rounded-lg hover:bg-brand-orange-dark transition shadow-sm text-sm font-semibold flex items-center justify-center gap-2">
           <BookOpen size={16} /> Browse New Courses
         </Link>
       </div>
@@ -135,7 +135,7 @@ const EnrolledCourses = () => {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                 activeTab === tab 
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400' 
+                  ? 'border-brand-orange text-brand-orange dark:text-brand-orange-light dark:border-brand-orange-light' 
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
@@ -153,7 +153,7 @@ const EnrolledCourses = () => {
               placeholder="Search by course or hero name..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-shadow"
+              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange transition-shadow"
             />
           </div>
           <div className="flex items-center gap-2 shrink-0">
@@ -161,7 +161,7 @@ const EnrolledCourses = () => {
               <select 
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
-                className="appearance-none pl-10 pr-8 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-blue-500 transition-shadow cursor-pointer"
+                className="appearance-none pl-10 pr-8 py-2.5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white font-medium focus:ring-2 focus:ring-brand-orange transition-shadow cursor-pointer"
               >
                 <option value="recent">Recently Enrolled</option>
                 <option value="progress_high">Highest Progress</option>
@@ -219,7 +219,7 @@ const EnrolledCourses = () => {
                     <p className="text-sm font-bold text-gray-900 dark:text-white line-clamp-1">{course.instructor_style}</p>
                     <button 
                       onClick={() => handleHeroChange(course)}
-                      className="mt-2 w-full py-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-white dark:bg-gray-800 border border-indigo-200 dark:border-indigo-800 rounded hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 dark:hover:text-white transition-colors"
+                      className="mt-2 w-full py-1.5 text-xs font-bold text-brand-orange dark:text-indigo-400 bg-white dark:bg-gray-800 border border-indigo-200 dark:border-indigo-800 rounded hover:bg-brand-orange hover:text-white dark:hover:bg-brand-orange dark:hover:text-white transition-colors"
                     >
                       Change Hero
                     </button>
@@ -252,11 +252,11 @@ const EnrolledCourses = () => {
                     <div>
                       <div className="flex justify-between items-end mb-1">
                         <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Progress</span>
-                        <span className="text-sm font-bold text-blue-600 dark:text-blue-400">{course.progress_percentage || 0}%</span>
+                        <span className="text-sm font-bold text-brand-orange dark:text-brand-orange-light">{course.progress_percentage || 0}%</span>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                         <div 
-                          className={`h-full rounded-full transition-all duration-1000 ${course.completed ? 'bg-green-500' : 'bg-blue-600'}`} 
+                          className={`h-full rounded-full transition-all duration-1000 ${course.completed ? 'bg-green-500' : 'bg-brand-orange'}`} 
                           style={{ width: `${course.progress_percentage || 0}%` }}
                         ></div>
                       </div>
